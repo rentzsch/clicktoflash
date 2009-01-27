@@ -29,12 +29,13 @@ THE SOFTWARE.
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
-
+static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 @interface CTFClickToFlashPlugin (Internal)
 - (NSColor *) _backgroundColorOfElement:(DOMElement *)element;
 - (void) _convertTypesForContainer;
 - (void) _drawBackground;
+- (BOOL) _isHostWhitelisted;
 @end
 
 
@@ -55,8 +56,19 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
 - (id) initWithArguments:(NSDictionary *)arguments
 {
-    [super init];
-    self.container = [arguments objectForKey:WebPlugInContainingElementKey];
+    self = [super init];
+    if (self) {
+        self.container = [arguments objectForKey:WebPlugInContainingElementKey];
+    
+        NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
+        if (base) {
+            self.host = [base host];
+            if ([self _isHostWhitelisted]) {
+                [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
+            }
+        }
+    }
+    
     return self;
 }
 
@@ -64,6 +76,7 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 - (void) dealloc
 {
     self.container = nil;
+    self.host = nil;
     [super dealloc];
 }
 
@@ -82,7 +95,31 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
 - (void) mouseDown:(NSEvent *)event
 {
+    if (self.host && (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) && ![self _isHostWhitelisted]) {
+        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
+        int val = NSRunAlertPanel(title,
+                                  NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?"),
+                                  @"Always Load", @"Don't Load", nil);
+        if (!val) {
+            return;
+        }
+        
+        NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
+        if (hostWhitelist) {
+            [hostWhitelist addObject:self.host];
+        } else {
+            hostWhitelist = [NSMutableArray arrayWithObject:self.host];
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+    }
+    
     [self _convertTypesForContainer];
+}
+
+- (BOOL) _isHostWhitelisted
+{
+    NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey];
+    return hostWhitelist && [hostWhitelist containsObject:self.host];
 }
 
 
@@ -154,5 +191,6 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
 
 @synthesize container = _container;
+@synthesize host = _host;
 
 @end

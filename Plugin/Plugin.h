@@ -30,6 +30,7 @@ THE SOFTWARE.
 
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
+    NSString *_host;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -37,5 +38,6 @@ THE SOFTWARE.
 - (id) initWithArguments:(NSDictionary *)arguments;
 
 @property (retain) DOMElement *container;
+@property (retain) NSString *host;
 
 @end
