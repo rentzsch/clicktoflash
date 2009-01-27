@@ -1,0 +1,461 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		5584067D0E0F371E00EA991B /* Create Zip */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 558406870E0F372D00EA991B /* Build configuration list for PBXAggregateTarget "Create Zip" */;
+			buildPhases = (
+				5584067C0E0F371E00EA991B /* ShellScript */,
+			);
+			dependencies = (
+				558406810E0F372300EA991B /* PBXTargetDependency */,
+				558406830E0F372400EA991B /* PBXTargetDependency */,
+			);
+			name = "Create Zip";
+			productName = "Create Disk Image";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 558405540E0F2C2B00EA991B /* CTFInstaller.m */; };
+		558405570E0F2C4900EA991B /* Installer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 558405560E0F2C4900EA991B /* Installer.xib */; };
+		558405690E0F2DFA00EA991B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
+		5584056B0E0F2DFE00EA991B /* CTFInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 558405540E0F2C2B00EA991B /* CTFInstaller.m */; };
+		5584056C0E0F2E0100EA991B /* Installer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 558405560E0F2C4900EA991B /* Installer.xib */; };
+		5584064B0E0F35A000EA991B /* ClickToFlash.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 55EB70420E04A8640016593D /* ClickToFlash.plugin */; };
+		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
+		55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
+		55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70570E04A8B80016593D /* WebKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5584064C0E0F35AC00EA991B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55EB70320E04A8410016593D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55EB70410E04A8640016593D;
+			remoteInfo = ClickToFlash;
+		};
+		558406800E0F372300EA991B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55EB70320E04A8410016593D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55EB70410E04A8640016593D;
+			remoteInfo = ClickToFlash;
+		};
+		558406820E0F372400EA991B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55EB70320E04A8410016593D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 558405600E0F2DE900EA991B;
+			remoteInfo = "Install ClickToFlash";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		558405530E0F2C2B00EA991B /* CTFInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFInstaller.h; path = Installer/CTFInstaller.h; sourceTree = "<group>"; };
+		558405540E0F2C2B00EA991B /* CTFInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFInstaller.m; path = Installer/CTFInstaller.m; sourceTree = "<group>"; };
+		558405560E0F2C4900EA991B /* Installer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Installer.xib; path = Installer/Installer.xib; sourceTree = "<group>"; };
+		558405590E0F2D6700EA991B /* Info-Installer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = "Info-Installer.plist"; path = "Installer/Info-Installer.plist"; sourceTree = "<group>"; };
+		558405610E0F2DE900EA991B /* Install ClickToFlash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Install ClickToFlash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
+		55EB703D0E04A84F0016593D /* Plugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Plugin.m; path = Plugin/Plugin.m; sourceTree = "<group>"; };
+		55EB70420E04A8640016593D /* ClickToFlash.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClickToFlash.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		55EB70560E04A8B80016593D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		55EB70570E04A8B80016593D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
+		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5584055F0E0F2DE900EA991B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558405690E0F2DFA00EA991B /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55EB70400E04A8640016593D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */,
+				55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		558405520E0F2C2200EA991B /* Installer */ = {
+			isa = PBXGroup;
+			children = (
+				558405530E0F2C2B00EA991B /* CTFInstaller.h */,
+				558405540E0F2C2B00EA991B /* CTFInstaller.m */,
+				558405560E0F2C4900EA991B /* Installer.xib */,
+				558405590E0F2D6700EA991B /* Info-Installer.plist */,
+			);
+			name = Installer;
+			sourceTree = "<group>";
+		};
+		55EB70300E04A8410016593D = {
+			isa = PBXGroup;
+			children = (
+				55EB70540E04A89C0016593D /* Plug-in */,
+				558405520E0F2C2200EA991B /* Installer */,
+				55EB70550E04A8A40016593D /* Frameworks */,
+				55EB70430E04A8640016593D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		55EB70430E04A8640016593D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				55EB70420E04A8640016593D /* ClickToFlash.plugin */,
+				558405610E0F2DE900EA991B /* Install ClickToFlash.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55EB70540E04A89C0016593D /* Plug-in */ = {
+			isa = PBXGroup;
+			children = (
+				55EB703C0E04A84F0016593D /* Plugin.h */,
+				55EB703D0E04A84F0016593D /* Plugin.m */,
+				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
+			);
+			name = "Plug-in";
+			sourceTree = "<group>";
+		};
+		55EB70550E04A8A40016593D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				55EB70560E04A8B80016593D /* Cocoa.framework */,
+				55EB70570E04A8B80016593D /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		558405600E0F2DE900EA991B /* Install ClickToFlash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 558405660E0F2DE900EA991B /* Build configuration list for PBXNativeTarget "Install ClickToFlash" */;
+			buildPhases = (
+				5584055D0E0F2DE900EA991B /* Resources */,
+				5584055E0E0F2DE900EA991B /* Sources */,
+				5584055F0E0F2DE900EA991B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5584064D0E0F35AC00EA991B /* PBXTargetDependency */,
+			);
+			name = "Install ClickToFlash";
+			productName = "Install ClickToFlash";
+			productReference = 558405610E0F2DE900EA991B /* Install ClickToFlash.app */;
+			productType = "com.apple.product-type.application";
+		};
+		55EB70410E04A8640016593D /* ClickToFlash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55EB70470E04A8650016593D /* Build configuration list for PBXNativeTarget "ClickToFlash" */;
+			buildPhases = (
+				55EB703E0E04A8640016593D /* Resources */,
+				55EB703F0E04A8640016593D /* Sources */,
+				55EB70400E04A8640016593D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClickToFlash;
+			productName = ClickToFlash;
+			productReference = 55EB70420E04A8640016593D /* ClickToFlash.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55EB70320E04A8410016593D /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 0;
+			mainGroup = 55EB70300E04A8410016593D;
+			productRefGroup = 55EB70430E04A8640016593D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55EB70410E04A8640016593D /* ClickToFlash */,
+				558405600E0F2DE900EA991B /* Install ClickToFlash */,
+				5584067D0E0F371E00EA991B /* Create Zip */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5584055D0E0F2DE900EA991B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5584064B0E0F35A000EA991B /* ClickToFlash.plugin in Resources */,
+				5584056C0E0F2E0100EA991B /* Installer.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55EB703E0E04A8640016593D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				558405570E0F2C4900EA991B /* Installer.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5584067C0E0F371E00EA991B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate .zip file.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\nDIR=\"ClickToFlash\"\n\nrm -rf \"$DIR\" > /dev/null\nmkdir \"$DIR\"\n/Developer/Tools/CpMac -r \"Install ClickToFlash.app\" $DIR\n\nmkdir \"$DIR/Source\"\ncp -r \"$SOURCE_ROOT\"/* \"$DIR/Source\"\n\nfind \"$DIR/Source/ClickToFlash.xcodeproj\" -not -name \"project.pbxproj\" -depth 1 | xargs rm -rf\n\nzip -r ClickToFlash.zip \"$DIR\"\nrm -rf \"$DIR\" > /dev/null\n\nopen .";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5584055E0E0F2DE900EA991B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5584056B0E0F2DFE00EA991B /* CTFInstaller.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55EB703F0E04A8640016593D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55EB70480E04A8850016593D /* Plugin.m in Sources */,
+				558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5584064D0E0F35AC00EA991B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55EB70410E04A8640016593D /* ClickToFlash */;
+			targetProxy = 5584064C0E0F35AC00EA991B /* PBXContainerItemProxy */;
+		};
+		558406810E0F372300EA991B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55EB70410E04A8640016593D /* ClickToFlash */;
+			targetProxy = 558406800E0F372300EA991B /* PBXContainerItemProxy */;
+		};
+		558406830E0F372400EA991B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 558405600E0F2DE900EA991B /* Install ClickToFlash */;
+			targetProxy = 558406820E0F372400EA991B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		558405640E0F2DE900EA991B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Installer/Info-Installer.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Install ClickToFlash";
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		558405650E0F2DE900EA991B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Installer/Info-Installer.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Install ClickToFlash";
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		5584067E0E0F371E00EA991B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Create Disk Image";
+			};
+			name = Debug;
+		};
+		5584067F0E0F371E00EA991B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Create Disk Image";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		55EB70330E04A8410016593D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		55EB70340E04A8410016593D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		55EB70450E04A8640016593D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ClickToFlash;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = plugin;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		55EB70460E04A8640016593D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Carbon,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ClickToFlash;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				WRAPPER_EXTENSION = plugin;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		558405660E0F2DE900EA991B /* Build configuration list for PBXNativeTarget "Install ClickToFlash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				558405640E0F2DE900EA991B /* Debug */,
+				558405650E0F2DE900EA991B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		558406870E0F372D00EA991B /* Build configuration list for PBXAggregateTarget "Create Zip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5584067E0E0F371E00EA991B /* Debug */,
+				5584067F0E0F371E00EA991B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55EB70330E04A8410016593D /* Debug */,
+				55EB70340E04A8410016593D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55EB70470E04A8650016593D /* Build configuration list for PBXNativeTarget "ClickToFlash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55EB70450E04A8640016593D /* Debug */,
+				55EB70460E04A8640016593D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55EB70320E04A8410016593D /* Project object */;
+}
