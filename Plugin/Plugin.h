@@ -37,7 +37,9 @@ THE SOFTWARE.
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 
-@property (retain) DOMElement *container;
-@property (retain) NSString *host;
+- (DOMElement *) container;
+- (void) setContainer:(DOMElement *)newContainer;
+- (NSString *) host;
+- (void) setHost:(NSString *)newHost;
 
 @end

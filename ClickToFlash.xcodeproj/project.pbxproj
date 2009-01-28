@@ -61,15 +61,15 @@
 /* Begin PBXFileReference section */
 		558405530E0F2C2B00EA991B /* CTFInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFInstaller.h; path = Installer/CTFInstaller.h; sourceTree = "<group>"; };
 		558405540E0F2C2B00EA991B /* CTFInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFInstaller.m; path = Installer/CTFInstaller.m; sourceTree = "<group>"; };
-		558405560E0F2C4900EA991B /* Installer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Installer.xib; path = Installer/Installer.xib; sourceTree = "<group>"; };
+		558405560E0F2C4900EA991B /* Installer.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = Installer.xib; path = Installer/Installer.xib; sourceTree = "<group>"; };
 		558405590E0F2D6700EA991B /* Info-Installer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = "Info-Installer.plist"; path = "Installer/Info-Installer.plist"; sourceTree = "<group>"; };
-		558405610E0F2DE900EA991B /* Install ClickToFlash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Install ClickToFlash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		558405610E0F2DE900EA991B /* Install ClickToFlash.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Install ClickToFlash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
 		55EB703D0E04A84F0016593D /* Plugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Plugin.m; path = Plugin/Plugin.m; sourceTree = "<group>"; };
 		55EB70420E04A8640016593D /* ClickToFlash.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClickToFlash.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		55EB70560E04A8B80016593D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		55EB70570E04A8B80016593D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
-		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
+		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,7 +410,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
 			};

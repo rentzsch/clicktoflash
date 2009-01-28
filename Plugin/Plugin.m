@@ -58,11 +58,11 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     self = [super init];
     if (self) {
-        self.container = [arguments objectForKey:WebPlugInContainingElementKey];
+        [self setContainer:[arguments objectForKey:WebPlugInContainingElementKey]];
     
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
-            self.host = [base host];
+            [self setHost:[base host]];
             if ([self _isHostWhitelisted]) {
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
@@ -87,8 +87,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 - (void) dealloc
 {
-    self.container = nil;
-    self.host = nil;
+    [self setContainer:nil];
+    [self setHost:nil];
     [super dealloc];
 }
 
@@ -107,8 +107,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 - (void) mouseDown:(NSEvent *)event
 {
-    if (self.host && (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) && ![self _isHostWhitelisted]) {
-        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
+    if ([self host] && (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) && ![self _isHostWhitelisted]) {
+        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), [self host]];
         int val = NSRunAlertPanel(title,
                                   NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?"),
                                   @"Always Load", @"Don't Load", nil);
@@ -118,9 +118,9 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
         
         NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
         if (hostWhitelist) {
-            [hostWhitelist addObject:self.host];
+            [hostWhitelist addObject:[self host]];
         } else {
-            hostWhitelist = [NSMutableArray arrayWithObject:self.host];
+            hostWhitelist = [NSMutableArray arrayWithObject:[self host]];
         }
         [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
     }
@@ -131,7 +131,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 - (BOOL) _isHostWhitelisted
 {
     NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey];
-    return hostWhitelist && [hostWhitelist containsObject:self.host];
+    return hostWhitelist && [hostWhitelist containsObject:[self host]];
 }
 
 
@@ -177,7 +177,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 - (void) _convertTypesForContainer
 {
-    DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
+    DOMElement *newElement = (DOMElement *)[[self container] cloneNode:YES];
 
     DOMNodeList *nodeList;
     unsigned i;
@@ -185,24 +185,43 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [self _convertTypesForElement:newElement];
 
     nodeList = [newElement getElementsByTagName:@"object"];
-    for (i = 0; i < nodeList.length; i++) {
+    for (i = 0; i < [nodeList length]; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
 
     nodeList = [newElement getElementsByTagName:@"embed"];
-    for (i = 0; i < nodeList.length; i++) {
+    for (i = 0; i < [nodeList length]; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
 
     // Just to be safe, since we are about to replace our containing element
     [[self retain] autorelease];
     
-    [self.container.parentNode replaceChild:newElement oldChild:self.container];
-    self.container = nil;
+    [[[self container] parentNode] replaceChild:newElement oldChild:[self container]];
+    [self setContainer:nil];
 }
 
 
-@synthesize container = _container;
-@synthesize host = _host;
+- (DOMElement *) container
+{
+	return _container;
+}
+
+- (void) setContainer:(DOMElement *)newContainer
+{
+	[_container autorelease];
+	_container = [newContainer retain];
+}
+
+- (NSString *) host
+{
+	return _host;
+}
+
+- (void) setHost:(NSString *)newHost
+{
+	[_host autorelease];
+	_host = [newHost retain];
+}
 
 @end
