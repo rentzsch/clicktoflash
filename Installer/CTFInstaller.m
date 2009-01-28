@@ -45,14 +45,14 @@ THE SOFTWARE.
     NSString *pathToClickToFlash = [self pathToClickToFlash];
 
     if (!pathToClickToFlash) {
-        NSInteger result = NSRunAlertPanel(@"Install ClickToFlash", @"ClickToFlash is not installed.  Would you like to install it for this user?", @"Install", @"Cancel", nil);
+        /*NSInteger*/ int result = NSRunAlertPanel(@"Install ClickToFlash", @"ClickToFlash is not installed.  Would you like to install it for this user?", @"Install", @"Cancel", nil);
 
         if (result == NSAlertDefaultReturn) {
             [self installClickToFlash];
         }
 
     } else {
-        NSInteger result = NSRunAlertPanel(@"Remove ClickToFlash", @"ClickToFlash is currently installed.  Would you like to remove it?", @"Remove", @"Cancel", nil);    
+        /*NSInteger*/ int result = NSRunAlertPanel(@"Remove ClickToFlash", @"ClickToFlash is currently installed.  Would you like to remove it?", @"Remove", @"Cancel", nil);    
 
         if (result == NSAlertDefaultReturn) {
             [self removeClickToFlash];

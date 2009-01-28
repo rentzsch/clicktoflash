@@ -147,10 +147,11 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
     NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
     NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
-    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
+    //NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
     
     // Draw fill
-    [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:270.0];
+    //[gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:270.0];
+    [startingColor drawSwatchInRect:fillRect];
 
     // Draw stroke
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
@@ -158,7 +159,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
-    [gradient release];
+    //[gradient release];
 }
 
 
