@@ -189,8 +189,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
 
     NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-    [alert addButtonWithTitle:@"Add to whitelist"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
     [alert setMessageText:title];
     [alert setInformativeText:message];
     [alert setAlertStyle:NSInformationalAlertStyle];
@@ -214,12 +214,12 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     if (![self _isHostWhitelisted])
         return;
     
-    NSString *title = NSLocalizedString(@"Remove from whitelist?", @"Remove from whitelist?");
+    NSString *title = NSLocalizedString(@"Remove from white list?", @"Remove from white list?");
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), self.host];
     
     NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-    [alert addButtonWithTitle:@"Remove from whitelist"];
-    [alert addButtonWithTitle:@"Cancel"];
+    [alert addButtonWithTitle:NSLocalizedString(@"Remove from white list", @"Remove from white list")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
     [alert setMessageText:title];
     [alert setInformativeText:message];
     [alert setAlertStyle:NSInformationalAlertStyle];
