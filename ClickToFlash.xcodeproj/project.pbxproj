@@ -36,7 +36,6 @@
 		55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70570E04A8B80016593D /* WebKit.framework */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		D0FB700F0F2FE35000DCB854 /* ContainerImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D0FB700E0F2FE35000DCB854 /* ContainerImage.png */; };
-		D0FB70100F2FE35000DCB854 /* ContainerImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D0FB700E0F2FE35000DCB854 /* ContainerImage.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +106,6 @@
 		558405520E0F2C2200EA991B /* Installer */ = {
 			isa = PBXGroup;
 			children = (
-				D0FB700E0F2FE35000DCB854 /* ContainerImage.png */,
 				558405530E0F2C2B00EA991B /* CTFInstaller.h */,
 				558405540E0F2C2B00EA991B /* CTFInstaller.m */,
 				558405590E0F2D6700EA991B /* Info-Installer.plist */,
@@ -140,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
+				D0FB700E0F2FE35000DCB854 /* ContainerImage.png */,
 				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
 				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
@@ -223,7 +222,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5584064B0E0F35A000EA991B /* ClickToFlash.plugin in Resources */,
-				D0FB70100F2FE35000DCB854 /* ContainerImage.png in Resources */,
 				072189B30F30D982008C8944 /* Installer.xib in Resources */,
 				072189AD0F30D853008C8944 /* Localizable.strings in Resources */,
 			);
