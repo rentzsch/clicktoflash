@@ -40,8 +40,8 @@ THE SOFTWARE.
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 
-@property (retain) DOMElement *container;
-@property (retain) NSString *host;
+@property (nonatomic, retain) DOMElement *container;
+@property (nonatomic, retain) NSString *host;
 
 - (IBAction)addToWhitelist:(id)sender;
 - (IBAction)removeFromWhitelist:(id)sender;

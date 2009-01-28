@@ -33,7 +33,6 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 @interface CTFClickToFlashPlugin (Internal)
-- (NSColor *) _backgroundColorOfElement:(DOMElement *)element;
 - (void) _convertTypesForContainer;
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
@@ -105,12 +104,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 - (void) drawRect:(NSRect)rect
 {
     [self _drawBackground];
-}
-
-
-- (BOOL) acceptsFirstMouse
-{
-    return YES;
 }
 
 
@@ -325,8 +318,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
 
-    DOMNodeList *nodeList;
-    unsigned i;
+    DOMNodeList *nodeList = nil;
+    NSUInteger i;
 
     [self _convertTypesForElement:newElement];
 
