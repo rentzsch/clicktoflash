@@ -67,8 +67,20 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
         }
+
+        NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
+        if (attributes != nil) {
+            NSString *src = [attributes objectForKey:@"src"];
+            if (src)
+                [self setToolTip:src];
+            else {
+                src = [attributes objectForKey:@"data"];
+                if (src)
+                    [self setToolTip:src];
+            }
+        }
     }
-    
+
     return self;
 }
 
