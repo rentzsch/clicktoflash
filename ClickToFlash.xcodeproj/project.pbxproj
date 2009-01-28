@@ -251,7 +251,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate .zip file.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\nDIR=\"ClickToFlash\"\n\nrm -rf \"$DIR\" > /dev/null\nmkdir \"$DIR\"\n/Developer/Tools/CpMac -r \"Install ClickToFlash $PRODUCT_VERSION.app\" $DIR\n\nmkdir \"$DIR/Source\"\ncp -r \"$SOURCE_ROOT\"/* \"$DIR/Source\"\n\nfind \"$DIR/Source/ClickToFlash.xcodeproj\" -not -name \"project.pbxproj\" -depth 1 | xargs rm -rf\n\nzip -r ClickToFlash-$PRODUCT_VERSION.zip \"$DIR\"\nrm -rf \"$DIR\" > /dev/null\n\nopen .";
+			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate .zip file.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\nDIR=\"ClickToFlash\"\n\nrm -rf \"$DIR\" > /dev/null\nmkdir \"$DIR\"\n/Developer/Tools/CpMac -r \"Install ClickToFlash.app\" $DIR\n\nmkdir \"$DIR/Source\"\ncp -r \"$SOURCE_ROOT\"/* \"$DIR/Source\"\n\nfind \"$DIR/Source/ClickToFlash.xcodeproj\" -not -name \"project.pbxproj\" -depth 1 | xargs rm -rf\n\nzip -r ClickToFlash-$PRODUCT_VERSION.zip \"$DIR\"\nrm -rf \"$DIR\" > /dev/null\n\nopen .";
 		};
 /* End PBXShellScriptBuildPhase section */
 
