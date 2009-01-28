@@ -146,7 +146,30 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
+    // Draw an image on top to make it insanely obvious that this is clickable Flash.
+    NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];  
+    NSImage *containerImage = [[NSImage alloc] initWithContentsOfFile:containerImageName];
+
+    NSSize viewSize  = fillRect.size;
+    NSSize imageSize = containerImage.size;    
+
+    NSPoint viewCenter;
+    viewCenter.x = viewSize.width  * 0.50;
+    viewCenter.y = viewSize.height * 0.50;
+    
+    NSPoint imageOrigin = viewCenter;
+    imageOrigin.x -= imageSize.width  * 0.50;
+    imageOrigin.y -= imageSize.height * 0.50;
+    
+    NSRect destinationRect;
+    destinationRect.origin = imageOrigin;
+    destinationRect.size = imageSize;
+    
+    // Draw the image centered in the view
+    [containerImage drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+  
     [gradient release];
+    [containerImage release];
 }
 
 
