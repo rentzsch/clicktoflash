@@ -21,7 +21,7 @@
 	<key>CFBundleVersion</key>
 	<string>700</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1</string>
+	<string>${PRODUCT_VERSION}</string>
 	<key>NSPrincipalClass</key>
 	<string>CTFClickToFlashPlugin</string>
 	<key>WebPluginDescription</key>
