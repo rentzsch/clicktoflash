@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 
 #import "Plugin.h"
+#import "CTFWhitelistWindowController.h"
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
@@ -35,7 +36,11 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 - (NSColor *) _backgroundColorOfElement:(DOMElement *)element;
 - (void) _convertTypesForContainer;
 - (void) _drawBackground;
+- (BOOL) _isOptionPressed;
 - (BOOL) _isHostWhitelisted;
+- (NSMutableArray *)_hostWhitelist;
+- (void) _addHostToWhitelist;
+- (void) _removeHostFromWhitelist;
 @end
 
 
@@ -63,10 +68,13 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
             self.host = [base host];
-            if ([self _isHostWhitelisted]) {
+            if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
         }
+
+        if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
+            NSLog(@"Could not load conextual menu plugin");
 
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
         if (attributes != nil) {
@@ -89,6 +97,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     self.container = nil;
     self.host = nil;
+    [_whitelistWindowController release];
     [super dealloc];
 }
 
@@ -107,25 +116,18 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 - (void) mouseDown:(NSEvent *)event
 {
-    if (self.host && (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) && ![self _isHostWhitelisted]) {
-        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
-        int val = NSRunAlertPanel(title,
-                                  NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?"),
-                                  @"Always Load", @"Don't Load", nil);
-        if (!val) {
-            return;
-        }
-        
-        NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
-        if (hostWhitelist) {
-            [hostWhitelist addObject:self.host];
-        } else {
-            hostWhitelist = [NSMutableArray arrayWithObject:self.host];
-        }
-        [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
-    }
-    
     [self _convertTypesForContainer];
+}
+
+- (NSMenu *)menuForEvent:(NSEvent *)theEvent
+{
+    return [self menu];
+}
+
+- (BOOL) _isOptionPressed;
+{
+    BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
+    return isOptionPressed;
 }
 
 - (BOOL) _isHostWhitelisted
@@ -134,6 +136,127 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     return hostWhitelist && [hostWhitelist containsObject:self.host];
 }
 
+- (NSMutableArray *)_hostWhitelist
+{
+    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
+    if (hostWhitelist == nil) {
+        hostWhitelist = [NSMutableArray array];
+    }
+    return hostWhitelist;
+}
+
+- (void) _addHostToWhitelist
+{
+    NSMutableArray *hostWhitelist = [self _hostWhitelist];
+    [hostWhitelist addObject:self.host];
+    [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+}
+
+- (void) _removeHostFromWhitelist
+{
+    NSMutableArray *hostWhitelist = [self _hostWhitelist];
+    [hostWhitelist removeObject:self.host];
+    [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+}
+
+#pragma mark -
+#pragma mark Contextual menu
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    BOOL enabled = YES;
+    SEL action = [menuItem action];
+    if (action == @selector(addToWhitelist:))
+    {
+        if ([self _isHostWhitelisted])
+            enabled = NO;
+    }
+    else if (action == @selector(removeFromWhitelist:))
+    {
+        if (![self _isHostWhitelisted])
+            enabled = NO;
+    }
+    
+    return enabled;
+}
+
+- (IBAction)addToWhitelist:(id)sender;
+{
+    if ([self _isHostWhitelisted])
+        return;
+    
+    if ([self _isOptionPressed])
+    {
+        [self _addHostToWhitelist];
+        [self _convertTypesForContainer];
+        return;
+    }
+    
+    NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
+
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    [alert addButtonWithTitle:@"Add to whitelist"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert setMessageText:title];
+    [alert setInformativeText:message];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert beginSheetModalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(addToWhitelistAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+}
+
+- (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+        [self _addHostToWhitelist];
+        [self _convertTypesForContainer];
+    }
+}
+
+- (IBAction)removeFromWhitelist:(id)sender;
+{
+    if (![self _isHostWhitelisted])
+        return;
+    
+    NSString *title = NSLocalizedString(@"Remove from whitelist?", @"Remove from whitelist?");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), self.host];
+    
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    [alert addButtonWithTitle:@"Remove from whitelist"];
+    [alert addButtonWithTitle:@"Cancel"];
+    [alert setMessageText:title];
+    [alert setInformativeText:message];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert beginSheetModalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(removeFromWhitelistAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+}
+
+- (void)removeFromWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+        [self _removeHostFromWhitelist];
+    }
+}
+
+- (IBAction)editWhitelist:(id)sender;
+{
+    if (_whitelistWindowController == nil)
+    {
+        _whitelistWindowController = [[CTFWhitelistWindowController alloc] init];
+    }
+    [_whitelistWindowController showWindow:self];
+}
+
+- (IBAction)loadFlash:(id)sender;
+{
+    [self _convertTypesForContainer];
+}
 
 #pragma mark -
 #pragma mark Drawing

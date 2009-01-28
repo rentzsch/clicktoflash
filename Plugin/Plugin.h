@@ -28,9 +28,12 @@ THE SOFTWARE.
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
+@class CTFWhitelistWindowController;
+
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
+    CTFWhitelistWindowController *_whitelistWindowController;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -39,5 +42,10 @@ THE SOFTWARE.
 
 @property (retain) DOMElement *container;
 @property (retain) NSString *host;
+
+- (IBAction)addToWhitelist:(id)sender;
+- (IBAction)removeFromWhitelist:(id)sender;
+- (IBAction)editWhitelist:(id)sender;
+- (IBAction)loadFlash:(id)sender;
 
 @end
