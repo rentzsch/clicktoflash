@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 
 #import "Plugin.h"
+#import "NSBezierPath-RoundedRectangle.h"
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
@@ -159,6 +160,31 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
     [gradient release];
+
+    // Draw label
+	NSColor* labelColor = [ NSColor colorWithCalibratedWhite: 0.0 alpha: 0.25 ];
+	
+    NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
+			[ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
+			[ NSNumber numberWithInt: -1 ], NSKernAttributeName,
+			labelColor, NSForegroundColorAttributeName,
+			nil ];
+    
+    NSString* str = NSLocalizedString( @"Flash", @"Flash" );
+    
+    NSSize strSize = [ str sizeWithAttributes: attrs ];
+	NSPoint loc = { 
+		NSMidX( fillRect ) - (int) ( strSize.width  / 2 ),
+		NSMidY( fillRect ) - (int) ( strSize.height / 2 )
+	};
+    [ str drawAtPoint: loc withAttributes: attrs ];
+	
+    [ labelColor set ];
+	NSRect borderRect = NSMakeRect( loc.x, loc.y, strSize.width, strSize.height );
+	borderRect = NSIntegralRect( NSInsetRect( borderRect, -10, -4 ) );
+	NSBezierPath* path = [ NSBezierPath bezierPathWithRoundedRect: borderRect cornerRadius: 4 ];
+	[ path setLineWidth: 3 ];
+    [ path stroke ];
 }
 
 
