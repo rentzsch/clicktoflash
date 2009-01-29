@@ -24,5 +24,7 @@
 	<string>Installer</string>
 	<key>NSPrincipalClass</key>
 	<string>CTFInstaller</string>
+	<key>CFBundleShortVersionString</key>
+	<string>${PRODUCT_VERSION}</string>
 </dict>
 </plist>

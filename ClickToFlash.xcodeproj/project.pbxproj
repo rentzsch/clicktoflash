@@ -23,16 +23,20 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		072189AD0F30D853008C8944 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 072189AB0F30D853008C8944 /* Localizable.strings */; };
+		072189B30F30D982008C8944 /* Installer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189B10F30D982008C8944 /* Installer.xib */; };
+		072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BA0F30D9C3008C8944 /* ContextualMenu.xib */; };
+		072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
 		558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 558405540E0F2C2B00EA991B /* CTFInstaller.m */; };
-		558405570E0F2C4900EA991B /* Installer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 558405560E0F2C4900EA991B /* Installer.xib */; };
 		558405690E0F2DFA00EA991B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		5584056B0E0F2DFE00EA991B /* CTFInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 558405540E0F2C2B00EA991B /* CTFInstaller.m */; };
-		5584056C0E0F2E0100EA991B /* Installer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 558405560E0F2C4900EA991B /* Installer.xib */; };
 		5584064B0E0F35A000EA991B /* ClickToFlash.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 55EB70420E04A8640016593D /* ClickToFlash.plugin */; };
 		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
 		55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70570E04A8B80016593D /* WebKit.framework */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
+		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
+		D0FB700F0F2FE35000DCB854 /* ContainerImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D0FB700E0F2FE35000DCB854 /* ContainerImage.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,9 +64,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		072189AC0F30D853008C8944 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Installer/English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		072189B20F30D982008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Installer/English.lproj/Installer.xib; sourceTree = "<group>"; };
+		072189BB0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
+		072189BD0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		558405530E0F2C2B00EA991B /* CTFInstaller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFInstaller.h; path = Installer/CTFInstaller.h; sourceTree = "<group>"; };
 		558405540E0F2C2B00EA991B /* CTFInstaller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFInstaller.m; path = Installer/CTFInstaller.m; sourceTree = "<group>"; };
-		558405560E0F2C4900EA991B /* Installer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Installer.xib; path = Installer/Installer.xib; sourceTree = "<group>"; };
 		558405590E0F2D6700EA991B /* Info-Installer.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = "Info-Installer.plist"; path = "Installer/Info-Installer.plist"; sourceTree = "<group>"; };
 		558405610E0F2DE900EA991B /* Install ClickToFlash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Install ClickToFlash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
@@ -73,6 +80,9 @@
 		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
+		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
+		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
+		D0FB700E0F2FE35000DCB854 /* ContainerImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ContainerImage.png; path = Images/ContainerImage.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +111,9 @@
 			children = (
 				558405530E0F2C2B00EA991B /* CTFInstaller.h */,
 				558405540E0F2C2B00EA991B /* CTFInstaller.m */,
-				558405560E0F2C4900EA991B /* Installer.xib */,
 				558405590E0F2D6700EA991B /* Info-Installer.plist */,
+				072189B10F30D982008C8944 /* Installer.xib */,
+				072189AB0F30D853008C8944 /* Localizable.strings */,
 			);
 			name = Installer;
 			sourceTree = "<group>";
@@ -110,7 +121,7 @@
 		55EB70300E04A8410016593D = {
 			isa = PBXGroup;
 			children = (
-				55EB70540E04A89C0016593D /* Plug-in */,
+				55EB70540E04A89C0016593D /* Plugin */,
 				558405520E0F2C2200EA991B /* Installer */,
 				55EB70550E04A8A40016593D /* Frameworks */,
 				55EB70430E04A8640016593D /* Products */,
@@ -126,16 +137,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		55EB70540E04A89C0016593D /* Plug-in */ = {
+		55EB70540E04A89C0016593D /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
+				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
+				D0FB700E0F2FE35000DCB854 /* ContainerImage.png */,
+				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
+				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
+				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
 				55EB703D0E04A84F0016593D /* Plugin.m */,
-				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
 				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
 				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
+				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
 			);
-			name = "Plug-in";
+			name = Plugin;
 			sourceTree = "<group>";
 		};
 		55EB70550E04A8A40016593D /* Frameworks */ = {
@@ -211,7 +227,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5584064B0E0F35A000EA991B /* ClickToFlash.plugin in Resources */,
-				5584056C0E0F2E0100EA991B /* Installer.xib in Resources */,
+				072189B30F30D982008C8944 /* Installer.xib in Resources */,
+				072189AD0F30D853008C8944 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +236,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				558405570E0F2C4900EA991B /* Installer.xib in Resources */,
+				D0FB700F0F2FE35000DCB854 /* ContainerImage.png in Resources */,
+				072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */,
+				072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,7 +256,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate .zip file.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\nDIR=\"ClickToFlash\"\n\nrm -rf \"$DIR\" > /dev/null\nmkdir \"$DIR\"\n/Developer/Tools/CpMac -r \"Install ClickToFlash.app\" $DIR\n\nmkdir \"$DIR/Source\"\ncp -r \"$SOURCE_ROOT\"/* \"$DIR/Source\"\n\nfind \"$DIR/Source/ClickToFlash.xcodeproj\" -not -name \"project.pbxproj\" -depth 1 | xargs rm -rf\n\nzip -r ClickToFlash.zip \"$DIR\"\nrm -rf \"$DIR\" > /dev/null\n\nopen .";
+			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate .zip file.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\ncd \"$BUILT_PRODUCTS_DIR\"\n\nDIR=\"ClickToFlash\"\n\nrm -rf \"$DIR\" > /dev/null\nmkdir \"$DIR\"\n/Developer/Tools/CpMac -r \"Install ClickToFlash.app\" $DIR\n\nmkdir \"$DIR/Source\"\ncp -r \"$SOURCE_ROOT\"/* \"$DIR/Source\"\n\nfind \"$DIR/Source/ClickToFlash.xcodeproj\" -not -name \"project.pbxproj\" -depth 1 | xargs rm -rf\n\nzip -r ClickToFlash-$PRODUCT_VERSION.zip \"$DIR\"\nrm -rf \"$DIR\" > /dev/null\n\nopen .";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -254,9 +273,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55EB70480E04A8850016593D /* Plugin.m in Sources */,
 				558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */,
 				69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */,
+				79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */,
+				55EB70480E04A8850016593D /* Plugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +299,41 @@
 			targetProxy = 558406820E0F372400EA991B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		072189AB0F30D853008C8944 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				072189AC0F30D853008C8944 /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		072189B10F30D982008C8944 /* Installer.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				072189B20F30D982008C8944 /* English */,
+			);
+			name = Installer.xib;
+			sourceTree = "<group>";
+		};
+		072189BA0F30D9C3008C8944 /* ContextualMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				072189BB0F30D9C3008C8944 /* English */,
+			);
+			name = ContextualMenu.xib;
+			sourceTree = "<group>";
+		};
+		072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				072189BD0F30D9C3008C8944 /* English */,
+			);
+			name = WhitelistPanel.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		558405640E0F2DE900EA991B /* Debug */ = {
@@ -361,6 +416,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				PRODUCT_VERSION = 1.1;
 			};
 			name = Debug;
 		};
@@ -368,6 +424,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				PRODUCT_VERSION = 1.1;
 			};
 			name = Release;
 		};
