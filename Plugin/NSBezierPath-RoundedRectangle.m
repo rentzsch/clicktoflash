@@ -1,13 +1,12 @@
 //
 //  NSBezierPath-RoundedRectangle.m
-//	From http://www.cocoadev.com/index.pl?RoundedRectangles
+//	Based on http://www.cocoadev.com/index.pl?RoundedRectangles
+//	Switched to a function instead of a category class method for use in a plug-in.
 //
 
 #import "NSBezierPath-RoundedRectangle.h"
 
-@implementation NSBezierPath(RoundedRectangle)
-
-+ (NSBezierPath *) bezierPathWithRoundedRect: (NSRect) aRect cornerRadius: (double) cRadius
+NSBezierPath* bezierPathWithRoundedRectCornerRadius( NSRect aRect, double cRadius )
 {
 	double left = aRect.origin.x, bottom = aRect.origin.y, width = aRect.size.width, height = aRect.size.height;
 	
@@ -52,4 +51,3 @@
 	return bp; //it's already been autoreleased
 }
 
-@end

@@ -317,7 +317,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	
 	[ str drawAtPoint: loc withAttributes: attrs ];
 
-	NSBezierPath* path = [ NSBezierPath bezierPathWithRoundedRect: borderRect cornerRadius: 4 ];
+	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
 	[ badgeColor set ];
 	[ path setLineWidth: 3 ];
 	[ path stroke ];

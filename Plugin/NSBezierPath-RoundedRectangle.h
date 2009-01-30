@@ -1,16 +1,13 @@
 //
 //  NSBezierPath-RoundedRectangle.h
-//	From http://www.cocoadev.com/index.pl?RoundedRectangles
+//	Based on http://www.cocoadev.com/index.pl?RoundedRectangles
+//	Switched to a function instead of a category class method for use in a plug-in.
 //
 
 #import <Cocoa/Cocoa.h>
-
-@interface NSBezierPath(RoundedRectangle)
 
 /**
  Returns a closed bezier path describing a rectangle with curved corners
  The corner radius will be trimmed to not exceed half of the lesser rectangle dimension.
  */
-+ (NSBezierPath *) bezierPathWithRoundedRect: (NSRect) aRect cornerRadius: (double) radius;
-
-@end
+NSBezierPath* bezierPathWithRoundedRectCornerRadius( NSRect aRect, double radius );
