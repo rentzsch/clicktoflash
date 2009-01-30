@@ -34,6 +34,9 @@ THE SOFTWARE.
     DOMElement *_container;
     NSString *_host;
     CTFWhitelistWindowController *_whitelistWindowController;
+    NSTrackingArea *trackingArea;
+    BOOL mouseIsDown;
+    BOOL mouseInside;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
