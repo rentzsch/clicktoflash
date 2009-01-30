@@ -32,6 +32,7 @@
 		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
 		55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70570E04A8B80016593D /* WebKit.framework */; };
+		A35B59930F32ADAB003D20E8 /* ContainerImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A35B59920F32ADAB003D20E8 /* ContainerImage.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		55EB70560E04A8B80016593D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		55EB70570E04A8B80016593D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
+		A35B59920F32ADAB003D20E8 /* ContainerImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ContainerImage.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 			children = (
 				55EB70540E04A89C0016593D /* Plug-in */,
 				558405520E0F2C2200EA991B /* Installer */,
+				A35B598A0F32AD8C003D20E8 /* Resources */,
 				55EB70550E04A8A40016593D /* Frameworks */,
 				55EB70430E04A8640016593D /* Products */,
 			);
@@ -140,6 +143,14 @@
 				55EB70570E04A8B80016593D /* WebKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A35B598A0F32AD8C003D20E8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A35B59920F32ADAB003D20E8 /* ContainerImage.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				558405570E0F2C4900EA991B /* Installer.xib in Resources */,
+				A35B59930F32ADAB003D20E8 /* ContainerImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

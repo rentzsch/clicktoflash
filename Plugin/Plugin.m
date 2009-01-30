@@ -23,9 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-
-
 #import "Plugin.h"
+
+@interface NSBezierPath(MRGradientFill) 
+-(void)linearGradientFill:(NSRect)thisRect 
+			   startColor:(NSColor *)startColor 
+				 endColor:(NSColor *)endColor;
+@end
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
@@ -147,19 +151,45 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
     NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
     NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
-    //NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
-    
-    // Draw fill
-    //[gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:270.0];
-    [startingColor drawSwatchInRect:fillRect];
 
     // Draw stroke
-    [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
     [NSBezierPath setDefaultLineWidth:2.0];
-    [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
-    [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
+    [NSBezierPath setDefaultLineCapStyle:NSRoundLineCapStyle];
+	[NSBezierPath setDefaultLineJoinStyle:NSRoundLineJoinStyle];
+	
+	NSBezierPath *path = [NSBezierPath bezierPath];	
+	[path appendBezierPathWithRect:fillRect];
+	[path addClip];
+	
+	//Draw Gradient
+	[path linearGradientFill:fillRect 
+				startColor:[NSColor lightGrayColor]
+				  endColor:[NSColor darkGrayColor]];
+	
+	[[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
+	[path stroke];
 
-    //[gradient release];
+	// Draw an image on top to make it insanely obvious that this is clickable Flash.
+    NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];  
+    NSImage *containerImage = [[[NSImage alloc] initWithContentsOfFile:containerImageName] autorelease];
+	
+    NSSize viewSize  = fillRect.size;
+    NSSize imageSize = [containerImage size];    
+	
+    NSPoint viewCenter;
+    viewCenter.x = viewSize.width  * 0.50;
+    viewCenter.y = viewSize.height * 0.50;
+    
+    NSPoint imageOrigin = viewCenter;
+    imageOrigin.x -= imageSize.width  * 0.50;
+    imageOrigin.y -= imageSize.height * 0.50;
+    
+    NSRect destinationRect;
+    destinationRect.origin = imageOrigin;
+    destinationRect.size = imageSize;
+    
+    // Draw the image centered in the view
+    [containerImage drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
 }
 
 
@@ -224,5 +254,112 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	[_host autorelease];
 	_host = [newHost retain];
 }
+@end
 
+//### globals
+float	start_red,
+start_green,
+start_blue,
+start_alpha;
+float	end_red,
+end_green,
+end_blue,
+end_alpha;
+float	d_red,
+d_green,
+d_blue,
+d_alpha;
+
+@implementation NSBezierPath(MRGradientFill) 
+
+static void
+evaluate(void *info, const float *in, float *out)
+{
+	// red
+	*out++ = start_red + *in * d_red;
+	
+	// green
+	*out++ = start_green + *in * d_green;
+	
+	// blue
+	*out++ = start_blue + *in * d_blue;
+	
+	//alpha
+    *out++ = start_alpha + *in * d_alpha;
+}
+
+float absDiff(float a, float b) 
+{ 
+	return (a < b) ? b-a : a-b; 
+} 
+
+-(void)linearGradientFill:(NSRect)thisRect 
+			   startColor:(NSColor *)startColor 
+				 endColor:(NSColor *)endColor
+{
+	CGColorSpaceRef colorspace = nil;
+	CGShadingRef shading;
+	static CGPoint startPoint = { 0, 0 };
+	static CGPoint endPoint = { 0, 0 };
+	int k;
+	CGFunctionRef function;
+	CGFunctionRef (*getFunction)(CGColorSpaceRef);
+	CGShadingRef (*getShading)(CGColorSpaceRef, CGFunctionRef);
+	
+	// get my context
+	CGContextRef currentContext = 
+		(CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+	
+	
+	NSColor *s = [startColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+	NSColor *e = [endColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+	
+	// set up colors for gradient
+	start_red		= [s redComponent];
+	start_green		= [s greenComponent];
+	start_blue		= [s blueComponent];
+	start_alpha		= [s alphaComponent];
+	
+	end_red			= [e redComponent];
+	end_green		= [e greenComponent];
+	end_blue		= [e blueComponent];
+	end_alpha		= [e alphaComponent];
+	
+	d_red		= absDiff(end_red, start_red);
+	d_green		= absDiff(end_green, start_green);
+	d_blue		= absDiff(end_blue, start_blue);
+	d_alpha		= absDiff(end_alpha ,start_alpha);
+	
+	
+	// draw gradient
+	colorspace = CGColorSpaceCreateDeviceRGB();
+	
+    size_t components;
+    static const float domain[2] = { 0.0, 1.0 };
+    static const float range[10] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+    static const CGFunctionCallbacks callbacks = { 0, &evaluate, NULL };
+	
+    components = 1 + CGColorSpaceGetNumberOfComponents(colorspace);
+    function =  CGFunctionCreate((void *)components, 1, domain, components,
+								 range, &callbacks);
+	
+	// function = getFunction(colorspace);	
+	startPoint.x=0;
+	startPoint.y=thisRect.origin.y;
+	endPoint.x=0;
+	endPoint.y=NSMaxY(thisRect);
+	
+	
+	shading = CGShadingCreateAxial(colorspace, 
+								   startPoint, endPoint,
+								   function, 
+								   NO, NO);
+	
+	CGContextDrawShading(currentContext, shading);
+	
+	CGFunctionRelease(function);
+	CGShadingRelease(shading);
+	CGColorSpaceRelease(colorspace);
+	
+}
 @end
