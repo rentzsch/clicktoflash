@@ -276,8 +276,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	
 	// Set up for drawing.
 	
-	[ NSGraphicsContext saveGraphicsState ];
-	
 	NSRect bounds = [ self bounds ];
 	
 	// How large would this text be?
@@ -304,6 +302,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 		scaleFactor = maxH / h;
 	
 	// Apply the scale, and a transform so the result is centered in the view.
+	
+	[ NSGraphicsContext saveGraphicsState ];
 	
 	NSAffineTransform* xform = [ NSAffineTransform transform ];
 	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
