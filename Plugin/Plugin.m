@@ -163,8 +163,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	
 	//Draw Gradient
 	[path linearGradientFill:fillRect 
-				startColor:[NSColor lightGrayColor]
-				  endColor:[NSColor darkGrayColor]];
+				startColor:startingColor
+				  endColor:endingColor];
 	
 	[[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
 	[path stroke];
