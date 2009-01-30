@@ -200,7 +200,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     NSString *type = [element getAttribute:@"type"];
 
-    if ([type isEqualToString:sFlashOldMIMEType]) {
+    if ([type isEqualToString:sFlashOldMIMEType] || [type length] == 0) {
         [element setAttribute:@"type" value:sFlashNewMIMEType];
     }
 }
