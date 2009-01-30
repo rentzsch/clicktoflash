@@ -410,7 +410,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				PRODUCT_VERSION = 1.1;
+				PRODUCT_VERSION = 1.2;
 			};
 			name = Debug;
 		};
@@ -418,7 +418,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
-				PRODUCT_VERSION = 1.1;
+				PRODUCT_VERSION = 1.2;
 			};
 			name = Release;
 		};
