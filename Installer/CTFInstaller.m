@@ -57,7 +57,7 @@ THE SOFTWARE.
         NSString *title = NSLocalizedString(@"Install ClickToFlash", @"Install ClickToFlash");
         NSString *message = NSLocalizedString(@"ClickToFlash is not installed. Would you like to install it for this user?", @"ClickToFlash is not installed. Would you like to install it for this user?");
         
-        int result = NSRunAlertPanel(title, message, NSLocalizedString(@"Install", @"Install"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
+        NSInteger result = NSRunAlertPanel(title, message, NSLocalizedString(@"Install", @"Install"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
 
         if (result == NSAlertDefaultReturn) {
             [self installClickToFlash];
@@ -71,7 +71,7 @@ THE SOFTWARE.
             NSString *title = NSLocalizedString(@"Remove ClickToFlash", @"Remove ClickToFlash");
             NSString *message = NSLocalizedString(@"ClickToFlash is currently installed. Would you like to remove it?", @"ClickToFlash is currently installed. Would you like to remove it?");
             
-            int result = NSRunAlertPanel(title, message, NSLocalizedString(@"Remove", @"Remove"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
+            NSInteger result = NSRunAlertPanel(title, message, NSLocalizedString(@"Remove", @"Remove"), NSLocalizedString(@"Cancel", @"Cancel"), nil);    
 
             if (result == NSAlertDefaultReturn) {
                 [self removeClickToFlash];
@@ -80,7 +80,7 @@ THE SOFTWARE.
             NSString *title = NSLocalizedString(@"Update ClickToFlash", @"Update ClickToFlash");
             NSString *message = NSLocalizedString(@"An older version of ClickToFlash is currently installed. Would you like to update it?", @"An older version of ClickToFlash is currently installed. Would you like to update it?");
             
-            int result = NSRunAlertPanel(title, message, NSLocalizedString(@"Update", @"Update"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
+            NSInteger result = NSRunAlertPanel(title, message, NSLocalizedString(@"Update", @"Update"), NSLocalizedString(@"Cancel", @"Cancel"), nil);    
             
             if (result == NSAlertDefaultReturn) {
                 [self updateClickToFlash];
