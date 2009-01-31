@@ -154,11 +154,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     }
 }
 
-- (NSMenu *)menuForEvent:(NSEvent *)theEvent
-{
-    return [self menu];
-}
-
 - (BOOL) _isOptionPressed;
 {
     BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
