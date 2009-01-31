@@ -66,11 +66,11 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 {
     self = [super init];
     if (self) {
-        self.container = [arguments objectForKey:WebPlugInContainingElementKey];
+        [self setContainer:[arguments objectForKey:WebPlugInContainingElementKey]];
     
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
-            self.host = [base host];
+            [self setHost:[base host]];
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
                 _isLoadingFromWhitelist = YES;
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
@@ -106,8 +106,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) dealloc
 {
-    self.container = nil;
-    self.host = nil;
+    [self setContainer:nil];
+    [self setHost:nil];
     [_whitelistWindowController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
@@ -128,8 +128,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [self setNeedsDisplay:YES];
     
     // Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
-    trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
-                                                options:NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingEnabledDuringMouseDrag
+    trackingArea = [[MATrackingArea alloc] initWithRect:[self bounds]
+                                                options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
                                                   owner:self
                                                userInfo:nil];
     [self addTrackingArea:trackingArea];
@@ -175,7 +175,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (void) _askToAddCurrentSiteToWhitelist
 {
     NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), [self host]];
     
     NSAlert *alert = [[[NSAlert alloc] init] autorelease];
     [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
@@ -200,7 +200,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (BOOL) _isHostWhitelisted
 {
     NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey];
-    return hostWhitelist && [hostWhitelist containsObject:self.host];
+    return hostWhitelist && [hostWhitelist containsObject:[self host]];
 }
 
 - (NSMutableArray *)_hostWhitelist
@@ -215,7 +215,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (void) _addHostToWhitelist
 {
     NSMutableArray *hostWhitelist = [self _hostWhitelist];
-    [hostWhitelist addObject:self.host];
+    [hostWhitelist addObject:[self host]];
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
     [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
@@ -223,7 +223,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (void) _removeHostFromWhitelist
 {
     NSMutableArray *hostWhitelist = [self _hostWhitelist];
-    [hostWhitelist removeObject:self.host];
+    [hostWhitelist removeObject:[self host]];
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
 }
 
@@ -273,7 +273,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         return;
     
     NSString *title = NSLocalizedString(@"Remove from white list?", @"Remove from white list?");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), self.host];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), [self host]];
     
     NSAlert *alert = [[[NSAlert alloc] init] autorelease];
     [alert addButtonWithTitle:NSLocalizedString(@"Remove from white list", @"Remove from white list")];
@@ -454,32 +454,51 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) _convertTypesForContainer
 {
-    DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
+    DOMElement *newElement = (DOMElement *)[[self container] cloneNode:YES];
 
     DOMNodeList *nodeList = nil;
-    NSUInteger i;
+    unsigned int i;
 
     [self _convertTypesForElement:newElement];
 
     nodeList = [newElement getElementsByTagName:@"object"];
-    for (i = 0; i < nodeList.length; i++) {
+    for (i = 0; i < [nodeList length]; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
 
     nodeList = [newElement getElementsByTagName:@"embed"];
-    for (i = 0; i < nodeList.length; i++) {
+    for (i = 0; i < [nodeList length]; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
 
     // Just to be safe, since we are about to replace our containing element
     [[self retain] autorelease];
     
-    [self.container.parentNode replaceChild:newElement oldChild:self.container];
-    self.container = nil;
+    [[[self container] parentNode] replaceChild:newElement oldChild:[self container]];
+    [self setContainer:nil];
 }
 
 
-@synthesize container = _container;
-@synthesize host = _host;
+- (DOMElement *) container
+{
+	return _container;
+}
+
+- (void) setContainer:(DOMElement *)newContainer
+{
+	[_container autorelease];
+	_container = [newContainer retain];
+}
+
+- (NSString *) host
+{
+	return _host;
+}
+
+- (void) setHost:(NSString *)newHost
+{
+	[_host autorelease];
+	_host = [newHost retain];
+}
 
 @end
