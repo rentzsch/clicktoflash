@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 
 #import "Plugin.h"
+#import "NSBezierPath-RoundedRectangle.h"
 #import "CTFWhitelistWindowController.h"
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
@@ -300,6 +301,78 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 #pragma mark -
 #pragma mark Drawing
 
+- (void) _drawBadge
+{
+	// What and how are we going to draw?
+	
+	const float kFrameXInset = 10;
+	const float kFrameYInset =  4;
+	const float kMinMargin   = 11.5;
+	const float kMinHeight   =  6;
+	
+	NSString* str = NSLocalizedString( @"Flash", @"Flash" );
+	
+	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 0.0 alpha: 0.25 ];
+	
+	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
+						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
+						   [ NSNumber numberWithInt: -1 ], NSKernAttributeName,
+						   badgeColor, NSForegroundColorAttributeName,
+						   nil ];
+	
+	// Set up for drawing.
+	
+	NSRect bounds = [ self bounds ];
+	
+	// How large would this text be?
+	
+	NSSize strSize = [ str sizeWithAttributes: attrs ];
+	
+	float w = strSize.width + kFrameXInset * 2;
+	float h = strSize.height + kFrameYInset * 2;
+	
+	// Compute a scale factor based on the view's size.
+	
+	float maxW = NSWidth( bounds ) - kMinMargin;
+	float maxH = NSHeight( bounds ) - kMinMargin;
+	
+	if( maxW <= kMinHeight * w / h || maxH <= kMinHeight )
+		return;		// nothing to draw
+
+	float scaleFactor = 1.0;
+	
+	if( maxW < w )
+		scaleFactor = maxW / w;
+
+	if( maxH < h && maxH / h < scaleFactor )
+		scaleFactor = maxH / h;
+	
+	// Apply the scale, and a transform so the result is centered in the view.
+	
+	[ NSGraphicsContext saveGraphicsState ];
+	
+	NSAffineTransform* xform = [ NSAffineTransform transform ];
+	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
+	[ xform scaleBy: scaleFactor ];
+	[ xform concat ];
+	
+	// Draw everything at full size, centered on the origin.
+	
+	NSPoint loc = { -strSize.width / 2, -strSize.height / 2 };
+	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
+	
+	[ str drawAtPoint: loc withAttributes: attrs ];
+
+	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
+	[ badgeColor set ];
+	[ path setLineWidth: 3 ];
+	[ path stroke ];
+	
+	// Now restore the graphics state:
+	
+	[ NSGraphicsContext restoreGraphicsState ];
+}
+
 - (void) _drawBackground
 {
     NSRect selfBounds  = [self bounds];
@@ -322,7 +395,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
     // Draw an image on top to make it insanely obvious that this is clickable Flash.
-    NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];  
+/*
+	NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];  
     NSImage *containerImage = [[NSImage alloc] initWithContentsOfFile:containerImageName];
 
     NSSize viewSize  = fillRect.size;
@@ -342,9 +416,13 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     
     // Draw the image centered in the view
     [containerImage drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+    [containerImage release];
+*/
   
     [gradient release];
-    [containerImage release];
+
+    // Draw label
+	[ self _drawBadge ];
 }
 
 

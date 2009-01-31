@@ -34,6 +34,7 @@
 		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
 		55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70570E04A8B80016593D /* WebKit.framework */; };
+		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		D0FB700F0F2FE35000DCB854 /* ContainerImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D0FB700E0F2FE35000DCB854 /* ContainerImage.png */; };
 /* End PBXBuildFile section */
@@ -77,6 +78,8 @@
 		55EB70560E04A8B80016593D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		55EB70570E04A8B80016593D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
+		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
+		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
 		D0FB700E0F2FE35000DCB854 /* ContainerImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ContainerImage.png; path = Images/ContainerImage.png; sourceTree = "<group>"; };
@@ -144,6 +147,8 @@
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
 				55EB703D0E04A84F0016593D /* Plugin.m */,
+				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
+				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
 			);
 			name = Plugin;
@@ -269,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */,
+				69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */,
 				79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */,
 				55EB70480E04A8850016593D /* Plugin.m in Sources */,
 			);
