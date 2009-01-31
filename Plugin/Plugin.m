@@ -119,7 +119,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
                                                 options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
                                                   owner:self
                                                userInfo:nil];
-    [self addTrackingArea:trackingArea];
+    [MATrackingArea addTrackingArea:trackingArea toView:self];
 }
 
 - (void)mouseEntered:(NSEvent *)event
@@ -140,7 +140,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [self display];
     
     // We're done tracking.
-    [self removeTrackingArea:trackingArea];
+    [MATrackingArea removeTrackingArea:trackingArea fromView:self];
     [trackingArea release];
     trackingArea = nil;
     
@@ -309,7 +309,12 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
     NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
     NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
-    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
+    // We can live without the gradient if not supported.
+    id gradient = [NSClassFromString(@"NSGradient") alloc];
+    if (gradient != nil)
+    {
+        [gradient initWithStartingColor:startingColor endingColor:endingColor];
+    }
     
     // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
     // When the mouse is down and inside the view, we want a concave look, so we draw the gradient upward (90 degrees).
