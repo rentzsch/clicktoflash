@@ -27,6 +27,7 @@ THE SOFTWARE.
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
+#import "../MATrackingArea/MATrackingArea.h"
 
 @class CTFWhitelistWindowController;
 
@@ -34,7 +35,7 @@ THE SOFTWARE.
     DOMElement *_container;
     NSString *_host;
     CTFWhitelistWindowController *_whitelistWindowController;
-    NSTrackingArea *trackingArea;
+    MATrackingArea *trackingArea;
     BOOL mouseIsDown;
     BOOL mouseInside;
 }
@@ -43,8 +44,10 @@ THE SOFTWARE.
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 
-@property (nonatomic, retain) DOMElement *container;
-@property (nonatomic, retain) NSString *host;
+- (DOMElement *) container;
+- (void) setContainer:(DOMElement *)newContainer;
+- (NSString *) host;
+- (void) setHost:(NSString *)newHost;
 
 - (IBAction)addToWhitelist:(id)sender;
 - (IBAction)removeFromWhitelist:(id)sender;
