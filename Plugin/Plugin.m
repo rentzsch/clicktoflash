@@ -23,23 +23,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-#import "Plugin.h"
 
-@interface NSBezierPath(MRGradientFill) 
--(void)linearGradientFill:(NSRect)thisRect 
-			   startColor:(NSColor *)startColor 
-				 endColor:(NSColor *)endColor;
-@end
+
+#import "Plugin.h"
+#import "CTFWhitelistWindowController.h"
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 @interface CTFClickToFlashPlugin (Internal)
-- (NSColor *) _backgroundColorOfElement:(DOMElement *)element;
 - (void) _convertTypesForContainer;
 - (void) _drawBackground;
+- (BOOL) _isOptionPressed;
 - (BOOL) _isHostWhitelisted;
+- (NSMutableArray *)_hostWhitelist;
+- (void) _addHostToWhitelist;
+- (void) _removeHostFromWhitelist;
+- (void) _askToAddCurrentSiteToWhitelist;
 @end
 
 
@@ -67,10 +68,13 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
             [self setHost:[base host]];
-            if ([self _isHostWhitelisted]) {
+            if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
         }
+
+        if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
+            NSLog(@"Could not load conextual menu plugin");
 
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
         if (attributes != nil) {
@@ -93,6 +97,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     [self setContainer:nil];
     [self setHost:nil];
+    [_whitelistWindowController release];
     [super dealloc];
 }
 
@@ -103,33 +108,86 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 }
 
 
-- (BOOL) acceptsFirstMouse
-{
-    return YES;
-}
-
-
 - (void) mouseDown:(NSEvent *)event
 {
-    if ([self host] && (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) == NSAlternateKeyMask) && ![self _isHostWhitelisted]) {
-        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), [self host]];
-        int val = NSRunAlertPanel(title,
-                                  NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?"),
-                                  @"Always Load", @"Don't Load", nil);
-        if (!val) {
-            return;
-        }
-        
-        NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
-        if (hostWhitelist) {
-            [hostWhitelist addObject:[self host]];
-        } else {
-            hostWhitelist = [NSMutableArray arrayWithObject:[self host]];
-        }
-        [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
-    }
+    mouseIsDown = YES;
+    mouseInside = YES;
+    [self setNeedsDisplay:YES];
     
-    [self _convertTypesForContainer];
+    // Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
+    trackingArea = [[MATrackingArea alloc] initWithRect:[self bounds]
+                                                options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
+                                                  owner:self
+                                               userInfo:nil];
+    [self addTrackingArea:trackingArea];
+}
+
+- (void)mouseEntered:(NSEvent *)event
+{
+    mouseInside = YES;
+    [self setNeedsDisplay:YES];
+}
+- (void)mouseExited:(NSEvent *)event
+{
+    mouseInside = NO;
+    [self setNeedsDisplay:YES];
+}
+
+- (void) mouseUp:(NSEvent *)event
+{
+    mouseIsDown = NO;
+    // Display immediately because we don't want to end up drawing after we've swapped in the Flash movie.
+    [self display];
+    
+    // We're done tracking.
+    [self removeTrackingArea:trackingArea];
+    [trackingArea release];
+    trackingArea = nil;
+    
+    if (mouseInside) {
+        if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
+            [self _askToAddCurrentSiteToWhitelist];
+        } else {
+            [self _convertTypesForContainer];
+        }
+    }
+}
+
+- (NSMenu *)menuForEvent:(NSEvent *)theEvent
+{
+    return [self menu];
+}
+
+- (BOOL) _isOptionPressed;
+{
+    BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
+    return isOptionPressed;
+}
+
+- (void) _askToAddCurrentSiteToWhitelist
+{
+    NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), [self host]];
+    
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
+    [alert setMessageText:title];
+    [alert setInformativeText:message];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert beginSheetModalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(addToWhitelistAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+}
+
+- (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+        [self _addHostToWhitelist];
+        [self _convertTypesForContainer];
+    }
 }
 
 - (BOOL) _isHostWhitelisted
@@ -138,6 +196,106 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     return hostWhitelist && [hostWhitelist containsObject:[self host]];
 }
 
+- (NSMutableArray *)_hostWhitelist
+{
+    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
+    if (hostWhitelist == nil) {
+        hostWhitelist = [NSMutableArray array];
+    }
+    return hostWhitelist;
+}
+
+- (void) _addHostToWhitelist
+{
+    NSMutableArray *hostWhitelist = [self _hostWhitelist];
+    [hostWhitelist addObject:[self host]];
+    [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+}
+
+- (void) _removeHostFromWhitelist
+{
+    NSMutableArray *hostWhitelist = [self _hostWhitelist];
+    [hostWhitelist removeObject:[self host]];
+    [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+}
+
+#pragma mark -
+#pragma mark Contextual menu
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    BOOL enabled = YES;
+    SEL action = [menuItem action];
+    if (action == @selector(addToWhitelist:))
+    {
+        if ([self _isHostWhitelisted])
+            enabled = NO;
+    }
+    else if (action == @selector(removeFromWhitelist:))
+    {
+        if (![self _isHostWhitelisted])
+            enabled = NO;
+    }
+    
+    return enabled;
+}
+
+- (IBAction)addToWhitelist:(id)sender;
+{
+    if ([self _isHostWhitelisted])
+        return;
+    
+    if ([self _isOptionPressed])
+    {
+        [self _addHostToWhitelist];
+        [self _convertTypesForContainer];
+        return;
+    }
+    
+    [self _askToAddCurrentSiteToWhitelist];
+}
+
+- (IBAction)removeFromWhitelist:(id)sender;
+{
+    if (![self _isHostWhitelisted])
+        return;
+    
+    NSString *title = NSLocalizedString(@"Remove from white list?", @"Remove from white list?");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), [self host]];
+    
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    [alert addButtonWithTitle:NSLocalizedString(@"Remove from white list", @"Remove from white list")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
+    [alert setMessageText:title];
+    [alert setInformativeText:message];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert beginSheetModalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(removeFromWhitelistAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+}
+
+- (void)removeFromWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+        [self _removeHostFromWhitelist];
+    }
+}
+
+- (IBAction)editWhitelist:(id)sender;
+{
+    if (_whitelistWindowController == nil)
+    {
+        _whitelistWindowController = [[CTFWhitelistWindowController alloc] init];
+    }
+    [_whitelistWindowController showWindow:self];
+}
+
+- (IBAction)loadFlash:(id)sender;
+{
+    [self _convertTypesForContainer];
+}
 
 #pragma mark -
 #pragma mark Drawing
@@ -151,31 +309,25 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
     NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
     NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
+    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
+    
+    // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
+    // When the mouse is down and inside the view, we want a concave look, so we draw the gradient upward (90 degrees).
+    [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:90.0 + ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
 
     // Draw stroke
+    [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
     [NSBezierPath setDefaultLineWidth:2.0];
-    [NSBezierPath setDefaultLineCapStyle:NSRoundLineCapStyle];
-	[NSBezierPath setDefaultLineJoinStyle:NSRoundLineJoinStyle];
-	
-	NSBezierPath *path = [NSBezierPath bezierPath];	
-	[path appendBezierPathWithRect:fillRect];
-	[path addClip];
-	
-	//Draw Gradient
-	[path linearGradientFill:fillRect 
-				startColor:[NSColor lightGrayColor]
-				  endColor:[NSColor darkGrayColor]];
-	
-	[[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
-	[path stroke];
+    [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
+    [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
-	// Draw an image on top to make it insanely obvious that this is clickable Flash.
+    // Draw an image on top to make it insanely obvious that this is clickable Flash.
     NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];  
-    NSImage *containerImage = [[[NSImage alloc] initWithContentsOfFile:containerImageName] autorelease];
-	
+    NSImage *containerImage = [[NSImage alloc] initWithContentsOfFile:containerImageName];
+
     NSSize viewSize  = fillRect.size;
-    NSSize imageSize = [containerImage size];    
-	
+    NSSize imageSize = [containerImage size];
+
     NSPoint viewCenter;
     viewCenter.x = viewSize.width  * 0.50;
     viewCenter.y = viewSize.height * 0.50;
@@ -190,6 +342,9 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     
     // Draw the image centered in the view
     [containerImage drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+  
+    [gradient release];
+    [containerImage release];
 }
 
 
@@ -210,8 +365,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     DOMElement *newElement = (DOMElement *)[[self container] cloneNode:YES];
 
-    DOMNodeList *nodeList;
-    unsigned i;
+    DOMNodeList *nodeList = nil;
+    unsigned int i;
 
     [self _convertTypesForElement:newElement];
 
@@ -254,112 +409,5 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	[_host autorelease];
 	_host = [newHost retain];
 }
-@end
 
-//### globals
-float	start_red,
-start_green,
-start_blue,
-start_alpha;
-float	end_red,
-end_green,
-end_blue,
-end_alpha;
-float	d_red,
-d_green,
-d_blue,
-d_alpha;
-
-@implementation NSBezierPath(MRGradientFill) 
-
-static void
-evaluate(void *info, const float *in, float *out)
-{
-	// red
-	*out++ = start_red + *in * d_red;
-	
-	// green
-	*out++ = start_green + *in * d_green;
-	
-	// blue
-	*out++ = start_blue + *in * d_blue;
-	
-	//alpha
-    *out++ = start_alpha + *in * d_alpha;
-}
-
-float absDiff(float a, float b) 
-{ 
-	return (a < b) ? b-a : a-b; 
-} 
-
--(void)linearGradientFill:(NSRect)thisRect 
-			   startColor:(NSColor *)startColor 
-				 endColor:(NSColor *)endColor
-{
-	CGColorSpaceRef colorspace = nil;
-	CGShadingRef shading;
-	static CGPoint startPoint = { 0, 0 };
-	static CGPoint endPoint = { 0, 0 };
-	int k;
-	CGFunctionRef function;
-	CGFunctionRef (*getFunction)(CGColorSpaceRef);
-	CGShadingRef (*getShading)(CGColorSpaceRef, CGFunctionRef);
-	
-	// get my context
-	CGContextRef currentContext = 
-		(CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
-	
-	
-	NSColor *s = [startColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-	NSColor *e = [endColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-	
-	// set up colors for gradient
-	start_red		= [s redComponent];
-	start_green		= [s greenComponent];
-	start_blue		= [s blueComponent];
-	start_alpha		= [s alphaComponent];
-	
-	end_red			= [e redComponent];
-	end_green		= [e greenComponent];
-	end_blue		= [e blueComponent];
-	end_alpha		= [e alphaComponent];
-	
-	d_red		= absDiff(end_red, start_red);
-	d_green		= absDiff(end_green, start_green);
-	d_blue		= absDiff(end_blue, start_blue);
-	d_alpha		= absDiff(end_alpha ,start_alpha);
-	
-	
-	// draw gradient
-	colorspace = CGColorSpaceCreateDeviceRGB();
-	
-    size_t components;
-    static const float domain[2] = { 0.0, 1.0 };
-    static const float range[10] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
-    static const CGFunctionCallbacks callbacks = { 0, &evaluate, NULL };
-	
-    components = 1 + CGColorSpaceGetNumberOfComponents(colorspace);
-    function =  CGFunctionCreate((void *)components, 1, domain, components,
-								 range, &callbacks);
-	
-	// function = getFunction(colorspace);	
-	startPoint.x=0;
-	startPoint.y=thisRect.origin.y;
-	endPoint.x=0;
-	endPoint.y=NSMaxY(thisRect);
-	
-	
-	shading = CGShadingCreateAxial(colorspace, 
-								   startPoint, endPoint,
-								   function, 
-								   NO, NO);
-	
-	CGContextDrawShading(currentContext, shading);
-	
-	CGFunctionRelease(function);
-	CGShadingRelease(shading);
-	CGColorSpaceRelease(colorspace);
-	
-}
 @end

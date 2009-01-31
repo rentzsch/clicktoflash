@@ -24,6 +24,14 @@ THE SOFTWARE.
 
 */
 
+/*
+ - INSTALL missing ~/Library/Internet Plug-Ins
+ - INSTALL file where "Internet Plug-Ins" folder should be
+ - INSTALL no ClickToFlash
+ - UPDATE ClickToFlash 1.0 installed
+ - UPDATE ClickToFlash 1.0+rentzsch
+ - REMOVE ClickToFlash 1.1
+*/
 
 #import "CTFInstaller.h"
 
@@ -34,6 +42,7 @@ THE SOFTWARE.
 - (NSString *) pathToClickToFlash;
 - (id) installClickToFlash;
 - (id) removeClickToFlash;
+- (id) updateClickToFlash;
 
 @end
  
@@ -45,19 +54,41 @@ THE SOFTWARE.
     NSString *pathToClickToFlash = [self pathToClickToFlash];
 
     if (!pathToClickToFlash) {
-        /*NSInteger*/ int result = NSRunAlertPanel(@"Install ClickToFlash", @"ClickToFlash is not installed.  Would you like to install it for this user?", @"Install", @"Cancel", nil);
+        NSString *title = NSLocalizedString(@"Install ClickToFlash", @"Install ClickToFlash");
+        NSString *message = NSLocalizedString(@"ClickToFlash is not installed. Would you like to install it for this user?", @"ClickToFlash is not installed. Would you like to install it for this user?");
+        
+        int result = NSRunAlertPanel(title, message, NSLocalizedString(@"Install", @"Install"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
 
         if (result == NSAlertDefaultReturn) {
             [self installClickToFlash];
         }
 
     } else {
-        /*NSInteger*/ int result = NSRunAlertPanel(@"Remove ClickToFlash", @"ClickToFlash is currently installed.  Would you like to remove it?", @"Remove", @"Cancel", nil);    
+        NSString *thisVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        NSString *installedVersion = [[[NSBundle bundleWithPath:pathToClickToFlash] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        
+        if([installedVersion isEqualToString:thisVersion]) {
+            NSString *title = NSLocalizedString(@"Remove ClickToFlash", @"Remove ClickToFlash");
+            NSString *message = NSLocalizedString(@"ClickToFlash is currently installed. Would you like to remove it?", @"ClickToFlash is currently installed. Would you like to remove it?");
+            
+            int result = NSRunAlertPanel(title, message, NSLocalizedString(@"Remove", @"Remove"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
 
-        if (result == NSAlertDefaultReturn) {
-            [self removeClickToFlash];
+            if (result == NSAlertDefaultReturn) {
+                [self removeClickToFlash];
+            }
+        } else {
+            NSString *title = NSLocalizedString(@"Update ClickToFlash", @"Update ClickToFlash");
+            NSString *message = NSLocalizedString(@"An older version of ClickToFlash is currently installed. Would you like to update it?", @"An older version of ClickToFlash is currently installed. Would you like to update it?");
+            
+            int result = NSRunAlertPanel(title, message, NSLocalizedString(@"Update", @"Update"), NSLocalizedString(@"Cancel", @"Cancel"), nil);
+            
+            if (result == NSAlertDefaultReturn) {
+                [self updateClickToFlash];
+            }
         }
     }
+    
+    [self terminate:nil];
 }
 
 
@@ -65,8 +96,9 @@ THE SOFTWARE.
 {
     NSString *path = [kInternetPlugins @"/ClickToFlash.plugin" stringByStandardizingPath];
     NSBundle *bundle = [NSBundle bundleWithPath:path];
-
-    if ([[bundle bundleIdentifier] isEqualToString:@"com.google.code.p.clicktoflash"]) {
+    NSString *bundleID = [bundle bundleIdentifier];
+    
+    if ([bundleID isEqualToString:@"com.google.code.p.clicktoflash"] || [bundleID isEqualToString:@"com.github.rentzsch.clicktoflash"]) {
         return path;
     }
 
@@ -82,24 +114,25 @@ THE SOFTWARE.
     
     BOOL isDirectory = NO;
     BOOL doesPluginsExist = [[NSFileManager defaultManager] fileExistsAtPath:toPath isDirectory:&isDirectory];
-
-    if (doesPluginsExist && !isDirectory) {
-        [[NSFileManager defaultManager] removeFileAtPath:toPath handler:nil];
-    }
     
     if (!doesPluginsExist) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:toPath attributes:nil];
+    } else if (doesPluginsExist && !isDirectory) {
+        [[NSFileManager defaultManager] removeFileAtPath:toPath handler:nil];
         [[NSFileManager defaultManager] createDirectoryAtPath:toPath attributes:nil];
     }
 
     toPath = [toPath stringByAppendingPathComponent:@"ClickToFlash.plugin"];
-
+    
     if ([[NSFileManager defaultManager] copyPath:fromPath toPath:toPath handler:nil]) {
-        NSRunAlertPanel(@"Install ClickToFlash", @"ClickToFlash has been installed.  Quit and relaunch Safari to activate ClickToFlash.", @"OK", nil, nil);    
+        NSString *message = NSLocalizedString(@"Quit and relaunch Safari to activate ClickToFlash.", nil);
+        NSRunAlertPanel(NSLocalizedString(@"ClickToFlash Installed", nil),
+                        message, nil, nil, nil);    
     } else {
-        NSRunAlertPanel(@"Install ClickToFlash", @"ClickToFlash could not be installed.", @"OK", nil, nil);    
+        NSString *message = NSLocalizedString(@"ClickToFlash could not be installed.", nil);
+        NSRunAlertPanel(NSLocalizedString(@"Installed Failed", nil),
+                        message, nil, nil, nil);
     }
-
-    [self terminate:self];
 }
 
 
@@ -108,9 +141,27 @@ THE SOFTWARE.
     NSString *path = [self pathToClickToFlash];
 
     if ([[NSFileManager defaultManager] removeFileAtPath:path handler:nil]) {
-        NSRunAlertPanel(@"Remove ClickToFlash", @"ClickToFlash has been removed", @"OK", nil, nil);    
-        [self terminate:self];
+        NSString *message = NSLocalizedString(@"ClickToFlash has been removed.", nil);
+        NSRunAlertPanel(NSLocalizedString(@"ClickToFlash Removed", nil), message, nil, nil, nil);
     }
+}
+
+
+- (id) updateClickToFlash
+{
+    NSString *installedPluginPath = [self pathToClickToFlash];
+    
+    BOOL success = [[NSFileManager defaultManager] removeFileAtPath:installedPluginPath handler:nil];
+    
+    if (success) {
+        NSString *fromPath = [[NSBundle mainBundle] pathForResource:@"ClickToFlash" ofType:@"plugin"];
+        success = [[NSFileManager defaultManager] copyPath:fromPath toPath:installedPluginPath handler:nil];
+    }
+    
+    NSString *message = success
+        ? NSLocalizedString(@"ClickToFlash has been updated. Please quit and relaunch Safari.", nil)
+        : NSLocalizedString(@"ClickToFlash could not be updated.", nil);
+    NSRunAlertPanel(NSLocalizedString(@"Update ClickToFlash", nil), message, nil, nil, nil);
 }
 
 
