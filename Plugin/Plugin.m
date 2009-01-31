@@ -2,7 +2,7 @@
 
 The MIT License
 
-Copyright (c) 2008 Click to Flash Developers
+Copyright (c) 2008-2009 Click to Flash Developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -41,6 +41,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 - (NSMutableArray *)_hostWhitelist;
 - (void) _addHostToWhitelist;
 - (void) _removeHostFromWhitelist;
+- (void) _askToAddCurrentSiteToWhitelist;
 @end
 
 
@@ -110,7 +111,47 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 
 - (void) mouseDown:(NSEvent *)event
 {
-    [self _convertTypesForContainer];
+    mouseIsDown = YES;
+    mouseInside = YES;
+    [self setNeedsDisplay:YES];
+    
+    // Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
+    trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
+                                                options:NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingEnabledDuringMouseDrag
+                                                  owner:self
+                                               userInfo:nil];
+    [self addTrackingArea:trackingArea];
+}
+
+- (void)mouseEntered:(NSEvent *)event
+{
+    mouseInside = YES;
+    [self setNeedsDisplay:YES];
+}
+- (void)mouseExited:(NSEvent *)event
+{
+    mouseInside = NO;
+    [self setNeedsDisplay:YES];
+}
+
+- (void) mouseUp:(NSEvent *)event
+{
+    mouseIsDown = NO;
+    // Display immediately because we don't want to end up drawing after we've swapped in the Flash movie.
+    [self display];
+    
+    // We're done tracking.
+    [self removeTrackingArea:trackingArea];
+    [trackingArea release];
+    trackingArea = nil;
+    
+    if (mouseInside) {
+        if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
+            [self _askToAddCurrentSiteToWhitelist];
+        } else {
+            [self _convertTypesForContainer];
+        }
+    }
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)theEvent
@@ -122,6 +163,32 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
     return isOptionPressed;
+}
+
+- (void) _askToAddCurrentSiteToWhitelist
+{
+    NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
+    
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
+    [alert setMessageText:title];
+    [alert setInformativeText:message];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert beginSheetModalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(addToWhitelistAlertDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+}
+
+- (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+        [self _addHostToWhitelist];
+        [self _convertTypesForContainer];
+    }
 }
 
 - (BOOL) _isHostWhitelisted
@@ -186,28 +253,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
         return;
     }
     
-    NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
-
-    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-    [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
-    [alert setMessageText:title];
-    [alert setInformativeText:message];
-    [alert setAlertStyle:NSInformationalAlertStyle];
-    [alert beginSheetModalForWindow:[self window]
-                      modalDelegate:self
-                     didEndSelector:@selector(addToWhitelistAlertDidEnd:returnCode:contextInfo:)
-                        contextInfo:nil];
-}
-
-- (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
-{
-    if (returnCode == NSAlertFirstButtonReturn)
-    {
-        [self _addHostToWhitelist];
-        [self _convertTypesForContainer];
-    }
+    [self _askToAddCurrentSiteToWhitelist];
 }
 
 - (IBAction)removeFromWhitelist:(id)sender;
@@ -338,8 +384,9 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
     
-    // Draw fill
-    [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:270.0];
+    // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
+    // When the mouse is down and inside the view, we want a concave look, so we draw the gradient upward (90 degrees).
+    [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:90.0 + ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
 
     // Draw stroke
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
