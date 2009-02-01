@@ -296,18 +296,23 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 #pragma mark -
 #pragma mark Drawing
 
-- (void) _drawBadge
+- (NSString*) badgeLabelText
+{
+	return NSLocalizedString( @"Flash", @"Flash" );
+}
+
+- (void) _drawBadgeWithPressed: (BOOL) pressed
 {
 	// What and how are we going to draw?
 	
 	const float kFrameXInset = 10;
 	const float kFrameYInset =  4;
-	const float kMinMargin   = 11.5;
+	const float kMinMargin   = 11;
 	const float kMinHeight   =  6;
 	
-	NSString* str = NSLocalizedString( @"Flash", @"Flash" );
+	NSString* str = [ self badgeLabelText ];
 	
-	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 0.0 alpha: 0.25 ];
+	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 0.0 alpha: pressed ? 0.40 : 0.25 ];
 	
 	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
 						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
@@ -323,16 +328,36 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	
 	NSSize strSize = [ str sizeWithAttributes: attrs ];
 	
-	float w = strSize.width + kFrameXInset * 2;
+	float w = strSize.width  + kFrameXInset * 2;
 	float h = strSize.height + kFrameYInset * 2;
 	
 	// Compute a scale factor based on the view's size.
 	
 	float maxW = NSWidth( bounds ) - kMinMargin;
 	float maxH = NSHeight( bounds ) - kMinMargin;
+	float minW = kMinHeight * w / h;
 	
-	if( maxW <= kMinHeight * w / h || maxH <= kMinHeight )
-		return;		// nothing to draw
+	BOOL rotate = NO;
+	if( maxW <= minW )	// too narrow in width, so rotate it
+		rotate = YES;
+	
+	if( rotate ) {		// swap the dimensions to scale into
+		float temp = maxW;
+		maxW = maxH;
+		maxH = temp;
+	}
+	
+	if( maxH <= kMinHeight ) {
+		// Too short in height for full margin.
+		
+		// Draw at the smallest size, with less margin,
+		// unless even that would get clipped off.
+		
+		if( maxH + kMinMargin < kMinHeight )
+			return;
+
+		maxH = kMinHeight;
+	}
 
 	float scaleFactor = 1.0;
 	
@@ -349,6 +374,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	NSAffineTransform* xform = [ NSAffineTransform transform ];
 	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
 	[ xform scaleBy: scaleFactor ];
+	if( rotate )
+		[ xform rotateByDegrees: 90 ];
 	[ xform concat ];
 	
 	// Draw everything at full size, centered on the origin.
@@ -388,36 +415,11 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [NSBezierPath setDefaultLineWidth:2.0];
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
-
-    // Draw an image on top to make it insanely obvious that this is clickable Flash.
-/*
-	NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];  
-    NSImage *containerImage = [[NSImage alloc] initWithContentsOfFile:containerImageName];
-
-    NSSize viewSize  = fillRect.size;
-    NSSize imageSize = containerImage.size;    
-
-    NSPoint viewCenter;
-    viewCenter.x = viewSize.width  * 0.50;
-    viewCenter.y = viewSize.height * 0.50;
-    
-    NSPoint imageOrigin = viewCenter;
-    imageOrigin.x -= imageSize.width  * 0.50;
-    imageOrigin.y -= imageSize.height * 0.50;
-    
-    NSRect destinationRect;
-    destinationRect.origin = imageOrigin;
-    destinationRect.size = imageSize;
-    
-    // Draw the image centered in the view
-    [containerImage drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-    [containerImage release];
-*/
   
     [gradient release];
 
     // Draw label
-	[ self _drawBadge ];
+	[ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
 }
 
 
