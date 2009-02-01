@@ -333,7 +333,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 	
 	NSSize strSize = [ str sizeWithAttributes: attrs ];
 	
-	float w = strSize.width  + kFrameXInset * 2;
+	float w = strSize.width + kFrameXInset * 2;
 	float h = strSize.height + kFrameYInset * 2;
 	
 	// Compute a scale factor based on the view's size.

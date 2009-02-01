@@ -81,7 +81,6 @@
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
-		D0FB700E0F2FE35000DCB854 /* ContainerImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ContainerImage.png; path = Images/ContainerImage.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
-				D0FB700E0F2FE35000DCB854 /* ContainerImage.png */,
 				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
 				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
