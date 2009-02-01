@@ -11,7 +11,7 @@ ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash 
 Try control-clicking (or right-clicking) on a unloaded Flash box to access ClickToFlash's contextual menu which allow you to do advanced things like edit its whitelist.
 
 ##Version History
-* **1.2+ Tiger** [download tiger version](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip)
+* **1.2+tiger** [download tiger version](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip)
 	* [NEW] Added copy address to clipboard ([Peter Hosey](http://github.com/boredzo/clicktoflash/commit/19cc5b9b25f1e9ad2e62e61d795a1b0e5368822b))
 
 * **1.2** [download leopard version](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip)
