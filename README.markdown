@@ -1,5 +1,7 @@
 #Mac OS X 10.4 (Tiger) version of ClickToFlash
 
+Currently only for PowerPC Tiger machines (let's face it, they need the processor sucking flash blocked the most).
+
 See the [semi-official leopard only branch](http://github/rentzsch/clicktoflash).
 
 [Download Tiger PPC ClickToFlash 1.2 here](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip).
