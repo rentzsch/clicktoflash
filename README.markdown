@@ -2,7 +2,7 @@
 
 See the [semi-official leopard only branch](http://github/rentzsch/clicktoflash).
 
-[Download Tiger ClickToFlash 1.2 here](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip).
+[Download Tiger PPC ClickToFlash 1.2 here](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip).
 
 [Download Leopard ClickToFlash 1.2 here](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip).
 
