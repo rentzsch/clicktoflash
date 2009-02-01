@@ -387,7 +387,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    MATrackingArea *copy = [[[self class] allocWithZone:zone] 
+    MATrackingArea *copy = (MATrackingArea *)[[[self class] allocWithZone:zone] 
                             initWithRect:[self rect] 
                                  options:[self options] 
                                    owner:[self owner] 
@@ -406,7 +406,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
     NSDictionary *userInfo = [coder decodeObjectForKey:@"_userInfo"];
     id owner = [coder decodeObjectForKey:@"_owner"];
     
-    self = [[MATrackingArea alloc] initWithRect:rect 
+    self = (MATrackingArea *)[[MATrackingArea alloc] initWithRect:rect 
                                         options:options 
                                           owner:owner 
                                        userInfo:userInfo];

@@ -27,9 +27,8 @@ THE SOFTWARE.
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
-#import "../MATrackingArea/MATrackingArea.h"
 
-@class CTFWhitelistWindowController;
+@class CTFWhitelistWindowController, MATrackingArea;
 
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;

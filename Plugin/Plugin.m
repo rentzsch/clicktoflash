@@ -27,6 +27,7 @@ THE SOFTWARE.
 
 #import "Plugin.h"
 #import "CTFWhitelistWindowController.h"
+#import "MATrackingArea.h"
 
 @interface NSBezierPath(MRGradientFill)
 -(void)linearGradientFill:(NSRect)thisRect
@@ -121,7 +122,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [self setNeedsDisplay:YES];
 
     // Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
-    trackingArea = [[MATrackingArea alloc] initWithRect:[self bounds]
+    trackingArea = (MATrackingArea *)[[MATrackingArea alloc] initWithRect:[self bounds]
                                                 options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
                                                   owner:self
                                                userInfo:nil];
