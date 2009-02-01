@@ -45,6 +45,7 @@ THE SOFTWARE.
 
 @property (nonatomic, retain) DOMElement *container;
 @property (nonatomic, retain) NSString *host;
+@property (readonly, nonatomic, retain) NSString *addToWhiteListMenuTitle;
 
 - (IBAction)addToWhitelist:(id)sender;
 - (IBAction)removeFromWhitelist:(id)sender;

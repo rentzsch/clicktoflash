@@ -218,6 +218,11 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 #pragma mark -
 #pragma mark Contextual menu
 
+- (NSString*) addToWhiteListMenuTitle
+{
+    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to whitelist", @"Add %@ to whitelist"), self.host];
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     BOOL enabled = YES;
@@ -241,14 +246,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     if ([self _isHostWhitelisted])
         return;
     
-    if ([self _isOptionPressed])
-    {
-        [self _addHostToWhitelist];
-        [self _convertTypesForContainer];
-        return;
-    }
-    
-    [self _askToAddCurrentSiteToWhitelist];
+    [self _addHostToWhitelist];
+    [self _convertTypesForContainer];
 }
 
 - (IBAction)removeFromWhitelist:(id)sender;
