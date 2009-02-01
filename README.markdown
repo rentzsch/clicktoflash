@@ -3,6 +3,7 @@
 See the [semi-official leopard only branch](http://github/rentzsch/clicktoflash).
 
 [Download Tiger ClickToFlash 1.2 here](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip).
+
 [Download Leopard ClickToFlash 1.2 here](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip).
 
 ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to its whitelist.
