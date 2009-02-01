@@ -1,18 +1,19 @@
-#ClickToFlash
+#Mac OS X 10.4 (Tiger) version of ClickToFlash
 
-[Download ClickToFlash 1.2 here](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip). Currently requires Mac OS X 10.5 Leopard.
+See the [semi-official leopard only branch](http://github/rentzsch/clicktoflash).
+
+[Download Tiger ClickToFlash 1.2 here](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip).
+[Download Leopard ClickToFlash 1.2 here](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip).
 
 ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to its whitelist.
 
 Try control-clicking (or right-clicking) on a unloaded Flash box to access ClickToFlash's contextual menu which allow you to do advanced things like edit its whitelist.
 
-Please [report bugs and request features](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new) on the [Lighthouse ClickToFlash project site](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all).
-
-Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
-
 ##Version History
+* **1.2+ Tiger** [download tiger version](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip)
+	* [NEW] Added copy address to clipboard ([Peter Hosey](http://github.com/boredzo/clicktoflash/commit/19cc5b9b25f1e9ad2e62e61d795a1b0e5368822b))
 
-* **1.2** [download](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip)
+* **1.2** [download leopard version](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip)
 	* [NEW] Handle `<object>` and `<embed>` that are missing a `type` attribute. That fixes a number of the broken sites. [bug #19](http://rentzsch.lighthouseapp.com/projects/24342/tickets/19-banner-ad-appears-without-whitelisting) ([Jason Foreman](http://github.com/threeve/clicktoflash/commit/e4a7ad83c312bcc3d7400562905122951ae85763))
 
 	* [NEW] Activate on mouse-up, instead of mouse-down. Draw as "pressed in" during mouse-down, tracking the mouse like normal button. (Peter Hosey)
@@ -21,7 +22,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [FIX] Release build-time script that includes the project's entire build directory. ([Peter Hosey](http://github.com/boredzo/clicktoflash/commit/0b063cd0987254fd61aaa2b317ef2d79f30a44a8))
 
-* **1.1** [download](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.1.zip)
+* **1.1** [download leopard version](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.1.zip)
 	* [NEW] Tasteful "Flash" icon now drawn on top of the gradient to make it more clear that it's blocked Flash content. ([Ricky Romero, Justin Williams](http://rentzsch.lighthouseapp.com/projects/24342/tickets/3-flash-boxes-are-not-always-obvious))
 
 	* [NEW] Contextual menu and simple whitelist editor. ([Dave Dribin](http://github.com/ddribin/clicktoflash))
@@ -44,7 +45,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 * *original Google code project deleted. This fork takes on official-ish mantle.*
 
-* **1.0+rentzsch** [download](http://s3.amazonaws.com/rentzsch/ClickToFlash%2Brentzsch-1.0.zip)
+* **1.0+rentzsch** [download leopard version](http://s3.amazonaws.com/rentzsch/ClickToFlash%2Brentzsch-1.0.zip)
 
 	* Forked from original Google code project (Jonathan 'Wolf' Rentzsch)
 
