@@ -1,6 +1,6 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.2.zip). Currently requires Mac OS X 10.5 Leopard.
+[Download the latest ClickToFlash here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.2.zip). Currently requires Mac OS X 10.5 Leopard.
 
 ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to its whitelist.
 
