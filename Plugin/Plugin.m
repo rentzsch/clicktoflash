@@ -32,6 +32,7 @@ THE SOFTWARE.
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
+static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
@@ -42,6 +43,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 - (void) _addHostToWhitelist;
 - (void) _removeHostFromWhitelist;
 - (void) _askToAddCurrentSiteToWhitelist;
+- (void) _whitelistAdditionMade: (NSNotification*) note;
 @end
 
 
@@ -70,6 +72,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
         if (base) {
             self.host = [base host];
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
+                _isLoadingFromWhitelist = YES;
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
         }
@@ -88,6 +91,13 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
                     [self setToolTip:src];
             }
         }
+		
+		// Observe for additions to the whitelist (can't use KVO due to the dot in the pref key):
+		
+		[[NSNotificationCenter defaultCenter] addObserver: self 
+												 selector: @selector( _whitelistAdditionMade: ) 
+													 name: sCTFWhitelistAdditionMade 
+												   object: nil ];
     }
 
     return self;
@@ -99,13 +109,15 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     self.container = nil;
     self.host = nil;
     [_whitelistWindowController release];
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
 }
 
 
 - (void) drawRect:(NSRect)rect
 {
-    [self _drawBackground];
+	if(!_isLoadingFromWhitelist)
+		[self _drawBackground];
 }
 
 
@@ -187,7 +199,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     if (returnCode == NSAlertFirstButtonReturn)
     {
         [self _addHostToWhitelist];
-        [self _convertTypesForContainer];
     }
 }
 
@@ -211,6 +222,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     NSMutableArray *hostWhitelist = [self _hostWhitelist];
     [hostWhitelist addObject:self.host];
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
 
 - (void) _removeHostFromWhitelist
@@ -218,6 +230,12 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     NSMutableArray *hostWhitelist = [self _hostWhitelist];
     [hostWhitelist removeObject:self.host];
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+}
+
+- (void) _whitelistAdditionMade: (NSNotification*) note
+{
+	if ([self _isHostWhitelisted])
+		[self _convertTypesForContainer];
 }
 
 #pragma mark -
@@ -249,7 +267,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     if ([self _isOptionPressed])
     {
         [self _addHostToWhitelist];
-        [self _convertTypesForContainer];
         return;
     }
     
