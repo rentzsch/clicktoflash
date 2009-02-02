@@ -166,11 +166,6 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     }
 }
 
-- (NSMenu *)menuForEvent:(NSEvent *)theEvent
-{
-    return [self menu];
-}
-
 - (BOOL) _isOptionPressed;
 {
     BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
@@ -241,6 +236,11 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 #pragma mark -
 #pragma mark Contextual menu
 
+- (NSString*) addToWhiteListMenuTitle
+{
+    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to whitelist", @"Add %@ to whitelist"), self.host];
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     BOOL enabled = YES;
@@ -264,13 +264,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     if ([self _isHostWhitelisted])
         return;
     
-    if ([self _isOptionPressed])
-    {
-        [self _addHostToWhitelist];
-        return;
-    }
-    
-    [self _askToAddCurrentSiteToWhitelist];
+    [self _addHostToWhitelist];
 }
 
 - (IBAction)removeFromWhitelist:(id)sender;
@@ -350,7 +344,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 	
 	NSSize strSize = [ str sizeWithAttributes: attrs ];
 	
-	float w = strSize.width + kFrameXInset * 2;
+	float w = strSize.width  + kFrameXInset * 2;
 	float h = strSize.height + kFrameYInset * 2;
 	
 	// Compute a scale factor based on the view's size.
@@ -437,7 +431,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [NSBezierPath setDefaultLineWidth:2.0];
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
-
+  
     [gradient release];
 
     // Draw label

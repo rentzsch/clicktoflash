@@ -63,20 +63,10 @@
 						<reference key="NSOnImage" ref="121969399"/>
 						<reference key="NSMixedImage" ref="575759592"/>
 					</object>
-					<object class="NSMenuItem" id="1047744293">
-						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Add to whitelist...</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="121969399"/>
-						<reference key="NSMixedImage" ref="575759592"/>
-					</object>
 					<object class="NSMenuItem" id="1001518375">
 						<reference key="NSMenu" ref="93442052"/>
-						<bool key="NSIsAlternate">YES</bool>
 						<string key="NSTitle">Add to whitelist</string>
 						<string key="NSKeyEquiv"/>
-						<int key="NSKeyEquivModMask">524288</int>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="121969399"/>
 						<reference key="NSMixedImage" ref="575759592"/>
@@ -103,14 +93,6 @@
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">addToWhitelist:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="1047744293"/>
-					</object>
-					<int key="connectionID">5</int>
-				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">editWhitelist:</string>
@@ -151,6 +133,22 @@
 					</object>
 					<int key="connectionID">15</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: self.addToWhiteListMenuTitle</string>
+						<reference key="source" ref="1001518375"/>
+						<reference key="destination" ref="1001"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1001518375"/>
+							<reference key="NSDestination" ref="1001"/>
+							<string key="NSLabel">title: self.addToWhiteListMenuTitle</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">self.addToWhiteListMenuTitle</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">18</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -186,7 +184,6 @@
 						<reference key="object" ref="93442052"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="1047744293"/>
 							<reference ref="831790790"/>
 							<reference ref="975793511"/>
 							<reference ref="660793203"/>
@@ -194,11 +191,6 @@
 							<reference ref="688689086"/>
 						</object>
 						<reference key="parent" ref="1002"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">2</int>
-						<reference key="object" ref="1047744293"/>
-						<reference key="parent" ref="93442052"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
@@ -240,7 +232,6 @@
 					<string>12.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
-					<string>2.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -248,8 +239,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{430, 325}, {234, 113}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{430, 345}, {220, 93}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -278,7 +268,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">16</int>
+			<int key="maxID">18</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
