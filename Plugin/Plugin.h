@@ -37,6 +37,7 @@ THE SOFTWARE.
     NSTrackingArea *trackingArea;
     BOOL mouseIsDown;
     BOOL mouseInside;
+	BOOL _isLoadingFromWhitelist;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
