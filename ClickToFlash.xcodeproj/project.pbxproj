@@ -39,7 +39,6 @@
 		072189B30F30D982008C8944 /* Installer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189B10F30D982008C8944 /* Installer.xib */; };
 		072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BA0F30D9C3008C8944 /* ContextualMenu.xib */; };
 		072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
-		558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 558405540E0F2C2B00EA991B /* CTFInstaller.m */; };
 		558405690E0F2DFA00EA991B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		5584056B0E0F2DFE00EA991B /* CTFInstaller.m in Sources */ = {isa = PBXBuildFile; fileRef = 558405540E0F2C2B00EA991B /* CTFInstaller.m */; };
 		5584064B0E0F35A000EA991B /* ClickToFlash.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 55EB70420E04A8640016593D /* ClickToFlash.plugin */; };
@@ -302,7 +301,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				558405550E0F2C2B00EA991B /* CTFInstaller.m in Sources */,
 				69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */,
 				79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */,
 				55EB70480E04A8850016593D /* Plugin.m in Sources */,
