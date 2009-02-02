@@ -54,7 +54,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 55EB70320E04A8410016593D /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 55EB70410E04A8640016593D /* ClickToFlash */;
+			remoteGlobalIDString = 55EB70410E04A8640016593D;
 			remoteInfo = ClickToFlash;
 		};
 		5584064C0E0F35AC00EA991B /* PBXContainerItemProxy */ = {
