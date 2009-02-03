@@ -335,7 +335,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 	
 	NSString* str = [ self badgeLabelText ];
 	
-	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 0.0 alpha: pressed ? 0.40 : 0.25 ];
+	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 1.0 alpha: pressed ? 0.40 : 0.25 ];
 	
 	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
 						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
@@ -393,6 +393,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 	// Apply the scale, and a transform so the result is centered in the view.
 	
 	[ NSGraphicsContext saveGraphicsState ];
+	
+	CGContextSetBlendMode([[NSGraphicsContext currentContext] graphicsPort], kCGBlendModeDifference);
 	
 	NSAffineTransform* xform = [ NSAffineTransform transform ];
 	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
