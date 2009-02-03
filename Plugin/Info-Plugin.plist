@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.github.rentzsch.clicktoflash</string>
+	<string>com.github.wessman.clicktoflash</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -30,10 +30,10 @@
 	<dict>
 		<key>application/x-shockwave-flash</key>
 		<dict>
-            <key>WebPluginExtensions</key>
-            <array>
-                <string>swf</string>
-            </array>
+			<key>WebPluginExtensions</key>
+			<array>
+				<string>swf</string>
+			</array>
 			<key>WebPluginTypeDescription</key>
 			<string>ClickToFlash</string>
 		</dict>

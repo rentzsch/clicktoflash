@@ -34,6 +34,13 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
+static NSString *sifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
+static NSString *sifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
+static NSString *sifrAddOnTest	= @"sIFR.rollback == null || typeof sIFR.rollback != \"function\"";
+static NSString *sifrRollbackJS	= @"sIFR.rollback()";
+static NSString *sifr2AddOnJSFilename = @"sifr2-addons";
+static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
+
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
 - (void) _drawBackground;
@@ -44,6 +51,10 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (void) _removeHostFromWhitelist;
 - (void) _askToAddCurrentSiteToWhitelist;
 - (void) _whitelistAdditionMade: (NSNotification*) note;
+
+// deSIFR
+- (NSUInteger) _sifrVersionInstalled;
+- (void) _disableSIFR;
 @end
 
 
@@ -66,11 +77,22 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 {
     self = [super init];
     if (self) {
+		
+		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
+		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
     
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
             self.host = [base host];
+			
+			_sifrVersion = [self _sifrVersionInstalled];
+			
+			if( _sifrVersion != 0 )
+			{
+				[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
+			}
+			
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
                 _isLoadingFromWhitelist = YES;
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
@@ -78,7 +100,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         }
 
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
-            NSLog(@"Could not load conextual menu plugin");
+            NSLog(@"Could not load contextual menu plugin");
 
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
         if (attributes != nil) {
@@ -108,6 +130,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 {
     self.container = nil;
     self.host = nil;
+	self.webView = nil;
     [_whitelistWindowController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
@@ -479,6 +502,59 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 }
 
 
+#pragma mark -
+#pragma mark deSIFR methods
+
+- (NSUInteger) _sifrVersionInstalled
+{	
+	// get the container's WebView
+	WebView *sifrWebView = self.webView;
+	NSUInteger version = 0;
+
+	if( sifrWebView )
+	{		
+		if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sifr2Test] isEqualToString:@"true"] )				// test for sIFR v.2
+		{
+			version = 2;
+		} else if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sifr3Test] isEqualToString:@"true"] )	{	// test for sIFR v.3
+			version = 3;
+		}
+	}
+	
+	return version;
+}
+
+- (void) _disableSIFR
+{	
+	// get the container's WebView
+	WebView *sifrWebView = self.webView;
+	
+	// if sifr add-ons are not installed, load version-appropriate version into page
+	if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sifrAddOnTest] isEqualToString:@"true"] )
+	{		
+		NSBundle *clickBundle = [NSBundle bundleForClass:[self class]];
+		
+		NSString *jsFileName = ( _sifrVersion == 2 ? sifr2AddOnJSFilename : sifr3AddOnJSFilename );
+		
+		NSString *addOnPath = [clickBundle pathForResource:jsFileName ofType:@"js"];
+		
+		if( addOnPath )
+		{
+			NSString *sifrAddOnJS = [NSString stringWithContentsOfFile:addOnPath];
+			
+			if( sifrAddOnJS && !([sifrAddOnJS isEqualToString:@""]) )
+			{
+				[[sifrWebView windowScriptObject] evaluateWebScript:sifrAddOnJS];
+			}
+		}
+	}
+	
+	// implement rollback
+	[[sifrWebView windowScriptObject] evaluateWebScript:sifrRollbackJS];
+}
+
+
+@synthesize webView = _webView;
 @synthesize container = _container;
 @synthesize host = _host;
 
