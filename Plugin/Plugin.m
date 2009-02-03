@@ -86,17 +86,17 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
         if (base) {
             self.host = [base host];
 			
-			_sifrVersion = [self _sifrVersionInstalled];
-			
-			if( _sifrVersion != 0 )
-			{
-				[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
-			}
-			
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
                 _isLoadingFromWhitelist = YES;
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
-            }
+            } else {
+				_sifrVersion = [self _sifrVersionInstalled];
+				
+				if( _sifrVersion != 0 )
+				{
+					[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
+				}
+			}
         }
 
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
