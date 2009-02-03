@@ -1,6 +1,6 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.2 here](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip). Currently requires Mac OS X 10.5 Leopard.
+[Download ClickToFlash 1.3 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.3.zip). Currently requires Mac OS X 10.5 Leopard.
 
 ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to its whitelist.
 
@@ -12,7 +12,27 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 ##Version History
 
-* **1.2** [download](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.2.zip)
+* **1.3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.3.zip)
+	* [NEW] Flash badge is now drawn in code (vector image), and draws smaller in smaller flash boxes. [bug 12](http://rentzsch.lighthouseapp.com/projects/24342/tickets/12) ([Troy 
+Gaul](http://github.com/rentzsch/clicktoflash/commit/4a6bf3071ad36a9cf00c4edfd2bbe94b37b050ac))
+
+	* [NEW] Flash badge rotates counter-clockwise for narrow flash boxes. [bug 12](http://rentzsch.lighthouseapp.com/projects/24342/tickets/12) ([Troy 
+Gaul](http://github.com/tgaul/clicktoflash/commit/738cc4a0d3c976333a16bf7420cec3f35130b490))
+
+	* [NEW] "Add to whitelist" contextual menu item now lists the url that's to be whitelisted. [bug 20](http://rentzsch.lighthouseapp.com/projects/24342/tickets/20-add-to-whitelist-sheet-unnecessary-when-rightclicking) ([Kevin A. Mitchell](http://github.com/kamitchell/clicktoflash/commit/83f121029225b16ae2e4d4f6a2f2bc64d2235b02))
+
+	* [NEW] Extend coverage to `<object>` and `<embed>` tags that lack `type` or `classid` attributes by adding `swf` to the plugin's `WebPluginExtensions` Info.plist key. [bug 19](http://rentzsch.lighthouseapp.com/projects/24342/tickets/19) ([fds](http://rentzsch.lighthouseapp.com/projects/24342/tickets/19#ticket-19-10))
+
+	* [NEW] Kill badge flicker for whitelisted sites ([bug 17](http://rentzsch.lighthouseapp.com/projects/24342/tickets/17)) and load all 
+flash boxes when whitelisting one ([bug 10](http://rentzsch.lighthouseapp.com/projects/24342/tickets/10)). ([Troy Gaul](http://github.com/tgaul/clicktoflash/commit/263f2f396115921896f527573c725516c85af531))
+
+	* [FIX] Remove `-menuForEvent:` as it already returns the NSResponder's `-menu` by default. ([Dave Dribin](http://github.com/ddribin/clicktoflash/commit/5de474bc17332208fd21ec78fe7eaf3a9844d7bf))
+
+	* [FIX] Remove CTFInstaller.m from the bare plugin target. [bug 44](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/44) ([Chris Parker](http://github.com/tgaul/clicktoflash/commit/17d455844a7428471dca018d1461f5c5d1cbb692))
+
+	* [DEV] Make Rakefile honor build products directory. [bug 43](http://rentzsch.lighthouseapp.com/projects/24342/tickets/43) ([Chris Parker](http://github.com/tgaul/clicktoflash/commit/021eebfd274b4e415c31c2ac9e4bb2ffed569ee4))
+
+* **1.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.2.zip)
 	* [NEW] Handle `<object>` and `<embed>` that are missing a `type` attribute. That fixes a number of the broken sites. [bug #19](http://rentzsch.lighthouseapp.com/projects/24342/tickets/19-banner-ad-appears-without-whitelisting) ([Jason Foreman](http://github.com/threeve/clicktoflash/commit/e4a7ad83c312bcc3d7400562905122951ae85763))
 
 	* [NEW] Activate on mouse-up, instead of mouse-down. Draw as "pressed in" during mouse-down, tracking the mouse like normal button. (Peter Hosey)
@@ -21,7 +41,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [FIX] Release build-time script that includes the project's entire build directory. ([Peter Hosey](http://github.com/boredzo/clicktoflash/commit/0b063cd0987254fd61aaa2b317ef2d79f30a44a8))
 
-* **1.1** [download](http://s3.amazonaws.com/rentzsch/ClickToFlash-1.1.zip)
+* **1.1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.1.zip)
 	* [NEW] Tasteful "Flash" icon now drawn on top of the gradient to make it more clear that it's blocked Flash content. ([Ricky Romero, Justin Williams](http://rentzsch.lighthouseapp.com/projects/24342/tickets/3-flash-boxes-are-not-always-obvious))
 
 	* [NEW] Contextual menu and simple whitelist editor. ([Dave Dribin](http://github.com/ddribin/clicktoflash))
@@ -44,7 +64,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 * *original Google code project deleted. This fork takes on official-ish mantle.*
 
-* **1.0+rentzsch** [download](http://s3.amazonaws.com/rentzsch/ClickToFlash%2Brentzsch-1.0.zip)
+* **1.0+rentzsch** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash%2Brentzsch-1.0.zip)
 
 	* Forked from original Google code project (Jonathan 'Wolf' Rentzsch)
 
