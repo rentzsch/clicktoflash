@@ -47,6 +47,9 @@
 		55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70570E04A8B80016593D /* WebKit.framework */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
+		A4BB102B0F383697005D000F /* CTFInvisibleItemMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4BB10280F383697005D000F /* CTFInvisibleItemMenuController.m */; };
+		A4BB102D0F38369B005D000F /* InvisibleItemMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A4BB102C0F38369B005D000F /* InvisibleItemMenu.xib */; };
+		A4BB103D0F383721005D000F /* OSAKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BB103C0F383721005D000F /* OSAKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,12 @@
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
+		A4BB10260F383697005D000F /* Safari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Safari.h; sourceTree = "<group>"; };
+		A4BB10270F383697005D000F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/InvisibleItemMenu.xib; sourceTree = "<group>"; };
+		A4BB10280F383697005D000F /* CTFInvisibleItemMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFInvisibleItemMenuController.m; sourceTree = "<group>"; };
+		A4BB10290F383697005D000F /* CTFInvisibleItemMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFInvisibleItemMenuController.h; sourceTree = "<group>"; };
+		A4BB103C0F383721005D000F /* OSAKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OSAKit.framework; path = /System/Library/Frameworks/OSAKit.framework; sourceTree = "<absolute>"; };
+		A4BB10E30F38374E005D000F /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = /System/Library/Frameworks/ScriptingBridge.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +125,7 @@
 			files = (
 				55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */,
 				55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */,
+				A4BB103D0F383721005D000F /* OSAKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,15 +166,19 @@
 		55EB70540E04A89C0016593D /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
-				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
-				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
-				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
 				55EB703D0E04A84F0016593D /* Plugin.m */,
+				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
+				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
+				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
+				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
+				A4BB10260F383697005D000F /* Safari.h */,
+				A4BB10290F383697005D000F /* CTFInvisibleItemMenuController.h */,
+				A4BB10280F383697005D000F /* CTFInvisibleItemMenuController.m */,
+				A4BB102C0F38369B005D000F /* InvisibleItemMenu.xib */,
 				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
 				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
-				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";
@@ -174,6 +188,8 @@
 			children = (
 				55EB70560E04A8B80016593D /* Cocoa.framework */,
 				55EB70570E04A8B80016593D /* WebKit.framework */,
+				A4BB103C0F383721005D000F /* OSAKit.framework */,
+				A4BB10E30F38374E005D000F /* ScriptingBridge.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -254,6 +270,7 @@
 			files = (
 				072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */,
 				072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */,
+				A4BB102D0F38369B005D000F /* InvisibleItemMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +321,7 @@
 				69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */,
 				79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */,
 				55EB70480E04A8850016593D /* Plugin.m in Sources */,
+				A4BB102B0F383697005D000F /* CTFInvisibleItemMenuController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +381,14 @@
 				072189BD0F30D9C3008C8944 /* English */,
 			);
 			name = WhitelistPanel.xib;
+			sourceTree = "<group>";
+		};
+		A4BB102C0F38369B005D000F /* InvisibleItemMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A4BB10270F383697005D000F /* English */,
+			);
+			name = InvisibleItemMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -501,6 +527,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
+				PRODUCT_VERSION = "1.3+simx";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;
@@ -526,6 +553,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
+				PRODUCT_VERSION = "1.3+simX";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = NO;

@@ -28,11 +28,13 @@ THE SOFTWARE.
 #import "Plugin.h"
 #import "NSBezierPath-RoundedRectangle.h"
 #import "CTFWhitelistWindowController.h"
+#import "CTFInvisibleItemMenuController.h"
 
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
+static NSString *sCTFInvisibleContentNotification = @"CTFNewInvisibleContent";
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
@@ -66,9 +68,11 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 {
     self = [super init];
     if (self) {
+		_isKeepingTrackOfInvisibleFlashTargets = NO;
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
     
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
+		[self setBaseURL:[base absoluteString]];
         if (base) {
             self.host = [base host];
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
@@ -76,13 +80,17 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
         }
+		
+		
 
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
             NSLog(@"Could not load conextual menu plugin");
+		
 
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
+		NSString *src = nil;
         if (attributes != nil) {
-            NSString *src = [attributes objectForKey:@"src"];
+            src = [attributes objectForKey:@"src"];
             if (src)
                 [self setToolTip:src];
             else {
@@ -92,12 +100,39 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
             }
         }
 		
+		DOMElement *clonedElement = (DOMElement *)[self.container cloneNode:YES];
+		int height = [[clonedElement getAttribute:@"height"] intValue];
+		int width = [[clonedElement getAttribute:@"width"] intValue];
+
+		// thanks @rentzsch for the nice round powers of 2
+		if ( (height < 8) || (width < 8) ) {	
+			NSMenu *mainMenu = [NSApp mainMenu];
+			NSMenuItem *clickToFlashMenu = [mainMenu itemWithTitle:@"ClickToFlash"];
+			
+			if (! clickToFlashMenu) {
+				[self startTrackingInvisibleFlashTargets:nil];
+			}
+			
+			
+			// this seems to be the only possible of way of communicating with the first plugin instance;
+			// the first ClickToFlash plugin instance w/"invisible" flash content to load will keep an array
+			// of other "invisible" flash plugin instances, so that there can be one menu item that will load
+			// *all* "invisible" flash content for a single page
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:sCTFInvisibleContentNotification
+																object:self
+															  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:base,@"baseURL",src,@"src",nil]];
+			
+		}
+		
+		
 		// Observe for additions to the whitelist (can't use KVO due to the dot in the pref key):
 		
 		[[NSNotificationCenter defaultCenter] addObserver: self 
 												 selector: @selector( _whitelistAdditionMade: ) 
 													 name: sCTFWhitelistAdditionMade 
 												   object: nil ];
+		
     }
 
     return self;
@@ -106,9 +141,33 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) dealloc
 {
+	// it looks like ClickToFlash bundles may not unload themselves even
+	// when the content they are controlling is closed, so this code here to pass
+	// off handling to a different plugin may be entirely unnecessary
+	
+	[self removeSelfFromInvisibleFlashTargetDict];
+	
+	if (_isKeepingTrackOfInvisibleFlashTargets) {
+		// we need to pass off "invisible" plugin handling to a different instance
+		NSArray *invisibleKeyArray = [[self invisibleFlashTargets] allKeys];
+		if ([invisibleKeyArray count] == 0) {
+			// we can get rid of the menu; no more invisible content
+			
+			NSMenu *mainMenu = [NSApp mainMenu];
+			[mainMenu removeItem:[mainMenu itemWithTitle:@"ClickToFlash"]];
+		} else {
+			NSArray *firstKeyArray = [[self invisibleFlashTargets] objectForKey:[invisibleKeyArray objectAtIndex:0]];
+			CTFClickToFlashPlugin *target = [[firstKeyArray objectAtIndex:0] objectForKey:@"target"];
+			
+			[target startTrackingInvisibleFlashTargets:[self invisibleFlashTargets]];
+		}
+		
+	}
+	
     self.container = nil;
     self.host = nil;
     [_whitelistWindowController release];
+	[_invisibleItemMenuController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
 }
@@ -310,6 +369,112 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 }
 
 #pragma mark -
+#pragma mark Invisble Flash Content Menu
+
+// this method stores info about every single plugin that's managing an "invisible"
+// flash object.  the invisibleFlashTargets property is a dictionary which stores
+// the objects by base URL, since when we choose the menu item, we want to load all
+// invisible objects of the frontmost tab's base URL -- this makes for easy retrieval
+
+// EVERY. SINGLE. INSTANCE. of ClickToFlash that deals with "invisible" flash object
+// stores the info about all others.  Because we don't know which plugin instance will
+// be the first to load (and therefore the one that's handling the menu item), all
+// plugins need this info and observe for notifications
+
+- (void)_newInvisibleFlashPluginInitialized:(NSNotification *)notification;
+{
+	NSMutableDictionary *invisibleFlashTargetsDict = nil;
+	if ([self invisibleFlashTargets])
+		invisibleFlashTargetsDict = [[self invisibleFlashTargets] copy];
+	
+	if (! invisibleFlashTargetsDict) invisibleFlashTargetsDict = [NSMutableDictionary dictionary];
+	
+	NSString *newPluginBaseURL = [[[notification userInfo] objectForKey:@"baseURL"] absoluteString];
+	NSString *newPluginSrc = [[notification userInfo] objectForKey:@"src"];
+	id newTarget = [notification object];
+	
+	NSDictionary *newTargetDict = [NSDictionary dictionaryWithObjectsAndKeys:newTarget,@"target",newPluginSrc,@"src",nil];
+	
+	NSMutableArray *baseURLArray = [invisibleFlashTargetsDict objectForKey:newPluginBaseURL];
+	
+	if (! baseURLArray) {
+		baseURLArray = [NSMutableArray arrayWithObject:newTargetDict];
+		[invisibleFlashTargetsDict setObject:baseURLArray forKey:newPluginBaseURL];
+	} else {
+		[baseURLArray addObject:newTargetDict];
+	}
+	
+	[self setInvisibleFlashTargets:invisibleFlashTargetsDict];
+	
+	// not sure why, but the following lines causes crashes and unexpected behavior
+	//[invisibleFlashTargetsDict release];
+}
+
+- (void)loadInvisibleFlashContentForBaseURL:(NSString *)desiredBaseURL;
+{
+	NSMutableArray *baseURLTargets = [[self invisibleFlashTargets] objectForKey:desiredBaseURL];
+	
+	NSDictionary *targetDict = nil;
+	for (targetDict in baseURLTargets) {
+		id target = [targetDict objectForKey:@"target"];
+		[target performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
+	}
+}
+
+- (void)startTrackingInvisibleFlashTargets:(NSMutableDictionary *)newInvisibleFlashTargets;
+{
+	// remove any existing menu and add back our own so that we start getting the
+	// sent actions rather than the released ClickToFlash plugin
+	NSMenu *mainMenu = [NSApp mainMenu];
+	NSMenuItem *clickToFlashMenu = [mainMenu itemWithTitle:@"ClickToFlash"];
+	if (clickToFlashMenu)
+		[mainMenu removeItem:clickToFlashMenu];
+	
+	
+	if (newInvisibleFlashTargets)
+		[self setInvisibleFlashTargets:newInvisibleFlashTargets];
+	
+	// the plugin instance that first finds no ClickToFlash menu will be the one
+	// that handles the loading of *all* invisible flash content, so we only want
+	// that one to observe
+	_isKeepingTrackOfInvisibleFlashTargets = YES;
+	
+	[[NSNotificationCenter defaultCenter] addObserver: self 
+											 selector: @selector( _newInvisibleFlashPluginInitialized: ) 
+												 name: sCTFInvisibleContentNotification 
+											   object: nil ];
+	
+	_invisibleItemMenuController = [[CTFInvisibleItemMenuController alloc] init];
+	[_invisibleItemMenuController setPlugin:self];
+	[NSBundle loadNibNamed:@"InvisibleItemMenu" owner:_invisibleItemMenuController];
+	
+	clickToFlashMenu = [_invisibleItemMenuController menu];
+	[mainMenu addItem:clickToFlashMenu];
+	NSMenu *submenu = [clickToFlashMenu submenu];
+	NSMenuItem *loadInvisibleContentMenuItem = [_invisibleItemMenuController loadInvisibleContentMenuItem];
+	[submenu addItem:loadInvisibleContentMenuItem];
+}
+
+- (void)removeSelfFromInvisibleFlashTargetDict
+{
+	// find and remove ourselves from the dictionary of invisible ClickToFlash
+	// plugins
+	
+	NSArray *targetDictArray = [[self invisibleFlashTargets] objectForKey:[self baseURL]];
+	NSDictionary *currentTargetDict = nil;
+	for (currentTargetDict in targetDictArray) {
+		if ([currentTargetDict objectForKey:@"target"] == self) {
+			break;
+		}
+	}
+	
+	NSMutableDictionary *invisibleTargetsCopy = [[self invisibleFlashTargets] copy];
+	[[invisibleTargetsCopy objectForKey:[self baseURL]] removeObject:currentTargetDict];
+	[self setInvisibleFlashTargets:invisibleTargetsCopy];
+	[invisibleTargetsCopy release];	
+}
+
+#pragma mark -
 #pragma mark Drawing
 
 - (NSString*) badgeLabelText
@@ -454,6 +619,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) _convertTypesForContainer
 {
+	[self removeSelfFromInvisibleFlashTargetDict];
+	
     DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
 
     DOMNodeList *nodeList = nil;
@@ -481,5 +648,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 @synthesize container = _container;
 @synthesize host = _host;
+@synthesize invisibleFlashTargets;
+@synthesize baseURL;
 
 @end

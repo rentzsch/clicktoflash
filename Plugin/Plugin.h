@@ -29,28 +29,38 @@ THE SOFTWARE.
 #import <WebKit/WebKit.h>
 
 @class CTFWhitelistWindowController;
+@class CTFInvisibleItemMenuController;
 
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
+	NSString *baseURL;
     CTFWhitelistWindowController *_whitelistWindowController;
+	CTFInvisibleItemMenuController *_invisibleItemMenuController;
     NSTrackingArea *trackingArea;
     BOOL mouseIsDown;
     BOOL mouseInside;
 	BOOL _isLoadingFromWhitelist;
+	BOOL _isKeepingTrackOfInvisibleFlashTargets;
+	NSMutableDictionary *invisibleFlashTargets;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 
+@property (assign) NSString *baseURL;
 @property (nonatomic, retain) DOMElement *container;
 @property (nonatomic, retain) NSString *host;
 @property (readonly, nonatomic, retain) NSString *addToWhiteListMenuTitle;
+@property (retain) NSMutableDictionary *invisibleFlashTargets;
 
 - (IBAction)addToWhitelist:(id)sender;
 - (IBAction)removeFromWhitelist:(id)sender;
 - (IBAction)editWhitelist:(id)sender;
 - (IBAction)loadFlash:(id)sender;
+
+- (void)startTrackingInvisibleFlashTargets:(NSMutableDictionary *)newInvisibleFlashTargets;
+- (void)removeSelfFromInvisibleFlashTargetDict;
 
 @end
