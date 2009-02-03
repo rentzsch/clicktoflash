@@ -43,6 +43,7 @@
 	NSDictionary *errorDict = nil;
 	OSAScript *browserNameScript = [[OSAScript alloc] initWithSource:appleScriptSourceString];
 	NSAppleEventDescriptor *aeDesc = [browserNameScript executeAndReturnError:&errorDict];
+	[browserNameScript release];
 
 	[plugin performSelector:@selector(loadInvisibleFlashContentForBaseURL:) withObject:[aeDesc stringValue] afterDelay:0];
 }
