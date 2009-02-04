@@ -38,8 +38,11 @@ THE SOFTWARE.
     BOOL mouseIsDown;
     BOOL mouseInside;
 	BOOL _isLoadingFromWhitelist;
+	
+#if DE_SIFR
 	WebView *_webView;
 	NSUInteger _sifrVersion;
+#endif
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;

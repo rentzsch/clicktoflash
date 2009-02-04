@@ -34,12 +34,14 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
+#if DE_SIFR
 static NSString *sifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
 static NSString *sifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
 static NSString *sifrAddOnTest	= @"sIFR.rollback == null || typeof sIFR.rollback != \"function\"";
 static NSString *sifrRollbackJS	= @"sIFR.rollback()";
 static NSString *sifr2AddOnJSFilename = @"sifr2-addons";
 static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
+#endif
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
@@ -52,9 +54,10 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 - (void) _askToAddCurrentSiteToWhitelist;
 - (void) _whitelistAdditionMade: (NSNotification*) note;
 
-// deSIFR
+#if DE_SIFR
 - (NSUInteger) _sifrVersionInstalled;
 - (void) _disableSIFR;
+#endif
 @end
 
 
@@ -77,8 +80,9 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 {
     self = [super init];
     if (self) {
-		
+#if DE_SIFR
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
+#endif
 		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
     
@@ -89,7 +93,9 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
                 _isLoadingFromWhitelist = YES;
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
-            } else {
+            } 
+#if DE_SIFR
+			else {
 				_sifrVersion = [self _sifrVersionInstalled];
 				
 				if( _sifrVersion != 0 )
@@ -97,6 +103,7 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 					[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
 				}
 			}
+#endif
         }
 
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
@@ -130,7 +137,9 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 {
     self.container = nil;
     self.host = nil;
+#if DE_SIFR
 	self.webView = nil;
+#endif
     [_whitelistWindowController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
@@ -501,7 +510,7 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
     self.container = nil;
 }
 
-
+#if DE_SIFR
 #pragma mark -
 #pragma mark deSIFR methods
 
@@ -555,6 +564,8 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 
 
 @synthesize webView = _webView;
+#endif
+
 @synthesize container = _container;
 @synthesize host = _host;
 

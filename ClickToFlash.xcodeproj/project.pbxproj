@@ -103,6 +103,7 @@
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
 		D9566C2C0F37EA0800358646 /* sifr2-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr2-addons.js"; sourceTree = "<group>"; };
 		D9566C2D0F37EA0800358646 /* sifr3-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr3-addons.js"; sourceTree = "<group>"; };
+		D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickToFlash_Prefix.pch; path = Plugin/ClickToFlash_Prefix.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +171,7 @@
 				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
 				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
+				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";
@@ -236,7 +238,7 @@
 /* Begin PBXProject section */
 		55EB70320E04A8410016593D /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */;
+			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "clicktoflash" */;
 			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 55EB70300E04A8410016593D;
@@ -509,7 +511,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PREFIX_HEADER = Plugin/ClickToFlash_Prefix.pch;
 				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
@@ -579,7 +581,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */ = {
+		55EB70350E04A8410016593D /* Build configuration list for PBXProject "clicktoflash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55EB70330E04A8410016593D /* Debug */,
