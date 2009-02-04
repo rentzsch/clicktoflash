@@ -30,6 +30,10 @@
 	<dict>
 		<key>application/x-shockwave-flash</key>
 		<dict>
+            <key>WebPluginExtensions</key>
+            <array>
+                <string>swf</string>
+            </array>
 			<key>WebPluginTypeDescription</key>
 			<string>ClickToFlash</string>
 		</dict>

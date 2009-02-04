@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 
 #import "Plugin.h"
+#import "NSBezierPath-RoundedRectangle.h"
 #import "CTFWhitelistWindowController.h"
 #import "MATrackingArea.h"
 
@@ -38,6 +39,7 @@ THE SOFTWARE.
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
+static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
@@ -48,6 +50,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 - (void) _addHostToWhitelist;
 - (void) _removeHostFromWhitelist;
 - (void) _askToAddCurrentSiteToWhitelist;
+- (void) _whitelistAdditionMade: (NSNotification*) note;
 @end
 
 
@@ -76,6 +79,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
         if (base) {
             [self setHost:[base host]];
             if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
+                _isLoadingFromWhitelist = YES;
                 [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
             }
         }
@@ -94,6 +98,13 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
                     [self setToolTip:src];
             }
         }
+		
+		// Observe for additions to the whitelist (can't use KVO due to the dot in the pref key):
+		
+		[[NSNotificationCenter defaultCenter] addObserver: self 
+												 selector: @selector( _whitelistAdditionMade: ) 
+													 name: sCTFWhitelistAdditionMade 
+												   object: nil ];
     }
 
     return self;
@@ -105,13 +116,15 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [self setContainer:nil];
     [self setHost:nil];
     [_whitelistWindowController release];
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
 }
 
 
 - (void) drawRect:(NSRect)rect
 {
-    [self _drawBackground];
+	if(!_isLoadingFromWhitelist)
+		[self _drawBackground];
 }
 
 
@@ -160,11 +173,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     }
 }
 
-- (NSMenu *)menuForEvent:(NSEvent *)theEvent
-{
-    return [self menu];
-}
-
 - (BOOL) _isOptionPressed;
 {
     BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
@@ -193,7 +201,6 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     if (returnCode == NSAlertFirstButtonReturn)
     {
         [self _addHostToWhitelist];
-        [self _convertTypesForContainer];
     }
 }
 
@@ -217,6 +224,7 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     NSMutableArray *hostWhitelist = [self _hostWhitelist];
     [hostWhitelist addObject:[self host]];
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
 
 - (void) _removeHostFromWhitelist
@@ -226,8 +234,19 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
 }
 
+- (void) _whitelistAdditionMade: (NSNotification*) note
+{
+	if ([self _isHostWhitelisted])
+		[self _convertTypesForContainer];
+}
+
 #pragma mark -
 #pragma mark Contextual menu
+
+- (NSString*) addToWhiteListMenuTitle
+{
+    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to whitelist", @"Add %@ to whitelist"), [self host]];
+}
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
@@ -251,15 +270,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 {
     if ([self _isHostWhitelisted])
         return;
-
-    if ([self _isOptionPressed])
-    {
-        [self _addHostToWhitelist];
-        [self _convertTypesForContainer];
-        return;
-    }
-
-    [self _askToAddCurrentSiteToWhitelist];
+    
+    [self _addHostToWhitelist];
 }
 
 - (IBAction)removeFromWhitelist:(id)sender;
@@ -307,6 +319,105 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 #pragma mark -
 #pragma mark Drawing
 
+- (NSString*) badgeLabelText
+{
+	return NSLocalizedString( @"Flash", @"Flash" );
+}
+
+- (void) _drawBadgeWithPressed: (BOOL) pressed
+{
+	// What and how are we going to draw?
+	
+	const float kFrameXInset = 10;
+	const float kFrameYInset =  4;
+	const float kMinMargin   = 11;
+	const float kMinHeight   =  6;
+	
+	NSString* str = [ self badgeLabelText ];
+	
+	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 0.0 alpha: pressed ? 0.40 : 0.25 ];
+	
+	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
+						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
+						   [ NSNumber numberWithInt: -1 ], NSKernAttributeName,
+						   badgeColor, NSForegroundColorAttributeName,
+						   nil ];
+	
+	// Set up for drawing.
+	
+	NSRect bounds = [ self bounds ];
+	
+	// How large would this text be?
+	
+	NSSize strSize = [ str sizeWithAttributes: attrs ];
+	
+	float w = strSize.width  + kFrameXInset * 2;
+	float h = strSize.height + kFrameYInset * 2;
+	
+	// Compute a scale factor based on the view's size.
+	
+	float maxW = NSWidth( bounds ) - kMinMargin;
+	float maxH = NSHeight( bounds ) - kMinMargin;
+	float minW = kMinHeight * w / h;
+	
+	BOOL rotate = NO;
+	if( maxW <= minW )	// too narrow in width, so rotate it
+		rotate = YES;
+	
+	if( rotate ) {		// swap the dimensions to scale into
+		float temp = maxW;
+		maxW = maxH;
+		maxH = temp;
+	}
+	
+	if( maxH <= kMinHeight ) {
+		// Too short in height for full margin.
+		
+		// Draw at the smallest size, with less margin,
+		// unless even that would get clipped off.
+		
+		if( maxH + kMinMargin < kMinHeight )
+			return;
+
+		maxH = kMinHeight;
+	}
+
+	float scaleFactor = 1.0;
+	
+	if( maxW < w )
+		scaleFactor = maxW / w;
+
+	if( maxH < h && maxH / h < scaleFactor )
+		scaleFactor = maxH / h;
+	
+	// Apply the scale, and a transform so the result is centered in the view.
+	
+	[ NSGraphicsContext saveGraphicsState ];
+	
+	NSAffineTransform* xform = [ NSAffineTransform transform ];
+	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
+	[ xform scaleBy: scaleFactor ];
+	if( rotate )
+		[ xform rotateByDegrees: 90 ];
+	[ xform concat ];
+	
+	// Draw everything at full size, centered on the origin.
+	
+	NSPoint loc = { -strSize.width / 2, -strSize.height / 2 };
+	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
+	
+	[ str drawAtPoint: loc withAttributes: attrs ];
+
+	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
+	[ badgeColor set ];
+	[ path setLineWidth: 3 ];
+	[ path stroke ];
+	
+	// Now restore the graphics state:
+	
+	[ NSGraphicsContext restoreGraphicsState ];
+}
+
 - (void) _drawBackground
 {
     NSRect selfBounds  = [self bounds];
@@ -346,29 +457,8 @@ static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
-    // Draw an image on top to make it insanely obvious that this is clickable Flash.
-    NSString *containerImageName = [[NSBundle bundleForClass:[self class]] pathForResource:@"ContainerImage" ofType:@"png"];
-    NSImage *containerImage = [[NSImage alloc] initWithContentsOfFile:containerImageName];
-
-    NSSize viewSize  = fillRect.size;
-    NSSize imageSize = [containerImage size];
-
-    NSPoint viewCenter;
-    viewCenter.x = viewSize.width  * 0.50;
-    viewCenter.y = viewSize.height * 0.50;
-
-    NSPoint imageOrigin = viewCenter;
-    imageOrigin.x -= imageSize.width  * 0.50;
-    imageOrigin.y -= imageSize.height * 0.50;
-
-    NSRect destinationRect;
-    destinationRect.origin = imageOrigin;
-    destinationRect.size = imageSize;
-
-    // Draw the image centered in the view
-    [containerImage drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
-
-    [containerImage release];
+    // Draw label
+	[ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
 }
 
 

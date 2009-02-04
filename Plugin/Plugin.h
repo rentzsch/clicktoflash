@@ -37,6 +37,7 @@ THE SOFTWARE.
     MATrackingArea *trackingArea;
     BOOL mouseIsDown;
     BOOL mouseInside;
+	BOOL _isLoadingFromWhitelist;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -47,6 +48,7 @@ THE SOFTWARE.
 - (void) setContainer:(DOMElement *)newContainer;
 - (NSString *) host;
 - (void) setHost:(NSString *)newHost;
+- (NSString *) addToWhiteListMenuTitle;
 
 - (IBAction)addToWhitelist:(id)sender;
 - (IBAction)removeFromWhitelist:(id)sender;
