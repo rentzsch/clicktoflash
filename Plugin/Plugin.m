@@ -245,7 +245,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (NSString*) addToWhiteListMenuTitle
 {
-    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to whitelist", @"Add %@ to whitelist"), self.host];
+    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to whitelist", @"Add %@ to whitelist"), [self host]];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -456,8 +456,6 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [NSBezierPath setDefaultLineWidth:2.0];
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
-  
-    [gradient release];
 
     // Draw label
 	[ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
