@@ -426,7 +426,7 @@
 				COPY_PHASE_STRIP = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_VERSION = 1.2;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "";
 			};
 			name = Debug;
 		};
@@ -438,7 +438,7 @@
 				COPY_PHASE_STRIP = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_VERSION = 1.2;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SDKROOT = "";
 			};
 			name = Release;
 		};
