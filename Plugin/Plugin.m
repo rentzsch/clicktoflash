@@ -440,11 +440,9 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     else
     {
         //tweak colors for better compatibility with linearGradientFill
-        startingColor = [NSColor colorWithDeviceWhite:0.667 alpha:0.15];
+        startingColor = [NSColor colorWithDeviceWhite:0.633 alpha:0.15];
         endingColor = [NSColor colorWithDeviceWhite:0.333 alpha:0.15];
         NSBezierPath *path = [NSBezierPath bezierPath];
-        [path appendBezierPathWithRect:fillRect];
-        [path addClip];
 
         //Draw Gradient
         [path linearGradientFill:fillRect
