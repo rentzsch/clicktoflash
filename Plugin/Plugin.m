@@ -448,7 +448,6 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         [path linearGradientFill:fillRect
                       startColor:((mouseIsDown && mouseInside) ? endingColor : startingColor)
                         endColor:((mouseIsDown && mouseInside) ? startingColor : endingColor)];
-        [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
         [path stroke];
     }
 
