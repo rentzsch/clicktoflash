@@ -19,7 +19,7 @@
 	<key>CFBundleName</key>
 	<string>ClickToFlash</string>
 	<key>CFBundleVersion</key>
-	<string>700</string>
+	<string>${PRODUCT_VERSION}</string>
 	<key>CFBundleShortVersionString</key>
 	<string>${PRODUCT_VERSION}</string>
 	<key>NSPrincipalClass</key>
