@@ -192,12 +192,12 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) _askToAddCurrentSiteToWhitelist
 {
-    NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
+    NSString *title = NSLocalizedString(@"Always load Flash for this site?", @"Always load Flash for this site? alert title");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the whitelist?", @"Add <sitename> to the whitelist? alert message"), self.host];
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Add to Whitelist", @"Add to Whitelist button")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
     [alert setMessageText:title];
     [alert setInformativeText:message];
     [alert setAlertStyle:NSInformationalAlertStyle];
@@ -259,7 +259,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (NSString*) addToWhiteListMenuTitle
 {
-    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to whitelist", @"Add %@ to whitelist"), self.host];
+    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), self.host];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
@@ -293,12 +293,12 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     if (![self _isHostWhitelisted])
         return;
     
-    NSString *title = NSLocalizedString(@"Remove from white list?", @"Remove from white list?");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), self.host];
+    NSString *title = NSLocalizedString(@"Stop always loading Flash?", @"Stop always loading Flash? alert title");
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the whitelist?", @"Remove %@ from the whitelist? alert message"), self.host];
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:NSLocalizedString(@"Remove from white list", @"Remove from white list")];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Remove from Whitelist", @"Remove from Whitelist button")];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
     [alert setMessageText:title];
     [alert setInformativeText:message];
     [alert setAlertStyle:NSInformationalAlertStyle];
