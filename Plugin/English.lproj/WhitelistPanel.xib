@@ -47,7 +47,7 @@
 				<string key="NSWindowContentMinSize">{420, 200}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
 					<reference key="NSNextResponder"/>
-					<int key="NSvFlags">256</int>
+					<int key="NSvFlags">274</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSScrollView" id="510641939">
@@ -89,7 +89,7 @@
 														<int key="NSCellFlags">75628032</int>
 														<int key="NSCellFlags2">134217728</int>
 														<string key="NSContents">Whitelisted Sites</string>
-														<object class="NSFont" key="NSSupport">
+														<object class="NSFont" key="NSSupport" id="26">
 															<string key="NSName">LucidaGrande</string>
 															<double key="NSSize">1.100000e+01</double>
 															<int key="NSfFlags">3100</int>
@@ -223,9 +223,9 @@
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="13544439">
 								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">134217728</int>
+								<int key="NSCellFlags2">134348800</int>
 								<string key="NSContents">Remove from Whitelist</string>
-								<reference key="NSSupport" ref="651190810"/>
+								<reference key="NSSupport" ref="26"/>
 								<reference key="NSControlView" ref="43744226"/>
 								<int key="NSButtonFlags">-2038284033</int>
 								<int key="NSButtonFlags2">162</int>
@@ -698,9 +698,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{63, 1205}, {507, 292}}</string>
+					<string>{{63, 404}, {507, 292}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{63, 1205}, {507, 292}}</string>
+					<string>{{63, 404}, {507, 292}}</string>
 					<integer value="1"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
