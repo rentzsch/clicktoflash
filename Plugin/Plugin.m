@@ -45,6 +45,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 
 @interface CTFClickToFlashPlugin (Internal)
+- (void) _convertTypesForFlashContainer;
 - (void) _convertTypesForContainer;
 - (void) _replaceSelfWithElement: (DOMElement*) newElement;
 - (void) _drawBackground;
@@ -57,7 +58,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (void) _removeHostFromWhitelist;
 - (void) _askToAddCurrentSiteToWhitelist;
 - (void) _whitelistAdditionMade: (NSNotification*) notification;
-- (void) _loadFlashIfInWindow: (NSNotification*) notification;
+- (void) _loadContent: (NSNotification*) notification;
+- (void) _loadContentForWindow: (NSNotification*) notification;
 - (BOOL) _hasH264Version;
 - (BOOL) _useH264Version;
 - (void) _convertToMP4Container;
@@ -109,6 +111,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         
         BOOL loadFromWhiteList = NO;
         
+        // Get URL and test against the whitelist
+        
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
             self.host = [base host];
@@ -117,6 +121,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
             }
         }
         
+        // Check for sIFR - http://www.mikeindustries.com/sifr/
+        
         NSString* sifrKey = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
         if( sifrKey && [ sifrKey boolValue ] ) {
             if([[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
@@ -124,6 +130,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
             else
                 _isSifr = true;
         }
+        
+        // Read in flashvars (needed to determine YouTube videos)
         
         NSString* flashvars = [ [ arguments objectForKey: WebPlugInAttributesKey ] objectForKey: @"flashvars" ];
         if( flashvars != nil )
@@ -137,16 +145,32 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
                     || [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound;
         
+        // Handle if this is loading from whitelist
+        
         if(loadFromWhiteList && ![self _isOptionPressed]) {
             _isLoadingFromWhitelist = YES;
             [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
         }
-
+        
+        // Set up contextual menu
+        
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
             NSLog(@"Could not load conextual menu plugin");
-
+            // NOTE [tgaul]: we could save memory by not loading the context menu until it was
+            // needed by overriding menuForEvent and returning it there.
+        
+        if ([self _hasH264Version]) {
+            [[self menu] insertItemWithTitle: NSLocalizedString( @"Load as H.264", "Load H.264 context menu item" )
+                                      action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
+            [[[self menu] itemAtIndex: 1] setTarget: self];
+        }
+        
+        // Set up main menus
+        
 		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
 		
+        // Set tooltip
+        
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
         if (attributes != nil) {
             NSString *src = [attributes objectForKey:@"src"];
@@ -170,12 +194,12 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                      object: nil ];
 		
 		[center addObserver: self 
-				   selector: @selector( loadFlash: ) 
+				   selector: @selector( _loadContent: ) 
 					   name: kCTFLoadAllFlashViews 
 					 object: nil ];
 		
 		[center addObserver: self 
-				   selector: @selector( _loadFlashIfInWindow: ) 
+				   selector: @selector( _loadContentForWindow: ) 
 					   name: kCTFLoadFlashViewsForWindow 
 					 object: nil ];
     }
@@ -404,10 +428,20 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (IBAction)loadFlash:(id)sender;
 {
+    [self _convertTypesForFlashContainer];
+}
+
+- (IBAction)loadH264:(id)sender;
+{
+    [self _convertToMP4Container];
+}
+
+- (void) _loadContent: (NSNotification*) notification
+{
     [self _convertTypesForContainer];
 }
 
-- (void) _loadFlashIfInWindow: (NSNotification*) notification
+- (void) _loadContentForWindow: (NSNotification*) notification
 {
 	if( [ notification object ] == [ self window ] )
 		[ self _convertTypesForContainer ];
@@ -418,8 +452,10 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (NSString*) badgeLabelText
 {
-    if( [ self _hasH264Version ] )
+    if( [ self _useH264Version ] )
         return NSLocalizedString( @"H.264", @"H.264 badge text" );
+    else if( [ self _hasH264Version ] )
+        return NSLocalizedString( @"YouTube", @"YouTube badge text" );
     else if( _isSifr )
         return NSLocalizedString( @"sIFR Flash", @"sIFR Flash badge text" );
     else
@@ -524,7 +560,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) _drawBackground
 {
-    NSRect selfBounds  = [self bounds];
+    NSRect selfBounds = [self bounds];
 
     NSRect fillRect   = NSInsetRect(selfBounds, 1.0, 1.0);
     NSRect strokeRect = selfBounds;
@@ -649,14 +685,16 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     }
 }
 
-
 - (void) _convertTypesForContainer
 {
-    if ([self _useH264Version]) {
+    if ([self _useH264Version])
         [self _convertToMP4Container];
-        return;
-    }
-    
+    else
+        [self _convertTypesForFlashContainer];
+}
+
+- (void) _convertTypesForFlashContainer
+{
     DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
 
     DOMNodeList *nodeList = nil;

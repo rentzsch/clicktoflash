@@ -53,5 +53,6 @@ THE SOFTWARE.
 - (IBAction)removeFromWhitelist:(id)sender;
 - (IBAction)editWhitelist:(id)sender;
 - (IBAction)loadFlash:(id)sender;
+- (IBAction)loadH264:(id)sender;
 
 @end
