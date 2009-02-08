@@ -26,9 +26,9 @@ THE SOFTWARE.
 
 #import "Plugin.h"
 #import "NSBezierPath-RoundedRectangle.h"
-#import "CTFWhitelistWindowController.h"
+#import "CTFMenubarMenuController.h"
 
-#define LOGGING_ENABLED 1
+#define LOGGING_ENABLED 0
 
 
     // MIME types
@@ -36,7 +36,7 @@ static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // NSUserDefaults keys
-static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
+static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
 static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 
@@ -80,12 +80,33 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 #pragma mark -
 #pragma mark Initialization and Superclass Overrides
 
+- (void) _migrateWhitelist
+{
+    // Migrate from the old location to the new location.  We'll leave
+    // this in for a couple builds (being added for 1.4) and then remove
+    // it assuming those who care would have upgraded.
+    
+    NSUserDefaults* defaults = [ NSUserDefaults standardUserDefaults ];
+    
+    id oldWhitelist = [ defaults objectForKey: @"ClickToFlash.whitelist" ];
+    if( oldWhitelist ) {
+        id newWhitelist = [ defaults objectForKey: sHostWhitelistDefaultsKey ];
+        
+        if( newWhitelist == nil ) {
+            [ defaults setObject: oldWhitelist forKey: sHostWhitelistDefaultsKey ];
+            [ defaults removeObjectForKey: @"ClickToFlash.whitelist"];
+        }
+    }
+}
+
 - (id) initWithArguments:(NSDictionary *)arguments
 {
     self = [super init];
     if (self) {
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
-    
+        
+        [self _migrateWhitelist];
+        
         BOOL loadFromWhiteList = NO;
         
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
@@ -98,7 +119,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         
         NSString* sifrKey = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
         if( sifrKey && [ sifrKey boolValue ] ) {
-            if(YES || [[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
+            if([[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
                 loadFromWhiteList = true;
             else
                 _isSifr = true;
@@ -124,6 +145,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
             NSLog(@"Could not load conextual menu plugin");
 
+		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
+		
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
         if (attributes != nil) {
             NSString *src = [attributes objectForKey:@"src"];
@@ -145,6 +168,16 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                    selector: @selector( _whitelistAdditionMade: ) 
                        name: sCTFWhitelistAdditionMade 
                      object: nil ];
+		
+		[center addObserver: self 
+				   selector: @selector( loadFlash: ) 
+					   name: kCTFLoadAllFlashViews 
+					 object: nil ];
+		
+		[center addObserver: self 
+				   selector: @selector( _loadFlashIfInWindow: ) 
+					   name: kCTFLoadFlashViewsForWindow 
+					 object: nil ];
     }
 
     return self;
@@ -157,7 +190,6 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     self.container = nil;
     self.host = nil;
     [_flashVars release];
-    [_whitelistWindowController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 
     [super dealloc];
@@ -367,11 +399,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (IBAction)editWhitelist:(id)sender;
 {
-    if (_whitelistWindowController == nil)
-    {
-        _whitelistWindowController = [[CTFWhitelistWindowController alloc] init];
-    }
-    [_whitelistWindowController showWindow:self];
+	[ [ CTFMenubarMenuController sharedController ] showSettingsWindow: self ];
 }
 
 - (IBAction)loadFlash:(id)sender;
@@ -573,8 +601,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (BOOL) _useH264Version
 {
     return [ self _hasH264Version ] 
-            ;
-    //        && [ [ NSUserDefaults standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ];
+            && [ [ NSUserDefaults standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ];
 }
 
 - (void) _convertElementForMP4: (DOMElement*) element
