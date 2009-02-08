@@ -35,9 +35,10 @@ THE SOFTWARE.
     NSString *_host;
     CTFWhitelistWindowController *_whitelistWindowController;
     NSTrackingArea *trackingArea;
+    NSAlert* _activeAlert;
     BOOL mouseIsDown;
     BOOL mouseInside;
-	BOOL _isLoadingFromWhitelist;
+    BOOL _isLoadingFromWhitelist;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;

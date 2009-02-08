@@ -24,7 +24,6 @@ THE SOFTWARE.
 
 */
 
-
 #import "Plugin.h"
 #import "NSBezierPath-RoundedRectangle.h"
 #import "CTFWhitelistWindowController.h"
@@ -34,12 +33,15 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
+
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
 - (BOOL) _isHostWhitelisted;
 - (NSMutableArray *)_hostWhitelist;
+- (void) _alertDone;
+- (void) _abortAlert;
 - (void) _addHostToWhitelist;
 - (void) _removeHostFromWhitelist;
 - (void) _askToAddCurrentSiteToWhitelist;
@@ -103,13 +105,15 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     return self;
 }
 
-
 - (void) dealloc
 {
+    [self _abortAlert];		// to be on the safe side
+    
     self.container = nil;
     self.host = nil;
     [_whitelistWindowController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+
     [super dealloc];
 }
 
@@ -172,12 +176,26 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     return isOptionPressed;
 }
 
+- (void) _alertDone
+{
+	[ _activeAlert release ];
+	_activeAlert = nil;
+}
+
+- (void) _abortAlert
+{
+	if( _activeAlert ) {
+		[ NSApp endSheet: [ _activeAlert window ] returnCode: NSAlertSecondButtonReturn ];
+		[ self _alertDone ];
+	}
+}
+
 - (void) _askToAddCurrentSiteToWhitelist
 {
     NSString *title = NSLocalizedString(@"Always load flash for this site?", @"Always load flash for this site?");
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the white list?", @"Add %@ to the white list?"), self.host];
     
-    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:NSLocalizedString(@"Add to white list", @"Add to white list")];
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
     [alert setMessageText:title];
@@ -187,6 +205,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                       modalDelegate:self
                      didEndSelector:@selector(addToWhitelistAlertDidEnd:returnCode:contextInfo:)
                         contextInfo:nil];
+	_activeAlert = alert;
 }
 
 - (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
@@ -195,6 +214,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     {
         [self _addHostToWhitelist];
     }
+
+    [ self _alertDone ];
 }
 
 - (BOOL) _isHostWhitelisted
@@ -227,7 +248,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
 }
 
-- (void) _whitelistAdditionMade: (NSNotification*) note
+- (void) _whitelistAdditionMade: (NSNotification*) notification
 {
 	if ([self _isHostWhitelisted])
 		[self _convertTypesForContainer];
@@ -275,7 +296,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     NSString *title = NSLocalizedString(@"Remove from white list?", @"Remove from white list?");
     NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the white list?", @"Remove %@ from the white list?"), self.host];
     
-    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:NSLocalizedString(@"Remove from white list", @"Remove from white list")];
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel")];
     [alert setMessageText:title];
@@ -285,6 +306,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                       modalDelegate:self
                      didEndSelector:@selector(removeFromWhitelistAlertDidEnd:returnCode:contextInfo:)
                         contextInfo:nil];
+	_activeAlert = alert;
 }
 
 - (void)removeFromWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
@@ -293,6 +315,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     {
         [self _removeHostFromWhitelist];
     }
+	
+    [ self _alertDone ];
 }
 
 - (IBAction)editWhitelist:(id)sender;
@@ -444,6 +468,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 #pragma mark -
 #pragma mark DOM Conversion
 
+
 - (void) _convertTypesForElement:(DOMElement *)element
 {
     NSString *type = [element getAttribute:@"type"];
@@ -456,6 +481,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) _convertTypesForContainer
 {
+    [ self _abortAlert ];
+	
     DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
 
     DOMNodeList *nodeList = nil;
