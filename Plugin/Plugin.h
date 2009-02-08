@@ -33,12 +33,15 @@ THE SOFTWARE.
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
+    NSDictionary* _flashVars;
     CTFWhitelistWindowController *_whitelistWindowController;
     NSTrackingArea *trackingArea;
     NSAlert* _activeAlert;
     BOOL mouseIsDown;
     BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
+    BOOL _isSifr;
+    BOOL _fromYouTube;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;

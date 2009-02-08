@@ -28,14 +28,25 @@ THE SOFTWARE.
 #import "NSBezierPath-RoundedRectangle.h"
 #import "CTFWhitelistWindowController.h"
 
+#define LOGGING_ENABLED 1
+
+
+    // MIME types
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
+
+    // NSUserDefaults keys
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash.whitelist";
+static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
+static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
+
+    // NSNotification names
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForContainer;
+- (void) _replaceSelfWithElement: (DOMElement*) newElement;
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
 - (BOOL) _isHostWhitelisted;
@@ -45,7 +56,12 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (void) _addHostToWhitelist;
 - (void) _removeHostFromWhitelist;
 - (void) _askToAddCurrentSiteToWhitelist;
-- (void) _whitelistAdditionMade: (NSNotification*) note;
+- (void) _whitelistAdditionMade: (NSNotification*) notification;
+- (void) _loadFlashIfInWindow: (NSNotification*) notification;
+- (BOOL) _hasH264Version;
+- (BOOL) _useH264Version;
+- (void) _convertToMP4Container;
+- (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
 @end
 
 
@@ -70,13 +86,39 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     if (self) {
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
     
+        BOOL loadFromWhiteList = NO;
+        
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
             self.host = [base host];
-            if ([self _isHostWhitelisted] && ![self _isOptionPressed]) {
-                _isLoadingFromWhitelist = YES;
-                [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
+            if ([self _isHostWhitelisted]) {
+                loadFromWhiteList = true;
             }
+        }
+        
+        NSString* sifrKey = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
+        if( sifrKey && [ sifrKey boolValue ] ) {
+            if(YES || [[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
+                loadFromWhiteList = true;
+            else
+                _isSifr = true;
+        }
+        
+        NSString* flashvars = [ [ arguments objectForKey: WebPlugInAttributesKey ] objectForKey: @"flashvars" ];
+        if( flashvars != nil )
+            _flashVars = [ [ self _flashVarDictionary: flashvars ] retain ];
+        
+#if LOGGING_ENABLED
+        NSLog( @"arguments = %@", arguments );
+        NSLog( @"flashvars = %@", _flashVars );
+#endif
+        
+        _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
+                    || [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound;
+        
+        if(loadFromWhiteList && ![self _isOptionPressed]) {
+            _isLoadingFromWhitelist = YES;
+            [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
         }
 
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
@@ -93,13 +135,16 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                     [self setToolTip:src];
             }
         }
-		
-		// Observe for additions to the whitelist (can't use KVO due to the dot in the pref key):
-		
-		[[NSNotificationCenter defaultCenter] addObserver: self 
-												 selector: @selector( _whitelistAdditionMade: ) 
-													 name: sCTFWhitelistAdditionMade 
-												   object: nil ];
+        
+        // Observe various things:
+        
+        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+        
+            // Observe for additions to the whitelist (can't use KVO due to the dot in the pref key):
+        [center addObserver: self 
+                   selector: @selector( _whitelistAdditionMade: ) 
+                       name: sCTFWhitelistAdditionMade 
+                     object: nil ];
     }
 
     return self;
@@ -107,10 +152,11 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) dealloc
 {
-    [self _abortAlert];		// to be on the safe side
+    [self _abortAlert];        // to be on the safe side
     
     self.container = nil;
     self.host = nil;
+    [_flashVars release];
     [_whitelistWindowController release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 
@@ -205,7 +251,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                       modalDelegate:self
                      didEndSelector:@selector(addToWhitelistAlertDidEnd:returnCode:contextInfo:)
                         contextInfo:nil];
-	_activeAlert = alert;
+    _activeAlert = alert;
 }
 
 - (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
@@ -306,7 +352,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
                       modalDelegate:self
                      didEndSelector:@selector(removeFromWhitelistAlertDidEnd:returnCode:contextInfo:)
                         contextInfo:nil];
-	_activeAlert = alert;
+    _activeAlert = alert;
 }
 
 - (void)removeFromWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
@@ -315,7 +361,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     {
         [self _removeHostFromWhitelist];
     }
-	
+    
     [ self _alertDone ];
 }
 
@@ -333,12 +379,23 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [self _convertTypesForContainer];
 }
 
+- (void) _loadFlashIfInWindow: (NSNotification*) notification
+{
+	if( [ notification object ] == [ self window ] )
+		[ self _convertTypesForContainer ];
+}
+
 #pragma mark -
 #pragma mark Drawing
 
 - (NSString*) badgeLabelText
 {
-	return NSLocalizedString( @"Flash", @"Flash" );
+    if( [ self _hasH264Version ] )
+        return NSLocalizedString( @"H.264", @"H.264 badge text" );
+    else if( _isSifr )
+        return NSLocalizedString( @"sIFR Flash", @"sIFR Flash badge text" );
+    else
+        return NSLocalizedString( @"Flash", @"Flash badge text" );
 }
 
 - (void) _drawBadgeWithPressed: (BOOL) pressed
@@ -461,7 +518,94 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [gradient release];
 
     // Draw label
-	[ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
+    [ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
+}
+
+
+#pragma mark -
+#pragma mark YouTube H.264 support
+
+
+- (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString
+{
+    NSMutableDictionary* flashVarsDictionary = [ NSMutableDictionary dictionary ];
+    
+    NSArray* args = [ flashvarString componentsSeparatedByString: @"&" ];
+    
+    NSEnumerator* objEnum = [ args objectEnumerator ];
+    NSString* oneArg;
+    while( oneArg = [ objEnum nextObject ] ) {
+        NSRange sepRange = [ oneArg rangeOfString: @"=" ];
+        if( sepRange.location != NSNotFound ) {
+            NSString* key = [ oneArg substringToIndex: sepRange.location ];
+            NSString* val = [ oneArg substringFromIndex: NSMaxRange( sepRange ) ];
+            
+            [ flashVarsDictionary setObject: val forKey: key ];
+        }
+    }
+    
+    return flashVarsDictionary;
+}
+
+- (NSString*) flashvarWithName: (NSString*) argName
+{
+    return [ _flashVars objectForKey: argName ];
+}
+
+- (NSString*) _videoId
+{
+    return [ self flashvarWithName: @"video_id" ];
+}
+
+- (NSString*) _videoHash
+{
+    return [ self flashvarWithName: @"t" ];
+}
+
+- (BOOL) _hasH264Version
+{
+    if( _fromYouTube )
+        return [ self _videoId ] != nil && [ self _videoHash ] != nil;
+    else
+        return NO;
+}
+
+- (BOOL) _useH264Version
+{
+    return [ self _hasH264Version ] 
+            ;
+    //        && [ [ NSUserDefaults standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ];
+}
+
+- (void) _convertElementForMP4: (DOMElement*) element
+{
+    NSString* video_id = [ self _videoId ];
+    NSString* video_hash = [ self _videoHash ];
+    
+    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+                                                 video_id, video_hash ];
+    
+    [ element setAttribute: @"src" value: src ];
+    [ element setAttribute: @"type" value: @"video/mp4" ];
+    [ element setAttribute: @"scale" value: @"aspect" ];
+    [ element setAttribute: @"autoplay" value: @"true" ];
+    [ element setAttribute: @"cache" value: @"false" ];
+   
+    if( ! [ element hasAttribute: @"width" ] )
+        [ element setAttribute: @"width" value: @"640" ];
+   
+    if( ! [ element hasAttribute: @"height" ] )
+       [ element setAttribute: @"height" value: @"500" ];
+
+    [ element setAttribute: @"flashvars" value: nil ];
+}
+
+- (void) _convertToMP4Container
+{
+    DOMElement* newElement = (DOMElement*) [ self.container cloneNode: NO ];
+    
+    [ self _convertElementForMP4: newElement ];
+    [ self _replaceSelfWithElement: newElement ];
 }
 
 
@@ -481,8 +625,11 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 - (void) _convertTypesForContainer
 {
-    [ self _abortAlert ];
-	
+    if ([self _useH264Version]) {
+        [self _convertToMP4Container];
+        return;
+    }
+    
     DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
 
     DOMNodeList *nodeList = nil;
@@ -499,7 +646,14 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     for (i = 0; i < nodeList.length; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
+    
+    [self _replaceSelfWithElement: newElement];
+}
 
+- (void) _replaceSelfWithElement: (DOMElement *)newElement
+{
+    [ self _abortAlert ];
+    
     // Just to be safe, since we are about to replace our containing element
     [[self retain] autorelease];
     
