@@ -28,13 +28,10 @@ THE SOFTWARE.
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-@class CTFWhitelistWindowController;
-
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
     NSDictionary* _flashVars;
-    CTFWhitelistWindowController *_whitelistWindowController;
     NSTrackingArea *trackingArea;
     NSAlert* _activeAlert;
     BOOL mouseIsDown;
