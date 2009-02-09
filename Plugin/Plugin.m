@@ -479,12 +479,10 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 	
 	NSString* str = [ self badgeLabelText ];
 	
-	NSColor* badgeColor = [ NSColor colorWithCalibratedWhite: 1.0 alpha: pressed ? 0.40 : 0.25 ];
-	
 	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
 						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
 						   [ NSNumber numberWithInt: -1 ], NSKernAttributeName,
-						   badgeColor, NSForegroundColorAttributeName,
+						   [ NSColor blackColor ], NSForegroundColorAttributeName,
 						   nil ];
 	
 	// Set up for drawing.
@@ -537,9 +535,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 	// Apply the scale, and a transform so the result is centered in the view.
 	
 	[ NSGraphicsContext saveGraphicsState ];
-	
-	CGContextSetBlendMode([[NSGraphicsContext currentContext] graphicsPort], kCGBlendModeDifference);
-	
+    
 	NSAffineTransform* xform = [ NSAffineTransform transform ];
 	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
 	[ xform scaleBy: scaleFactor ];
@@ -547,21 +543,32 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 		[ xform rotateByDegrees: 90 ];
 	[ xform concat ];
 	
+    CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
+    
+    CGContextSetAlpha( context, pressed ? 0.40 : 0.25 );
+    CGContextBeginTransparencyLayer( context, nil );
+	
 	// Draw everything at full size, centered on the origin.
 	
 	NSPoint loc = { -strSize.width / 2, -strSize.height / 2 };
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
-	[ str drawAtPoint: loc withAttributes: attrs ];
-
+	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
+	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.25 ] set ];
+	[ fillPath fill ];
+	
 	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
-	[ badgeColor set ];
+	[ [ NSColor blackColor ] set ];
 	[ path setLineWidth: 3 ];
 	[ path stroke ];
 	
+    [ str drawAtPoint: loc withAttributes: attrs ];
+
 	// Now restore the graphics state:
 	
-	[ NSGraphicsContext restoreGraphicsState ];
+    CGContextEndTransparencyLayer( context );
+    
+    [ NSGraphicsContext restoreGraphicsState ];
 }
 
 - (void) _drawBackground
