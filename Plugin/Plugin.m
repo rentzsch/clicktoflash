@@ -437,6 +437,11 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     [self _convertToMP4Container];
 }
 
+- (IBAction)loadAllOnPage:(id)sender
+{
+    [[CTFMenubarMenuController sharedController] loadFlashForWindow: [self window]];
+}
+
 - (void) _loadContent: (NSNotification*) notification
 {
     [self _convertTypesForContainer];

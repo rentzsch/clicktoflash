@@ -41,7 +41,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="275181830">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Flash for Front Window</string>
+						<string key="NSTitle">Load Flash for Frontmost Page</string>
 						<string key="NSKeyEquiv">f</string>
 						<int key="NSKeyEquivModMask">1310720</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -56,7 +56,7 @@
 					</object>
 					<object class="NSMenuItem" id="975793511">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Flash for All Windows</string>
+						<string key="NSTitle">Load Flash for All Pages</string>
 						<string key="NSKeyEquiv">F</string>
 						<int key="NSKeyEquivModMask">1310720</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -75,7 +75,7 @@
 					</object>
 					<object class="NSMenuItem" id="831790790">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Click-to-Flash Settings...</string>
+						<string key="NSTitle">Settings...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="280454698"/>
@@ -202,7 +202,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{367, 783}, {298, 73}}</string>
+					<string>{{367, 783}, {311, 73}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
