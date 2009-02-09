@@ -123,8 +123,9 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         
         // Check for sIFR - http://www.mikeindustries.com/sifr/
         
-        NSString* sifrKey = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
-        if( sifrKey && [ sifrKey boolValue ] ) {
+        NSString* classValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"class"];
+        NSString* sifrValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
+        if ([classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue])) {
             if([[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
                 loadFromWhiteList = true;
             else
@@ -160,7 +161,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
             // needed by overriding menuForEvent and returning it there.
         
         if ([self _hasH264Version]) {
-            [[self menu] insertItemWithTitle: NSLocalizedString( @"Load as H.264", "Load H.264 context menu item" )
+            [[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
                                       action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
             [[[self menu] itemAtIndex: 1] setTarget: self];
         }
