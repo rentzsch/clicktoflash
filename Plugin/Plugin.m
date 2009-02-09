@@ -37,19 +37,29 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // NSUserDefaults keys
 static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
+#if DE_SIFR == 0
 static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
+#endif
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 
     // NSNotification names
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 #if DE_SIFR
-static NSString *sifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
-static NSString *sifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
-static NSString *sifrAddOnTest	= @"sIFR.rollback == null || typeof sIFR.rollback != \"function\"";
-static NSString *sifrRollbackJS	= @"sIFR.rollback()";
-static NSString *sifr2AddOnJSFilename = @"sifr2-addons";
-static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
+static NSString *sSifrModeDefaultsKey = @"ClickToFlash_sifrMode";
+static NSString *sSifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
+static NSString *sSifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
+static NSString *sSifrAddOnTest	= @"sIFR.rollback == null || typeof sIFR.rollback != \"function\"";
+static NSString *sSifrRollbackJS	= @"sIFR.rollback()";
+static NSString *sSifr2AddOnJSFilename = @"sifr2-addons";
+static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
+
+typedef enum
+{
+	CTFSifrModeDoNothing	= 0, 
+	CTFSifrModeAllowSifr	= 1, 
+	CTFSifrModeDeSifr		= 2
+} CTFSifrMode;
 #endif
 
 @interface CTFClickToFlashPlugin (Internal)
@@ -119,7 +129,13 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 {
     self = [super init];
     if (self) {
+		// get defaults
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		
 #if DE_SIFR
+		// out-of-the-box, ignore sIFR
+		NSDictionary *baseDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:CTFSifrModeDoNothing] forKey:sSifrModeDefaultsKey];
+		
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 #endif
 		
@@ -138,27 +154,33 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
             if ([self _isHostWhitelisted]) {
                 loadFromWhiteList = true;
             }
-#if DE_SIFR
-			else {
-				_sifrVersion = [self _sifrVersionInstalled];
-				
-				if( _sifrVersion != 0 )
-				{
-					[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
-				}
-			}
-#endif
         }
         
         // Check for sIFR - http://www.mikeindustries.com/sifr/
         
         NSString* sifrKey = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
         if( sifrKey && [ sifrKey boolValue ] ) {
-            if([[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
+#if DE_SIFR
+			if([userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAllowSifr)
+#else
+            if([userDefaults boolForKey: sAllowSifrDefaultsKey])
+#endif
                 loadFromWhiteList = true;
             else
                 _isSifr = true;
         }
+		
+#if DE_SIFR
+		if( !loadFromWhiteList && _isSifr && [userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr )
+		{
+			_sifrVersion = [self _sifrVersionInstalled];
+			
+			if( _sifrVersion != 0 )
+			{
+				[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
+			}
+		}
+#endif
         
         // Read in flashvars (needed to determine YouTube videos)
         
@@ -770,10 +792,10 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 
 	if( sifrWebView )
 	{		
-		if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sifr2Test] isEqualToString:@"true"] )				// test for sIFR v.2
+		if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sSifr2Test] isEqualToString:@"true"] )				// test for sIFR v.2
 		{
 			version = 2;
-		} else if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sifr3Test] isEqualToString:@"true"] )	{	// test for sIFR v.3
+		} else if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sSifr3Test] isEqualToString:@"true"] )	{	// test for sIFR v.3
 			version = 3;
 		}
 	}
@@ -787,11 +809,11 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 	WebView *sifrWebView = self.webView;
 	
 	// if sifr add-ons are not installed, load version-appropriate version into page
-	if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sifrAddOnTest] isEqualToString:@"true"] )
+	if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sSifrAddOnTest] isEqualToString:@"true"] )
 	{		
 		NSBundle *clickBundle = [NSBundle bundleForClass:[self class]];
 		
-		NSString *jsFileName = ( _sifrVersion == 2 ? sifr2AddOnJSFilename : sifr3AddOnJSFilename );
+		NSString *jsFileName = ( _sifrVersion == 2 ? sSifr2AddOnJSFilename : sSifr3AddOnJSFilename );
 		
 		NSString *addOnPath = [clickBundle pathForResource:jsFileName ofType:@"js"];
 		
@@ -807,7 +829,7 @@ static NSString *sifr3AddOnJSFilename = @"sifr3-addons";
 	}
 	
 	// implement rollback
-	[[sifrWebView windowScriptObject] evaluateWebScript:sifrRollbackJS];
+	[[sifrWebView windowScriptObject] evaluateWebScript:sSifrRollbackJS];
 }
 
 
