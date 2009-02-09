@@ -130,6 +130,13 @@ static CTFMenubarMenuController* sSingleton = nil;
 #pragma mark Actions
 
 
+- (void) loadFlashForWindow: (NSWindow*) window
+{
+    [ [ NSNotificationCenter defaultCenter ] postNotificationName: kCTFLoadFlashViewsForWindow 
+                                                           object: window ];
+}
+
+
 - (IBAction) loadAllFlash: (id) sender
 {
 	[ [ NSNotificationCenter defaultCenter ] postNotificationName: kCTFLoadAllFlashViews 
@@ -141,8 +148,7 @@ static CTFMenubarMenuController* sSingleton = nil;
 {
 	NSWindow* window = [ NSApp keyWindow ];
 	if( window )
-		[ [ NSNotificationCenter defaultCenter ] postNotificationName: kCTFLoadFlashViewsForWindow 
-															   object: window ];
+		[ self loadFlashForWindow: window ];
 }
 
 

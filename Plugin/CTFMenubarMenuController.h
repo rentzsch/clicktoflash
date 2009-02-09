@@ -40,6 +40,8 @@ extern NSString* kCTFLoadFlashViewsForWindow;
 
 + (CTFMenubarMenuController*) sharedController;
 
+- (void) loadFlashForWindow: (NSWindow*) window;
+
 - (IBAction) loadAllFlash: (id) sender;
 - (IBAction) loadKeyWindowFlash: (id) sender;
 - (IBAction) showSettingsWindow: (id) sender;
