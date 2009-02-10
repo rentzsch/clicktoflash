@@ -2,5 +2,3 @@
 // Prefix header for all source files of the 'ClickToFlash' target in the 'ClickToFlash' project
 //
 
-// enable/disable DE_SIFR
-#define DE_SIFR 1
