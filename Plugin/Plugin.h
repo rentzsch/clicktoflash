@@ -39,6 +39,8 @@ THE SOFTWARE.
     BOOL _isLoadingFromWhitelist;
     BOOL _isSifr;
     BOOL _fromYouTube;
+	WebView *_webView;
+	NSUInteger _sifrVersion;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -47,6 +49,7 @@ THE SOFTWARE.
 
 @property (nonatomic, retain) DOMElement *container;
 @property (nonatomic, retain) NSString *host;
+@property (nonatomic, retain) WebView *webView;
 @property (readonly, nonatomic, retain) NSString *addToWhiteListMenuTitle;
 
 - (IBAction)addToWhitelist:(id)sender;

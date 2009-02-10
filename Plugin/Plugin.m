@@ -36,13 +36,27 @@ static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // NSUserDefaults keys
-static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
+       NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
 static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 
     // NSNotification names
-static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
+	   NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
+static NSString *sSifrModeDefaultsKey = @"ClickToFlash_sifrMode";
+static NSString *sSifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
+static NSString *sSifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
+static NSString *sSifrAddOnTest	= @"sIFR.rollback == null || typeof sIFR.rollback != \"function\"";
+static NSString *sSifrRollbackJS	= @"sIFR.rollback()";
+static NSString *sSifr2AddOnJSFilename = @"sifr2-addons";
+static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
+
+typedef enum
+{
+	CTFSifrModeDoNothing	= 0, 
+	CTFSifrModeAllowSifr	= 1, 
+	CTFSifrModeDeSifr		= 2
+} CTFSifrMode;
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
@@ -64,6 +78,8 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 - (BOOL) _useH264Version;
 - (void) _convertToMP4Container;
 - (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
+- (NSUInteger) _sifrVersionInstalled;
+- (void) _disableSIFR;
 @end
 
 
@@ -105,6 +121,14 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 {
     self = [super init];
     if (self) {
+		// get defaults
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		
+		// out-of-the-box, ignore sIFR
+		NSDictionary *baseDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:CTFSifrModeDoNothing] forKey:sSifrModeDefaultsKey];
+		
+		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
+		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
         
         [self _migrateWhitelist];
@@ -116,6 +140,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
         if (base) {
             self.host = [base host];
+
             if ([self _isHostWhitelisted]) {
                 loadFromWhiteList = true;
             }
@@ -126,11 +151,21 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         NSString* classValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"class"];
         NSString* sifrValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
         if ([classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue])) {
-            if([[NSUserDefaults standardUserDefaults] boolForKey: sAllowSifrDefaultsKey])
+			if([userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAllowSifr)
                 loadFromWhiteList = true;
             else
                 _isSifr = true;
         }
+		
+		if( !loadFromWhiteList && _isSifr && [userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr )
+		{
+			_sifrVersion = [self _sifrVersionInstalled];
+			
+			if( _sifrVersion != 0 )
+			{
+				[self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
+			}
+		}
         
         // Read in flashvars (needed to determine YouTube videos)
         
@@ -156,7 +191,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
         // Set up contextual menu
         
         if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
-            NSLog(@"Could not load conextual menu plugin");
+            NSLog(@"Could not load contextual menu plugin");
             // NOTE [tgaul]: we could save memory by not loading the context menu until it was
             // needed by overriding menuForEvent and returning it there.
         
@@ -214,6 +249,7 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     
     self.container = nil;
     self.host = nil;
+	self.webView = nil;
     [_flashVars release];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 
@@ -739,7 +775,58 @@ static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
     self.container = nil;
 }
 
+#pragma mark -
+#pragma mark deSIFR methods
 
+- (NSUInteger) _sifrVersionInstalled
+{	
+	// get the container's WebView
+	WebView *sifrWebView = self.webView;
+	NSUInteger version = 0;
+
+	if( sifrWebView )
+	{		
+		if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sSifr2Test] isEqualToString:@"true"] )				// test for sIFR v.2
+		{
+			version = 2;
+		} else if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sSifr3Test] isEqualToString:@"true"] )	{	// test for sIFR v.3
+			version = 3;
+		}
+	}
+	
+	return version;
+}
+
+- (void) _disableSIFR
+{	
+	// get the container's WebView
+	WebView *sifrWebView = self.webView;
+	
+	// if sifr add-ons are not installed, load version-appropriate version into page
+	if( [[sifrWebView stringByEvaluatingJavaScriptFromString:sSifrAddOnTest] isEqualToString:@"true"] )
+	{		
+		NSBundle *clickBundle = [NSBundle bundleForClass:[self class]];
+		
+		NSString *jsFileName = ( _sifrVersion == 2 ? sSifr2AddOnJSFilename : sSifr3AddOnJSFilename );
+		
+		NSString *addOnPath = [clickBundle pathForResource:jsFileName ofType:@"js"];
+		
+		if( addOnPath )
+		{
+			NSString *sifrAddOnJS = [NSString stringWithContentsOfFile:addOnPath];
+			
+			if( sifrAddOnJS && !([sifrAddOnJS isEqualToString:@""]) )
+			{
+				[[sifrWebView windowScriptObject] evaluateWebScript:sifrAddOnJS];
+			}
+		}
+	}
+	
+	// implement rollback
+	[[sifrWebView windowScriptObject] evaluateWebScript:sSifrRollbackJS];
+}
+
+@synthesize webView = _webView;
 @synthesize container = _container;
 @synthesize host = _host;
 
