@@ -54,6 +54,8 @@
 		B5CFF1870F40F000005DB9CC /* HarnessMain.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CFF1860F40F000005DB9CC /* HarnessMain.xib */; };
 		B5CFF18A0F40F013005DB9CC /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		B5CFF1AE0F40F070005DB9CC /* HarnessMain.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */; };
+		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
+		D9566D8D0F380C9F00358646 /* sifr3-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2D0F37EA0800358646 /* sifr3-addons.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +117,9 @@
 		B5CFF1860F40F000005DB9CC /* HarnessMain.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HarnessMain.xib; path = "TestFiles/Debugging Harness/HarnessMain.xib"; sourceTree = "<group>"; };
 		B5CFF1AB0F40F064005DB9CC /* Harness-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Harness-Info.plist"; path = "TestFiles/Debugging Harness/Harness-Info.plist"; sourceTree = "<group>"; };
 		B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarnessMain.m; path = "TestFiles/Debugging Harness/HarnessMain.m"; sourceTree = "<group>"; };
+		D9566C2C0F37EA0800358646 /* sifr2-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr2-addons.js"; sourceTree = "<group>"; };
+		D9566C2D0F37EA0800358646 /* sifr3-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr3-addons.js"; sourceTree = "<group>"; };
+		D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickToFlash_Prefix.pch; path = Plugin/ClickToFlash_Prefix.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +186,7 @@
 		55EB70540E04A89C0016593D /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
+				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
@@ -193,6 +199,7 @@
 				6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */,
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
+				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";
@@ -216,6 +223,16 @@
 				B5028E920F413553004886D7 /* HarnessAppDelegate.h */,
 			);
 			name = "Debugging Harness";
+			sourceTree = "<group>";
+		};
+		D9566C2B0F37EA0800358646 /* deSIFR Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D9566C2C0F37EA0800358646 /* sifr2-addons.js */,
+				D9566C2D0F37EA0800358646 /* sifr3-addons.js */,
+			);
+			name = "deSIFR Resources";
+			path = "Plugin/deSIFR Resources";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,6 +327,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */,
+				D9566D8D0F380C9F00358646 /* sifr3-addons.js in Resources */,
 				072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */,
 				072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */,
 				6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */,
@@ -579,7 +598,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PREFIX_HEADER = Plugin/ClickToFlash_Prefix.pch;
 				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
