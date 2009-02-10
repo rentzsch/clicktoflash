@@ -165,9 +165,9 @@
 		55EB70300E04A8410016593D = {
 			isa = PBXGroup;
 			children = (
-				B5CFF1810F40EF98005DB9CC /* Debugging Harness */,
 				55EB70540E04A89C0016593D /* Plugin */,
 				558405520E0F2C2200EA991B /* Installer */,
+				B5CFF1810F40EF98005DB9CC /* Debugging Harness */,
 				55EB70550E04A8A40016593D /* Frameworks */,
 				55EB70430E04A8640016593D /* Products */,
 			);
@@ -186,7 +186,6 @@
 		55EB70540E04A89C0016593D /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
-				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
@@ -200,6 +199,7 @@
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
 				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
+				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";

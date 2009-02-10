@@ -39,11 +39,8 @@ THE SOFTWARE.
     BOOL _isLoadingFromWhitelist;
     BOOL _isSifr;
     BOOL _fromYouTube;
-    
-#if DE_SIFR
 	WebView *_webView;
 	NSUInteger _sifrVersion;
-#endif
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
