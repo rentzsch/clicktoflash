@@ -36,12 +36,12 @@ static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // NSUserDefaults keys
-static NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
+	   NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
 static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 
     // NSNotification names
-static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
+	   NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 
 @interface CTFClickToFlashPlugin (Internal)
