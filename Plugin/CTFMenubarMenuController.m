@@ -56,11 +56,6 @@ static NSMenu* appMenu()
 - (BOOL) shouldLoadMainMenuItemIntoCurrentProcess
 {
     NSBundle* appBundle = [ NSBundle mainBundle ];
-
-//    NSSet* loadAppIdentifiers = [ NSSet setWithObjects:
-//                                 @"com.apple.Safari",
-//                                 nil ];
-    
     NSString* currentAppId = [ appBundle bundleIdentifier ];
     
     if( [ appBundle objectForInfoDictionaryKey: @"ClickToFlashPrefsAppMenuItemIndex" ] != nil )
@@ -73,9 +68,6 @@ static NSMenu* appMenu()
             return YES;
     }
     
-//    if( [ loadAppIdentifiers containsObject: [ appBundle bundleIdentifier ] ] )
-//        return YES;
-
     return NO;
 }
 
