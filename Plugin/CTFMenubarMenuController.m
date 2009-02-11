@@ -34,67 +34,67 @@ NSString* kCTFLoadFlashViewsForWindow = @"CTFLoadFlashViewsForWindow";
 
 static CTFMenubarMenuController* sSingleton = nil;
 
+static NSString* kApplicationsToInstallMenuInto[] = {
+    @"com.apple.Safari",
+    nil
+};
+
+
+static NSMenu* appMenu()
+{
+    return [ [ [ NSApp mainMenu ] itemAtIndex: 0 ] submenu ];
+}
+
 
 @implementation CTFMenubarMenuController
 
 
 #pragma mark -
-#pragma mark Lifetime management
+#pragma mark Main menu item setup
 
 
-- (id) init
+- (BOOL) shouldLoadMainMenuItemIntoCurrentProcess
 {
-	if( sSingleton ) {
-		[ self release ];
-		return sSingleton;
-	}
+    NSBundle* appBundle = [ NSBundle mainBundle ];
 
-	self = [ super init ];
-		
-	sSingleton = self;
-	
-	if( self ) {
-		if( ! [ NSBundle loadNibNamed: @"MenubarMenu" owner: self ] )
-			NSLog( @"ClickToFlash: Could not load menubar menu nib" );
-	}
-	
-	return self;
+//    NSSet* loadAppIdentifiers = [ NSSet setWithObjects:
+//                                 @"com.apple.Safari",
+//                                 nil ];
+    
+    NSString* currentAppId = [ appBundle bundleIdentifier ];
+    
+    if( [ appBundle objectForInfoDictionaryKey: @"ClickToFlashPrefsAppMenuItemIndex" ] != nil )
+        return YES;
+    
+    int i;
+    NSString* appId = kApplicationsToInstallMenuInto[ 0 ];
+    for( i = 0 ; appId != nil ; appId = kApplicationsToInstallMenuInto[ ++i ] ) {
+        if( [ appId isEqualToString: currentAppId ] )
+            return YES;
+    }
+    
+//    if( [ loadAppIdentifiers containsObject: [ appBundle bundleIdentifier ] ] )
+//        return YES;
+
+    return NO;
 }
 
 
-- (void) dealloc
+- (int) applicationMenuPrefsInsertionLocation
 {
-	[ _whitelistWindowController release ];
+    NSBundle* appBundle = [ NSBundle mainBundle ];
+    NSNumber* indx = [ appBundle objectForInfoDictionaryKey: @"ClickToFlashPrefsAppMenuItemIndex" ];
+    if( indx )
+        return [ indx intValue ];
 
-	[ super dealloc ];
-}
-
-
-- (void) awakeFromNib
-{
-	if( !menu ) {
-		NSLog( @"ClickToFlash: Could not load menubar menu" );
-		return;
-	}
-    
-    // We need a submenu item to wrap this loaded menu:
-    
-	NSMenuItem* ctfMenuItem = [ [ [ NSMenuItem alloc ] initWithTitle: [ menu title ]
-															  action: nil
-													   keyEquivalent: @"" ] autorelease ];
-	[ ctfMenuItem setSubmenu: menu ];
-	
-	NSMenu* applicationMenu = [ [ [ NSApp mainMenu ] itemAtIndex: 0 ] submenu ];
-	
-    // Find the location to insert the item:
-    
+	NSMenu* applicationMenu = appMenu();
     int insertLocation = -1, showPrefsItem = -1, lastSeenSep = -1;
     int i, count = [ applicationMenu numberOfItems ];
     for( i = 0 ; i < count ; ++i ) {
         // Put it before the first separator after the preferences item.
         
         NSMenuItem* item = [ applicationMenu itemAtIndex: i ];
-       
+        
         if( [ item action ] == @selector( showPreferences: ) )
             showPrefsItem = i;
         
@@ -111,8 +111,67 @@ static CTFMenubarMenuController* sSingleton = nil;
             insertLocation = 4;  // didn't find it, assume it's item 3 (the default for most apps)
     }
     
+    return insertLocation;
+}
+
+
+#pragma mark -
+#pragma mark Lifetime management
+
+
+- (id) init
+{
+	if( sSingleton ) {
+		[ self release ];
+		return sSingleton;
+	}
+    
+	self = [ super init ];
+    
+	sSingleton = self;
+	
+	if( self ) {
+		if( ! [ NSBundle loadNibNamed: @"MenubarMenu" owner: self ] )
+			NSLog( @"ClickToFlash: Could not load menubar menu nib" );
+	}
+	
+	return self;
+}
+
+
+- (void) dealloc
+{
+	[ _whitelistWindowController release ];
+    
+	[ super dealloc ];
+}
+
+
+- (void) awakeFromNib
+{
+    if( ![ self shouldLoadMainMenuItemIntoCurrentProcess ] )
+        return;
+    
+	if( !menu ) {
+		NSLog( @"ClickToFlash: Could not load menubar menu" );
+		return;
+	}
+    
+    // We need a submenu item to wrap this loaded menu:
+    
+	NSMenuItem* ctfMenuItem = [ [ [ NSMenuItem alloc ] initWithTitle: [ menu title ]
+															  action: nil
+													   keyEquivalent: @"" ] autorelease ];
+	[ ctfMenuItem setSubmenu: menu ];
+	
+    // Find the location to insert the item:
+    
+    int insertLocation = [ self applicationMenuPrefsInsertionLocation ];
+    
     // Insert the submenu there:
     
+	NSMenu* applicationMenu = appMenu();
+	
     [ applicationMenu insertItem: ctfMenuItem atIndex: insertLocation ];
 }
 
