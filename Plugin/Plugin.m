@@ -563,7 +563,7 @@ typedef enum
 
 		maxH = kMinHeight;
 	}
-
+	
 	float scaleFactor = 1.0;
 	
 	if( maxW < w )
