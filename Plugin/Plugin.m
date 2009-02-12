@@ -36,12 +36,12 @@ static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // NSUserDefaults keys
-       NSString *sHostWhitelistDefaultsKey = @"ClickToFlash_whitelist";
+static NSString *sHostSiteInfoDefaultsKey = @"ClickToFlash_siteInfo";
 static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 
     // NSNotification names
-	   NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
+static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
 static NSString *sSifrModeDefaultsKey = @"ClickToFlash_sifrMode";
 static NSString *sSifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
@@ -51,12 +51,16 @@ static NSString *sSifrRollbackJS	= @"sIFR.rollback()";
 static NSString *sSifr2AddOnJSFilename = @"sifr2-addons";
 static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 
-typedef enum
-{
+typedef enum {
 	CTFSifrModeDoNothing	= 0, 
 	CTFSifrModeAllowSifr	= 1, 
 	CTFSifrModeDeSifr		= 2
 } CTFSifrMode;
+
+typedef enum {
+    CTFSiteKindWhitelist = 0
+} CTGSiteKind;
+
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
@@ -65,7 +69,7 @@ typedef enum
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
 - (BOOL) _isHostWhitelisted;
-- (NSMutableArray *)_hostWhitelist;
+- (NSMutableArray *) _mutableSiteInfo;
 - (void) _alertDone;
 - (void) _abortAlert;
 - (void) _addHostToWhitelist;
@@ -83,6 +87,47 @@ typedef enum
 @end
 
 
+#pragma mark -
+#pragma mark Whitelist Utility Functions
+
+
+    // Simple ForEach macro to make life easier on those porting to Tiger
+    // than using Leopard's fast enumeration and "in" keyword:
+#define CTFForEachObject( Type, varName, container ) \
+    NSEnumerator* feoEnum_##__LINE__ = [ container objectEnumerator ]; \
+    Type* varName; \
+    while( varName = [ feoEnum_##__LINE__ nextObject ] )
+
+static NSUInteger indexOfItemForSite( NSArray* arr, NSString* site )
+{
+    int i = 0;
+    CTFForEachObject( NSDictionary, item, arr ) {
+        if( [ [ item objectForKey: @"site" ] isEqualToString: site ] )
+            return i;
+        ++i;
+    }
+    
+    return NSNotFound;
+}
+
+static NSDictionary* itemForSite( NSArray* arr, NSString* site )
+{
+    NSUInteger index = indexOfItemForSite( arr, site );
+    
+    if( index != NSNotFound )
+        return [ arr objectAtIndex: index ];
+    
+	return nil;
+}
+
+static NSDictionary* whitelistItemForSite( NSString* site )
+{
+    return [ NSDictionary dictionaryWithObjectsAndKeys: site, @"site",
+                [ NSNumber numberWithInt: CTFSiteKindWhitelist ], @"kind",
+                nil ];
+}
+
+
 @implementation CTFClickToFlashPlugin
 
 
@@ -98,6 +143,7 @@ typedef enum
 #pragma mark -
 #pragma mark Initialization and Superclass Overrides
 
+
 - (void) _migrateWhitelist
 {
     // Migrate from the old location to the new location.  We'll leave
@@ -108,12 +154,17 @@ typedef enum
     
     id oldWhitelist = [ defaults objectForKey: @"ClickToFlash.whitelist" ];
     if( oldWhitelist ) {
-        id newWhitelist = [ defaults objectForKey: sHostWhitelistDefaultsKey ];
+        id newWhitelist = [ defaults objectForKey: sHostSiteInfoDefaultsKey ];
         
         if( newWhitelist == nil ) {
-            [ defaults setObject: oldWhitelist forKey: sHostWhitelistDefaultsKey ];
-            [ defaults removeObjectForKey: @"ClickToFlash.whitelist"];
+            NSMutableArray* newWhitelist = [ NSMutableArray arrayWithCapacity: [ oldWhitelist count ] ];
+            CTFForEachObject( NSString, site, oldWhitelist ) {
+                [ newWhitelist addObject: whitelistItemForSite( site ) ];
+            }
+            [ defaults setObject: newWhitelist forKey: sHostSiteInfoDefaultsKey ];
         }
+
+        [ defaults removeObjectForKey: @"ClickToFlash.whitelist"];
     }
 }
 
@@ -363,13 +414,13 @@ typedef enum
 
 - (BOOL) _isHostWhitelisted
 {
-    NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey];
-    return hostWhitelist && [hostWhitelist containsObject:self.host];
+    NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] arrayForKey:sHostSiteInfoDefaultsKey];
+    return hostWhitelist && itemForSite(hostWhitelist, self.host) != nil;
 }
 
-- (NSMutableArray *)_hostWhitelist
+- (NSMutableArray *) _mutableSiteInfo
 {
-    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] stringArrayForKey:sHostWhitelistDefaultsKey] mutableCopy] autorelease];
+    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] arrayForKey:sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
     if (hostWhitelist == nil) {
         hostWhitelist = [NSMutableArray array];
     }
@@ -378,17 +429,21 @@ typedef enum
 
 - (void) _addHostToWhitelist
 {
-    NSMutableArray *hostWhitelist = [self _hostWhitelist];
-    [hostWhitelist addObject:self.host];
-    [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+    NSMutableArray *siteInfo = [self _mutableSiteInfo];
+    [siteInfo addObject: whitelistItemForSite(self.host)];
+    [[NSUserDefaults standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
     [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
 
 - (void) _removeHostFromWhitelist
 {
-    NSMutableArray *hostWhitelist = [self _hostWhitelist];
-    [hostWhitelist removeObject:self.host];
-    [[NSUserDefaults standardUserDefaults] setObject:hostWhitelist forKey:sHostWhitelistDefaultsKey];
+    NSMutableArray *siteInfo = [self _mutableSiteInfo];
+    NSUInteger foundIndex = indexOfItemForSite(siteInfo, self.host);
+    
+    if(foundIndex != NSNotFound) {
+        [siteInfo removeObjectAtIndex: foundIndex];
+        [[NSUserDefaults standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
+    }
 }
 
 - (void) _whitelistAdditionMade: (NSNotification*) notification
@@ -649,9 +704,7 @@ typedef enum
     
     NSArray* args = [ flashvarString componentsSeparatedByString: @"&" ];
     
-    NSEnumerator* objEnum = [ args objectEnumerator ];
-    NSString* oneArg;
-    while( oneArg = [ objEnum nextObject ] ) {
+    CTFForEachObject( NSString, oneArg, args ) {
         NSRange sepRange = [ oneArg rangeOfString: @"=" ];
         if( sepRange.location != NSNotFound ) {
             NSString* key = [ oneArg substringToIndex: sepRange.location ];
