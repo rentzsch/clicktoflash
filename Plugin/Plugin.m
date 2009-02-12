@@ -43,7 +43,6 @@ static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
     // NSNotification names
 	   NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
-static NSString *sSifrSupportDefaultsKey = @"ClickToFlash_sifrSupport";
 static NSString *sSifrModeDefaultsKey = @"ClickToFlash_sifrMode";
 static NSString *sSifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
 static NSString *sSifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
@@ -54,6 +53,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 
 typedef enum
 {
+	CTFSifrModeDoNothing	= 0, 
 	CTFSifrModeAllowSifr	= 1, 
 	CTFSifrModeDeSifr		= 2
 } CTFSifrMode;
@@ -125,7 +125,7 @@ typedef enum
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		
 		// out-of-the-box, ignore sIFR
-		NSDictionary *baseDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:false] forKey:sSifrSupportDefaultsKey];
+		NSDictionary *baseDefaults = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:CTFSifrModeDoNothing] forKey:sSifrModeDefaultsKey];
 		
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
@@ -151,13 +151,13 @@ typedef enum
         NSString* classValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"class"];
         NSString* sifrValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
         if ([classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue])) {
-			if([userDefaults boolForKey:sSifrSupportDefaultsKey] && [userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAllowSifr)
+			if([userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAllowSifr)
                 loadFromWhiteList = true;
             else
                 _isSifr = true;
         }
 		
-		if( !loadFromWhiteList && _isSifr && [userDefaults boolForKey:sSifrSupportDefaultsKey] && [userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr )
+		if( !loadFromWhiteList && _isSifr && [userDefaults integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr )
 		{
 			_sifrVersion = [self _sifrVersionInstalled];
 			
