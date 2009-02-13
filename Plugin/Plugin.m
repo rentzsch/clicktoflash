@@ -276,28 +276,20 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 		
 		// send a notification so that all flash objects can be tracked
 		
-		DOMElement *clonedElement = (DOMElement *)[self.container cloneNode:YES];
-		int height = [[clonedElement getAttribute:@"height"] intValue];
-		int width = [[clonedElement getAttribute:@"width"] intValue];
-		
-		if ([ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ] &&
-			((height <= maxInvisibleDimension) && (width <= maxInvisibleDimension) ) ) {
+		if ( [ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
+				&& [ self isConsideredInvisible ] ) {
 			// auto-loading is on and this view meets the size constraints
 			[self _convertTypesForContainer];
 		} else {
 			// we only want to track it if we don't auto-load it
-			[[NSNotificationCenter defaultCenter] postNotificationName:sCTFNewViewNotification
-																object:self
-															  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:base,@"baseURL",src,@"src",
-																		[NSNumber numberWithInt:height],@"height",[NSNumber numberWithInt:width],@"width",nil]
-			 ];
+			[[CTFMenubarMenuController sharedController] registerView: self];
 		}
         
         // Observe various things:
         
         NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
         
-            // Observe for additions to the whitelist (can't use KVO due to the dot in the pref key):
+            // Observe for additions to the whitelist:
         [center addObserver: self 
                    selector: @selector( _whitelistAdditionMade: ) 
                        name: sCTFWhitelistAdditionMade 
@@ -327,11 +319,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
     [self _abortAlert];        // to be on the safe side
 	
 	// notify that this ClickToFlash plugin is going away
-	[[NSNotificationCenter defaultCenter] postNotificationName:sCTFDestroyedViewNotification
-														object:self
-													  userInfo:[NSDictionary dictionaryWithObject:[self baseURL]
-																						   forKey:@"baseURL"]
-	 ];
+	[[CTFMenubarMenuController sharedController] unregisterView: self];
     
     self.container = nil;
     self.host = nil;
@@ -487,6 +475,16 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 		[self _convertTypesForContainer];
 }
 
+- (BOOL) isConsideredInvisible
+{
+	DOMElement* clonedElement = (DOMElement*) [ self.container cloneNode: NO ];
+	
+	int height = [[clonedElement getAttribute:@"height"] intValue];
+	int width = [[clonedElement getAttribute:@"width"] intValue];
+	
+	return (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension);
+}
+
 #pragma mark -
 #pragma mark Contextual menu
 
@@ -585,14 +583,8 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (void) _loadInvisibleContentForWindow: (NSNotification*) notification
 {
-	if( [ notification object ] == [ self window ] ) {
-		DOMElement* clonedElement = (DOMElement*) [ self.container cloneNode: NO ];
-		int height = [[clonedElement getAttribute:@"height"] intValue];
-		int width = [[clonedElement getAttribute:@"width"] intValue];
-		
-		if ( (height <= maxInvisibleDimension) || (width <= maxInvisibleDimension) ) {
-			[ self _convertTypesForContainer ];
-		}
+	if( [ notification object ] == [ self window ] && [ self isConsideredInvisible ] ) {
+		[ self _convertTypesForContainer ];
 	}
 }
 
@@ -842,12 +834,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (void) _convertTypesForContainer
 {
 	// notify that this ClickToFlash plugin is going away
-	[[NSNotificationCenter defaultCenter] postNotificationName:sCTFDestroyedViewNotification
-														object:self
-													  userInfo:[NSDictionary dictionaryWithObject:[self baseURL]
-																						   forKey:@"baseURL"]
-	 ];
-	
+	[[CTFMenubarMenuController sharedController] unregisterView: self];
 	
     if ([self _useH264Version])
         [self _convertToMP4Container];

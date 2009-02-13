@@ -26,24 +26,21 @@ THE SOFTWARE.
 
 #import <Cocoa/Cocoa.h>
 
-
 @class CTFWhitelistWindowController;
+
 
 extern NSString* kCTFLoadAllFlashViews;
 extern NSString* kCTFLoadFlashViewsForWindow;
 extern NSString* kCTFLoadInvisibleFlashViewsForWindow;
-extern NSString* sCTFNewViewNotification;
-extern NSString* sCTFDestroyedViewNotification;
+
 extern NSUInteger maxInvisibleDimension;
 
 
 @interface CTFMenubarMenuController : NSObject {
 	IBOutlet NSMenu* menu;
     CTFWhitelistWindowController *_whitelistWindowController;
-	NSMutableDictionary *_flashViews;
+	NSHashTable *_views;
 }
-
-@property (retain) NSMutableDictionary *flashViews;
 
 + (CTFMenubarMenuController*) sharedController;
 
@@ -53,5 +50,8 @@ extern NSUInteger maxInvisibleDimension;
 - (IBAction) loadKeyWindowFlash: (id) sender;
 - (IBAction) loadKeyWindowInvisibleFlash: (id) sender;
 - (IBAction) showSettingsWindow: (id) sender;
+
+- (void) registerView: (NSView*) view;
+- (void) unregisterView: (NSView*) view;
 
 @end

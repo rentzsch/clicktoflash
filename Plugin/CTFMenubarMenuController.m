@@ -26,18 +26,15 @@ THE SOFTWARE.
 
 #import "CTFMenubarMenuController.h"
 #import "CTFWhitelistWindowController.h"
-#import <OSAKit/OSAKit.h>
-#import <WebKit/WebKit.h>
 
+#import "Plugin.h"
 
 NSString* kCTFLoadAllFlashViews = @"CTFLoadAllFlashViews";
 NSString* kCTFLoadFlashViewsForWindow = @"CTFLoadFlashViewsForWindow";
 NSString* kCTFLoadInvisibleFlashViewsForWindow = @"CTFLoadInvisibleFlashViewsForWindow";
-NSString *sCTFNewViewNotification = @"CTFNewFlashView";
-NSString *sCTFDestroyedViewNotification = @"CTFDestroyedFlashView";
+
 NSUInteger maxInvisibleDimension = 50;
 
-static CTFMenubarMenuController* sSingleton = nil;
 
 static NSString* kApplicationsToInstallMenuInto[] = {
     @"com.apple.Safari",
@@ -116,6 +113,9 @@ static NSMenu* appMenu()
 #pragma mark Lifetime management
 
 
+static CTFMenubarMenuController* sSingleton = nil;
+
+
 - (id) init
 {
 	if( sSingleton ) {
@@ -130,18 +130,9 @@ static NSMenu* appMenu()
 	if( self ) {
 		if( ! [ NSBundle loadNibNamed: @"MenubarMenu" owner: self ] )
 			NSLog( @"ClickToFlash: Could not load menubar menu nib" );
+		
+		_views = NSCreateHashTable( NSNonRetainedObjectHashCallBacks, 0 );
 	}
-	
-	NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-	[center addObserver: self 
-			   selector: @selector( _trackNewView: ) 
-				   name: sCTFNewViewNotification
-				 object: nil ];
-	
-	[center addObserver: self 
-			   selector: @selector( _stopTrackingView: ) 
-				   name: sCTFDestroyedViewNotification
-				 object: nil ];
 	
 	return self;
 }
@@ -150,7 +141,8 @@ static NSMenu* appMenu()
 - (void) dealloc
 {
 	[ _whitelistWindowController release ];
-    
+    NSFreeHashTable( _views );
+	
 	[ super dealloc ];
 }
 
@@ -196,167 +188,69 @@ static NSMenu* appMenu()
 #pragma mark -
 #pragma mark View Management
 
-- (void) _trackNewView: (NSNotification*) notification
-{
-	NSMutableDictionary *flashViewsDict = nil;
-	if ([self flashViews])
-		flashViewsDict = [[self flashViews] copy];
-	
-	if (! flashViewsDict) flashViewsDict = [NSMutableDictionary dictionary];
-	
-	NSString *newViewBaseURL = [[[notification userInfo] objectForKey:@"baseURL"] absoluteString];
-	NSString *newViewSrc = [[notification userInfo] objectForKey:@"src"];
-	NSNumber *newViewHeight = [[notification userInfo] objectForKey:@"height"];
-	NSNumber *newViewWidth = [[notification userInfo] objectForKey:@"width"];
-	id newTarget = [notification object];
-	
-	NSDictionary *newTargetDict = [NSDictionary dictionaryWithObjectsAndKeys:newTarget,@"target",newViewSrc,@"src",newViewHeight,@"height",newViewWidth,@"width",nil];
-	
-	NSMutableArray *baseURLArray = [flashViewsDict objectForKey:newViewBaseURL];
-	
-	if (! baseURLArray) {
-		baseURLArray = [NSMutableArray arrayWithObject:newTargetDict];
-		[flashViewsDict setObject:baseURLArray forKey:newViewBaseURL];
-	} else {
-		[baseURLArray addObject:newTargetDict];
-	}
-	
-	[self setFlashViews:flashViewsDict];
-	
-	// not sure why, but the following lines causes crashes and unexpected behavior
-	//[flashViewsDict release];
-}
 
-- (void) _stopTrackingView: (NSNotification*) notification
+- (void) registerView: (NSView*) view
 {
-	NSMutableDictionary *flashViewsDict = nil;
-	if ([self flashViews])
-		flashViewsDict = [[self flashViews] copy];
-	
-	if (! flashViewsDict) flashViewsDict = [NSMutableDictionary dictionary];
-	
-	NSString *baseURL = [[notification userInfo] objectForKey:@"baseURL"];
-	NSMutableArray *baseURLArray = [flashViewsDict objectForKey:baseURL];
-	id flashView = [notification object];
-	
-	if (! baseURLArray) {
-		// we're apparently not tracking this view
-		return;
-	}
-	
-	NSDictionary *currentDictionary;
-	BOOL foundView = NO;
-	for (currentDictionary in baseURLArray) {
-		if ([currentDictionary objectForKey:@"target"] == flashView) {
-			foundView = YES;
-			break;
-		}
-	}
-	
-	if (foundView) {
-		// only do this stuff if we actually find the view we want to stop tracking
-		
-		[baseURLArray removeObject:currentDictionary];
-		if ([baseURLArray count] == 0) [flashViewsDict removeObjectForKey:baseURL];
-		[self setFlashViews:flashViewsDict];
-	}
-}
-
-- (NSString *)_baseURLOfKeyWindow;
-{
-	// [[NSBundle mainBundle] bundleIdentifier|executablePath|bundlePath] all return stuff for Safari
-	// even if called from WebKit
-	
-	// the following line crashes WebKit, so we can't use the Scripting Bridge until that is fixed
-	// SafariApplication *safari = [SBApplication applicationWithProcessIdentifier:getpid()];
-	
-	NSString *webKitFrameworkBundlePath = [[NSBundle bundleForClass:[WebView class]] bundlePath];
-	
-	BOOL isWebKit = NO;
-	if (! [webKitFrameworkBundlePath hasPrefix:@"/System/Library/Frameworks"]) {
-		// we're not using the system version of WebKit, so it's the WebKit app
-		isWebKit = YES;
-	};
-	
-	// the following line doesn't seem to work reliably
-	// BOOL isWebKit = [[[NSProcessInfo processInfo] arguments] containsObject:@"-WebKitDeveloperExtras"];
-	NSString *appString = @"";
-	if (isWebKit) {
-		appString = @"WebKit";
-	} else {
-		appString = @"Safari";
-	}
-	
-	NSString *appleScriptSourceString = [NSString stringWithFormat:@"tell application \"%@\"\nURL of current tab of front window\nend tell",appString];
-	
-	
-	// I didn't want to bring OSACrashyScript into this, but I had to; sorry guys, Scripting Bridge
-	// just totally crashes WebKit and that's unacceptable
-	
-	NSDictionary *errorDict = nil;
-	OSAScript *browserNameScript = [[OSAScript alloc] initWithSource:appleScriptSourceString];
-	NSAppleEventDescriptor *aeDesc = [browserNameScript executeAndReturnError:&errorDict];
-	[browserNameScript release];
-	
-	NSString *baseURL = nil;
-	
-	if (! errorDict) baseURL = [aeDesc stringValue];
-	
-	return baseURL;
-}
-
-- (BOOL) _atLeastOneFlashViewExists;
-{
-	NSLog(@"%@",[self flashViews]);
-	return ([[[self flashViews] allKeys] count] >= 1);
+	NSHashInsertIfAbsent( _views, view );
 }
 
 
-- (BOOL) _flashViewExistsForKeyWindow;
+- (void) unregisterView: (NSView*) view
 {
-	NSString *baseURL = [self _baseURLOfKeyWindow];
-	
-	// if there's an array for the base URL, there is at least one view
-	// with that base URL
-	return ([[self flashViews] objectForKey:baseURL] != nil);
+	NSHashRemove( _views, view );
 }
 
-- (BOOL) _invisibleFlashViewExistsForKeyWindow;
+
+- (BOOL) _atLeastOneFlashViewExists
 {
-	BOOL returnValue = NO;
-	NSString *baseURL = [self _baseURLOfKeyWindow];
+	return NSCountHashTable( _views ) > 0;
+}
+
+
+- (BOOL) _flashViewExistsForKeyWindowWithInvisibleOnly: (BOOL) mustBeInvisible
+{
+	BOOL rslt = NO;
 	
-	NSMutableArray *baseURLArray = [[self flashViews] objectForKey:baseURL];
+	NSWindow* keyWindow = [ NSApp keyWindow ];
 	
-	if (baseURLArray) {
-		NSDictionary *currentDictionary = nil;
-		
-		for (currentDictionary in baseURLArray) {
-			NSUInteger height = [[currentDictionary objectForKey:@"height"] intValue];
-			NSUInteger width = [[currentDictionary objectForKey:@"width"] intValue];
-			
-			if ((height <= maxInvisibleDimension) && (width <= maxInvisibleDimension)) {
-				returnValue = YES;
+	NSHashEnumerator enumerator = NSEnumerateHashTable( _views );
+	CTFClickToFlashPlugin* item;
+	while( item = NSNextHashEnumeratorItem( &enumerator ) ) {
+		if( [ item window ] == keyWindow ) {
+			if( !mustBeInvisible || [ item isConsideredInvisible ] ) {
+				rslt = YES;
 				break;
 			}
 		}
 	}
+	NSEndHashTableEnumeration( &enumerator );
 	
-	return returnValue;
+	return rslt;
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem *)item {
-	BOOL returnValue = YES;
-	
-	if ([item action] == @selector(loadAllFlash:)) {
-		returnValue = [self _atLeastOneFlashViewExists];
-	} else if ([item action] == @selector(loadKeyWindowFlash:)) {
-		returnValue = [self _flashViewExistsForKeyWindow];
-	} else if ([item action] == @selector(loadKeyWindowInvisibleFlash:)) {
-		returnValue = [self _invisibleFlashViewExistsForKeyWindow];
+- (BOOL) _flashViewExistsForKeyWindow
+{
+	return [ self _flashViewExistsForKeyWindowWithInvisibleOnly: NO ];
+}
+
+- (BOOL) _invisibleFlashViewExistsForKeyWindow;
+{
+	return [ self _flashViewExistsForKeyWindowWithInvisibleOnly: YES ];
+}
+
+- (BOOL) validateMenuItem: (NSMenuItem*) item
+{
+	if ( [ item action ] == @selector( loadAllFlash: ) ) {
+		return [ self _atLeastOneFlashViewExists ];
+	}
+	else if( [ item action ] == @selector( loadKeyWindowFlash: ) ) {
+		return [ self _flashViewExistsForKeyWindow ];
+	}
+	else if( [ item action ] == @selector(loadKeyWindowInvisibleFlash: ) ) {
+		return [ self _invisibleFlashViewExistsForKeyWindow ];
 	}
 	
-	return returnValue;
+	return YES;
 }
 
 #pragma mark -
@@ -407,7 +301,5 @@ static NSMenu* appMenu()
 	
 	[ _whitelistWindowController showWindow: sender ];
 }
-
-@synthesize flashViews = _flashViews;
 
 @end

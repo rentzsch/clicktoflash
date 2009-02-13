@@ -61,4 +61,6 @@ THE SOFTWARE.
 - (IBAction)loadH264:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
 
+- (BOOL) isConsideredInvisible;
+
 @end
