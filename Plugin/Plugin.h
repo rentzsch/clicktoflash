@@ -51,7 +51,6 @@ THE SOFTWARE.
 @property (nonatomic, retain) DOMElement *container;
 @property (nonatomic, retain) NSString *host;
 @property (nonatomic, retain) WebView *webView;
-@property (readonly, nonatomic, retain) NSString *addToWhiteListMenuTitle;
 @property (retain) NSString *baseURL;
 
 - (IBAction)addToWhitelist:(id)sender;

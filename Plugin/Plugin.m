@@ -242,19 +242,6 @@ static NSDictionary* whitelistItemForSite( NSString* site )
             [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
         }
         
-        // Set up contextual menu
-        
-        if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self])
-            NSLog(@"Could not load contextual menu plugin");
-            // NOTE [tgaul]: we could save memory by not loading the context menu until it was
-            // needed by overriding menuForEvent and returning it there.
-        
-        if ([self _hasH264Version]) {
-            [[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
-                                      action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
-            [[[self menu] itemAtIndex: 1] setTarget: self];
-        }
-        
         // Set up main menus
         
 		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
@@ -333,7 +320,6 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 	
     [super dealloc];
 }
-
 
 - (void) drawRect:(NSRect)rect
 {
@@ -488,17 +474,36 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 #pragma mark -
 #pragma mark Contextual menu
 
-- (NSString*) addToWhiteListMenuTitle
+- (NSMenu*) menuForEvent: (NSEvent*) event
 {
-    return [NSString stringWithFormat:NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), self.host];
+    // Set up contextual menu
+    
+    if( ![ self menu ] ) {
+        if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self]) {
+            NSLog(@"Could not load contextual menu plugin");
+        }
+        else {
+            if ([self _hasH264Version]) {
+                [[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
+                                          action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
+                [[[self menu] itemAtIndex: 1] setTarget: self];
+            }
+        }
+    }
+    
+    return [self menu];
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+- (BOOL) validateMenuItem: (NSMenuItem *)menuItem
 {
     BOOL enabled = YES;
     SEL action = [menuItem action];
     if (action == @selector(addToWhitelist:))
     {
+        NSString* title = [NSString stringWithFormat:
+                NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), 
+                self.host];
+        [menuItem setTitle: title];
         if ([self _isHostWhitelisted])
             enabled = NO;
     }
