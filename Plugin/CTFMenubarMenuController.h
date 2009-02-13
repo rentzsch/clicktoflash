@@ -31,12 +31,19 @@ THE SOFTWARE.
 
 extern NSString* kCTFLoadAllFlashViews;
 extern NSString* kCTFLoadFlashViewsForWindow;
+extern NSString* kCTFLoadInvisibleFlashViewsForWindow;
+extern NSString* sCTFNewViewNotification;
+extern NSString* sCTFDestroyedViewNotification;
+extern NSUInteger maxInvisibleDimension;
 
 
 @interface CTFMenubarMenuController : NSObject {
 	IBOutlet NSMenu* menu;
     CTFWhitelistWindowController *_whitelistWindowController;
+	NSMutableDictionary *_flashViews;
 }
+
+@property (retain) NSMutableDictionary *flashViews;
 
 + (CTFMenubarMenuController*) sharedController;
 
@@ -44,6 +51,7 @@ extern NSString* kCTFLoadFlashViewsForWindow;
 
 - (IBAction) loadAllFlash: (id) sender;
 - (IBAction) loadKeyWindowFlash: (id) sender;
+- (IBAction) loadKeyWindowInvisibleFlash: (id) sender;
 - (IBAction) showSettingsWindow: (id) sender;
 
 @end

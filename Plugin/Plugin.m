@@ -39,6 +39,7 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sHostSiteInfoDefaultsKey = @"ClickToFlash_siteInfo";
 static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
+static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
 
     // NSNotification names
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
@@ -189,6 +190,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
         // Get URL and test against the whitelist
         
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
+		[self setBaseURL:[base absoluteString]];
         if (base) {
             self.host = [base host];
 
@@ -196,6 +198,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
                 loadFromWhiteList = true;
             }
         }
+
         
         // Check for sIFR - http://www.mikeindustries.com/sifr/
         
@@ -259,8 +262,9 @@ static NSDictionary* whitelistItemForSite( NSString* site )
         // Set tooltip
         
         NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
+		NSString *src = nil;
         if (attributes != nil) {
-            NSString *src = [attributes objectForKey:@"src"];
+            src = [attributes objectForKey:@"src"];
             if (src)
                 [self setToolTip:src];
             else {
@@ -269,6 +273,25 @@ static NSDictionary* whitelistItemForSite( NSString* site )
                     [self setToolTip:src];
             }
         }
+		
+		// send a notification so that all flash objects can be tracked
+		
+		DOMElement *clonedElement = (DOMElement *)[self.container cloneNode:YES];
+		int height = [[clonedElement getAttribute:@"height"] intValue];
+		int width = [[clonedElement getAttribute:@"width"] intValue];
+		
+		if ([ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ] &&
+			((height <= maxInvisibleDimension) && (width <= maxInvisibleDimension) ) ) {
+			// auto-loading is on and this view meets the size constraints
+			[self _convertTypesForContainer];
+		} else {
+			// we only want to track it if we don't auto-load it
+			[[NSNotificationCenter defaultCenter] postNotificationName:sCTFNewViewNotification
+																object:self
+															  userInfo:[NSDictionary dictionaryWithObjectsAndKeys:base,@"baseURL",src,@"src",
+																		[NSNumber numberWithInt:height],@"height",[NSNumber numberWithInt:width],@"width",nil]
+			 ];
+		}
         
         // Observe various things:
         
@@ -289,6 +312,11 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 				   selector: @selector( _loadContentForWindow: ) 
 					   name: kCTFLoadFlashViewsForWindow 
 					 object: nil ];
+		
+		[center addObserver: self 
+				   selector: @selector( _loadInvisibleContentForWindow: ) 
+					   name: kCTFLoadInvisibleFlashViewsForWindow
+					 object: nil ];
     }
 
     return self;
@@ -297,6 +325,13 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (void) dealloc
 {
     [self _abortAlert];        // to be on the safe side
+	
+	// notify that this ClickToFlash plugin is going away
+	[[NSNotificationCenter defaultCenter] postNotificationName:sCTFDestroyedViewNotification
+														object:self
+													  userInfo:[NSDictionary dictionaryWithObject:[self baseURL]
+																						   forKey:@"baseURL"]
+	 ];
     
     self.container = nil;
     self.host = nil;
@@ -548,6 +583,19 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 		[ self _convertTypesForContainer ];
 }
 
+- (void) _loadInvisibleContentForWindow: (NSNotification*) notification
+{
+	if( [ notification object ] == [ self window ] ) {
+		DOMElement* clonedElement = (DOMElement*) [ self.container cloneNode: NO ];
+		int height = [[clonedElement getAttribute:@"height"] intValue];
+		int width = [[clonedElement getAttribute:@"width"] intValue];
+		
+		if ( (height <= maxInvisibleDimension) || (width <= maxInvisibleDimension) ) {
+			[ self _convertTypesForContainer ];
+		}
+	}
+}
+
 #pragma mark -
 #pragma mark Drawing
 
@@ -793,6 +841,14 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (void) _convertTypesForContainer
 {
+	// notify that this ClickToFlash plugin is going away
+	[[NSNotificationCenter defaultCenter] postNotificationName:sCTFDestroyedViewNotification
+														object:self
+													  userInfo:[NSDictionary dictionaryWithObject:[self baseURL]
+																						   forKey:@"baseURL"]
+	 ];
+	
+	
     if ([self _useH264Version])
         [self _convertToMP4Container];
     else
@@ -886,5 +942,6 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 @synthesize webView = _webView;
 @synthesize container = _container;
 @synthesize host = _host;
+@synthesize baseURL = _baseURL;
 
 @end
