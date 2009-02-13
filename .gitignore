@@ -1,4 +1,6 @@
 build
+dist
+bin
  
 *.pbxuser
 *.mode1v3
@@ -10,6 +12,8 @@ build
 *.perspective
 *.perspectivev3
  
-*.swp
 *~.nib
 *~.xib
+
+.DS_Store
+Icon?
