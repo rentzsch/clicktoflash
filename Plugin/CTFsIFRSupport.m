@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 */
 
-#import "sIFR.h"
+#import "CTFsIFRSupport.h"
 
 typedef enum {
 	CTFSifrModeDoNothing	= 0, 

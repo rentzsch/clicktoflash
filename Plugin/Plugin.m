@@ -25,9 +25,11 @@ THE SOFTWARE.
 */
 
 #import "Plugin.h"
-#import "sIFR.h"
-#import "NSBezierPath-RoundedRectangle.h"
+
 #import "CTFMenubarMenuController.h"
+#import "CTFsIFRSupport.h"
+#import "NSBezierPath-RoundedRectangle.h"
+
 
 #define LOGGING_ENABLED 0
 
@@ -38,7 +40,6 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // NSUserDefaults keys
 static NSString *sHostSiteInfoDefaultsKey = @"ClickToFlash_siteInfo";
-static NSString *sAllowSifrDefaultsKey = @"ClickToFlash_allowSifr";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
 
