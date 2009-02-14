@@ -317,12 +317,12 @@ static NSDictionary* whitelistItemForSite( NSString* site )
     [self addTrackingArea:trackingArea];
 }
 
-- (void)mouseEntered:(NSEvent *)event
+- (void) mouseEntered:(NSEvent *)event
 {
     mouseInside = YES;
     [self setNeedsDisplay:YES];
 }
-- (void)mouseExited:(NSEvent *)event
+- (void) mouseExited:(NSEvent *)event
 {
     mouseInside = NO;
     [self setNeedsDisplay:YES];
@@ -348,7 +348,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
     }
 }
 
-- (BOOL) _isOptionPressed;
+- (BOOL) _isOptionPressed
 {
     BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
     return isOptionPressed;
@@ -386,7 +386,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
     _activeAlert = alert;
 }
 
-- (void)addToWhitelistAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
+- (void) addToWhitelistAlertDidEnd: (NSAlert *)alert returnCode: (int)returnCode contextInfo: (void *)contextInfo
 {
     if (returnCode == NSAlertFirstButtonReturn)
     {
@@ -398,13 +398,13 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (BOOL) _isHostWhitelisted
 {
-    NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] arrayForKey:sHostSiteInfoDefaultsKey];
+    NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
     return hostWhitelist && itemForSite(hostWhitelist, self.host) != nil;
 }
 
 - (NSMutableArray *) _mutableSiteInfo
 {
-    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] arrayForKey:sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
+    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
     if (hostWhitelist == nil) {
         hostWhitelist = [NSMutableArray array];
     }
