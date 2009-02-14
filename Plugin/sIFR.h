@@ -24,42 +24,17 @@ THE SOFTWARE.
 
 */
 
-
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
 
-@interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
-    DOMElement *_container;
-    NSString *_host;
-    NSDictionary* _flashVars;
-    NSTrackingArea *trackingArea;
-    NSAlert* _activeAlert;
-    NSString* _badgeText;
-    BOOL mouseIsDown;
-    BOOL mouseInside;
-    BOOL _isLoadingFromWhitelist;
-    BOOL _fromYouTube;
-	WebView *_webView;
-	NSUInteger _sifrVersion;
-	NSString *_baseURL;
-}
+#import "Plugin.h"
 
-+ (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
+@interface CTFClickToFlashPlugin( sIFRSupport )
 
-- (id) initWithArguments:(NSDictionary *)arguments;
+- (BOOL) _isSIFRText: (NSDictionary*) arguments;
 
-@property (nonatomic, retain) DOMElement *container;
-@property (nonatomic, retain) NSString *host;
-@property (nonatomic, retain) WebView *webView;
-@property (retain) NSString *baseURL;
+- (BOOL) _shouldAutoLoadSIFR;
+- (BOOL) _shouldDeSIFR;
 
-- (IBAction)addToWhitelist:(id)sender;
-- (IBAction)removeFromWhitelist:(id)sender;
-- (IBAction)editWhitelist:(id)sender;
-- (IBAction)loadFlash:(id)sender;
-- (IBAction)loadH264:(id)sender;
-- (IBAction)loadAllOnPage:(id)sender;
-
-- (BOOL) isConsideredInvisible;
+- (void) _disableSIFR;
 
 @end
