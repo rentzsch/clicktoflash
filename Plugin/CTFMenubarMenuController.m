@@ -33,7 +33,7 @@ NSString* kCTFLoadAllFlashViews = @"CTFLoadAllFlashViews";
 NSString* kCTFLoadFlashViewsForWindow = @"CTFLoadFlashViewsForWindow";
 NSString* kCTFLoadInvisibleFlashViewsForWindow = @"CTFLoadInvisibleFlashViewsForWindow";
 
-NSUInteger maxInvisibleDimension = 50;
+NSUInteger maxInvisibleDimension = 8;
 
 
 static NSString* kApplicationsToInstallMenuInto[] = {
