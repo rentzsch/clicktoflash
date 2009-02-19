@@ -53,13 +53,12 @@ THE SOFTWARE.
 @property (nonatomic, retain) WebView *webView;
 @property (retain) NSString *baseURL;
 
-- (IBAction)addToWhitelist:(id)sender;
-- (IBAction)removeFromWhitelist:(id)sender;
-- (IBAction)editWhitelist:(id)sender;
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
 
 - (BOOL) isConsideredInvisible;
+
+- (void) _convertTypesForContainer;
 
 @end
