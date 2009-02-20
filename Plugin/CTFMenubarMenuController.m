@@ -125,8 +125,6 @@ static CTFMenubarMenuController* sSingleton = nil;
 	}
     
 	self = [ super init ];
-    
-	sSingleton = self;
 	
 	if( self ) {
 		if( ! [ NSBundle loadNibNamed: @"MenubarMenu" owner: self ] )
@@ -187,7 +185,7 @@ static CTFMenubarMenuController* sSingleton = nil;
 + (CTFMenubarMenuController*) sharedController
 {
 	if( !sSingleton )
-		[ [ CTFMenubarMenuController alloc ] init ];
+		sSingleton = [ [ CTFMenubarMenuController alloc ] init ];
 	
 	return sSingleton;
 }
