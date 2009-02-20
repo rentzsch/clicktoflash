@@ -280,8 +280,8 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 {
 	DOMElement* clonedElement = (DOMElement*) [ self.container cloneNode: NO ];
 	
-	int height = [[clonedElement getAttribute:@"height"] intValue];
-	int width = [[clonedElement getAttribute:@"width"] intValue];
+	int height = (int)([self webView].frame.size.height);
+	int width = (int)([self webView].frame.size.width);
 	
 	return (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension);
 }
