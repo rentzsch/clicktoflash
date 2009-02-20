@@ -83,7 +83,7 @@ static NSMenu* appMenu()
         return [ indx intValue ];
 
 	NSMenu* applicationMenu = appMenu();
-    int insertLocation = -1, showPrefsItem = -1, lastSeenSep = -1;
+    int insertLocation = -1, showPrefsItem = -1;
     int i, count = [ applicationMenu numberOfItems ];
     for( i = 0 ; i < count ; ++i ) {
         // Put it before the first separator after the preferences item.
@@ -157,6 +157,19 @@ static CTFMenubarMenuController* sSingleton = nil;
 		NSLog( @"ClickToFlash: Could not load menubar menu" );
 		return;
 	}
+	
+    // Find the location to insert the item:
+    
+    int insertLocation = [ self applicationMenuPrefsInsertionLocation ];
+	
+	// Sanity check the location
+    
+	NSMenu* applicationMenu = appMenu();
+	
+	if ( ( insertLocation < 0 ) || ( insertLocation > [ applicationMenu numberOfItems ] ) ) {
+		NSLog( @"ClickToFlash: Could not insert menu at location %i", insertLocation );
+		return;
+	}
     
     // We need a submenu item to wrap this loaded menu:
     
@@ -164,21 +177,8 @@ static CTFMenubarMenuController* sSingleton = nil;
 															  action: nil
 													   keyEquivalent: @"" ] autorelease ];
 	[ ctfMenuItem setSubmenu: menu ];
-	
-    // Find the location to insert the item:
-    
-    int insertLocation = [ self applicationMenuPrefsInsertionLocation ];
     
     // Insert the submenu there:
-    
-	NSMenu* applicationMenu = appMenu();
-	
-	// Sanity check the location
-	
-	if ( ( insertLocation < 0 ) || ( insertLocation > [applicationMenu numberOfItems] ) ) {
-		NSLog( @"ClickToFlash: Could not insert menu at location %i", insertLocation );
-		return;
-	}
     
 	[ applicationMenu insertItem: ctfMenuItem atIndex: insertLocation ];
 }
