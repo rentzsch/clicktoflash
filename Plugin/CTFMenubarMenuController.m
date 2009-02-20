@@ -173,7 +173,14 @@ static CTFMenubarMenuController* sSingleton = nil;
     
 	NSMenu* applicationMenu = appMenu();
 	
-    [ applicationMenu insertItem: ctfMenuItem atIndex: insertLocation ];
+	// Sanity check the location
+	
+	if ( ( insertLocation < 0 ) || ( insertLocation > [applicationMenu numberOfItems] ) ) {
+		NSLog( @"ClickToFlash: Could not insert menu at location %i", insertLocation );
+		return;
+	}
+    
+	[ applicationMenu insertItem: ctfMenuItem atIndex: insertLocation ];
 }
 
 
