@@ -38,6 +38,7 @@ NSUInteger maxInvisibleDimension = 8;
 
 static NSString* kApplicationsToInstallMenuInto[] = {
     @"com.apple.Safari",
+    @"uk.co.opencommunity.vienna2",
     nil
 };
 
