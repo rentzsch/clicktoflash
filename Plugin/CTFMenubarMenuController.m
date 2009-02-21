@@ -33,7 +33,7 @@ NSString* kCTFLoadAllFlashViews = @"CTFLoadAllFlashViews";
 NSString* kCTFLoadFlashViewsForWindow = @"CTFLoadFlashViewsForWindow";
 NSString* kCTFLoadInvisibleFlashViewsForWindow = @"CTFLoadInvisibleFlashViewsForWindow";
 
-NSUInteger maxInvisibleDimension = 8;
+NSInteger maxInvisibleDimension = 8;
 
 
 static NSString* kApplicationsToInstallMenuInto[] = {
@@ -85,7 +85,7 @@ static NSMenu* appMenu()
     if( indx ) {
         insertLocation = [ indx intValue ];
 	} else {
-		int showPrefsItem = -1, lastSeenSep = -1;
+		int showPrefsItem = -1;
 		int i;
 		for( i = 0 ; i < count ; ++i ) {
 			// Put it before the first separator after the preferences item.
@@ -227,7 +227,7 @@ static CTFMenubarMenuController* sSingleton = nil;
 	
 	NSHashEnumerator enumerator = NSEnumerateHashTable( _views );
 	CTFClickToFlashPlugin* item;
-	while( item = NSNextHashEnumeratorItem( &enumerator ) ) {
+	while( ( item = NSNextHashEnumeratorItem( &enumerator ) ) ) {
 		if( [ item window ] == keyWindow ) {
 			if( !mustBeInvisible || [ item isConsideredInvisible ] ) {
 				rslt = YES;
