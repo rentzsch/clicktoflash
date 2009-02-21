@@ -399,7 +399,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				PRODUCT_VERSION = 1.3;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -407,7 +411,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				PRODUCT_VERSION = 1.3;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
