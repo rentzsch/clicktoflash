@@ -30,5 +30,5 @@ THE SOFTWARE.
 #define CTFForEachObject( Type, varName, container ) \
     NSEnumerator* feoEnum_##__LINE__ = [ container objectEnumerator ]; \
     Type* varName; \
-    while( varName = [ feoEnum_##__LINE__ nextObject ] )
+    while( ( varName = [ feoEnum_##__LINE__ nextObject ] ) )
 

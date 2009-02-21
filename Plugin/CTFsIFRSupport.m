@@ -108,8 +108,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
     NSString* classValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"class"];
     NSString* sifrValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
    
-    if ([classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue]))
-        return YES;
+    return [classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue]);
 }
 
 @end
