@@ -33,7 +33,7 @@ extern NSString* kCTFLoadAllFlashViews;
 extern NSString* kCTFLoadFlashViewsForWindow;
 extern NSString* kCTFLoadInvisibleFlashViewsForWindow;
 
-extern NSUInteger maxInvisibleDimension;
+extern NSInteger maxInvisibleDimension;
 
 
 @interface CTFMenubarMenuController : NSObject {

@@ -90,7 +90,8 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 		NSString *addOnPath = [clickBundle pathForResource: jsFileName ofType: @"js"];
 		
 		if( addOnPath ) {
-			NSString *sifrAddOnJS = [NSString stringWithContentsOfFile: addOnPath];
+            NSStringEncoding enc ;
+			NSString *sifrAddOnJS = [NSString stringWithContentsOfFile: addOnPath usedEncoding: &enc error: nil];
 			
 			if (sifrAddOnJS && ![sifrAddOnJS isEqualToString: @""])
 				[[sifrWebView windowScriptObject] evaluateWebScript: sifrAddOnJS];
@@ -108,8 +109,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
     NSString* classValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"class"];
     NSString* sifrValue = [[arguments objectForKey: WebPlugInAttributesKey] objectForKey: @"sifr"];
    
-    if ([classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue]))
-        return YES;
+    return [classValue isEqualToString: @"sIFR-flash"] || (sifrValue && [sifrValue boolValue]);
 }
 
 @end
