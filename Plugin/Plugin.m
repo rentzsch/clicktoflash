@@ -86,6 +86,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 {
     self = [super init];
     if (self) {
+		
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
@@ -106,6 +107,17 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
             }
         }
 
+		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
+		
+		if( !loadFromWhiteList )
+		{
+			NSURL* swfSrc = [NSURL URLWithString:[[arguments objectForKey:WebPlugInAttributesKey] objectForKey:@"src"] ];
+			
+			if( [self _isWhiteListedForHostString:[swfSrc host] ] )
+			{
+				loadFromWhiteList = true;
+			}
+		}
         
         // Check for sIFR
         
