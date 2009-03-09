@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0" xmlns:dc="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>ClickToFlash Appcast</title>
+		<link>https://s3.amazonaws.com/clicktoflash/appcast.xml</link>
+		<language>en</language>
+		<description>Most recent changes with links to updates</description>
+		<item>
+			<title>version 1.5</title>
+			<pubData>2010-01-01T00:00:00-06:00</pubData>
+			<description>
+<![CDATA[
+<div style="font-size:1.2em;">
+	<ul>
+		<li>1.5 Fixed text encoding issues when importing from NetNewsWire.</li>
+		<li>Trim whitespace and remove newlines in episode titles.</li>
+		<li>Updating and revealing podcasts after sync works better when there are
+		multiple podcasts.</li>
+		<li>Ensure podcasts are subscribed before trying to reveal in iTunes.</li>
+	</ul>
+</div>
+]]>			</description>
+			<enclosure type="application/zip" length="415397" sparkle:version="1.5" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.zip"/>
+		</item>
+	</channel>
+</rss>
