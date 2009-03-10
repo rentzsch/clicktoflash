@@ -6,6 +6,38 @@
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
 		<item>
+			<title>version 1.4fc3</title>
+			<pubDate>Tue, 10 Mar 2009 15:25:24 -0500</pubDate>
+			<description>
+<![CDATA[
+<div>
+	<ul>
+		<li>1.4fc3 release.</li>
+		<li>notes.</li>
+		<li>go.</li>
+		<li>here.</li>
+	</ul>
+</div>
+]]>			</description>
+			<enclosure type="application/zip" sparkle:version="1.4fc3" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc2</title>
+			<pubDate>Tue, 10 Mar 2009 14:25:24 -0500</pubDate>
+			<description>
+<![CDATA[
+<div>
+	<ul>
+		<li>1.4fc2 release.</li>
+		<li>notes.</li>
+		<li>go.</li>
+		<li>here.</li>
+	</ul>
+</div>
+]]>			</description>
+			<enclosure type="application/zip" sparkle:version="1.4fc2" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip"/>
+		</item>
+		<item>
 			<title>version 1.4fc1</title>
 			<pubDate>Tue, 10 Mar 2009 02:03:42 -0500</pubDate>
 			<description>
