@@ -6,20 +6,20 @@
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
 		<item>
-			<title>version 1.4</title>
-			<pubData>2010-01-01T00:00:00-06:00</pubData>
+			<title>version 1.4b2</title>
+			<pubDate>Tue, 10 Mar 2009 00:16:15 -0500</pubDate>
 			<description>
 <![CDATA[
 <div>
 	<ul>
-		<li>1.4 release.</li>
+		<li>1.4b2 release.</li>
 		<li>notes.</li>
 		<li>go.</li>
 		<li>here.</li>
 	</ul>
 </div>
 ]]>			</description>
-			<enclosure type="application/zip" length="415397" sparkle:version="1.4" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4b2" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4b2.zip"/>
 		</item>
 	</channel>
 </rss>
