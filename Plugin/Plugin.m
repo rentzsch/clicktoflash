@@ -87,19 +87,23 @@ static NSString *sCheckForUpdatesOnFirstLoadKey = @"ClickToFlash_checkForUpdates
     self = [super init];
     if (self) {
         {
-			if ([ [ NSUserDefaults standardUserDefaults ] boolForKey: sCheckForUpdatesOnFirstLoadKey ]) {
-				static BOOL checkedForUpdate = NO;
-				if (!checkedForUpdate) {
-					checkedForUpdate = YES; NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-					NSAssert(clickToFlashBundle, nil);
-					SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
-					NSAssert(updater, nil);
-					[updater setAutomaticallyChecksForUpdates:YES];
-					[updater resetUpdateCycle];
-				}
-			}
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:sCheckForUpdatesOnFirstLoadKey]) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sCheckForUpdatesOnFirstLoadKey];
+            }
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:sCheckForUpdatesOnFirstLoadKey]) {
+                static BOOL checkedForUpdate = NO;
+                if (!checkedForUpdate) {
+                    checkedForUpdate = YES;
+                    NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+                    NSAssert(clickToFlashBundle, nil);
+                    SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
+                    NSAssert(updater, nil);
+                    [updater setAutomaticallyChecksForUpdates:YES];
+                    [updater resetUpdateCycle];
+                }
+            }
         }
-		
+        
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
