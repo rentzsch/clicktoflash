@@ -42,7 +42,7 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
     // NSUserDefaults keys
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
-static NSString *sAutomaticallyChecksForUpdates = @"ClickToFlash_checkForUpdatesOnFirstLoad";
+static NSString *sCheckForUpdatesOnFirstLoadKey = @"ClickToFlash_checkForUpdatesOnFirstLoad";
 
 
 @interface CTFClickToFlashPlugin (Internal)
@@ -87,22 +87,23 @@ static NSString *sAutomaticallyChecksForUpdates = @"ClickToFlash_checkForUpdates
     self = [super init];
     if (self) {
         {
-			if ([ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutomaticallyChecksForUpdates ]) {
-				NSLog(@"um, what?");
-				
-				static BOOL checkedForUpdate = NO;
-				if (!checkedForUpdate) {
-					checkedForUpdate = YES; NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-					NSAssert(clickToFlashBundle, nil);
-					SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
-					NSAssert(updater, nil);
-					[updater checkForUpdatesInBackground];
-					[updater setAutomaticallyChecksForUpdates:YES];
-					[updater resetUpdateCycle];
-				}
-			}
+            if (![[NSUserDefaults standardUserDefaults] objectForKey:sCheckForUpdatesOnFirstLoadKey]) {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sCheckForUpdatesOnFirstLoadKey];
+            }
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:sCheckForUpdatesOnFirstLoadKey]) {
+                static BOOL checkedForUpdate = NO;
+                if (!checkedForUpdate) {
+                    checkedForUpdate = YES;
+                    NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+                    NSAssert(clickToFlashBundle, nil);
+                    SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
+                    NSAssert(updater, nil);
+                    [updater setAutomaticallyChecksForUpdates:YES];
+                    [updater resetUpdateCycle];
+                }
+            }
         }
-		
+        
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];

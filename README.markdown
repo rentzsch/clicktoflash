@@ -1,10 +1,12 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.3 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.3.zip). Currently requires Mac OS X 10.5 Leopard.
+[Download ClickToFlash 1.4fc2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip). 
 
-ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to its whitelist.
+Currently requires Mac OS X 10.5 Leopard.
 
-Try control-clicking (or right-clicking) on a unloaded Flash box to access ClickToFlash's contextual menu which allow you to do advanced things like edit its whitelist.
+ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to the whitelist.
+
+Try control-clicking (or right-clicking) on an unloaded Flash box to access ClickToFlash's contextual menu which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
 
 Please [report bugs and request features](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new) on the [Lighthouse ClickToFlash project site](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all).
 
@@ -12,18 +14,26 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 ##Version History
 
+* **1.4fc3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip)
+	* *This update is exactly the same as 1.4fc2 and only exists to test/demonstrate Sparkle updating.*
+
+* **1.4fc2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip)
+	* [NEW] Added buttons in settings panel to allow for manual update checking. [[Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/194f2dc1a8da91298d2e79fb426b60ecf4205d2a)]
+
+	* [NEW] Nil hosts get whitelisted by default. This effectively disables ClickToFlash in Dashboard and other places where it might be desirable to do so. ([millenomi](http://github.com/rentzsch/clicktoflash/commit/18dbcd3ba312290223ff456dd5a08f0d4bb74cd4))
+
+	* [DEV] Add 1.4fc3 to appcast. It's functionally identical to 1.4fc2 and only exists to test Sparkle updating.
+
 * **1.4fc1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc1.zip)
-	* [NEW] Command to load all flash views -- or just invisible ones -- on a page. This should fix a number of sites that don't at first seem to work with ClickToFlash. (Simone Manganelli)
+	* [NEW] Menu command to load all flash views -- or just invisible ones -- on a page. This should fix a number of sites that don't at first seem to work with ClickToFlash. (Simone Manganelli, et al.)
 
-	* [NEW] "Click To Flash" menu item(s). Installs automatically into Safari and Vienna under their application menu. (Simone Manganelli, Otyr Ugla, Jeff Johnson)
+	* [NEW] "Click To Flash" menu item(s). Installs automatically into Safari and Vienna under their application menus. (Simone Manganelli, Jeff Johnson, et al.)
 
-	* [NEW] Explicit YouTube support. Built-in support for directly loading higher-quality H.264 versions of videos (contextual menu item "Load H.264"). ([Joey Hagedorn](http://www.joeyhagedorn.com/2008/04/16/youtube-in-mp4-via-quicktime-plugin), Otyr Ugla)
+	* [NEW] Explicit YouTube support. Built-in support for directly loading higher-quality H.264 versions of videos (contextual menu item "Load H.264"). ([Joey Hagedorn](http://www.joeyhagedorn.com/2008/04/16/youtube-in-mp4-via-quicktime-plugin), et al.)
 
-	* [NEW] Menu commands: "Load Flash for Frontmost Page", "Load Invisible Flash for Frontmost Page" and "Load Flash for All Pages". (Simone Manganelli)
+	* [NEW] Explicit [sIFR](http://www.mikeindustries.com/sifr) support: ignore sIFR, always load it or always suppress it. [bug 49](http://rentzsch.lighthouseapp.com/projects/24342/tickets/49) (Ian Wessman, et al.)
 
-	* [NEW] Explicit [sIFR](http://www.mikeindustries.com/sifr) Support. Ignore sIFR, always load it or always suppress it. [bug 49](http://rentzsch.lighthouseapp.com/projects/24342/tickets/49) (Ian Wessman, Otyr Ugla)
-
-	* [NEW] Edit whitelist in Settings panel. [bug 25](http://rentzsch.lighthouseapp.com/projects/24342/tickets/25) (Ben Gottlieb [1](http://github.com/rentzsch/clicktoflash/commit/4e013686359f7a11371e16919f292eb91c249ebb), [2](http://github.com/rentzsch/clicktoflash/commit/d193a728c32af21345af083cc4a22c7a26c97f42). Otyr Ugla [1](http://github.com/rentzsch/clicktoflash/commit/1da96792eecc4252c90c706576fbfc1f1afd3860), [2](http://github.com/rentzsch/clicktoflash/commit/16b844c96b6423629d6de707ee3fe69257dbd7ce))
+	* [NEW] Edit whitelist in Settings panel. [bug 25](http://rentzsch.lighthouseapp.com/projects/24342/tickets/25) (Ben Gottlieb [1](http://github.com/rentzsch/clicktoflash/commit/4e013686359f7a11371e16919f292eb91c249ebb), [2](http://github.com/rentzsch/clicktoflash/commit/d193a728c32af21345af083cc4a22c7a26c97f42), et al. [1](http://github.com/rentzsch/clicktoflash/commit/1da96792eecc4252c90c706576fbfc1f1afd3860), [2](http://github.com/rentzsch/clicktoflash/commit/16b844c96b6423629d6de707ee3fe69257dbd7ce))
 
 	* [NEW] Old custom installer replaced with a standard Installer.app .pkg. [bug 27](http://rentzsch.lighthouseapp.com/projects/24342/tickets/27) ([Alexander Brausewetter](http://github.com/xoob/clicktoflash/commit/2866d8e8415114ae75f60ff8d107e78e5fe40b2c))
 
@@ -31,11 +41,11 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [NEW] Whitelisting now takes into account an object's `src` URL, which should allow embedded videos from whitelisted sites to play (e.g. YouTube). [bug 57](http://rentzsch.lighthouseapp.com/projects/24342/tickets/57) ([Ian Wessman](http://github.com/rentzsch/clicktoflash/commit/a4388f32d13f00263d11d9d06f21778bea5724dc))
 
-	* [CHANGE] Badge now renders better on a variety of backgrounds. (Otyr Ugla)
+	* [CHANGE] Badge now renders better on a variety of backgrounds.
 
-	* [FIX] Fix bugs identified by clang static analyzer. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/aced770608344960131f58e49457d0a73687d38c))
+	* [FIX] Fixed bugs identified by clang static analyzer. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/aced770608344960131f58e49457d0a73687d38c))
 
-	* [FIX] Leak that caused all CtF views to not be deallocated by using validateMenuItem to update the Add <site> to Whitelist menu item instead of a binding. ([Otyr Ugla](http://github.com/rentzsch/clicktoflash/commit/912e28f5befe90db92be971d5899de5cbd3b6a89)) 
+	* [FIX] Fixed leak that caused all CtF views to not be deallocated by using validateMenuItem to update the Add `<site>` to Whitelist menu item instead of a binding. ([1](http://github.com/rentzsch/clicktoflash/commit/912e28f5befe90db92be971d5899de5cbd3b6a89)) 
 
 	* [DEV] Fix deprecated use of `+stringWithContentsOfFile:`. ([Chris Parker](http://github.com/rentzsch/clicktoflash/commit/7a1e8490737db4734b3e8fc3374fabfdc49ee756))
 

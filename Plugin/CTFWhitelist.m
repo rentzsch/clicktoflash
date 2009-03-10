@@ -149,6 +149,12 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (BOOL) _isHostWhitelisted
 {
+	// Nil hosts whitelisted by default (e.g. Dashboard)
+	if (!self.host)
+	{
+		return YES;
+	}
+	
 	return [self _isWhiteListedForHostString: self.host];
 }
 
