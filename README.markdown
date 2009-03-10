@@ -21,9 +21,9 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [NEW] Menu commands: "Load Flash for Frontmost Page", "Load Invisible Flash for Frontmost Page" and "Load Flash for All Pages". (Simone Manganelli)
 
-	* [NEW] Explicit [sIFR](http://www.mikeindustries.com/sifr) Support. Ignore sIFR, always load it or always suppress it. (Ian Wessman, Otyr Ugla)
+	* [NEW] Explicit [sIFR](http://www.mikeindustries.com/sifr) Support. Ignore sIFR, always load it or always suppress it. [bug 49](http://rentzsch.lighthouseapp.com/projects/24342/tickets/49) (Ian Wessman, Otyr Ugla)
 
-	* [NEW] Edit whitelist in Settings panel. (Ben Gottlieb [1](http://github.com/rentzsch/clicktoflash/commit/4e013686359f7a11371e16919f292eb91c249ebb), [2](http://github.com/rentzsch/clicktoflash/commit/d193a728c32af21345af083cc4a22c7a26c97f42). Otyr Ugla [1](http://github.com/rentzsch/clicktoflash/commit/1da96792eecc4252c90c706576fbfc1f1afd3860), [2](http://github.com/rentzsch/clicktoflash/commit/16b844c96b6423629d6de707ee3fe69257dbd7ce))
+	* [NEW] Edit whitelist in Settings panel. [bug 25](http://rentzsch.lighthouseapp.com/projects/24342/tickets/25) (Ben Gottlieb [1](http://github.com/rentzsch/clicktoflash/commit/4e013686359f7a11371e16919f292eb91c249ebb), [2](http://github.com/rentzsch/clicktoflash/commit/d193a728c32af21345af083cc4a22c7a26c97f42). Otyr Ugla [1](http://github.com/rentzsch/clicktoflash/commit/1da96792eecc4252c90c706576fbfc1f1afd3860), [2](http://github.com/rentzsch/clicktoflash/commit/16b844c96b6423629d6de707ee3fe69257dbd7ce))
 
 	* [NEW] Old custom installer replaced with a standard Installer.app .pkg. [bug 27](http://rentzsch.lighthouseapp.com/projects/24342/tickets/27) ([Alexander Brausewetter](http://github.com/xoob/clicktoflash/commit/2866d8e8415114ae75f60ff8d107e78e5fe40b2c))
 
