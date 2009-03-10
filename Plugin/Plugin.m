@@ -31,10 +31,9 @@ THE SOFTWARE.
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
-
+#import <Sparkle/Sparkle.h>
 
 #define LOGGING_ENABLED 0
-
 
     // MIME types
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
@@ -86,6 +85,18 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 {
     self = [super init];
     if (self) {
+        {
+            static BOOL checkedForUpdate = NO;
+            if (!checkedForUpdate) {
+                checkedForUpdate = YES; NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+                NSAssert(clickToFlashBundle, nil);
+                SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
+                NSAssert(updater, nil);
+                [updater setAutomaticallyChecksForUpdates:YES];
+                [updater resetUpdateCycle];
+            }
+        }
+		
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
@@ -106,6 +117,20 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
             }
         }
 
+		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
+		
+		if( !loadFromWhiteList )
+		{
+            NSString *srcAttribute = [[arguments objectForKey:WebPlugInAttributesKey] objectForKey:@"src"];
+            if (srcAttribute) {
+                NSURL* swfSrc = [NSURL URLWithString:srcAttribute];
+                
+                if( [self _isWhiteListedForHostString:[swfSrc host] ] )
+                {
+                    loadFromWhiteList = true;
+                }
+            }
+		}
         
         // Check for sIFR
         
@@ -159,7 +184,6 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
         }
 		
 		// send a notification so that all flash objects can be tracked
-		
 		if ( [ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
 				&& [ self isConsideredInvisible ] ) {
 			// auto-loading is on and this view meets the size constraints
@@ -173,7 +197,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
         
         NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
         
-            // Observe for additions to the whitelist:
+        // Observe for additions to the whitelist:
         [self _addWhitelistObserver];
 		
 		[center addObserver: self 

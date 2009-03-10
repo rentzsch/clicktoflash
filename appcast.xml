@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0" xmlns:dc="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>ClickToFlash Appcast</title>
+		<link>https://s3.amazonaws.com/clicktoflash/appcast.xml</link>
+		<language>en</language>
+		<description>Most recent changes with links to updates</description>
+		<item>
+			<title>version 1.4fc1</title>
+			<pubDate>Tue, 10 Mar 2009 02:03:42 -0500</pubDate>
+			<description>
+<![CDATA[
+<div>
+	<ul>
+		<li>1.4fc1 release.</li>
+		<li>notes.</li>
+		<li>go.</li>
+		<li>here.</li>
+	</ul>
+</div>
+]]>			</description>
+			<enclosure type="application/zip" sparkle:version="1.4fc1" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc1.zip"/>
+		</item>
+	</channel>
+</rss>

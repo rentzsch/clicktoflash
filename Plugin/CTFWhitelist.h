@@ -37,6 +37,7 @@ THE SOFTWARE.
 - (void) _migrateWhitelist;
 - (void) _addWhitelistObserver;
 - (BOOL) _isHostWhitelisted;
+- (BOOL) _isWhiteListedForHostString:(NSString *)hostString;
 - (void) _abortAlert;
 - (void) _askToAddCurrentSiteToWhitelist;
 
