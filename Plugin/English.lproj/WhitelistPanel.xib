@@ -651,21 +651,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<object class="NSButton" id="124868638">
 									<reference key="NSNextResponder" ref="235344690"/>
 									<int key="NSvFlags">268</int>
-<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
-									<string key="NSFrame">{{93, 43}, {287, 18}}</string>
-=======
 									<string key="NSFrame">{{93, 43}, {218, 18}}</string>
->>>>>>> faf2c4ebe0140bb59ed97440fabf927e1e0bb6fb:Plugin/English.lproj/WhitelistPanel.xib
 									<reference key="NSSuperview" ref="235344690"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="548281549">
 										<int key="NSCellFlags">-2080244224</int>
 										<int key="NSCellFlags2">0</int>
-<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
-										<string key="NSContents">Automatically check for updates</string>
-=======
 										<string key="NSContents">Check for updates on first load</string>
->>>>>>> faf2c4ebe0140bb59ed97440fabf927e1e0bb6fb:Plugin/English.lproj/WhitelistPanel.xib
 										<reference key="NSSupport" ref="906693409"/>
 										<reference key="NSControlView" ref="124868638"/>
 										<int key="NSButtonFlags">1211912703</int>
@@ -876,10 +868,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">136</int>
 				</object>
 				<object class="IBConnectionRecord">
-<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.ClickToFlash_checkForUpdatesOnLoad</string>
-=======
 					<object class="IBActionConnection" key="connection">
 						<string key="label">checkForUpdates:</string>
 						<reference key="source" ref="1001"/>
@@ -890,29 +878,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: values.ClickToFlash_checkForUpdatesOnFirstLoad</string>
->>>>>>> faf2c4ebe0140bb59ed97440fabf927e1e0bb6fb:Plugin/English.lproj/WhitelistPanel.xib
 						<reference key="source" ref="124868638"/>
 						<reference key="destination" ref="913882380"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="124868638"/>
 							<reference key="NSDestination" ref="913882380"/>
-<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
-							<string key="NSLabel">value: values.ClickToFlash_checkForUpdatesOnLoad</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.ClickToFlash_checkForUpdatesOnLoad</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">145</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">checkForUpdates:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="912083957"/>
-					</object>
-					<int key="connectionID">146</int>
-=======
 							<string key="NSLabel">value: values.ClickToFlash_checkForUpdatesOnFirstLoad</string>
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">values.ClickToFlash_checkForUpdatesOnFirstLoad</string>
@@ -920,7 +890,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">147</int>
->>>>>>> faf2c4ebe0140bb59ed97440fabf927e1e0bb6fb:Plugin/English.lproj/WhitelistPanel.xib
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1380,11 +1349,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
-			<int key="maxID">146</int>
-=======
 			<int key="maxID">147</int>
->>>>>>> faf2c4ebe0140bb59ed97440fabf927e1e0bb6fb:Plugin/English.lproj/WhitelistPanel.xib
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
