@@ -259,16 +259,35 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (void) mouseDown:(NSEvent *)event
 {
-    mouseIsDown = YES;
-    mouseInside = YES;
-    [self setNeedsDisplay:YES];
-    
-    // Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
-    trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
-                                                options:NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingEnabledDuringMouseDrag
-                                                  owner:self
-                                               userInfo:nil];
-    [self addTrackingArea:trackingArea];
+	NSRect bounds = [ self bounds ];
+	float viewHeight = bounds.size.height;
+	float margin = 5.0;
+	float gearImageHeight = 16.0;
+	float gearImageWidth = 16.0;
+	
+	NSPoint mouseLocation = [event locationInWindow];
+	NSPoint localMouseLocation = [self convertPoint:mouseLocation fromView:nil];
+	
+	BOOL xCoordWithinGearImage = ( (localMouseLocation.x >= (0 + margin)) &&
+							   (localMouseLocation.x <= (0 + margin + gearImageWidth)) );
+	
+	BOOL yCoordWithinGearImage = ( (localMouseLocation.y >= (viewHeight - margin - gearImageHeight)) &&
+								  (localMouseLocation.y <= (viewHeight - margin)) );
+	
+	if (xCoordWithinGearImage && yCoordWithinGearImage) {
+		[NSMenu popUpContextMenu:[self menuForEvent:event] withEvent:event forView:self];
+	} else {
+		mouseIsDown = YES;
+		mouseInside = YES;
+		[self setNeedsDisplay:YES];
+		
+		// Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
+		trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
+													options:NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingEnabledDuringMouseDrag
+													  owner:self
+												   userInfo:nil];
+		[self addTrackingArea:trackingArea];
+	}
 }
 
 - (void) mouseEntered:(NSEvent *)event
@@ -432,6 +451,8 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 	// Set up for drawing.
 	
 	NSRect bounds = [ self bounds ];
+	float viewWidth = bounds.size.width;
+	float viewHeight = bounds.size.height;
 	
 	// How large would this text be?
 	
@@ -507,6 +528,38 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 	[ path stroke ];
 	
     [ str drawAtPoint: loc withAttributes: attrs ];
+	
+	
+	// add the gear for the contextual menu, but only if the view is
+	// greater than a certain size
+	
+	if ((viewWidth > 32) && (viewHeight > 32)) {
+		float margin = 5.0;
+		NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
+		
+		NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
+		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
+		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
+		
+		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + gearImage.size.height/2,
+											   viewHeight/2 - margin - gearImage.size.height/2);
+		
+		// draw gradient behind gear so that it's visible even on dark backgrounds
+		[gradient drawFromCenter:gearImageCenter
+						  radius:0.0
+						toCenter:gearImageCenter
+						  radius:gearImage.size.height/2*1.5
+						 options:0];
+		
+		[gradient release];
+		
+		// draw the gear image
+		[gearImage drawAtPoint:NSMakePoint(0 - viewWidth/2 + margin,viewHeight/2 - margin - gearImage.size.height)
+					  fromRect:NSZeroRect
+					 operation:NSCompositeSourceOver
+					  fraction:1.0];
+	}
+	
 
 	// Now restore the graphics state:
 	
