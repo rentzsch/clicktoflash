@@ -79,6 +79,15 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 
 #pragma mark -
+#pragma mark Sparkle delegate methods
+
+- (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
+{
+    return [[NSBundle mainBundle] executablePath];
+}
+
+
+#pragma mark -
 #pragma mark Initialization and Superclass Overrides
 
 
@@ -98,7 +107,8 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
                     NSAssert(clickToFlashBundle, nil);
                     SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
                     NSAssert(updater, nil);
-					[updater checkForUpdatesInBackground];
+                    [updater setDelegate:self];
+                    [updater checkForUpdatesInBackground];
                     [updater setAutomaticallyChecksForUpdates:YES];
                     [updater resetUpdateCycle];
                 }
