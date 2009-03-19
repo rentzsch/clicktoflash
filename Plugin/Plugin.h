@@ -28,6 +28,8 @@ THE SOFTWARE.
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
+@class SUUpdater;
+
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
@@ -42,6 +44,7 @@ THE SOFTWARE.
 	WebView *_webView;
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
+    SUUpdater *_updater;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
