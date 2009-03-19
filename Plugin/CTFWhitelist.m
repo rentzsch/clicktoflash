@@ -149,8 +149,19 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (BOOL) _isHostWhitelisted
 {
-    NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
-    return hostWhitelist && itemForSite(hostWhitelist, self.host) != nil;
+	// Nil hosts whitelisted by default (e.g. Dashboard)
+	if (!self.host)
+	{
+		return YES;
+	}
+	
+	return [self _isWhiteListedForHostString: self.host];
+}
+
+- (BOOL) _isWhiteListedForHostString:(NSString *)hostString
+{
+	NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
+    return hostWhitelist && itemForSite(hostWhitelist, hostString) != nil;
 }
 
 - (NSMutableArray *) _mutableSiteInfo

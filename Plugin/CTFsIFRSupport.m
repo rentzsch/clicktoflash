@@ -90,7 +90,8 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 		NSString *addOnPath = [clickBundle pathForResource: jsFileName ofType: @"js"];
 		
 		if( addOnPath ) {
-			NSString *sifrAddOnJS = [NSString stringWithContentsOfFile: addOnPath];
+            NSStringEncoding enc ;
+			NSString *sifrAddOnJS = [NSString stringWithContentsOfFile: addOnPath usedEncoding: &enc error: nil];
 			
 			if (sifrAddOnJS && ![sifrAddOnJS isEqualToString: @""])
 				[[sifrWebView windowScriptObject] evaluateWebScript: sifrAddOnJS];
