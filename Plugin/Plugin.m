@@ -83,7 +83,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
 {
-    return [[NSBundle mainBundle] executablePath];
+    return [[NSBundle mainBundle] bundlePath];
 }
 
 
