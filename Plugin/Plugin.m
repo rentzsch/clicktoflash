@@ -132,33 +132,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 		self.attributes = [arguments objectForKey:WebPlugInAttributesKey];
 		NSString *srcAttribute = [self.attributes objectForKey:@"src"];
-
-        BOOL loadFromWhiteList = [self _isHostWhitelisted];
-
-		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
-		
-		if( !loadFromWhiteList )
-		{
-            if (srcAttribute) {
-                NSURL* swfSrc = [NSURL URLWithString:srcAttribute];
-                
-                if( [self _isWhiteListedForHostString:[swfSrc host] ] )
-                {
-                    loadFromWhiteList = YES;
-                }
-            }
-		}
-        
-        // Check for sIFR
-        
-        if ([self _isSIFRText: arguments]) {
-            _badgeText = NSLocalizedString(@"sIFR Flash", @"sIFR Flash badge text");
-            
-            if ([self _shouldAutoLoadSIFR])
-                loadFromWhiteList = YES;
-            else if ([self _shouldDeSIFR])
-                [self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
-        }
         
         // Read in flashvars (needed to determine YouTube videos)
         
@@ -174,16 +147,58 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
         _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
                     || ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound );
         
+        // Set up main menus
+        
+		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
+        
+        // Check for sIFR
+        
+        if ([self _isSIFRText: arguments]) {
+            _badgeText = NSLocalizedString(@"sIFR Flash", @"sIFR Flash badge text");
+            
+            if ([self _shouldAutoLoadSIFR]) {
+				_isLoadingFromWhitelist = YES;
+				[self _convertTypesForContainer];
+				return self;
+			}
+            else if ([self _shouldDeSIFR]) {
+				_isLoadingFromWhitelist = YES;
+                [self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
+				return self;
+			}
+        }
+		
+		if ( [ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
+			&& [ self isConsideredInvisible ] ) {
+			// auto-loading is on and this view meets the size constraints
+            _isLoadingFromWhitelist = YES;
+			[self _convertTypesForContainer];
+			return self;
+		}
+		
+        BOOL loadFromWhiteList = [self _isHostWhitelisted];
+		
+		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
+		
+		if( !loadFromWhiteList )
+		{
+            if (srcAttribute) {
+                NSURL* swfSrc = [NSURL URLWithString:srcAttribute];
+                
+                if( [self _isWhiteListedForHostString:[swfSrc host] ] )
+                {
+                    loadFromWhiteList = YES;
+                }
+            }
+		}
+        
         // Handle if this is loading from whitelist
         
         if(loadFromWhiteList && ![self _isOptionPressed]) {
             _isLoadingFromWhitelist = YES;
 			[self _convertTypesForContainer];
+			return self;
         }
-        
-        // Set up main menus
-        
-		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
 		
         // Set tooltip
         
@@ -196,14 +211,8 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 		}
 		
 		// send a notification so that all flash objects can be tracked
-		if ( [ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
-				&& [ self isConsideredInvisible ] ) {
-			// auto-loading is on and this view meets the size constraints
-			[self _convertTypesForContainer];
-		} else {
-			// we only want to track it if we don't auto-load it
-			[[CTFMenubarMenuController sharedController] registerView: self];
-		}
+		// we only want to track it if we don't auto-load it
+		[[CTFMenubarMenuController sharedController] registerView: self];
         
         // Observe various things:
         
