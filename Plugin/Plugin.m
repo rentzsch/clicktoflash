@@ -47,7 +47,10 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
+- (void) _convertTypesForFlashContainerAfterDelay;
 - (void) _convertToMP4Container;
+- (void) _convertToMP4ContainerAfterDelay;
+- (void) _prepareForConversion;
 - (void) _replaceSelfWithElement: (DOMElement*) newElement;
 
 - (void) _drawBackground;
@@ -121,31 +124,27 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
         
         [self _migrateWhitelist];
         
-        BOOL loadFromWhiteList = NO;
-        
         // Get URL and test against the whitelist
         
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
-		[self setBaseURL:[base absoluteString]];
-        if (base) {
-            self.host = [base host];
+		self.baseURL = [base absoluteString];
+		self.host = [base host];
 
-            if ([self _isHostWhitelisted]) {
-                loadFromWhiteList = true;
-            }
-        }
+		self.attributes = [arguments objectForKey:WebPlugInAttributesKey];
+		NSString *srcAttribute = [self.attributes objectForKey:@"src"];
+
+        BOOL loadFromWhiteList = [self _isHostWhitelisted];
 
 		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
 		
 		if( !loadFromWhiteList )
 		{
-            NSString *srcAttribute = [[arguments objectForKey:WebPlugInAttributesKey] objectForKey:@"src"];
             if (srcAttribute) {
                 NSURL* swfSrc = [NSURL URLWithString:srcAttribute];
                 
                 if( [self _isWhiteListedForHostString:[swfSrc host] ] )
                 {
-                    loadFromWhiteList = true;
+                    loadFromWhiteList = YES;
                 }
             }
 		}
@@ -156,14 +155,14 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
             _badgeText = NSLocalizedString(@"sIFR Flash", @"sIFR Flash badge text");
             
             if ([self _shouldAutoLoadSIFR])
-                loadFromWhiteList = true;
+                loadFromWhiteList = YES;
             else if ([self _shouldDeSIFR])
                 [self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
         }
         
         // Read in flashvars (needed to determine YouTube videos)
         
-        NSString* flashvars = [ [ arguments objectForKey: WebPlugInAttributesKey ] objectForKey: @"flashvars" ];
+        NSString* flashvars = [ self.attributes objectForKey: @"flashvars" ];
         if( flashvars != nil )
             _flashVars = [ [ self _flashVarDictionary: flashvars ] retain ];
         
@@ -179,7 +178,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
         
         if(loadFromWhiteList && ![self _isOptionPressed]) {
             _isLoadingFromWhitelist = YES;
-            [self performSelector:@selector(_convertTypesForContainer) withObject:nil afterDelay:0];
+			[self _convertTypesForContainer];
         }
         
         // Set up main menus
@@ -188,18 +187,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 		
         // Set tooltip
         
-        NSDictionary *attributes = [arguments objectForKey:WebPlugInAttributesKey];
-		NSString *src = nil;
-        if (attributes != nil) {
-            src = [attributes objectForKey:@"src"];
-            if (src)
-                [self setToolTip:src];
-            else {
-                src = [attributes objectForKey:@"data"];
-                if (src)
-                    [self setToolTip:src];
-            }
-        }
+		if (srcAttribute)
+			[self setToolTip:srcAttribute];
+		else {
+			NSString *src = [self.attributes objectForKey:@"data"];
+			if (src)
+				[self setToolTip:src];
+		}
 		
 		// send a notification so that all flash objects can be tracked
 		if ( [ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
@@ -239,7 +233,9 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (void) dealloc
 {
-    [self _abortAlert];        // to be on the safe side
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+	
+	[self _abortAlert];        // to be on the safe side
 	
 	// notify that this ClickToFlash plugin is going away
 	[[CTFMenubarMenuController sharedController] unregisterView: self];
@@ -248,6 +244,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     self.host = nil;
 	self.webView = nil;
 	self.baseURL = nil;
+	self.attributes = nil;
     
     [_flashVars release];
     [_badgeText release];
@@ -342,7 +339,28 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 	int height = (int)([self webView].frame.size.height);
 	int width = (int)([self webView].frame.size.width);
 	
-	return (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension);
+	if ( (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension) )
+	{
+		return YES;
+	}
+	
+	NSDictionary *attributes = self.attributes;
+	if ( attributes != nil )
+	{
+		NSString *heightObject = [attributes objectForKey:@"height"];
+		NSString *widthObject = [attributes objectForKey:@"width"];
+		if ( heightObject != nil && widthObject != nil )
+		{
+			height = [heightObject intValue];
+			width = [widthObject intValue];
+			if ( (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension) )
+			{
+				return YES;
+			}
+		}
+	}
+	
+	return NO;
 }
 
 #pragma mark -
@@ -683,6 +701,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (void) _convertToMP4Container
 {
+	// Delay this until the end of the event loop, because it may cause self to be deallocated
+	[self _prepareForConversion];
+	[self performSelector:@selector(_convertToMP4ContainerAfterDelay) withObject:nil afterDelay:0.0];
+}
+
+- (void) _convertToMP4ContainerAfterDelay
+{
     DOMElement* newElement = (DOMElement*) [ self.container cloneNode: NO ];
     
     [ self _convertElementForMP4: newElement ];
@@ -705,9 +730,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (void) _convertTypesForContainer
 {
-	// notify that this ClickToFlash plugin is going away
-	[[CTFMenubarMenuController sharedController] unregisterView: self];
-	
     if ([self _useH264Version])
         [self _convertToMP4Container];
     else
@@ -715,6 +737,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 }
 
 - (void) _convertTypesForFlashContainer
+{
+	// Delay this until the end of the event loop, because it may cause self to be deallocated
+	[self _prepareForConversion];
+	[self performSelector:@selector(_convertTypesForFlashContainerAfterDelay) withObject:nil afterDelay:0.0];
+}
+
+- (void) _convertTypesForFlashContainerAfterDelay
 {
     DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
 
@@ -736,10 +765,18 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     [self _replaceSelfWithElement: newElement];
 }
 
+- (void) _prepareForConversion
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	// notify that this ClickToFlash plugin is going away
+	[[CTFMenubarMenuController sharedController] unregisterView: self];
+	
+	[ self _abortAlert ];
+}
+
 - (void) _replaceSelfWithElement: (DOMElement *)newElement
 {
-    [ self _abortAlert ];
-    
     // Just to be safe, since we are about to replace our containing element
     [[self retain] autorelease];
     
@@ -751,5 +788,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 @synthesize container = _container;
 @synthesize host = _host;
 @synthesize baseURL = _baseURL;
+@synthesize attributes = _attributes;
 
 @end

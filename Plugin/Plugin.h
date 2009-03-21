@@ -42,6 +42,7 @@ THE SOFTWARE.
 	WebView *_webView;
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
+	NSDictionary *_attributes;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -52,6 +53,7 @@ THE SOFTWARE.
 @property (nonatomic, retain) NSString *host;
 @property (nonatomic, retain) WebView *webView;
 @property (retain) NSString *baseURL;
+@property (nonatomic, retain) NSDictionary *attributes;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
