@@ -86,7 +86,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
 {
-    return [[NSBundle mainBundle] executablePath];
+    return [[NSBundle mainBundle] bundlePath];
 }
 
 
@@ -108,12 +108,12 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
                     checkedForUpdate = YES;
                     NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
                     NSAssert(clickToFlashBundle, nil);
-                    SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
-                    NSAssert(updater, nil);
-                    [updater setDelegate:self];
-                    [updater checkForUpdatesInBackground];
-                    [updater setAutomaticallyChecksForUpdates:YES];
-                    [updater resetUpdateCycle];
+                    _updater = [SUUpdater updaterForBundle:clickToFlashBundle];
+                    NSAssert(_updater, nil);
+                    [_updater setDelegate:self];
+                    [_updater checkForUpdatesInBackground];
+                    [_updater setAutomaticallyChecksForUpdates:YES];
+                    [_updater resetUpdateCycle];
                 }
             }
         }
@@ -250,7 +250,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     [_badgeText release];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-
+    [_updater setDelegate:nil];
 #if LOGGING_ENABLED
 	NSLog(@"ClickToFlash:\tdealloc");
 #endif
