@@ -51,7 +51,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 - (void) _convertToMP4Container;
 - (void) _convertToMP4ContainerAfterDelay;
 - (void) _prepareForConversion;
-- (void) _replaceSelfWithElement: (DOMElement*) newElement;
 
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
@@ -720,7 +719,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     DOMElement* newElement = (DOMElement*) [ self.container cloneNode: NO ];
     
     [ self _convertElementForMP4: newElement ];
-    [ self _replaceSelfWithElement: newElement ];
+    
+    // Just to be safe, since we are about to replace our containing element
+    [[self retain] autorelease];
+    
+    // Replace self with element.
+    [self.container.parentNode replaceChild:newElement oldChild:self.container];
+    self.container = nil;
 }
 
 
@@ -754,24 +759,27 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (void) _convertTypesForFlashContainerAfterDelay
 {
-    DOMElement *newElement = (DOMElement *)[self.container cloneNode:YES];
-
     DOMNodeList *nodeList = nil;
     NSUInteger i;
 
-    [self _convertTypesForElement:newElement];
+    [self _convertTypesForElement:self.container];
 
-    nodeList = [newElement getElementsByTagName:@"object"];
+    nodeList = [self.container getElementsByTagName:@"object"];
     for (i = 0; i < nodeList.length; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
 
-    nodeList = [newElement getElementsByTagName:@"embed"];
+    nodeList = [self.container getElementsByTagName:@"embed"];
     for (i = 0; i < nodeList.length; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
     
-    [self _replaceSelfWithElement: newElement];
+    // Remove & reinsert the node to persuade the plugin system to notice the type change:
+    id parent = self.container.parentNode;
+    id successor = self.container.nextSibling;
+    [parent removeChild:self.container];
+    [parent insertBefore:self.container refChild:successor];
+    self.container = nil;
 }
 
 - (void) _prepareForConversion
@@ -782,15 +790,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 	[[CTFMenubarMenuController sharedController] unregisterView: self];
 	
 	[ self _abortAlert ];
-}
-
-- (void) _replaceSelfWithElement: (DOMElement *)newElement
-{
-    // Just to be safe, since we are about to replace our containing element
-    [[self retain] autorelease];
-    
-    [self.container.parentNode replaceChild:newElement oldChild:self.container];
-    self.container = nil;
 }
 
 @synthesize webView = _webView;
