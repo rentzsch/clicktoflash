@@ -24,6 +24,31 @@
 		result = NO;
 	}
 	NSTask *installer = [NSTask launchedTaskWithLaunchPath:installerPath arguments:[NSArray arrayWithObjects:path, nil]];
+	
+	pid_t pid = [installer processIdentifier];
+	while ([installer isRunning])
+	{
+		ProcessSerialNumber psn;
+		OSStatus status = GetProcessForPID(pid, &psn);
+		if (noErr == status)
+		{
+			SetFrontProcess(&psn);
+			break;
+		}
+		
+		if (procNotFound == status)
+		{
+			// Didn't finish launching yet. Wait for it to hook up with WindowServer
+			usleep(250000); // 250 ms
+		}
+		else
+		{
+			NSLog(@"GetProcessForPID pid %i status %i", pid, status);
+			break;
+		}
+	}
+	
+	
 	[installer waitUntilExit];
 	// Known bug: if the installation fails or is canceled, Sparkle goes ahead and restarts, thinking everything is fine.
 	[self _finishInstallationWithResult:result host:host error:error delegate:delegate];

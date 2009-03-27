@@ -28,6 +28,8 @@ THE SOFTWARE.
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
+@class SUUpdater;
+
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
@@ -42,6 +44,8 @@ THE SOFTWARE.
 	WebView *_webView;
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
+	NSDictionary *_attributes;
+    SUUpdater *_updater;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -52,6 +56,7 @@ THE SOFTWARE.
 @property (nonatomic, retain) NSString *host;
 @property (nonatomic, retain) WebView *webView;
 @property (retain) NSString *baseURL;
+@property (nonatomic, retain) NSDictionary *attributes;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
