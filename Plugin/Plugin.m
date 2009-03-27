@@ -97,7 +97,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 {
     self = [super init];
     if (self) {
-        {
+        { // Sparklish stuff.
             if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
             }
@@ -112,7 +112,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
                     [_updater setDelegate:self];
                     [_updater checkForUpdatesInBackground];
                     [_updater setAutomaticallyChecksForUpdates:YES];
-                    [_updater resetUpdateCycle];
                 }
             }
         }
