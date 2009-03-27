@@ -27,7 +27,7 @@
 	<key>NSPrincipalClass</key>
 	<string>CTFClickToFlashPlugin</string>
 	<key>WebPluginDescription</key>
-	<string>ClickToFlash</string>
+	<string>ClickToFlash Flash 9.0 r151</string>
 	<key>WebPluginMIMETypes</key>
 	<dict>
 		<key>application/x-shockwave-flash</key>
