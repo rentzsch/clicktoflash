@@ -1,6 +1,6 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.4fc2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip). 
+[Download ClickToFlash 1.4fc5 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip). 
 
 Currently requires Mac OS X 10.5 Leopard.
 
