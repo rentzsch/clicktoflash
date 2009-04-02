@@ -14,6 +14,12 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 ##Version History
 
+* **1.4fc5** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip)
+	* Removes April Fool's special edition feature, fixes most broken sites.
+
+* **1.4fc4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc4.zip)
+	* *April Fool's special edition. [Simone Manganelli]*
+
 * **1.4fc3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip)
 	* *This update is exactly the same as 1.4fc2 and only exists to test/demonstrate Sparkle updating.*
 
