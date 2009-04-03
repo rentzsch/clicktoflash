@@ -83,10 +83,10 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 #pragma mark -
 #pragma mark Sparkle delegate methods
 
-- (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
+/*- (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
 {
     return [[NSBundle mainBundle] bundlePath];
-}
+}*/
 
 
 #pragma mark -
@@ -97,7 +97,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 {
     self = [super init];
     if (self) {
-        { // Sparklish stuff.
+        { // Sparkle stuff.
             if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
             }
@@ -108,13 +108,27 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
                 static BOOL checkedForUpdate = NO;
                 if (!checkedForUpdate) {
                     checkedForUpdate = YES;
-                    NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-                    NSAssert(clickToFlashBundle, nil);
-                    _updater = [SUUpdater updaterForBundle:clickToFlashBundle];
-                    NSAssert(_updater, nil);
-                    [_updater setDelegate:self];
-                    [_updater checkForUpdatesInBackground];
-                    [_updater setAutomaticallyChecksForUpdates:YES];
+                    
+                    if (!objc_getClass("SUUpdater")) {
+                        // Sparkle doesn't seem to be loaded in the current process. It's safe-ish to dynamically load our internal version.
+                        NSString *frameworksPath = [[NSBundle bundleForClass:[self class]] privateFrameworksPath];
+                        NSString *sparkleFrameworkPath = [NSBundle pathForResource:@"Sparkle" ofType:@"framework" inDirectory:frameworksPath];
+                        NSBundle *sparkleFramework = [NSBundle bundleWithPath:sparkleFrameworkPath];
+                        NSError *error = nil;
+                        BOOL loaded = [sparkleFramework loadAndReturnError:&error];
+                        if (loaded) {
+                            NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+                            NSAssert(clickToFlashBundle, nil);
+                            Class updaterClass = objc_getClass("SUUpdater");
+                            NSAssert(updaterClass, nil);
+                            _updater = [updaterClass updaterForBundle:clickToFlashBundle];
+                            NSAssert(_updater, nil);
+                            [_updater setDelegate:self];
+                            [_updater checkForUpdatesInBackground];
+                            [_updater setAutomaticallyChecksForUpdates:YES];
+                        }
+                        if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
+                    }
                 }
             }
         }

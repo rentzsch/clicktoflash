@@ -43,7 +43,6 @@
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
-		79E76F190F658DE0000A58FC /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79475E170F658D9A00FD82E3 /* Sparkle.framework */; };
 		79E76F1C0F658DEB000A58FC /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79475E170F658D9A00FD82E3 /* Sparkle.framework */; };
 		844695F70F470D1F00DC783A /* CTFsIFRSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 844695910F46FC6600DC783A /* CTFsIFRSupport.m */; };
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
@@ -161,7 +160,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79E76F190F658DE0000A58FC /* Sparkle.framework in Frameworks */,
 				55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */,
 				55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */,
 			);

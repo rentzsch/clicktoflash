@@ -25,11 +25,11 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 	// an update will silently fail when no ClickToFlash view is loaded; putting it in the whitelist window
 	// object allows Sparkle to always check for updates
 	
-	NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+	/*NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
 	NSAssert(clickToFlashBundle, nil);
 	SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
 	NSAssert(updater, nil);
-	[updater checkForUpdates:self];
+	[updater checkForUpdates:self];*/
 }
 
 @end
