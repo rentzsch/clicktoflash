@@ -31,7 +31,7 @@ THE SOFTWARE.
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
-#import <Sparkle/Sparkle.h>
+#import "SparkleManager.h"
 
 #define LOGGING_ENABLED 0
 
@@ -42,7 +42,6 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
     // NSUserDefaults keys
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
-static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesOnFirstLoad";
 
 
 @interface CTFClickToFlashPlugin (Internal)
@@ -81,15 +80,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 
 #pragma mark -
-#pragma mark Sparkle delegate methods
-
-/*- (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
-{
-    return [[NSBundle mainBundle] bundlePath];
-}*/
-
-
-#pragma mark -
 #pragma mark Initialization and Superclass Overrides
 
 
@@ -97,40 +87,11 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 {
     self = [super init];
     if (self) {
-        { // Sparkle stuff.
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
-            }
-			if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
-            }
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
-                static BOOL checkedForUpdate = NO;
-                if (!checkedForUpdate) {
-                    checkedForUpdate = YES;
-                    
-                    if (!objc_getClass("SUUpdater")) {
-                        // Sparkle doesn't seem to be loaded in the current process. It's safe-ish to dynamically load our internal version.
-                        NSString *frameworksPath = [[NSBundle bundleForClass:[self class]] privateFrameworksPath];
-                        NSString *sparkleFrameworkPath = [NSBundle pathForResource:@"Sparkle" ofType:@"framework" inDirectory:frameworksPath];
-                        NSBundle *sparkleFramework = [NSBundle bundleWithPath:sparkleFrameworkPath];
-                        NSError *error = nil;
-                        BOOL loaded = [sparkleFramework loadAndReturnError:&error];
-                        if (loaded) {
-                            NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-                            NSAssert(clickToFlashBundle, nil);
-                            Class updaterClass = objc_getClass("SUUpdater");
-                            NSAssert(updaterClass, nil);
-                            _updater = [updaterClass updaterForBundle:clickToFlashBundle];
-                            NSAssert(_updater, nil);
-                            [_updater setDelegate:self];
-                            [_updater checkForUpdatesInBackground];
-                            [_updater setAutomaticallyChecksForUpdates:YES];
-                        }
-                        if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
-                    }
-                }
-            }
+        [[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];
+        
+        if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
+            //  Default to auto-loading invisible flash views.
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
         }
         
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
@@ -274,7 +235,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     [_badgeText release];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [_updater setDelegate:nil];
 #if LOGGING_ENABLED
 	NSLog(@"ClickToFlash:\tdealloc");
 #endif

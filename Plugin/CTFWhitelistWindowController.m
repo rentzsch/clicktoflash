@@ -1,5 +1,5 @@
 #import "CTFWhitelistWindowController.h"
-#import <Sparkle/Sparkle.h>
+#import "SparkleManager.h"
 
 NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 
@@ -19,17 +19,14 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
     return self;
 }
 
+- (void)windowDidLoad
+{
+    [_checkNowButton setEnabled:[[SparkleManager sharedManager] canUpdate]];
+}
+
 - (IBAction)checkForUpdates:(id)sender;
 {
-	// this code is put here, because if it's code that's owned by the plugin object, then initiating
-	// an update will silently fail when no ClickToFlash view is loaded; putting it in the whitelist window
-	// object allows Sparkle to always check for updates
-	
-	/*NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-	NSAssert(clickToFlashBundle, nil);
-	SUUpdater *updater = [SUUpdater updaterForBundle:clickToFlashBundle];
-	NSAssert(updater, nil);
-	[updater checkForUpdates:self];*/
+	[[SparkleManager sharedManager] checkForUpdates];
 }
 
 @end
