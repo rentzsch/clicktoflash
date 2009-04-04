@@ -522,7 +522,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.40 : 0.25 );
+    CGContextSetAlpha( context, pressed ? 0.60 : 0.45 );
     CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
@@ -531,7 +531,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
 	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
-	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.25 ] set ];
+	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
 	[ fillPath fill ];
 	
 	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
@@ -550,7 +550,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 		NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
 		
 		NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
-		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
+		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.20];
 		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
 		
 		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + gearImage.size.height/2,
@@ -587,8 +587,8 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
     NSRect fillRect   = NSInsetRect(selfBounds, 1.0, 1.0);
     NSRect strokeRect = selfBounds;
 
-    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
-    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
+    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.35];
+    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.35];
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
     
     // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
