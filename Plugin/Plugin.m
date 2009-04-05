@@ -31,7 +31,7 @@ THE SOFTWARE.
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
-#import <Sparkle/Sparkle.h>
+#import "SparkleManager.h"
 
 #define LOGGING_ENABLED 0
 
@@ -42,7 +42,6 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
     // NSUserDefaults keys
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
-static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesOnFirstLoad";
 
 
 @interface CTFClickToFlashPlugin (Internal)
@@ -81,15 +80,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 
 #pragma mark -
-#pragma mark Sparkle delegate methods
-
-- (NSString *) pathToRelaunchForUpdater:(SUUpdater*)updater
-{
-    return [[NSBundle mainBundle] bundlePath];
-}
-
-
-#pragma mark -
 #pragma mark Initialization and Superclass Overrides
 
 
@@ -97,26 +87,11 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 {
     self = [super init];
     if (self) {
-        { // Sparklish stuff.
-            if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
-            }
-			if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
-            }
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
-                static BOOL checkedForUpdate = NO;
-                if (!checkedForUpdate) {
-                    checkedForUpdate = YES;
-                    NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-                    NSAssert(clickToFlashBundle, nil);
-                    _updater = [SUUpdater updaterForBundle:clickToFlashBundle];
-                    NSAssert(_updater, nil);
-                    [_updater setDelegate:self];
-                    [_updater checkForUpdatesInBackground];
-                    [_updater setAutomaticallyChecksForUpdates:YES];
-                }
-            }
+        [[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];
+        
+        if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
+            //  Default to auto-loading invisible flash views.
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
         }
         
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
@@ -260,7 +235,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     [_badgeText release];
     
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [_updater setDelegate:nil];
 #if LOGGING_ENABLED
 	NSLog(@"ClickToFlash:\tdealloc");
 #endif
@@ -548,7 +522,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.40 : 0.25 );
+    CGContextSetAlpha( context, pressed ? 0.60 : 0.45 );
     CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
@@ -557,7 +531,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
 	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
-	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.25 ] set ];
+	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
 	[ fillPath fill ];
 	
 	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
@@ -576,7 +550,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 		NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
 		
 		NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
-		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
+		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.20];
 		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
 		
 		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + gearImage.size.height/2,
@@ -613,8 +587,8 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     NSRect fillRect   = NSInsetRect(selfBounds, 1.0, 1.0);
     NSRect strokeRect = selfBounds;
 
-    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
-    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
+    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.35];
+    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.35];
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
     
     // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).

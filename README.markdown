@@ -1,6 +1,6 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.4fc2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip). 
+[Download ClickToFlash 1.4fc5 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip). 
 
 Currently requires Mac OS X 10.5 Leopard.
 
@@ -13,6 +13,12 @@ Please [report bugs and request features](http://rentzsch.lighthouseapp.com/proj
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
 ##Version History
+
+* **1.4fc5** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip)
+	* Removes April Fool's special edition feature, fixes most broken sites.
+
+* **1.4fc4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc4.zip)
+	* *April Fool's special edition. [Simone Manganelli]*
 
 * **1.4fc3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip)
 	* *This update is exactly the same as 1.4fc2 and only exists to test/demonstrate Sparkle updating.*
