@@ -237,10 +237,14 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		[originalOpacityDict setObject:[self.container getAttribute:@"style"] forKey:@"self-style"];
 		[originalOpacityDict setObject:[(DOMElement *)[self.container parentNode] getAttribute:@"style"] forKey:@"parent-style"];
 		self.originalOpacityAttributes = originalOpacityDict;
-																													
+		
+		NSString *opacityResetString = @"; opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;";
+		NSString *newSelfStyleString = [[self.originalOpacityAttributes objectForKey:@"self-style"] stringByAppendingString:opacityResetString];
+		NSString *newParentStyleString = [[self.originalOpacityAttributes objectForKey:@"parent-style"] stringByAppendingString:opacityResetString];
+		
 		[self.container setAttribute:@"wmode" value:@"opaque"];
-		[self.container setAttribute:@"style" value:@"opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;"];
-		[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:@"opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;"];
+		[self.container setAttribute:@"style" value:newSelfStyleString];
+		[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:newParentStyleString];
     }
 
     return self;
