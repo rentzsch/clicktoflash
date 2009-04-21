@@ -42,7 +42,7 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
     // NSUserDefaults keys
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
-
+static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
@@ -93,7 +93,11 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
             //  Default to auto-loading invisible flash views.
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
         }
-        
+		if (![[NSUserDefaults standardUserDefaults] objectForKey:sPluginEnabled]) {
+			// Default to enable the plugin
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:sPluginEnabled];
+		}        
+		
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
         self.container = [arguments objectForKey:WebPlugInContainingElementKey];
@@ -119,6 +123,12 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
         NSLog( @"arguments = %@", arguments );
         NSLog( @"flashvars = %@", _flashVars );
 #endif
+		if ( ![ [ NSUserDefaults standardUserDefaults ] boolForKey: sPluginEnabled ] ) {
+			// plugin is disabled, load all content as normal
+            _isLoadingFromWhitelist = YES;
+			[self _convertTypesForContainer];
+			return self;
+		}		
         
         _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
                     || ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound );
@@ -522,7 +532,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.60 : 0.45 );
+    CGContextSetAlpha( context, pressed ? 0.40 : 0.25 );
     CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
@@ -531,7 +541,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
 	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
-	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
+	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.25 ] set ];
 	[ fillPath fill ];
 	
 	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
@@ -550,7 +560,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 		NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
 		
 		NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
-		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.20];
+		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
 		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
 		
 		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + gearImage.size.height/2,
@@ -587,8 +597,8 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
     NSRect fillRect   = NSInsetRect(selfBounds, 1.0, 1.0);
     NSRect strokeRect = selfBounds;
 
-    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.35];
-    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.35];
+    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
+    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
     NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
     
     // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
@@ -657,7 +667,8 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisi
 - (BOOL) _useH264Version
 {
     return [ self _hasH264Version ] 
-            && [ [ NSUserDefaults standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ];
+	&& [ [ NSUserDefaults standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
+	&& [ [ NSUserDefaults standardUserDefaults ] boolForKey: sPluginEnabled ];
 }
 
 - (void) _convertElementForMP4: (DOMElement*) element
