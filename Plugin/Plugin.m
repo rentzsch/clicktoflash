@@ -261,19 +261,28 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 - (void) mouseDown:(NSEvent *)event
 {
 	NSRect bounds = [ self bounds ];
+	float viewWidth = bounds.size.width;
 	float viewHeight = bounds.size.height;
 	float margin = 5.0;
 	float gearImageHeight = 16.0;
 	float gearImageWidth = 16.0;
 	
-	NSPoint mouseLocation = [event locationInWindow];
-	NSPoint localMouseLocation = [self convertPoint:mouseLocation fromView:nil];
+	BOOL xCoordWithinGearImage = NO;
+	BOOL yCoordWithinGearImage = NO;
 	
-	BOOL xCoordWithinGearImage = ( (localMouseLocation.x >= (0 + margin)) &&
-							   (localMouseLocation.x <= (0 + margin + gearImageWidth)) );
-	
-	BOOL yCoordWithinGearImage = ( (localMouseLocation.y >= (viewHeight - margin - gearImageHeight)) &&
-								  (localMouseLocation.y <= (viewHeight - margin)) );
+	// if the view is 32 pixels or smaller in either direction,
+	// the gear image is not drawn, so we shouldn't pop-up the contextual
+	// menu on a single-click either
+	if ( (viewWidth > 32) && (viewHeight > 32) ) {
+		NSPoint mouseLocation = [event locationInWindow];
+		NSPoint localMouseLocation = [self convertPoint:mouseLocation fromView:nil];
+		
+		xCoordWithinGearImage = ( (localMouseLocation.x >= (0 + margin)) &&
+								 (localMouseLocation.x <= (0 + margin + gearImageWidth)) );
+		
+		yCoordWithinGearImage = ( (localMouseLocation.y >= (viewHeight - margin - gearImageHeight)) &&
+								 (localMouseLocation.y <= (viewHeight - margin)) );
+	}
 	
 	if (xCoordWithinGearImage && yCoordWithinGearImage) {
 		[NSMenu popUpContextMenu:[self menuForEvent:event] withEvent:event forView:self];
