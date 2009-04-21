@@ -50,6 +50,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 - (void) _convertToMP4Container;
 - (void) _convertToMP4ContainerAfterDelay;
 - (void) _prepareForConversion;
+- (void) _revertToOriginalOpacityAttributes;
 
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
@@ -221,6 +222,25 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 				   selector: @selector( _loadInvisibleContentForWindow: ) 
 					   name: kCTFLoadInvisibleFlashViewsForWindow
 					 object: nil ];
+		
+		
+		// if a Flash view has style attributes that make it transparent, the CtF
+		// view will similarly be transparent; we want to make it temporarily
+		// visible, and then restore the original attributes so that we don't
+		// have any display issues once the Flash view is loaded
+		
+		// currently it only changes opacity for the CtF view and its immediate
+		// parent, but opacity could still be applied further up the line
+		
+		NSMutableDictionary *originalOpacityDict = [NSMutableDictionary dictionary];
+		[originalOpacityDict setObject:[self.container getAttribute:@"wmode"] forKey:@"wmode"];
+		[originalOpacityDict setObject:[self.container getAttribute:@"style"] forKey:@"self-style"];
+		[originalOpacityDict setObject:[(DOMElement *)[self.container parentNode] getAttribute:@"style"] forKey:@"parent-style"];
+		self.originalOpacityAttributes = originalOpacityDict;
+																													
+		[self.container setAttribute:@"wmode" value:@"opaque"];
+		[self.container setAttribute:@"style" value:@"opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;"];
+		[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:@"opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;"];
     }
 
     return self;
@@ -705,6 +725,8 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _convertToMP4Container
 {
+	[self _revertToOriginalOpacityAttributes];
+	
 	// Delay this until the end of the event loop, because it may cause self to be deallocated
 	[self _prepareForConversion];
 	[self performSelector:@selector(_convertToMP4ContainerAfterDelay) withObject:nil afterDelay:0.0];
@@ -748,6 +770,8 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _convertTypesForFlashContainer
 {
+	[self _revertToOriginalOpacityAttributes];
+	
 	// Delay this until the end of the event loop, because it may cause self to be deallocated
 	[self _prepareForConversion];
 	[self performSelector:@selector(_convertTypesForFlashContainerAfterDelay) withObject:nil afterDelay:0.0];
@@ -788,10 +812,18 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 	[ self _abortAlert ];
 }
 
+- (void) _revertToOriginalOpacityAttributes
+{
+	[self.container setAttribute:@"wmode" value:[self.originalOpacityAttributes objectForKey:@"wmode"]];
+	[self.container setAttribute:@"style" value:[self.originalOpacityAttributes objectForKey:@"self-style"]];
+	[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:[self.originalOpacityAttributes objectForKey:@"parent-style"]];
+}
+
 @synthesize webView = _webView;
 @synthesize container = _container;
 @synthesize host = _host;
 @synthesize baseURL = _baseURL;
 @synthesize attributes = _attributes;
+@synthesize originalOpacityAttributes = _originalOpacityAttributes;
 
 @end

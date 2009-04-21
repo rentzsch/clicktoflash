@@ -43,6 +43,7 @@ THE SOFTWARE.
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
 	NSDictionary *_attributes;
+	NSDictionary *_originalOpacityAttributes;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -54,6 +55,7 @@ THE SOFTWARE.
 @property (nonatomic, retain) WebView *webView;
 @property (retain) NSString *baseURL;
 @property (nonatomic, retain) NSDictionary *attributes;
+@property (retain) NSDictionary *originalOpacityAttributes;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
