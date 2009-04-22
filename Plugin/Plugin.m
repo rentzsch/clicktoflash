@@ -126,8 +126,6 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 			if (dataAttribute) self.src = dataAttribute;
 		}
 		
-		NSLog(@"self.src: %@",self.src);
-		
 		
 		// set tooltip
 		
@@ -140,7 +138,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
         if( flashvars != nil )
             _flashVars = [ [ self _flashVarDictionary: flashvars ] retain ];
         
-#if 1
+#if LOGGING_ENABLED
         NSLog( @"arguments = %@", arguments );
         NSLog( @"flashvars = %@", _flashVars );
 #endif
