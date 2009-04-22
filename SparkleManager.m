@@ -43,8 +43,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 - (id)init {
     self = [super init];
     if (self) {
-        // We can try to update is Sparkle isn't already loaded in our host.
-        _canUpdate = !objc_getClass("SUUpdater");
+        _canUpdate = NO;
     }
     return self;
 }
@@ -61,8 +60,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 - (SUUpdater*)_updater {
     if (_updater)
         return _updater;
-    
-    NSAssert(_canUpdate, nil);
     
     NSString *frameworksPath = [[NSBundle bundleForClass:[self class]] privateFrameworksPath];
     NSAssert(frameworksPath, nil);
@@ -82,10 +79,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
         Class updaterClass = objc_getClass("SUUpdater");
         NSAssert(updaterClass, nil);
         
-        _updater = [updaterClass updaterForBundle:clickToFlashBundle];
-        NSAssert(_updater, nil);
-        
-        [_updater setDelegate:self];
+		if ([updaterClass respondsToSelector:@selector(updaterForBundle:)]) {
+			_canUpdate = YES;
+			_updater = [updaterClass updaterForBundle:clickToFlashBundle];
+			NSAssert(_updater, nil);
+			
+			[_updater setDelegate:self];
+		}
     }
     
     if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
@@ -103,8 +103,8 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
         if (!checkedForUpdate) {
             checkedForUpdate = YES;
             
+			SUUpdater *updater = [self _updater];
             if (_canUpdate) {
-                SUUpdater *updater = [self _updater];
                 [updater checkForUpdatesInBackground];
                 [updater setAutomaticallyChecksForUpdates:YES];
             }
