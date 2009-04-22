@@ -405,8 +405,15 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
             if ([self _hasH264Version]) {
                 [[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
                                           action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
+				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
+										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 2];
                 [[[self menu] itemAtIndex: 1] setTarget: self];
-            }
+            } else if (_fromYouTube) {
+				// has no H.264 version but is from YouTube; it's an embedded view!
+				
+				[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
+										  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
+			}
         }
     }
     
@@ -748,6 +755,52 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     // Replace self with element.
     [self.container.parentNode replaceChild:newElement oldChild:self.container];
     self.container = nil;
+}
+
+- (IBAction)downloadH264:(id)sender
+{
+	NSString* video_id = [ self _videoId ];
+    NSString* video_hash = [ self _videoHash ];
+    
+    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+					 video_id, video_hash ];
+	
+	NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+	
+	if ([appBundleIdentifier isEqualToString:@"com.apple.Safari"]) {
+		// additional tests need to be performed, because this can indicate
+		// either WebKit *or* Safari; according to @bdash on Twitter, we need
+		// to check whether the framework bundle that we're using is 
+		// contained within WebKit.app or not
+		
+		// however, the user may have renamed the bundle, so we have to get
+		// its path, then get its bundle identifier
+		
+		NSString *privateFrameworksPath = [[NSBundle bundleForClass:[WebView class]] privateFrameworksPath];
+		
+		NSScanner *pathScanner = [[NSScanner alloc] initWithString:privateFrameworksPath];
+		NSString *pathString = nil;
+		[pathScanner scanUpToString:@".app" intoString:&pathString];
+		NSBundle *testBundle = [[NSBundle alloc] initWithPath:[pathString stringByAppendingPathExtension:@"app"]];
+		NSString *testBundleIdentifier = [testBundle bundleIdentifier];
+		[testBundle release];
+		[pathScanner release];
+		
+		
+		// Safari uses the framework inside /System/Library/Frameworks/ , and
+		// since there's no ".app" extension in that path, the resulting
+		// bundle identifier will be nil; however, if it's WebKit, there *will*
+		// be a ".app" in the frameworks path, and we'll get a valid bundle
+		// identifier to launch with
+		
+		if (testBundleIdentifier != nil) appBundleIdentifier = testBundleIdentifier;
+	}
+	
+	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:src]]
+					withAppBundleIdentifier:appBundleIdentifier
+									options:NSWorkspaceLaunchDefault
+			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
+						  launchIdentifiers:nil];
 }
 
 

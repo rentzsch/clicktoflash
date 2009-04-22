@@ -61,6 +61,8 @@ THE SOFTWARE.
 - (IBAction)loadH264:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
 
+- (IBAction)downloadH264:(id)sender;
+
 - (BOOL) isConsideredInvisible;
 
 - (void) _convertTypesForContainer;
