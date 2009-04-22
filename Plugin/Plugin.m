@@ -59,8 +59,10 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 - (void) _loadContentForWindow: (NSNotification*) notification;
 
 - (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
+- (NSString*) flashvarWithName: (NSString*) argName;
 - (BOOL) _hasH264Version;
 - (BOOL) _useH264Version;
+- (NSString *)launchedAppBundleIdentifier;
 @end
 
 
@@ -97,7 +99,9 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		if (![[NSUserDefaults standardUserDefaults] objectForKey:sPluginEnabled]) {
 			// Default to enable the plugin
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:sPluginEnabled];
-		}        
+		}
+		
+		self.launchedAppBundleIdentifier = [self launchedAppBundleIdentifier];
 		
 		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
 		
@@ -105,7 +109,8 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
         
         [self _migrateWhitelist];
         
-        // Get URL and test against the whitelist
+		
+        // Get URL
         
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
 		self.baseURL = [base absoluteString];
@@ -114,29 +119,72 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		self.attributes = [arguments objectForKey:WebPlugInAttributesKey];
 		NSString *srcAttribute = [self.attributes objectForKey:@"src"];
         
+		if (srcAttribute) {
+			self.src = srcAttribute;
+		} else {
+			NSString *dataAttribute = [self.attributes objectForKey:@"data"];
+			if (dataAttribute) self.src = dataAttribute;
+		}
+		
+		NSLog(@"self.src: %@",self.src);
+		
+		
+		// set tooltip
+		
+		if (self.src) [self setToolTip:self.src];
+		
+        
         // Read in flashvars (needed to determine YouTube videos)
         
         NSString* flashvars = [ self.attributes objectForKey: @"flashvars" ];
         if( flashvars != nil )
             _flashVars = [ [ self _flashVarDictionary: flashvars ] retain ];
         
-#if LOGGING_ENABLED
+#if 1
         NSLog( @"arguments = %@", arguments );
         NSLog( @"flashvars = %@", _flashVars );
 #endif
+		
+		// check whether it's from YouTube and get the video_id
+		
+        _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
+		|| ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound )
+		|| (self.src != nil && [self.src rangeOfString: @"youtube.com"].location != NSNotFound );
+		
+        if (_fromYouTube) {
+			NSString *videoId = [ self flashvarWithName: @"video_id" ];
+			if (videoId != nil) {
+				self.videoId = videoId;
+			} else {
+				// scrub the URL to determine the video_id
+				
+				NSString *videoIdFromURL = nil;
+				NSScanner *URLScanner = [[NSScanner alloc] initWithString:self.src];
+				[URLScanner scanUpToString:@"youtube.com/v/" intoString:nil];
+				if ([URLScanner scanString:@"youtube.com/v/" intoString:nil]) {
+					// URL is in required format, next characters are the id
+					
+					[URLScanner scanUpToString:@"&" intoString:&videoIdFromURL];
+					if (videoIdFromURL) self.videoId = videoIdFromURL;
+				}
+				[URLScanner release];
+			}
+		}
+		
+		
+		// check whether plugin is disabled, load all content as normal if so
+		
 		if ( ![ [ NSUserDefaults standardUserDefaults ] boolForKey: sPluginEnabled ] ) {
-			// plugin is disabled, load all content as normal
             _isLoadingFromWhitelist = YES;
 			[self _convertTypesForContainer];
 			return self;
 		}		
-        
-        _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
-                    || ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound );
-        
+		
+		
         // Set up main menus
         
 		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
+		
         
         // Check for sIFR
         
@@ -165,6 +213,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		
         BOOL loadFromWhiteList = [self _isHostWhitelisted];
 		
+		
 		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
 		
 		if( !loadFromWhiteList )
@@ -178,6 +227,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
                 }
             }
 		}
+		
         
         // Handle if this is loading from whitelist
         
@@ -187,15 +237,6 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 			return self;
         }
 		
-        // Set tooltip
-        
-		if (srcAttribute)
-			[self setToolTip:srcAttribute];
-		else {
-			NSString *src = [self.attributes objectForKey:@"data"];
-			if (src)
-				[self setToolTip:src];
-		}
 		
 		// send a notification so that all flash objects can be tracked
 		// we only want to track it if we don't auto-load it
@@ -408,11 +449,13 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
 										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 2];
                 [[[self menu] itemAtIndex: 1] setTarget: self];
+				[[[self menu] itemAtIndex: 2] setTarget: self];
             } else if (_fromYouTube) {
 				// has no H.264 version but is from YouTube; it's an embedded view!
 				
 				[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
 										  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
+				[[[self menu] itemAtIndex: 1] setTarget: self];
 			}
         }
     }
@@ -686,10 +729,10 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     return [ _flashVars objectForKey: argName ];
 }
 
-- (NSString*) _videoId
+/*- (NSString*) _videoId
 {
     return [ self flashvarWithName: @"video_id" ];
-}
+}*/
 
 - (NSString*) _videoHash
 {
@@ -699,7 +742,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 - (BOOL) _hasH264Version
 {
     if( _fromYouTube )
-        return [ self _videoId ] != nil && [ self _videoHash ] != nil;
+        return self.videoId != nil && [ self _videoHash ] != nil;
     else
         return NO;
 }
@@ -713,7 +756,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _convertElementForMP4: (DOMElement*) element
 {
-    NSString* video_id = [ self _videoId ];
+    NSString* video_id = self.videoId;
     NSString* video_hash = [ self _videoHash ];
     
     NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
@@ -757,14 +800,8 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     self.container = nil;
 }
 
-- (IBAction)downloadH264:(id)sender
+- (NSString *)launchedAppBundleIdentifier
 {
-	NSString* video_id = [ self _videoId ];
-    NSString* video_hash = [ self _videoHash ];
-    
-    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-					 video_id, video_hash ];
-	
 	NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
 	
 	if ([appBundleIdentifier isEqualToString:@"com.apple.Safari"]) {
@@ -796,8 +833,30 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		if (testBundleIdentifier != nil) appBundleIdentifier = testBundleIdentifier;
 	}
 	
+	return appBundleIdentifier;
+}
+
+- (IBAction)downloadH264:(id)sender
+{
+	NSString* video_id = self.videoId;
+    NSString* video_hash = [ self _videoHash ];
+    
+    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+					 video_id, video_hash ];
+	
 	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:src]]
-					withAppBundleIdentifier:appBundleIdentifier
+					withAppBundleIdentifier:self.launchedAppBundleIdentifier
+									options:NSWorkspaceLaunchDefault
+			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
+						  launchIdentifiers:nil];
+}
+
+- (IBAction)loadYouTubePage:(id)sender
+{
+	NSString* YouTubePageURL = [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@",self.videoId ];
+	
+	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:YouTubePageURL]]
+					withAppBundleIdentifier:self.launchedAppBundleIdentifier
 									options:NSWorkspaceLaunchDefault
 			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
 						  launchIdentifiers:nil];
@@ -882,5 +941,8 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 @synthesize baseURL = _baseURL;
 @synthesize attributes = _attributes;
 @synthesize originalOpacityAttributes = _originalOpacityAttributes;
+@synthesize src = _src;
+@synthesize videoId = _videoId;
+@synthesize launchedAppBundleIdentifier = _launchedAppBundleIdentifier;
 
 @end
