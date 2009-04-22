@@ -636,6 +636,11 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 	// add the gear for the contextual menu, but only if the view is
 	// greater than a certain size
 	
+	// de-apply the scaling factor first, otherwise drawing will be off
+	NSAffineTransform *xformTwo = [NSAffineTransform transform];
+	[xformTwo scaleBy: 1/scaleFactor];
+	[xformTwo concat];
+	
 	if ((viewWidth > 32) && (viewHeight > 32)) {
 		float margin = 5.0;
 		NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
