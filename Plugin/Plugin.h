@@ -43,6 +43,10 @@ THE SOFTWARE.
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
 	NSDictionary *_attributes;
+	NSDictionary *_originalOpacityAttributes;
+	NSString *_src;
+	NSString *_videoId;
+	NSString *_launchedAppBundleIdentifier;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -54,10 +58,16 @@ THE SOFTWARE.
 @property (nonatomic, retain) WebView *webView;
 @property (retain) NSString *baseURL;
 @property (nonatomic, retain) NSDictionary *attributes;
+@property (retain) NSDictionary *originalOpacityAttributes;
+@property (retain) NSString *src;
+@property (retain) NSString *videoId;
+@property (retain) NSString *launchedAppBundleIdentifier;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
+
+- (IBAction)downloadH264:(id)sender;
 
 - (BOOL) isConsideredInvisible;
 
