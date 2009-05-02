@@ -268,22 +268,26 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		// visible, and then restore the original attributes so that we don't
 		// have any display issues once the Flash view is loaded
 		
-		// currently it only changes opacity for the CtF view and its immediate
-		// parent, but opacity could still be applied further up the line
+		// Should we apply this to the parent?
+		// That seems to be problematic.
 		
 		NSMutableDictionary *originalOpacityDict = [NSMutableDictionary dictionary];
-		[originalOpacityDict setObject:[self.container getAttribute:@"wmode"] forKey:@"wmode"];
-		[originalOpacityDict setObject:[self.container getAttribute:@"style"] forKey:@"self-style"];
-		[originalOpacityDict setObject:[(DOMElement *)[self.container parentNode] getAttribute:@"style"] forKey:@"parent-style"];
-		self.originalOpacityAttributes = originalOpacityDict;
-		
 		NSString *opacityResetString = @"; opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;";
-		NSString *newSelfStyleString = [[self.originalOpacityAttributes objectForKey:@"self-style"] stringByAppendingString:opacityResetString];
-		NSString *newParentStyleString = [[self.originalOpacityAttributes objectForKey:@"parent-style"] stringByAppendingString:opacityResetString];
 		
-		[self.container setAttribute:@"wmode" value:@"opaque"];
-		[self.container setAttribute:@"style" value:newSelfStyleString];
-		[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:newParentStyleString];
+		NSString *originalWmode = [self.container getAttribute:@"wmode"];
+		NSString *originalStyle = [self.container getAttribute:@"style"];
+		
+		if (originalWmode != nil && [originalWmode length] > 0u && ![originalWmode isEqualToString:@"opaque"]) {
+			[originalOpacityDict setObject:originalWmode forKey:@"wmode"];
+			[self.container setAttribute:@"wmode" value:@"opaque"];
+		}
+		
+		if (originalStyle != nil && [originalStyle length] > 0u && ![originalStyle hasSuffix:opacityResetString]) {
+			[originalOpacityDict setObject:originalStyle forKey:@"self-style"];
+			[self.container setAttribute:@"style" value:[originalStyle stringByAppendingString:opacityResetString]];
+		}
+		
+		self.originalOpacityAttributes = originalOpacityDict;
     }
 
     return self;
@@ -933,9 +937,15 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _revertToOriginalOpacityAttributes
 {
-	[self.container setAttribute:@"wmode" value:[self.originalOpacityAttributes objectForKey:@"wmode"]];
-	[self.container setAttribute:@"style" value:[self.originalOpacityAttributes objectForKey:@"self-style"]];
-	[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:[self.originalOpacityAttributes objectForKey:@"parent-style"]];
+	NSString *wmode = [self.originalOpacityAttributes objectForKey:@"wmode"];
+	if (wmode != nil ) {
+		[self.container setAttribute:@"wmode" value:wmode];
+	}
+	
+	NSString *selfStyle = [self.originalOpacityAttributes objectForKey:@"self-style"];
+	if (selfStyle != nil ) {
+		[self.container setAttribute:@"style" value:selfStyle];
+	}
 }
 
 @synthesize webView = _webView;
