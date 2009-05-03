@@ -271,20 +271,37 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		// Should we apply this to the parent?
 		// That seems to be problematic.
 		
+		// well, in my experience w/CSS, to get a layout to work a lot of the
+		// time, you need to create parent objects and apply styles to parents,
+		// so it seemed reasonable to check both self and parent for potential
+		// problems with opacity
+		
 		NSMutableDictionary *originalOpacityDict = [NSMutableDictionary dictionary];
 		NSString *opacityResetString = @"; opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;";
 		
 		NSString *originalWmode = [self.container getAttribute:@"wmode"];
 		NSString *originalStyle = [self.container getAttribute:@"style"];
+		NSString *originalParentWmode = [(DOMElement *)[self.container parentNode] getAttribute:@"wmode"];
+		NSString *originalParentStyle = [(DOMElement *)[self.container parentNode] getAttribute:@"style"];
 		
 		if (originalWmode != nil && [originalWmode length] > 0u && ![originalWmode isEqualToString:@"opaque"]) {
-			[originalOpacityDict setObject:originalWmode forKey:@"wmode"];
+			[originalOpacityDict setObject:originalWmode forKey:@"self-wmode"];
 			[self.container setAttribute:@"wmode" value:@"opaque"];
 		}
 		
 		if (originalStyle != nil && [originalStyle length] > 0u && ![originalStyle hasSuffix:opacityResetString]) {
 			[originalOpacityDict setObject:originalStyle forKey:@"self-style"];
 			[self.container setAttribute:@"style" value:[originalStyle stringByAppendingString:opacityResetString]];
+		}
+		
+		if (originalParentWmode != nil && [originalParentWmode length] > 0u && ![originalParentWmode isEqualToString:@"opaque"]) {
+			[originalOpacityDict setObject:originalParentWmode forKey:@"parent-wmode"];
+			[(DOMElement *)[self.container parentNode] setAttribute:@"wmode" value:@"opaque"];
+		}
+		
+		if (originalParentStyle != nil && [originalParentStyle length] > 0u && ![originalParentStyle hasSuffix:opacityResetString]) {
+			[originalOpacityDict setObject:originalParentStyle forKey:@"parent-style"];
+			[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:[originalParentStyle stringByAppendingString:opacityResetString]];
 		}
 		
 		self.originalOpacityAttributes = originalOpacityDict;
@@ -937,14 +954,24 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _revertToOriginalOpacityAttributes
 {
-	NSString *wmode = [self.originalOpacityAttributes objectForKey:@"wmode"];
-	if (wmode != nil ) {
-		[self.container setAttribute:@"wmode" value:wmode];
+	NSString *selfWmode = [self.originalOpacityAttributes objectForKey:@"self-wmode"];
+	if (selfWmode != nil ) {
+		[self.container setAttribute:@"wmode" value:selfWmode];
 	}
 	
 	NSString *selfStyle = [self.originalOpacityAttributes objectForKey:@"self-style"];
 	if (selfStyle != nil ) {
 		[self.container setAttribute:@"style" value:selfStyle];
+	}
+	
+	NSString *parentWmode = [self.originalOpacityAttributes objectForKey:@"parent-wmode"];
+	if (parentWmode != nil ) {
+		[(DOMElement *)[self.container parentNode] setAttribute:@"wmode" value:parentWmode];
+	}
+	
+	NSString *parentStyle = [self.originalOpacityAttributes objectForKey:@"parent-style"];
+	if (parentStyle != nil ) {
+		[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:parentStyle];
 	}
 }
 
