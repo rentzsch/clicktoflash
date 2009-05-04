@@ -1,6 +1,10 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.4fc6 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip). 
+**Note: if you have trouble installing or have had trouble in the past installing ClickToFlash, you'll need to issue this Terminal command once to work-around an Installer bug:** 
+
+	sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg
+
+[Download ClickToFlash 1.4fc6 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip).
 
 Currently requires Mac OS X 10.5 Leopard.
 
