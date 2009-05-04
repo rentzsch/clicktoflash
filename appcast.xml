@@ -222,7 +222,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc5" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc6" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc5</title>
