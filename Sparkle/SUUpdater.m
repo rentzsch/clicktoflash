@@ -26,6 +26,7 @@
 - (void)updateDriverDidFinish:(NSNotification *)note;
 - initForBundle:(NSBundle *)bundle;
 - (NSURL *)parameterizedFeedURL;
+- (void)checkForUpdatesInBackgroundByTimer:(NSTimer*)timer;
 @end
 
 @implementation SUUpdater
@@ -165,7 +166,14 @@ static NSString *SUUpdaterDefaultsObservationContext = @"SUUpdaterDefaultsObserv
 		delayUntilCheck = (updateCheckInterval - intervalSinceCheck); // It hasn't been long enough.
 	else
 		delayUntilCheck = 0; // We're overdue! Run one now.
-	checkTimer = [NSTimer scheduledTimerWithTimeInterval:delayUntilCheck target:self selector:@selector(checkForUpdatesInBackground) userInfo:nil repeats:NO];
+	checkTimer = [NSTimer scheduledTimerWithTimeInterval:delayUntilCheck target:self selector:@selector(checkForUpdatesInBackgroundByTimer:) userInfo:nil repeats:NO];
+}
+
+- (void)checkForUpdatesInBackgroundByTimer:(NSTimer*)timer
+{
+	checkTimer = nil; // Timer doesn't repeat, so it's invalid, just needs to be set to nil.
+	
+	[self checkForUpdatesInBackground];
 }
 
 - (void)checkForUpdatesInBackground
