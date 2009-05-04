@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm $HOME/Library/Internet\ Plug-Ins/ClickToFlash.plugin
+rm -R $HOME/Library/Internet\ Plug-Ins/ClickToFlash.plugin
 mv /tmp/ClickToFlash.plugin $HOME/Library/Internet\ Plug-Ins/
 pkgutil --forget com.github.rentzsch.clicktoflash.pkg
 
