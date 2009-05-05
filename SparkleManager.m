@@ -117,7 +117,9 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 }
 
 - (NSString*)pathToRelaunchForUpdater:(SUUpdater*)updater {
-    return [[NSBundle mainBundle] bundlePath];
+    return _pathToRelaunch;
 }
+
+@synthesize pathToRelaunch = _pathToRelaunch;
 
 @end
