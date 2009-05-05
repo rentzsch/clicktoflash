@@ -29,7 +29,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [NEW] .icns file so the Sparkle update dialog doesn't show the generic document file icon ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/2e5c459ce50999d2d3f96e44cd99be3c05e47305))
 
-	* [NEW] Dynamically loads Sparkle from internally bundled framework when host doesn't already use Sparkle. ([rentzsch]((http://github.com/rentzsch/clicktoflash/commit/41dd9de069fc8f7d4a81d77ee981ece938eaf274))
+	* [NEW] Dynamically loads Sparkle from internally bundled framework when host doesn't already use Sparkle. [bug 99](http://rentzsch.lighthouseapp.com/projects/24342/tickets/99) ([rentzsch]((http://github.com/rentzsch/clicktoflash/commit/41dd9de069fc8f7d4a81d77ee981ece938eaf274))
 
 	* [NEW] Allow host apps that use Sparkle 1.5 or later to update ClickToFlash. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/181c096da517bfb002fa96045f8edbd8a2fb94f6))
 
