@@ -128,7 +128,7 @@
 		072189BD0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
 		55EB703D0E04A84F0016593D /* Plugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Plugin.m; path = Plugin/Plugin.m; sourceTree = "<group>"; };
-		55EB70420E04A8640016593D /* ClickToFlash.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClickToFlash.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		55EB70420E04A8640016593D /* ClickToFlash.webplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClickToFlash.webplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		55EB70560E04A8B80016593D /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		55EB70570E04A8B80016593D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		55EB70610E04A8D00016593D /* Info-Plugin.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Plugin.plist"; path = "Plugin/Info-Plugin.plist"; sourceTree = "<group>"; };
@@ -194,7 +194,7 @@
 		55EB70430E04A8640016593D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55EB70420E04A8640016593D /* ClickToFlash.plugin */,
+				55EB70420E04A8640016593D /* ClickToFlash.webplugin */,
 				B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */,
 			);
 			name = Products;
@@ -291,7 +291,7 @@
 			);
 			name = ClickToFlash;
 			productName = ClickToFlash;
-			productReference = 55EB70420E04A8640016593D /* ClickToFlash.plugin */;
+			productReference = 55EB70420E04A8640016593D /* ClickToFlash.webplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 		B5CFF1730F40EEDB005DB9CC /* Whitelist Panel Harness */ = {
@@ -406,7 +406,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\ncp -R \"$BUILT_PRODUCTS_DIR/ClickToFlash.plugin\" \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nexit 0";
+			shellScript = "rm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nrm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin\"\ncp -R \"$BUILT_PRODUCTS_DIR/ClickToFlash.plugin\" \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nexit 0";
 		};
 		FADCD4210F421EAE00749805 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -542,6 +542,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_OBJC_GC = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -552,7 +553,7 @@
 				PRODUCT_NAME = ClickToFlash;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				VALID_ARCHS = "i386 ppc ppc7400 ppc970 x86_64";
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = webplugin;
 				ZERO_LINK = NO;
 			};
 			name = Debug;
@@ -566,6 +567,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_GC = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -575,7 +577,7 @@
 				PRODUCT_NAME = ClickToFlash;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				VALID_ARCHS = "i386 ppc ppc7400 ppc970 x86_64";
-				WRAPPER_EXTENSION = plugin;
+				WRAPPER_EXTENSION = webplugin;
 				ZERO_LINK = NO;
 			};
 			name = Release;
