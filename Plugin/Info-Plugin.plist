@@ -27,7 +27,7 @@
 	<key>SUFeedURL</key>
 	<string>https://s3.amazonaws.com/clicktoflash/appcast.xml</string>
 	<key>WebPluginDescription</key>
-	<string>ClickToFlash Flash 9.0 r151</string>
+	<string>Shockwave Flash 9.0 r151 (ClickToFlash)</string>
 	<key>WebPluginMIMETypes</key>
 	<dict>
 		<key>application/x-shockwave-flash</key>
@@ -37,10 +37,10 @@
 				<string>swf</string>
 			</array>
 			<key>WebPluginTypeDescription</key>
-			<string>ClickToFlash</string>
+			<string>Shockwave Flash 9.0 r151 (ClickToFlash)</string>
 		</dict>
 	</dict>
 	<key>WebPluginName</key>
-	<string>ClickToFlash</string>
+	<string>Shockwave Flash</string>
 </dict>
 </plist>

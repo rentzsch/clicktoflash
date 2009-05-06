@@ -90,7 +90,11 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 {
     self = [super init];
     if (self) {
-        [[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];
+		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
+		NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
+		NSString *pathToRelaunch = [sharedWorkspace absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
+		[sharedSparkleManager setPathToRelaunch:pathToRelaunch];
+        [sharedSparkleManager startAutomaticallyCheckingForUpdates];
         
         if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
             //  Default to auto-loading invisible flash views.

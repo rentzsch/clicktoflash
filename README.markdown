@@ -1,6 +1,10 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.4fc5 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip). 
+**Note: if you have trouble installing or have had trouble in the past installing ClickToFlash, you'll need to issue this Terminal command once to work-around an Installer bug:** 
+
+	sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg
+
+[Download ClickToFlash 1.4fc6 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip).
 
 Currently requires Mac OS X 10.5 Leopard.
 
@@ -14,6 +18,35 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 ##Version History
 
+* **1.4fc6** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip)
+	* **If you've been using any of the 1.4fcX releases, you'll need to issue this Terminal command once to work-around an Installer bug: `sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg`**
+
+	* [NEW] Option to disable ClickToFlash globally. [bug 94](http://rentzsch.lighthouseapp.com/projects/24342/tickets/94) ([Patrick McCarron](http://github.com/rentzsch/clicktoflash/commit/b224861719aebaed81e9909c4fd5526d55032454))
+
+	* [NEW] Contextual menu item to download H.264 file from YouTube. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/95cec2c6481772f8d448b4cf98555ea91690b448))
+
+	* [NEW] Contextual menu item that opens the YouTube.com page for embedded YouTube players. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/a055047347d7eebbb1cd69997bee332ac0845966))
+
+	* [NEW] .icns file so the Sparkle update dialog doesn't show the generic document file icon ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/2e5c459ce50999d2d3f96e44cd99be3c05e47305))
+
+	* [NEW] Dynamically loads Sparkle from internally bundled framework when host doesn't already use Sparkle. [bug 99](http://rentzsch.lighthouseapp.com/projects/24342/tickets/99) ([rentzsch]((http://github.com/rentzsch/clicktoflash/commit/41dd9de069fc8f7d4a81d77ee981ece938eaf274))
+
+	* [NEW] Allow host apps that use Sparkle 1.5 or later to update ClickToFlash. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/181c096da517bfb002fa96045f8edbd8a2fb94f6))
+
+	* [FIX] Work-around an [Installer bug](http://openradar.appspot.com/6850710). bugs [95](http://rentzsch.lighthouseapp.com/projects/24342/tickets/95), [96](http://rentzsch.lighthouseapp.com/projects/24342/tickets/96), [113](http://rentzsch.lighthouseapp.com/projects/24342/tickets/113), [122](http://rentzsch.lighthouseapp.com/projects/24342/tickets/122), [125](http://rentzsch.lighthouseapp.com/projects/24342/tickets/125), [126](http://rentzsch.lighthouseapp.com/projects/24342/tickets/126), [128](http://rentzsch.lighthouseapp.com/projects/24342/tickets/128), [133](http://rentzsch.lighthouseapp.com/projects/24342/tickets/133), [144](http://rentzsch.lighthouseapp.com/projects/24342/tickets/144) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/666f53eaabc0faaa4458e6c71084780650779472))
+
+	* [FIX] Sparkle crasher in scheduleNextUpdateCheck. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/f7ca07b3e6e6e13de8133d8e237f284f2ccdc066))
+
+	* [FIX] Hang when loading Walmart pages. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/7503af2d03c07e5b900f01fce5027ebf32a52aa2) and [Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/74584371bdb1391afb3655b8c3113f5cda5afe0f))
+
+	* [FIX] Gear image was drawn in an incorrect position in rare cases. (Peter Hosey and [Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/70055dde3fa378e4440ba0d06180b987e578e148))
+
+	* [FIX] If the gear icon isn't drawn, the contextual menu no longer pops up if you click in the upper-left corner of the view. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/a1a86695294ac7f633a6b6f68b574d18e1ec0926))
+
+	* [FIX] Correct tooltip on "Enable ClickToFlash" checkbox. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/7c05e6667f464e8e866206d1b489fec9f82f3d46))
+
+	* [CHANGE] Opacity changes are now added to the original styles (instead of replacing) so positioning and other attributes remain unaffected. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/dde839f6c7bc61a6ae8690c95ed4da2e2412a273))
+
 * **1.4fc5** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip)
 	* Removes April Fool's special edition feature, fixes most broken sites.
 
@@ -24,7 +57,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 	* *This update is exactly the same as 1.4fc2 and only exists to test/demonstrate Sparkle updating.*
 
 * **1.4fc2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip)
-	* [NEW] Added buttons in settings panel to allow for manual update checking. [[Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/194f2dc1a8da91298d2e79fb426b60ecf4205d2a)]
+	* [NEW] Added buttons in settings panel to allow for manual update checking. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/194f2dc1a8da91298d2e79fb426b60ecf4205d2a))
 
 	* [NEW] Nil hosts get whitelisted by default. This effectively disables ClickToFlash in Dashboard and other places where it might be desirable to do so. ([millenomi](http://github.com/rentzsch/clicktoflash/commit/18dbcd3ba312290223ff456dd5a08f0d4bb74cd4))
 

@@ -31,6 +31,7 @@
 @interface SparkleManager : NSObject {
     SUUpdater *_updater;
     BOOL _canUpdate;
+	NSString *_pathToRelaunch;
 }
 
 + (id)sharedManager;
@@ -38,5 +39,7 @@
 
 - (void)startAutomaticallyCheckingForUpdates;
 - (void)checkForUpdates;
+
+@property (retain) NSString *pathToRelaunch;
 
 @end
