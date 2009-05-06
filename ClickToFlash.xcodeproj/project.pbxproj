@@ -406,7 +406,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "rm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nrm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin\"\ncp -R \"$BUILT_PRODUCTS_DIR/ClickToFlash.plugin\" \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nexit 0";
+			shellScript = "rm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nrm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin\"\ncp -R \"$BUILT_PRODUCTS_DIR/ClickToFlash.webplugin\" \"$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin\"\nexit 0";
 		};
 		FADCD4210F421EAE00749805 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
