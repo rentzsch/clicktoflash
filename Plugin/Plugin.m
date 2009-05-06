@@ -295,6 +295,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		
 		if (originalStyle != nil && [originalStyle length] > 0u && ![originalStyle hasSuffix:opacityResetString]) {
 			[originalOpacityDict setObject:originalStyle forKey:@"self-style"];
+			[originalOpacityDict setObject:[originalStyle stringByAppendingString:opacityResetString] forKey:@"modified-self-style"];
 			[self.container setAttribute:@"style" value:[originalStyle stringByAppendingString:opacityResetString]];
 		}
 		
@@ -305,6 +306,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		
 		if (originalParentStyle != nil && [originalParentStyle length] > 0u && ![originalParentStyle hasSuffix:opacityResetString]) {
 			[originalOpacityDict setObject:originalParentStyle forKey:@"parent-style"];
+			[originalOpacityDict setObject:[originalParentStyle stringByAppendingString:opacityResetString] forKey:@"modified-parent-style"];
 			[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:[originalParentStyle stringByAppendingString:opacityResetString]];
 		}
 		
@@ -963,9 +965,12 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		[self.container setAttribute:@"wmode" value:selfWmode];
 	}
 	
-	NSString *selfStyle = [self.originalOpacityAttributes objectForKey:@"self-style"];
-	if (selfStyle != nil ) {
-		[self.container setAttribute:@"style" value:selfStyle];
+	NSString *currentStyle = [self.container getAttribute:@"style"];
+	NSString *originalSelfStyle = [self.originalOpacityAttributes objectForKey:@"self-style"];
+	if (originalSelfStyle != nil ) {
+		if ([currentStyle isEqualToString:[self.originalOpacityAttributes objectForKey:@"modified-self-style"]]) {
+			[self.container setAttribute:@"style" value:originalSelfStyle];
+		}
 	}
 	
 	NSString *parentWmode = [self.originalOpacityAttributes objectForKey:@"parent-wmode"];
@@ -973,9 +978,12 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		[(DOMElement *)[self.container parentNode] setAttribute:@"wmode" value:parentWmode];
 	}
 	
-	NSString *parentStyle = [self.originalOpacityAttributes objectForKey:@"parent-style"];
-	if (parentStyle != nil ) {
-		[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:parentStyle];
+	NSString *currentParentStyle = [(DOMElement *)[self.container parentNode] getAttribute:@"style"];
+	NSString *originalParentStyle = [self.originalOpacityAttributes objectForKey:@"parent-style"];
+	if (originalParentStyle != nil ) {
+		if ([currentParentStyle isEqualToString:[self.originalOpacityAttributes objectForKey:@"modified-parent-style"]]) {
+			[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:originalParentStyle];
+		}
 	}
 }
 
