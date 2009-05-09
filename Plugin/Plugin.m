@@ -875,7 +875,7 @@ BOOL usingMATrackingArea = NO;
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.40 : 0.25 );
+    CGContextSetAlpha( context, pressed ? 0.50 : 0.35 );
     CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
@@ -884,13 +884,24 @@ BOOL usingMATrackingArea = NO;
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
 	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
-	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.25 ] set ];
+	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
 	[ fillPath fill ];
 	
+	NSUInteger thickLineWidth = 5;
 	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
 	[ [ NSColor blackColor ] set ];
-	[ path setLineWidth: 3 ];
+	[ path setLineWidth: thickLineWidth ];
 	[ path stroke ];
+	
+	NSUInteger thinLineWidth = 2;
+	NSRect thinBorderRect = NSMakeRect( loc.x - kFrameXInset - thickLineWidth/4,
+										loc.y - kFrameYInset - thickLineWidth/4,
+										w + thickLineWidth/2,
+										h + thickLineWidth/2);
+	NSBezierPath* thinPath = bezierPathWithRoundedRectCornerRadius( thinBorderRect, 4 );
+	[ [ NSColor whiteColor ] set ];
+	[ thinPath setLineWidth: thinLineWidth ];
+	[ thinPath stroke ];
 	
     [ str drawAtPoint: loc withAttributes: attrs ];
 	
