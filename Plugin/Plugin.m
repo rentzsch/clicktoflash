@@ -572,10 +572,15 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 	
 	NSString* str = [ self badgeLabelText ];
 	
+	NSShadow *superAwesomeShadow = [[NSShadow alloc] init];
+	[superAwesomeShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
+	[superAwesomeShadow setShadowColor:[NSColor whiteColor]];
+	[superAwesomeShadow autorelease];
 	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
 						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
 						   [ NSNumber numberWithInt: -1 ], NSKernAttributeName,
 						   [ NSColor blackColor ], NSForegroundColorAttributeName,
+						   superAwesomeShadow, NSShadowAttributeName,
 						   nil ];
 	
 	// Set up for drawing.
