@@ -2,9 +2,15 @@
 
 [Download ClickToFlash 1.4 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip).
 
-**Note: if you have trouble installing or have had trouble in the past installing ClickToFlash, you'll need to issue this Terminal command once to work-around an Installer bug:** 
+**Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
 
 	sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg
+
+Please note: if you see the following error:
+
+	No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.
+
+**you do not need to worry about anything.**  If you see this error, then the next time you install ClickToFlash, it should work correctly.
 
 Currently requires Mac OS X 10.5 Leopard.
 
