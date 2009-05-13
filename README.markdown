@@ -48,7 +48,8 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 	* [FIX] Quote pathnames in installation script. ([Cédric Luthi](http://github.com/rentzsch/clicktoflash/commit/80c7687a9b88b7c74afe28e31be791fe50a81ff5))
 
 * **1.4fc6** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip)
-	* **If you've been using any of the 1.4fcX releases, you'll need to issue this Terminal command once to work-around an Installer bug: `sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg`**
+	* **If you've been using any of the 1.4fcX releases, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash: `sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg`** 
+	Please note, if you receive this error: `No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.`, you do not need to worry.  If you see this error, then the next time you install ClickToFlash, it should work correctly.
 
 	* [NEW] Option to disable ClickToFlash globally. [bug 94](http://rentzsch.lighthouseapp.com/projects/24342/tickets/94) ([Patrick McCarron](http://github.com/rentzsch/clicktoflash/commit/b224861719aebaed81e9909c4fd5526d55032454))
 
