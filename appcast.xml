@@ -80,7 +80,10 @@
 		<ul>
 			<li>
 				<p>
-					<strong>If you've been using any of the 1.4fcX releases, you'll need to issue this Terminal command once to work-around an Installer bug: <code>sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg</code></strong>
+					<strong>If you've been using any of the 1.4fcX releases, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash: <code>sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg</code></strong>
+				</p>
+				<p>
+					Please note, if you receive this error: <code>No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.</code>, you do not need to worry.  If you see this error, then the next time you install ClickToFlash, it should work correctly.
 				</p>
 			</li>
 			<li>
@@ -300,6 +303,9 @@
 			<li>
 				<p>
 					<strong>If you've been using any of the 1.4fcX releases, you'll need to issue this Terminal command once to work-around an Installer bug: <code>sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg</code></strong>
+				</p>
+				<p>
+					Please note, if you receive this error: <code>No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.</code>, you do not need to worry.  If you see this error, then the next time you install ClickToFlash, it should work correctly.
 				</p>
 			</li>
 			<li>
