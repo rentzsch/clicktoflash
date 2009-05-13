@@ -1,10 +1,10 @@
 #ClickToFlash
 
+[Download ClickToFlash 1.4 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip).
+
 **Note: if you have trouble installing or have had trouble in the past installing ClickToFlash, you'll need to issue this Terminal command once to work-around an Installer bug:** 
 
 	sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg
-
-[Download ClickToFlash 1.4fc6 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip).
 
 Currently requires Mac OS X 10.5 Leopard.
 
@@ -17,6 +17,29 @@ Please [report bugs and request features](http://rentzsch.lighthouseapp.com/proj
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
 ##Version History
+
+* **1.4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip)
+	* [CHANGE] Rename WebPluginDescription from `ClickToFlash Flash 9.0 r151` to `Shockwave Flash 9.0 r151 (ClickToFlash)` to better spoof sites (like CNN video) that check for specific flash versions. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/6b60d2d802afe06404725d92d2a121acdb7b4f47))
+
+	* [CHANGE] Version now included in the 'Installed Plug-ins' page; added version number to settings window. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/546ed7d9fef47c5e3821fb7fc10a0c008e81f2c9))
+
+	* [CHANGE] Removed the installation check for Safari, because it was causing problems for people who had moved it from its standard location, and [stupid PackageMaker doesn't have a way to check via bundle identifier](http://homepage.mac.com/simx/.Pictures/PackageMakerOnNotice.jpeg). ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c91c9ba77396f84c410ce1c42409df0842fc1221))
+
+	* [CHANGE] ClickToFlash's extension to `.webplugin`. Activate GC support in both ClickToFlash and Sparkle. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e1688f660540b68fc77e91e4524bd54045ef8245))
+
+	* [FIX] Sparkle now correctly relaunches WebKit instead of Safari after installing an update. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e8dadfdeae394bee6bd7e36bc208390a515f4a5d))
+
+	* [FIX] "Install plugin for user" Xcode target shell script. [bug 153](http://rentzsch.lighthouseapp.com/projects/24342/tickets/153) ([pom](http://github.com/rentzsch/clicktoflash/commit/c0e67b25782d5944e890f078f1c9c9a73a810192))
+
+	* [CHANGE] Use same version numbering scheme as Flash plugin, because stupid web sites check for this. [bug 161](http://rentzsch.lighthouseapp.com/projects/24342/tickets/161) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/e8dd3001d2247e4cd321d1d154dec90bc1500d99))
+
+	* [FIX] Prevent installation on volumes other than the root volume. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/876bc68257edf3e9a98e53c186301ec73d0467a6))
+
+	* [FIX] Replace use of deprecated methods. ([Jacques Vidrine](http://github.com/rentzsch/clicktoflash/commit/980674374d043dcdd6b745d89d22cf7094fe168a) via [twitter](https://twitter.com/EACCES/status/1697243619))
+
+	* [FIX] Confusing installer UI that says it will install for all users and then only installs for the current user. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/2d74d2b477a76a07dd4bf9d9ac45a69d18d22eee))
+	
+	* [FIX] Quote pathnames in installation script. ([Cédric Luthi](http://github.com/rentzsch/clicktoflash/commit/80c7687a9b88b7c74afe28e31be791fe50a81ff5))
 
 * **1.4fc6** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip)
 	* **If you've been using any of the 1.4fcX releases, you'll need to issue this Terminal command once to work-around an Installer bug: `sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg`**

@@ -6,6 +6,287 @@
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
 		<item>
+			<title>version 1.4</title>
+			<pubDate>Tue, 12 May 2009 21:47:39 -0500</pubDate>
+			<description>
+<![CDATA[
+<ul>
+	<li>
+		<p>
+			<strong>1.4</strong>
+		</p>
+		<ul>
+			<li>
+				<p>
+					[CHANGE] Rename WebPluginDescription from <code>ClickToFlash Flash 9.0 r151</code> to <code>Shockwave Flash 9.0 r151 (ClickToFlash)</code> to better spoof sites (like CNN video) that check for specific flash versions. (<a href="http://github.com/rentzsch/clicktoflash/commit/6b60d2d802afe06404725d92d2a121acdb7b4f47">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] Version now included in the &lsquo;Installed Plug-ins&rsquo; page; added version number to settings window. (<a href="http://github.com/rentzsch/clicktoflash/commit/546ed7d9fef47c5e3821fb7fc10a0c008e81f2c9">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] Removed the installation check for Safari, because it was causing problems for people who had moved it from its standard location, and <a href="http://homepage.mac.com/simx/.Pictures/PackageMakerOnNotice.jpeg">stupid PackageMaker doesn&rsquo;t have a way to check via bundle identifier</a>. (<a href="http://github.com/rentzsch/clicktoflash/commit/c91c9ba77396f84c410ce1c42409df0842fc1221">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] ClickToFlash&rsquo;s extension to <code>.webplugin</code>. Activate GC support in both ClickToFlash and Sparkle. (<a href="http://github.com/rentzsch/clicktoflash/commit/e1688f660540b68fc77e91e4524bd54045ef8245">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Sparkle now correctly relaunches WebKit instead of Safari after installing an update. (<a href="http://github.com/rentzsch/clicktoflash/commit/e8dadfdeae394bee6bd7e36bc208390a515f4a5d">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] &ldquo;Install plugin for user&rdquo; Xcode target shell script. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/153">bug 153</a> (<a href="http://github.com/rentzsch/clicktoflash/commit/c0e67b25782d5944e890f078f1c9c9a73a810192">pom</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] Use same version numbering scheme as Flash plugin, because stupid web sites check for this. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/161">bug 161</a> (<a href="http://github.com/rentzsch/clicktoflash/commit/e8dd3001d2247e4cd321d1d154dec90bc1500d99">Jeff Johnson</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Prevent installation on volumes other than the root volume. (<a href="http://github.com/rentzsch/clicktoflash/commit/876bc68257edf3e9a98e53c186301ec73d0467a6">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Replace use of deprecated methods. (<a href="http://github.com/rentzsch/clicktoflash/commit/980674374d043dcdd6b745d89d22cf7094fe168a">Jacques Vidrine</a> via <a href="https://twitter.com/EACCES/status/1697243619">twitter</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Confusing installer UI that says it will install for all users and then only installs for the current user. (<a href="http://github.com/rentzsch/clicktoflash/commit/2d74d2b477a76a07dd4bf9d9ac45a69d18d22eee">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Quote pathnames in installation script. (<a href="http://github.com/rentzsch/clicktoflash/commit/80c7687a9b88b7c74afe28e31be791fe50a81ff5">Cédric Luthi</a>)
+				</p>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<p>
+			<strong>1.4fc6</strong>
+		</p>
+		<ul>
+			<li>
+				<p>
+					<strong>If you've been using any of the 1.4fcX releases, you'll need to issue this Terminal command once to work-around an Installer bug: <code>sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg</code></strong>
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Option to disable ClickToFlash globally. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/94">bug 94</a> (<a href="http://github.com/rentzsch/clicktoflash/commit/b224861719aebaed81e9909c4fd5526d55032454">Patrick McCarron</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Contextual menu item to download H.264 file from YouTube. (<a href="http://github.com/rentzsch/clicktoflash/commit/95cec2c6481772f8d448b4cf98555ea91690b448">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Contextual menu item that opens the YouTube.com page for embedded YouTube players. (<a href="http://github.com/rentzsch/clicktoflash/commit/a055047347d7eebbb1cd69997bee332ac0845966">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] .icns file so the Sparkle update dialog doesn&rsquo;t show the generic document file icon (<a href="http://github.com/rentzsch/clicktoflash/commit/2e5c459ce50999d2d3f96e44cd99be3c05e47305">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Dynamically loads Sparkle from internally bundled framework when host doesn&rsquo;t already use Sparkle. (<a href="(http://github.com/rentzsch/clicktoflash/commit/41dd9de069fc8f7d4a81d77ee981ece938eaf274">rentzsch</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Allow host apps that use Sparkle 1.5 or later to update ClickToFlash. (<a href="http://github.com/rentzsch/clicktoflash/commit/181c096da517bfb002fa96045f8edbd8a2fb94f6">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Work-around an <a href="http://openradar.appspot.com/6850710">Installer bug</a>. bugs <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/95">95</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/96">96</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/113">113</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/122">122</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/125">125</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/126">126</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/128">128</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/133">133</a>, <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/144">144</a> (<a href="http://github.com/rentzsch/clicktoflash/commit/666f53eaabc0faaa4458e6c71084780650779472">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Sparkle crasher in scheduleNextUpdateCheck. (<a href="http://github.com/rentzsch/clicktoflash/commit/f7ca07b3e6e6e13de8133d8e237f284f2ccdc066">Jeff Johnson</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Hang when loading Walmart pages. (<a href="http://github.com/rentzsch/clicktoflash/commit/7503af2d03c07e5b900f01fce5027ebf32a52aa2">Jeff Johnson</a> and <a href="http://github.com/rentzsch/clicktoflash/commit/74584371bdb1391afb3655b8c3113f5cda5afe0f">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Gear image was drawn in an incorrect position in rare cases. (Peter Hosey and <a href="http://github.com/rentzsch/clicktoflash/commit/70055dde3fa378e4440ba0d06180b987e578e148">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] If the gear icon isn&rsquo;t drawn, the contextual menu no longer pops up if you click in the upper-left corner of the view. (<a href="http://github.com/rentzsch/clicktoflash/commit/a1a86695294ac7f633a6b6f68b574d18e1ec0926">Simone Manganelli</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Correct tooltip on &ldquo;Enable ClickToFlash&rdquo; checkbox. (<a href="http://github.com/rentzsch/clicktoflash/commit/7c05e6667f464e8e866206d1b489fec9f82f3d46">rentzsch</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] Opacity changes are now added to the original styles (instead of replacing) so positioning and other attributes remain unaffected. (<a href="http://github.com/rentzsch/clicktoflash/commit/dde839f6c7bc61a6ae8690c95ed4da2e2412a273">Simone Manganelli</a>)
+				</p>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<p>
+			<strong>1.4fc5</strong>
+		</p>
+		<ul>
+			<li>Removes April Fool's special edition feature, fixes most broken sites.</li>
+		</ul>
+	</li>
+	<li>
+		<p>
+			<strong>1.4fc4</strong>
+		</p>
+		<ul>
+			<li>
+				<em>April Fool's special edition.</em>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<p>
+			<strong>1.4fc3</strong>
+		</p>
+		<ul>
+			<li>
+				<em>This update is exactly the same as 1.4fc2 and only exists to test/demonstrate Sparkle updating.</em>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<p>
+			<strong>1.4fc2</strong>
+		</p>
+		<ul>
+			<li>
+				<p>
+					[NEW] Added buttons in settings panel to allow for manual update checking. [<a href="http://github.com/rentzsch/clicktoflash/commit/194f2dc1a8da91298d2e79fb426b60ecf4205d2a">Simone Manganelli</a>]
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Nil hosts get whitelisted by default. This effectively disables ClickToFlash in Dashboard and other places where it might be desirable to do so. (<a href="http://github.com/rentzsch/clicktoflash/commit/18dbcd3ba312290223ff456dd5a08f0d4bb74cd4">millenomi</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Add 1.4fc3 to appcast. It&rsquo;s functionally identical to 1.4fc2 and only exists to test Sparkle updating.
+				</p>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<p>
+			<strong>1.4fc1</strong>
+		</p>
+		<ul>
+			<li>
+				<p>
+					[NEW] Menu command to load all flash views &mdash; or just invisible ones &mdash; on a page. This should fix a number of sites that don&rsquo;t at first seem to work with ClickToFlash. (Simone Manganelli, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] &ldquo;Click To Flash&rdquo; menu item(s). Installs automatically into Safari and Vienna under their application menus. (Simone Manganelli, Jeff Johnson, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Explicit YouTube support. Built-in support for directly loading higher-quality H.264 versions of videos (contextual menu item &ldquo;Load H.264&rdquo;). (<a href="http://www.joeyhagedorn.com/2008/04/16/youtube-in-mp4-via-quicktime-plugin">Joey Hagedorn</a>, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Explicit <a href="http://www.mikeindustries.com/sifr">sIFR</a> support: ignore sIFR, always load it or always suppress it. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/49">bug 49</a> (Ian Wessman, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Edit whitelist in Settings panel. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/25">bug 25</a> (Ben Gottlieb <a href="http://github.com/rentzsch/clicktoflash/commit/4e013686359f7a11371e16919f292eb91c249ebb">1</a>, <a href="http://github.com/rentzsch/clicktoflash/commit/d193a728c32af21345af083cc4a22c7a26c97f42">2</a>, et al. <a href="http://github.com/rentzsch/clicktoflash/commit/1da96792eecc4252c90c706576fbfc1f1afd3860">1</a>, <a href="http://github.com/rentzsch/clicktoflash/commit/16b844c96b6423629d6de707ee3fe69257dbd7ce">2</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Old custom installer replaced with a standard Installer.app .pkg. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/27">bug 27</a> (<a href="http://github.com/xoob/clicktoflash/commit/2866d8e8415114ae75f60ff8d107e78e5fe40b2c">Alexander Brausewetter</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Automatic plugin updating via Sparkle. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/28">bug 28</a> (rentzsch)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Whitelisting now takes into account an object&rsquo;s <code>src</code> URL, which should allow embedded videos from whitelisted sites to play (e.g. YouTube). <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/57">bug 57</a> (<a href="http://github.com/rentzsch/clicktoflash/commit/a4388f32d13f00263d11d9d06f21778bea5724dc">Ian Wessman</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] Badge now renders better on a variety of backgrounds.
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Fixed bugs identified by clang static analyzer. (<a href="http://github.com/rentzsch/clicktoflash/commit/aced770608344960131f58e49457d0a73687d38c">Jeff Johnson</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Fixed leak that caused all CtF views to not be deallocated by using validateMenuItem to update the Add <code>&lt;site&gt;</code> to Whitelist menu item instead of a binding. (<a href="http://github.com/rentzsch/clicktoflash/commit/912e28f5befe90db92be971d5899de5cbd3b6a89">1</a>) 
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Fix deprecated use of <code>+stringWithContentsOfFile:</code>. (<a href="http://github.com/rentzsch/clicktoflash/commit/7a1e8490737db4734b3e8fc3374fabfdc49ee756">Chris Parker</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Clean up build settings. No need to build universal in Debug or link to Carbon. (<a href="http://github.com/rentzsch/clicktoflash/commit/9a47274242904b8928b17d842137e75c71fe1c73">Jeff Johnson</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Add build warnings. Fix resulting warnings. Treat warnings as errors. (Jeff Johnson <a href="http://github.com/rentzsch/clicktoflash/commit/cf6dfbb4978596961ba232279994a65b00b9e30b">1</a>, <a href="http://github.com/rentzsch/clicktoflash/commit/69c0083117174d05b69a62c164fc1779e5fc55b0">2</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Populate CFBundleVersion with ${PRODUCT_VERSION} instead of hard-coding with 700. (Dave Dribin)
+				</p>
+			</li>
+		</ul>
+	</li>
+</ul>
+]]>			</description>
+			<enclosure type="application/zip" sparkle:version="1.4" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip"/>
+		</item>
+		<item>
 			<title>version 1.4fc6</title>
 			<pubDate>Mon, 4 May 2009 00:28:08 -0500</pubDate>
 			<description>
