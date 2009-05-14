@@ -1,6 +1,6 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.4 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip).
+[Download ClickToFlash 1.4.1 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip).
 
 **Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
 
@@ -23,6 +23,9 @@ Please [report bugs and request features](http://rentzsch.lighthouseapp.com/proj
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
 ##Version History
+
+* **1.4.1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip)
+	* [FIX] Tweak WebPluginDescription from `9.0.151.0` to `9.0.151`. bugs [161](http://rentzsch.lighthouseapp.com/projects/24342/tickets/161), [162](http://rentzsch.lighthouseapp.com/projects/24342/tickets/162), [163](http://rentzsch.lighthouseapp.com/projects/24342/tickets/163), [168](http://rentzsch.lighthouseapp.com/projects/24342/tickets/168), [171](http://rentzsch.lighthouseapp.com/projects/24342/tickets/171), [174](http://rentzsch.lighthouseapp.com/projects/24342/tickets/174) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/34897240e80470a36ee7778dd3d62f79891c5c84))
 
 * **1.4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip)
 	* [CHANGE] Rename WebPluginDescription from `ClickToFlash Flash 9.0 r151` to `Shockwave Flash 9.0 r151 (ClickToFlash)` to better spoof sites (like CNN video) that check for specific flash versions. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/6b60d2d802afe06404725d92d2a121acdb7b4f47))
