@@ -105,11 +105,11 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:sPluginEnabled];
 		}
 		
-		self.launchedAppBundleIdentifier = [self launchedAppBundleIdentifier];
+		[self setLaunchedAppBundleIdentifier:[self launchedAppBundleIdentifier]];
 		
-		self.webView = [[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView];
+		[self setWebView:[[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView]];
 		
-        self.container = [arguments objectForKey:WebPlugInContainingElementKey];
+        [self setContainer:[arguments objectForKey:WebPlugInContainingElementKey]];
         
         [self _migrateWhitelist];
         
@@ -117,28 +117,28 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
         // Get URL
         
         NSURL *base = [arguments objectForKey:WebPlugInBaseURLKey];
-		self.baseURL = [base absoluteString];
-		self.host = [base host];
+		[self setBaseURL:[base absoluteString]];
+		[self setHost:[base host]];
 
-		self.attributes = [arguments objectForKey:WebPlugInAttributesKey];
-		NSString *srcAttribute = [self.attributes objectForKey:@"src"];
+		[self setAttributes:[arguments objectForKey:WebPlugInAttributesKey]];
+		NSString *srcAttribute = [[self attributes] objectForKey:@"src"];
         
 		if (srcAttribute) {
-			self.src = srcAttribute;
+			[self setSrc:srcAttribute];
 		} else {
-			NSString *dataAttribute = [self.attributes objectForKey:@"data"];
-			if (dataAttribute) self.src = dataAttribute;
+			NSString *dataAttribute = [[self attributes] objectForKey:@"data"];
+			if (dataAttribute) [self setSrc:dataAttribute];
 		}
 		
 		
 		// set tooltip
 		
-		if (self.src) [self setToolTip:self.src];
+		if ([self src]) [self setToolTip:[self src]];
 		
         
         // Read in flashvars (needed to determine YouTube videos)
         
-        NSString* flashvars = [ self.attributes objectForKey: @"flashvars" ];
+        NSString* flashvars = [[self attributes] objectForKey: @"flashvars" ];
         if( flashvars != nil )
             _flashVars = [ [ self _flashVarDictionary: flashvars ] retain ];
         
@@ -149,25 +149,25 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		
 		// check whether it's from YouTube and get the video_id
 		
-        _fromYouTube = [self.host isEqualToString:@"www.youtube.com"]
+        _fromYouTube = [[self host] isEqualToString:@"www.youtube.com"]
 		|| ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound )
-		|| (self.src != nil && [self.src rangeOfString: @"youtube.com"].location != NSNotFound );
+		|| ([self src] != nil && [[self src] rangeOfString: @"youtube.com"].location != NSNotFound );
 		
         if (_fromYouTube) {
 			NSString *videoId = [ self flashvarWithName: @"video_id" ];
 			if (videoId != nil) {
-				self.videoId = videoId;
+				[self setVideoId:videoId];
 			} else {
 				// scrub the URL to determine the video_id
 				
 				NSString *videoIdFromURL = nil;
-				NSScanner *URLScanner = [[NSScanner alloc] initWithString:self.src];
+				NSScanner *URLScanner = [[NSScanner alloc] initWithString:[self src]];
 				[URLScanner scanUpToString:@"youtube.com/v/" intoString:nil];
 				if ([URLScanner scanString:@"youtube.com/v/" intoString:nil]) {
 					// URL is in required format, next characters are the id
 					
 					[URLScanner scanUpToString:@"&" intoString:&videoIdFromURL];
-					if (videoIdFromURL) self.videoId = videoIdFromURL;
+					if (videoIdFromURL) [self setVideoId:videoIdFromURL];
 				}
 				[URLScanner release];
 			}
@@ -283,34 +283,34 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		NSMutableDictionary *originalOpacityDict = [NSMutableDictionary dictionary];
 		NSString *opacityResetString = @"; opacity: 1.000 !important; -moz-opacity: 1 !important; filter: alpha(opacity=1) !important;";
 		
-		NSString *originalWmode = [self.container getAttribute:@"wmode"];
-		NSString *originalStyle = [self.container getAttribute:@"style"];
-		NSString *originalParentWmode = [(DOMElement *)[self.container parentNode] getAttribute:@"wmode"];
-		NSString *originalParentStyle = [(DOMElement *)[self.container parentNode] getAttribute:@"style"];
+		NSString *originalWmode = [[self container] getAttribute:@"wmode"];
+		NSString *originalStyle = [[self container] getAttribute:@"style"];
+		NSString *originalParentWmode = [(DOMElement *)[[self container] parentNode] getAttribute:@"wmode"];
+		NSString *originalParentStyle = [(DOMElement *)[[self container] parentNode] getAttribute:@"style"];
 		
 		if (originalWmode != nil && [originalWmode length] > 0u && ![originalWmode isEqualToString:@"opaque"]) {
 			[originalOpacityDict setObject:originalWmode forKey:@"self-wmode"];
-			[self.container setAttribute:@"wmode" value:@"opaque"];
+			[[self container] setAttribute:@"wmode" value:@"opaque"];
 		}
 		
 		if (originalStyle != nil && [originalStyle length] > 0u && ![originalStyle hasSuffix:opacityResetString]) {
 			[originalOpacityDict setObject:originalStyle forKey:@"self-style"];
 			[originalOpacityDict setObject:[originalStyle stringByAppendingString:opacityResetString] forKey:@"modified-self-style"];
-			[self.container setAttribute:@"style" value:[originalStyle stringByAppendingString:opacityResetString]];
+			[[self container] setAttribute:@"style" value:[originalStyle stringByAppendingString:opacityResetString]];
 		}
 		
 		if (originalParentWmode != nil && [originalParentWmode length] > 0u && ![originalParentWmode isEqualToString:@"opaque"]) {
 			[originalOpacityDict setObject:originalParentWmode forKey:@"parent-wmode"];
-			[(DOMElement *)[self.container parentNode] setAttribute:@"wmode" value:@"opaque"];
+			[(DOMElement *)[[self container] parentNode] setAttribute:@"wmode" value:@"opaque"];
 		}
 		
 		if (originalParentStyle != nil && [originalParentStyle length] > 0u && ![originalParentStyle hasSuffix:opacityResetString]) {
 			[originalOpacityDict setObject:originalParentStyle forKey:@"parent-style"];
 			[originalOpacityDict setObject:[originalParentStyle stringByAppendingString:opacityResetString] forKey:@"modified-parent-style"];
-			[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:[originalParentStyle stringByAppendingString:opacityResetString]];
+			[(DOMElement *)[[self container] parentNode] setAttribute:@"style" value:[originalParentStyle stringByAppendingString:opacityResetString]];
 		}
 		
-		self.originalOpacityAttributes = originalOpacityDict;
+		[self setOriginalOpacityAttributes:originalOpacityDict];
     }
 
     return self;
@@ -325,11 +325,11 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 	// notify that this ClickToFlash plugin is going away
 	[[CTFMenubarMenuController sharedController] unregisterView: self];
     
-    self.container = nil;
-    self.host = nil;
-	self.webView = nil;
-	self.baseURL = nil;
-	self.attributes = nil;
+    [self setContainer:nil];
+    [self setHost:nil];
+    [self setWebView:nil];
+    [self setBaseURL:nil];
+    [self setAttributes:nil];
     
     [_flashVars release];
     [_badgeText release];
@@ -429,15 +429,15 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (BOOL) isConsideredInvisible
 {
-	int height = (int)([self webView].frame.size.height);
-	int width = (int)([self webView].frame.size.width);
+	int height = (int)([[self webView] frame].size.height);
+	int width = (int)([[self webView] frame].size.width);
 	
 	if ( (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension) )
 	{
 		return YES;
 	}
 	
-	NSDictionary *attributes = self.attributes;
+	NSDictionary *attributes = [self attributes];
 	if ( attributes != nil )
 	{
 		NSString *heightObject = [attributes objectForKey:@"height"];
@@ -496,7 +496,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     {
         NSString* title = [NSString stringWithFormat:
                 NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), 
-                self.host];
+                [self host]];
         [menuItem setTitle: title];
         if ([self _isHostWhitelisted])
             enabled = NO;
@@ -676,20 +676,20 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
 		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
 		
-		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + gearImage.size.height/2,
-											   viewHeight/2 - margin - gearImage.size.height/2);
+		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + [gearImage size].height/2,
+											   viewHeight/2 - margin - [gearImage size].height/2);
 		
 		// draw gradient behind gear so that it's visible even on dark backgrounds
 		[gradient drawFromCenter:gearImageCenter
 						  radius:0.0
 						toCenter:gearImageCenter
-						  radius:gearImage.size.height/2*1.5
+						  radius:[gearImage size].height/2*1.5
 						 options:0];
 		
 		[gradient release];
 		
 		// draw the gear image
-		[gearImage drawAtPoint:NSMakePoint(0 - viewWidth/2 + margin,viewHeight/2 - margin - gearImage.size.height)
+		[gearImage drawAtPoint:NSMakePoint(0 - viewWidth/2 + margin,viewHeight/2 - margin - [gearImage size].height)
 					  fromRect:NSZeroRect
 					 operation:NSCompositeSourceOver
 					  fraction:1.0];
@@ -772,7 +772,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 - (BOOL) _hasH264Version
 {
     if( _fromYouTube )
-        return self.videoId != nil && [ self _videoHash ] != nil;
+        return [self videoId] != nil && [ self _videoHash ] != nil;
     else
         return NO;
 }
@@ -786,7 +786,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _convertElementForMP4: (DOMElement*) element
 {
-    NSString* video_id = self.videoId;
+    NSString* video_id = [self videoId];
     NSString* video_hash = [ self _videoHash ];
     
     NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
@@ -818,7 +818,7 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _convertToMP4ContainerAfterDelay
 {
-    DOMElement* newElement = (DOMElement*) [ self.container cloneNode: NO ];
+    DOMElement* newElement = (DOMElement*) [ [self container] cloneNode: NO ];
     
     [ self _convertElementForMP4: newElement ];
     
@@ -826,8 +826,8 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     [[self retain] autorelease];
     
     // Replace self with element.
-    [self.container.parentNode replaceChild:newElement oldChild:self.container];
-    self.container = nil;
+    [[[self container] parentNode] replaceChild:newElement oldChild:[self container]];
+    [self setContainer:nil];
 }
 
 - (NSString *)launchedAppBundleIdentifier
@@ -868,14 +868,14 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (IBAction)downloadH264:(id)sender
 {
-	NSString* video_id = self.videoId;
+	NSString* video_id = [self videoId];
     NSString* video_hash = [ self _videoHash ];
     
     NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
 					 video_id, video_hash ];
 	
 	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:src]]
-					withAppBundleIdentifier:self.launchedAppBundleIdentifier
+					withAppBundleIdentifier:[self launchedAppBundleIdentifier]
 									options:NSWorkspaceLaunchDefault
 			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
 						  launchIdentifiers:nil];
@@ -883,10 +883,10 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (IBAction)loadYouTubePage:(id)sender
 {
-	NSString* YouTubePageURL = [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@",self.videoId ];
+	NSString* YouTubePageURL = [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@", [self videoId] ];
 	
 	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:YouTubePageURL]]
-					withAppBundleIdentifier:self.launchedAppBundleIdentifier
+					withAppBundleIdentifier:[self launchedAppBundleIdentifier]
 									options:NSWorkspaceLaunchDefault
 			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
 						  launchIdentifiers:nil];
@@ -928,24 +928,24 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     DOMNodeList *nodeList = nil;
     NSUInteger i;
 
-    [self _convertTypesForElement:self.container];
+    [self _convertTypesForElement:[self container]];
 
-    nodeList = [self.container getElementsByTagName:@"object"];
-    for (i = 0; i < nodeList.length; i++) {
+    nodeList = [[self container] getElementsByTagName:@"object"];
+    for (i = 0; i < [nodeList length]; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
 
-    nodeList = [self.container getElementsByTagName:@"embed"];
-    for (i = 0; i < nodeList.length; i++) {
+    nodeList = [[self container] getElementsByTagName:@"embed"];
+    for (i = 0; i < [nodeList length]; i++) {
         [self _convertTypesForElement:(DOMElement *)[nodeList item:i]];
     }
     
     // Remove & reinsert the node to persuade the plugin system to notice the type change:
-    id parent = self.container.parentNode;
-    id successor = self.container.nextSibling;
-    [parent removeChild:self.container];
-    [parent insertBefore:self.container refChild:successor];
-    self.container = nil;
+    id parent = [[self container] parentNode];
+    id successor = [[self container] nextSibling];
+    [parent removeChild:[self container]];
+    [parent insertBefore:[self container] refChild:successor];
+    [self setContainer:nil];
 }
 
 - (void) _prepareForConversion
@@ -960,29 +960,29 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 - (void) _revertToOriginalOpacityAttributes
 {
-	NSString *selfWmode = [self.originalOpacityAttributes objectForKey:@"self-wmode"];
+	NSString *selfWmode = [[self originalOpacityAttributes] objectForKey:@"self-wmode"];
 	if (selfWmode != nil ) {
-		[self.container setAttribute:@"wmode" value:selfWmode];
+		[[self container] setAttribute:@"wmode" value:selfWmode];
 	}
 	
-	NSString *currentStyle = [self.container getAttribute:@"style"];
-	NSString *originalSelfStyle = [self.originalOpacityAttributes objectForKey:@"self-style"];
+	NSString *currentStyle = [[self container] getAttribute:@"style"];
+	NSString *originalSelfStyle = [[self originalOpacityAttributes] objectForKey:@"self-style"];
 	if (originalSelfStyle != nil ) {
-		if ([currentStyle isEqualToString:[self.originalOpacityAttributes objectForKey:@"modified-self-style"]]) {
-			[self.container setAttribute:@"style" value:originalSelfStyle];
+		if ([currentStyle isEqualToString:[[self originalOpacityAttributes] objectForKey:@"modified-self-style"]]) {
+			[[self container] setAttribute:@"style" value:originalSelfStyle];
 		}
 	}
 	
-	NSString *parentWmode = [self.originalOpacityAttributes objectForKey:@"parent-wmode"];
+	NSString *parentWmode = [[self originalOpacityAttributes] objectForKey:@"parent-wmode"];
 	if (parentWmode != nil ) {
-		[(DOMElement *)[self.container parentNode] setAttribute:@"wmode" value:parentWmode];
+		[(DOMElement *)[[self container] parentNode] setAttribute:@"wmode" value:parentWmode];
 	}
 	
-	NSString *currentParentStyle = [(DOMElement *)[self.container parentNode] getAttribute:@"style"];
-	NSString *originalParentStyle = [self.originalOpacityAttributes objectForKey:@"parent-style"];
+	NSString *currentParentStyle = [(DOMElement *)[[self container] parentNode] getAttribute:@"style"];
+	NSString *originalParentStyle = [[self originalOpacityAttributes] objectForKey:@"parent-style"];
 	if (originalParentStyle != nil ) {
-		if ([currentParentStyle isEqualToString:[self.originalOpacityAttributes objectForKey:@"modified-parent-style"]]) {
-			[(DOMElement *)[self.container parentNode] setAttribute:@"style" value:originalParentStyle];
+		if ([currentParentStyle isEqualToString:[[self originalOpacityAttributes] objectForKey:@"modified-parent-style"]]) {
+			[(DOMElement *)[[self container] parentNode] setAttribute:@"style" value:originalParentStyle];
 		}
 	}
 }
