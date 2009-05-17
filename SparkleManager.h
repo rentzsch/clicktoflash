@@ -40,6 +40,7 @@
 - (void)startAutomaticallyCheckingForUpdates;
 - (void)checkForUpdates;
 
-@property (retain) NSString *pathToRelaunch;
+- (NSString *)pathToRelaunch;
+- (void)setPathToRelaunch:(NSString *)newValue;
 
 @end

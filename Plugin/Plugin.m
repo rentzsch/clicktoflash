@@ -987,14 +987,99 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 	}
 }
 
-@synthesize webView = _webView;
-@synthesize container = _container;
-@synthesize host = _host;
-@synthesize baseURL = _baseURL;
-@synthesize attributes = _attributes;
-@synthesize originalOpacityAttributes = _originalOpacityAttributes;
-@synthesize src = _src;
-@synthesize videoId = _videoId;
-@synthesize launchedAppBundleIdentifier = _launchedAppBundleIdentifier;
+- (WebView *)webView
+{
+    return _webView;
+}
+- (void)setWebView:(WebView *)newValue
+{
+    [newValue retain];
+    [_webView release];
+    _webView = newValue;
+}
+
+- (DOMElement *)container
+{
+    return _container;
+}
+- (void)setContainer:(DOMElement *)newValue
+{
+    [newValue retain];
+    [_container release];
+    _container = newValue;
+}
+
+- (NSString *)host
+{
+    return _host;
+}
+- (void)setHost:(NSString *)newValue
+{
+    [newValue retain];
+    [_host release];
+    _host = newValue;
+}
+
+- (NSString *)baseURL
+{
+    return _baseURL;
+}
+- (void)setBaseURL:(NSString *)newValue
+{
+    [newValue retain];
+    [_baseURL release];
+    _baseURL = newValue;
+}
+
+- (NSDictionary *)attributes
+{
+    return _attributes;
+}
+- (void)setAttributes:(NSDictionary *)newValue
+{
+    [newValue retain];
+    [_attributes release];
+    _attributes = newValue;
+}
+
+- (NSDictionary *)originalOpacityAttributes
+{
+    return _originalOpacityAttributes;
+}
+- (void)setOriginalOpacityAttributes:(NSDictionary *)newValue
+{
+    [newValue retain];
+    [_originalOpacityAttributes release];
+    _originalOpacityAttributes = newValue;
+}
+
+- (NSString *)src
+{
+    return _src;
+}
+- (void)setSrc:(NSString *)newValue
+{
+    [newValue retain];
+    [_src release];
+    _src = newValue;
+}
+
+- (NSString *)videoId
+{
+    return _videoId;
+}
+- (void)setVideoId:(NSString *)newValue
+{
+    [newValue retain];
+    [_videoId release];
+    _videoId = newValue;
+}
+
+- (void)setLaunchedAppBundleIdentifier:(NSString *)newValue
+{
+    [newValue retain];
+    [_launchedAppBundleIdentifier release];
+    _launchedAppBundleIdentifier = newValue;
+}
 
 @end
