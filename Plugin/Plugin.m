@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 #import "Plugin.h"
 
+#import "MATrackingArea.h"
 #import "CTFMenubarMenuController.h"
 #import "CTFsIFRSupport.h"
 #import "CTFUtilities.h"
@@ -43,6 +44,8 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
+
+BOOL usingMATrackingArea = NO;
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
@@ -382,11 +385,25 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 		[self setNeedsDisplay:YES];
 		
 		// Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
-		trackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
-													options:NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingEnabledDuringMouseDrag
-													  owner:self
-												   userInfo:nil];
-		[self addTrackingArea:trackingArea];
+        trackingArea = [NSClassFromString(@"NSTrackingArea") alloc];
+        if (trackingArea != nil)
+        {
+            [trackingArea initWithRect:[self bounds]
+                               options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
+                                 owner:self
+                              userInfo:nil];
+            [self addTrackingArea:trackingArea];
+        }
+        else
+        {
+            trackingArea = [NSClassFromString(@"MATrackingArea") alloc];
+            [trackingArea initWithRect:[self bounds]
+                               options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
+                                 owner:self
+                              userInfo:nil];
+            [MATrackingArea addTrackingArea:trackingArea toView:self];
+            usingMATrackingArea = YES;
+        }
 	}
 }
 
@@ -408,7 +425,14 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
     [self display];
     
     // We're done tracking.
-    [self removeTrackingArea:trackingArea];
+    if (usingMATrackingArea)
+    {
+        [MATrackingArea removeTrackingArea:trackingArea fromView:self];
+    }
+    else
+    {
+        [self removeTrackingArea:trackingArea];
+    }
     [trackingArea release];
     trackingArea = nil;
     

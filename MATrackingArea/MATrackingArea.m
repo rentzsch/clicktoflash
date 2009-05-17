@@ -72,7 +72,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
     NSView *view;
     int index = 0;
 
-    while (view = [viewsEnumerator nextObject]) {
+    while ((view = [viewsEnumerator nextObject])) {
         NSWindow *window = [view window];
         if (!window) {
             // Pointer can't be inside a view with no window.
@@ -86,7 +86,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
         NSEnumerator *trackingAreaEnumerator = [[_trackingAreas objectAtIndex:index] objectEnumerator];
         MATrackingArea *area;
 
-        while (area = [trackingAreaEnumerator nextObject]) {
+        while ((area = [trackingAreaEnumerator nextObject])) {
             MATrackingAreaOptions options = [area options];
             NSRect trackingRect = (options & MATrackingInVisibleRect)
                 ? [view visibleRect]
@@ -148,7 +148,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
             }
 
             // Construct an appropriate event.
-            NSEvent *event;
+            NSEvent *event = nil;
             switch (eventType) {
                 case NSMouseEntered:
                 case NSMouseExited:
@@ -302,7 +302,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
                            owner:(id)owner
                         userInfo:(NSDictionary *)userInfo
 {
-    if (self = [super init]) {
+    if ((self = [super init])) {
         _rect = rect;
         _options = options;
         _owner = owner;

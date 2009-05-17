@@ -32,7 +32,7 @@ THE SOFTWARE.
     DOMElement *_container;
     NSString *_host;
     NSDictionary* _flashVars;
-    NSTrackingArea *trackingArea;
+    id trackingArea;
     NSAlert* _activeAlert;
     NSString* _badgeText;
     BOOL mouseIsDown;
