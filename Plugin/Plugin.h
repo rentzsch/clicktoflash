@@ -28,31 +28,49 @@ THE SOFTWARE.
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-@class CTFWhitelistWindowController, MATrackingArea;
-
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
     DOMElement *_container;
     NSString *_host;
-    CTFWhitelistWindowController *_whitelistWindowController;
-    MATrackingArea *trackingArea;
+    NSDictionary* _flashVars;
+    NSTrackingArea *trackingArea;
+    NSAlert* _activeAlert;
+    NSString* _badgeText;
     BOOL mouseIsDown;
     BOOL mouseInside;
-	BOOL _isLoadingFromWhitelist;
+    BOOL _isLoadingFromWhitelist;
+    BOOL _fromYouTube;
+	WebView *_webView;
+	NSUInteger _sifrVersion;
+	NSString *_baseURL;
+	NSDictionary *_attributes;
+	NSDictionary *_originalOpacityAttributes;
+	NSString *_src;
+	NSString *_videoId;
+	NSString *_launchedAppBundleIdentifier;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 
-- (DOMElement *) container;
-- (void) setContainer:(DOMElement *)newContainer;
-- (NSString *) host;
-- (void) setHost:(NSString *)newHost;
-- (NSString *) addToWhiteListMenuTitle;
+@property (nonatomic, retain) DOMElement *container;
+@property (nonatomic, retain) NSString *host;
+@property (nonatomic, retain) WebView *webView;
+@property (retain) NSString *baseURL;
+@property (nonatomic, retain) NSDictionary *attributes;
+@property (retain) NSDictionary *originalOpacityAttributes;
+@property (retain) NSString *src;
+@property (retain) NSString *videoId;
+@property (retain) NSString *launchedAppBundleIdentifier;
 
-- (IBAction)addToWhitelist:(id)sender;
-- (IBAction)removeFromWhitelist:(id)sender;
-- (IBAction)editWhitelist:(id)sender;
 - (IBAction)loadFlash:(id)sender;
+- (IBAction)loadH264:(id)sender;
+- (IBAction)loadAllOnPage:(id)sender;
+
+- (IBAction)downloadH264:(id)sender;
+
+- (BOOL) isConsideredInvisible;
+
+- (void) _convertTypesForContainer;
 
 @end

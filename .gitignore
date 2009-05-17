@@ -1,10 +1,15 @@
-.DS_Store
-*~.nib
 build
+ 
 *.pbxuser
-*.perspective
 *.perspectivev3
 *.mode1v3
 *.mode2v3
-*.mode1
+!default.pbxuser
+!default.perspectivev3
+!default.mode1v3
+!default.mode2v3
+ 
+*~.nib
+*~.xib
 
+.DS_Store
