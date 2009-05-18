@@ -47,6 +47,12 @@ static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
 
 BOOL usingMATrackingArea = NO;
 
+@interface NSBezierPath(MRGradientFill)
+-(void)linearGradientFill:(NSRect)thisRect
+               startColor:(NSColor *)startColor
+                 endColor:(NSColor *)endColor;
+@end
+
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
 - (void) _convertTypesForFlashContainerAfterDelay;
@@ -698,20 +704,25 @@ BOOL usingMATrackingArea = NO;
 		
 		NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
 		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
-		NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
-		
+
 		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + [gearImage size].height/2,
 											   viewHeight/2 - margin - [gearImage size].height/2);
-		
-		// draw gradient behind gear so that it's visible even on dark backgrounds
-		[gradient drawFromCenter:gearImageCenter
-						  radius:0.0
-						toCenter:gearImageCenter
-						  radius:[gearImage size].height/2*1.5
-						 options:0];
-		
-		[gradient release];
-		
+
+        id gradient = [NSClassFromString(@"NSGradient") alloc];
+        if (gradient != nil)
+        {
+            [gradient initWithStartingColor:startingColor endingColor:endingColor];
+
+            // draw gradient behind gear so that it's visible even on dark backgrounds
+            [gradient drawFromCenter:gearImageCenter
+                              radius:0.0
+                            toCenter:gearImageCenter
+                              radius:[gearImage size].height/2*1.5
+                             options:0];
+
+            [gradient release];
+        }
+
 		// draw the gear image
 		[gearImage drawAtPoint:NSMakePoint(0 - viewWidth/2 + margin,viewHeight/2 - margin - [gearImage size].height)
 					  fromRect:NSZeroRect
@@ -736,19 +747,37 @@ BOOL usingMATrackingArea = NO;
 
     NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
     NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
-    NSGradient *gradient = [[NSGradient alloc] initWithStartingColor:startingColor endingColor:endingColor];
-    
+
     // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
     // When the mouse is down and inside the view, we want a concave look, so we draw the gradient upward (90 degrees).
-    [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:90.0 + ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
+    id gradient = [NSClassFromString(@"NSGradient") alloc];
+    if (gradient != nil)
+    {
+        [gradient initWithStartingColor:startingColor endingColor:endingColor];
+
+        [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:90.0 + ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
+
+        [gradient release];
+    }
+    else
+    {
+        //tweak colors for better compatibility with linearGradientFill
+        startingColor = [NSColor colorWithDeviceWhite:0.633 alpha:0.15];
+        endingColor = [NSColor colorWithDeviceWhite:0.333 alpha:0.15];
+        NSBezierPath *path = [NSBezierPath bezierPath];
+
+        //Draw Gradient
+        [path linearGradientFill:fillRect
+                      startColor:((mouseIsDown && mouseInside) ? endingColor : startingColor)
+                        endColor:((mouseIsDown && mouseInside) ? startingColor : endingColor)];
+        [path stroke];
+    }
 
     // Draw stroke
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
     [NSBezierPath setDefaultLineWidth:2.0];
     [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
-  
-    [gradient release];
 
     // Draw label
     [ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
@@ -1106,4 +1135,113 @@ BOOL usingMATrackingArea = NO;
     _launchedAppBundleIdentifier = newValue;
 }
 
+@end
+
+
+//### globals
+float start_red,
+start_green,
+start_blue,
+start_alpha;
+float end_red,
+end_green,
+end_blue,
+end_alpha;
+float d_red,
+d_green,
+d_blue,
+d_alpha;
+
+@implementation NSBezierPath(MRGradientFill)
+
+static void
+evaluate(void *info, const float *in, float *out)
+{
+    // red
+    *out++ = start_red + *in * d_red;
+
+    // green
+    *out++ = start_green + *in * d_green;
+
+    // blue
+    *out++ = start_blue + *in * d_blue;
+
+    //alpha
+    *out++ = start_alpha + *in * d_alpha;
+}
+
+float absDiff(float a, float b);
+float absDiff(float a, float b)
+{
+    return (a < b) ? b-a : a-b;
+}
+
+-(void)linearGradientFill:(NSRect)thisRect
+               startColor:(NSColor *)startColor
+                 endColor:(NSColor *)endColor
+{
+    CGColorSpaceRef colorspace = nil;
+    CGShadingRef shading;
+    static CGPoint startPoint = { 0, 0 };
+    static CGPoint endPoint = { 0, 0 };
+    //int k;
+    CGFunctionRef function;
+    //CGFunctionRef (*getFunction)(CGColorSpaceRef);
+    //CGShadingRef (*getShading)(CGColorSpaceRef, CGFunctionRef);
+
+    // get my context
+    CGContextRef currentContext =
+        (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+
+
+    NSColor *s = [startColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+    NSColor *e = [endColor colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+
+    // set up colors for gradient
+    start_red = [s redComponent];
+    start_green = [s greenComponent];
+    start_blue = [s blueComponent];
+    start_alpha = [s alphaComponent];
+
+    end_red = [e redComponent];
+    end_green = [e greenComponent];
+    end_blue = [e blueComponent];
+    end_alpha = [e alphaComponent];
+
+    d_red = absDiff(end_red, start_red);
+    d_green = absDiff(end_green, start_green);
+    d_blue = absDiff(end_blue, start_blue);
+    d_alpha = absDiff(end_alpha ,start_alpha);
+
+
+    // draw gradient
+    colorspace = CGColorSpaceCreateDeviceRGB();
+
+    size_t components;
+    static const float domain[2] = { 0.0, 1.0 };
+    static const float range[10] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+    static const CGFunctionCallbacks callbacks = { 0, &evaluate, NULL };
+
+    components = 1 + CGColorSpaceGetNumberOfComponents(colorspace);
+    function = CGFunctionCreate((void *)components, 1, domain, components,
+                                range, &callbacks);
+
+    // function = getFunction(colorspace);
+    startPoint.x = 0;
+    startPoint.y = thisRect.origin.y;
+    endPoint.x = 0;
+    endPoint.y = NSMaxY(thisRect);
+
+
+    shading = CGShadingCreateAxial(colorspace,
+                                   startPoint, endPoint,
+                                   function,
+                                   NO, NO);
+
+    CGContextDrawShading(currentContext, shading);
+
+    CGFunctionRelease(function);
+    CGShadingRelease(shading);
+    CGColorSpaceRelease(colorspace);
+}
 @end
