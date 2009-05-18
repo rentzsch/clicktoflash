@@ -120,6 +120,15 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     return _pathToRelaunch;
 }
 
-@synthesize pathToRelaunch = _pathToRelaunch;
+- (NSString *)pathToRelaunch
+{
+	return _pathToRelaunch;
+}
+- (void)setPathToRelaunch:(NSString *)newValue
+{
+	[newValue retain];
+	[_pathToRelaunch release];
+	_pathToRelaunch = newValue;
+}
 
 @end
