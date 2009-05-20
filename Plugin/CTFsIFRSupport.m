@@ -46,7 +46,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 - (NSUInteger) _sifrVersionInstalled
 {	
 	// get the container's WebView
-	WebView *sifrWebView = self.webView;
+	WebView *sifrWebView = [self webView];
 	NSUInteger version = 0;
     
 	if (sifrWebView) {
@@ -79,7 +79,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 - (void) _disableSIFR
 {	
 	// get the container's WebView
-	WebView *sifrWebView = self.webView;
+	WebView *sifrWebView = [self webView];
 	
 	// if sifr add-ons are not installed, load version-appropriate version into page
 	if ([[sifrWebView stringByEvaluatingJavaScriptFromString: sSifrAddOnTest] isEqualToString: @"true"]) {

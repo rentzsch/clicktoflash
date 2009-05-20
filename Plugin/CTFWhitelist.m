@@ -122,7 +122,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (void) _askToAddCurrentSiteToWhitelist
 {
     NSString *title = NSLocalizedString(@"Always load Flash for this site?", @"Always load Flash for this site? alert title");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the whitelist?", @"Add <sitename> to the whitelist? alert message"), self.host];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the whitelist?", @"Add <sitename> to the whitelist? alert message"), [self host]];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:NSLocalizedString(@"Add to Whitelist", @"Add to Whitelist button")];
@@ -150,12 +150,12 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (BOOL) _isHostWhitelisted
 {
 	// Nil hosts whitelisted by default (e.g. Dashboard)
-	if (!self.host)
+	if (![self host])
 	{
 		return YES;
 	}
 	
-	return [self _isWhiteListedForHostString: self.host];
+	return [self _isWhiteListedForHostString: [self host]];
 }
 
 - (BOOL) _isWhiteListedForHostString:(NSString *)hostString
@@ -176,7 +176,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (void) _addHostToWhitelist
 {
     NSMutableArray *siteInfo = [self _mutableSiteInfo];
-    [siteInfo addObject: whitelistItemForSite(self.host)];
+    [siteInfo addObject: whitelistItemForSite([self host])];
     [[NSUserDefaults standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
     [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
@@ -184,7 +184,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (void) _removeHostFromWhitelist
 {
     NSMutableArray *siteInfo = [self _mutableSiteInfo];
-    NSUInteger foundIndex = indexOfItemForSite(siteInfo, self.host);
+    NSUInteger foundIndex = indexOfItemForSite(siteInfo, [self host]);
     
     if(foundIndex != NSNotFound) {
         [siteInfo removeObjectAtIndex: foundIndex];
@@ -212,7 +212,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
         return;
     
     NSString *title = NSLocalizedString(@"Stop always loading Flash?", @"Stop always loading Flash? alert title");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the whitelist?", @"Remove %@ from the whitelist? alert message"), self.host];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Remove %@ from the whitelist?", @"Remove %@ from the whitelist? alert message"), [self host]];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:NSLocalizedString(@"Remove from Whitelist", @"Remove from Whitelist button")];

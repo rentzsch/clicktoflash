@@ -34,6 +34,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */; };
+		0038DE320FC0CE7B007B54E9 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0038DE310FC0CE7B007B54E9 /* Carbon.framework */; };
 		072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BA0F30D9C3008C8944 /* ContextualMenu.xib */; };
 		072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
 		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
@@ -124,6 +126,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATrackingArea.h; sourceTree = "<group>"; };
+		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATrackingArea.m; sourceTree = "<group>"; };
+		0038DE310FC0CE7B007B54E9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		072189BB0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		072189BD0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
@@ -167,6 +172,7 @@
 			files = (
 				55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */,
 				55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */,
+				0038DE320FC0CE7B007B54E9 /* Carbon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,9 +186,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0038DE210FC0CCF0007B54E9 /* MATrackingArea */ = {
+			isa = PBXGroup;
+			children = (
+				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
+				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
+			);
+			path = MATrackingArea;
+			sourceTree = "<group>";
+		};
 		55EB70300E04A8410016593D = {
 			isa = PBXGroup;
 			children = (
+				0038DE210FC0CCF0007B54E9 /* MATrackingArea */,
 				55EB70540E04A89C0016593D /* Plugin */,
 				B5CFF1810F40EF98005DB9CC /* Debugging Harness */,
 				55EB70550E04A8A40016593D /* Frameworks */,
@@ -233,6 +249,7 @@
 		55EB70550E04A8A40016593D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0038DE310FC0CE7B007B54E9 /* Carbon.framework */,
 				55EB70560E04A8B80016593D /* Cocoa.framework */,
 				55EB70570E04A8B80016593D /* WebKit.framework */,
 			);
@@ -436,6 +453,7 @@
 				845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */,
 				8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */,
 				79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */,
+				0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,10 +532,13 @@
 		55EB70330E04A8410016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_VERSION = 1.4.1;
 				WARNING_CFLAGS = "-Wall";
 			};
@@ -526,10 +547,13 @@
 		55EB70340E04A8410016593D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_VERSION = 1.4.1;
 				WARNING_CFLAGS = "-Wall";
 			};
@@ -538,6 +562,8 @@
 		55EB70450E04A8640016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -561,8 +587,8 @@
 		55EB70460E04A8640016593D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "ppc i386 ppc64 x86_64";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)";

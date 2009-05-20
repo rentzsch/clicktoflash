@@ -127,6 +127,12 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [DEV] Populate CFBundleVersion with ${PRODUCT_VERSION} instead of hard-coding with 700. (Dave Dribin)
 
+* **1.3+tiger** [download tiger/leo version](http://portway-ave.com/clicktoflash/ClickToFlash-1.3+Tiger.zip)
+	* [NEW] Universal Tiger/Leo PPC/Intel Compatibility! (Well, its been tested on Tiger/PPC and Leo/Intel, but the plugin is now universal and should work everywhere)
+	* [NEW] The installer now also works on Tiger
+	* [FIX] Darkened gradient on Tiger for better visibility
+	* [FIX] Removed Copy address contextual menu as it was flakey
+
 * **1.3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.3.zip)
 	* [NEW] Flash badge is now drawn in code (vector image), and draws smaller in smaller flash boxes. [bug 12](http://rentzsch.lighthouseapp.com/projects/24342/tickets/12)
 
@@ -144,6 +150,9 @@ flash boxes when whitelisting one ([bug 10](http://rentzsch.lighthouseapp.com/pr
 	* [FIX] Remove CTFInstaller.m from the bare plugin target. [bug 44](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/44) ([Chris Parker](http://github.com/tgaul/clicktoflash/commit/17d455844a7428471dca018d1461f5c5d1cbb692))
 
 	* [DEV] Make Rakefile honor build products directory. [bug 43](http://rentzsch.lighthouseapp.com/projects/24342/tickets/43) ([Chris Parker](http://github.com/tgaul/clicktoflash/commit/021eebfd274b4e415c31c2ac9e4bb2ffed569ee4))
+
+* **1.2+tiger** [download tiger version](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip)
+	* [NEW] Added copy address to clipboard ([Peter Hosey](http://github.com/boredzo/clicktoflash/commit/19cc5b9b25f1e9ad2e62e61d795a1b0e5368822b))
 
 * **1.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.2.zip)
 	* [NEW] Handle `<object>` and `<embed>` that are missing a `type` attribute. That fixes a number of the broken sites. [bug #19](http://rentzsch.lighthouseapp.com/projects/24342/tickets/19-banner-ad-appears-without-whitelisting) ([Jason Foreman](http://github.com/threeve/clicktoflash/commit/e4a7ad83c312bcc3d7400562905122951ae85763))
