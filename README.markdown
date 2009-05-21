@@ -1,6 +1,4 @@
-#ClickToFlash
-
-[Download ClickToFlash 1.4.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip).
+#[Download ClickToFlash 1.4.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
 
 **Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
 
