@@ -1,6 +1,6 @@
 #ClickToFlash
 
-[Download ClickToFlash 1.4.1 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip).
+[Download ClickToFlash 1.4.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip).
 
 **Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
 
@@ -23,6 +23,12 @@ Please [report bugs and request features](http://rentzsch.lighthouseapp.com/proj
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
 ##Version History
+
+* **1.4.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
+
+	* [CHANGE] Set `WebPluginDescription` to `Shockwave Flash 10.0 r22`. We have to bald-face lie in order to tip-toe around various in-the-wild broken Flash version detection scripts. bugs [176](http://rentzsch.lighthouseapp.com/projects/24342/tickets/176), [177](http://rentzsch.lighthouseapp.com/projects/24342/tickets/177), [178](http://rentzsch.lighthouseapp.com/projects/24342/tickets/178), [180](http://rentzsch.lighthouseapp.com/projects/24342/tickets/180), [185](http://rentzsch.lighthouseapp.com/projects/24342/tickets/185), [187](http://rentzsch.lighthouseapp.com/projects/24342/tickets/187), [188](http://rentzsch.lighthouseapp.com/projects/24342/tickets/188), [192](http://rentzsch.lighthouseapp.com/projects/24342/tickets/192) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/d470c3dbdf1a1068a6feac4661f09ec380024fbe))
+
+	* [DEV] Start restoring 10.4 compatibility. Currently incomplete. ([Michael Baltaks](http://github.com/rentzsch/clicktoflash/commit/6d1803dfb903e87af13674d4944e4bcbb29df1a4))
 
 * **1.4.1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip)
 	* [FIX] Tweak WebPluginDescription from `9.0.151.0` to `9.0.151`. bugs [161](http://rentzsch.lighthouseapp.com/projects/24342/tickets/161), [162](http://rentzsch.lighthouseapp.com/projects/24342/tickets/162), [163](http://rentzsch.lighthouseapp.com/projects/24342/tickets/163), [168](http://rentzsch.lighthouseapp.com/projects/24342/tickets/168), [171](http://rentzsch.lighthouseapp.com/projects/24342/tickets/171), [174](http://rentzsch.lighthouseapp.com/projects/24342/tickets/174) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/34897240e80470a36ee7778dd3d62f79891c5c84))
