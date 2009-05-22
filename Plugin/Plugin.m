@@ -733,7 +733,7 @@ BOOL usingMATrackingArea = NO;
             [gradient drawFromCenter:gearImageCenter
                               radius:0.0
                             toCenter:gearImageCenter
-                              radius:[gearImage size].height/2*1.5
+                              radius:[gearImage size].height/2*2
                              options:0];
 
             [gradient release];
