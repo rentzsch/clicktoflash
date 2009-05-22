@@ -1,6 +1,4 @@
-#ClickToFlash
-
-[Download ClickToFlash 1.4 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip).
+#[Download ClickToFlash 1.4.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
 
 **Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
 
@@ -23,6 +21,15 @@ Please [report bugs and request features](http://rentzsch.lighthouseapp.com/proj
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
 ##Version History
+
+* **1.4.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
+
+	* [CHANGE] Set `WebPluginDescription` to `Shockwave Flash 10.0 r22`. We have to bald-face lie in order to tip-toe around various in-the-wild broken Flash version detection scripts. bugs [176](http://rentzsch.lighthouseapp.com/projects/24342/tickets/176), [177](http://rentzsch.lighthouseapp.com/projects/24342/tickets/177), [178](http://rentzsch.lighthouseapp.com/projects/24342/tickets/178), [180](http://rentzsch.lighthouseapp.com/projects/24342/tickets/180), [185](http://rentzsch.lighthouseapp.com/projects/24342/tickets/185), [187](http://rentzsch.lighthouseapp.com/projects/24342/tickets/187), [188](http://rentzsch.lighthouseapp.com/projects/24342/tickets/188), [192](http://rentzsch.lighthouseapp.com/projects/24342/tickets/192) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/d470c3dbdf1a1068a6feac4661f09ec380024fbe))
+
+	* [DEV] Start restoring 10.4 compatibility. Currently incomplete. ([Michael Baltaks](http://github.com/rentzsch/clicktoflash/commit/6d1803dfb903e87af13674d4944e4bcbb29df1a4))
+
+* **1.4.1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip)
+	* [FIX] Tweak WebPluginDescription from `9.0.151.0` to `9.0.151`. bugs [161](http://rentzsch.lighthouseapp.com/projects/24342/tickets/161), [162](http://rentzsch.lighthouseapp.com/projects/24342/tickets/162), [163](http://rentzsch.lighthouseapp.com/projects/24342/tickets/163), [168](http://rentzsch.lighthouseapp.com/projects/24342/tickets/168), [171](http://rentzsch.lighthouseapp.com/projects/24342/tickets/171), [174](http://rentzsch.lighthouseapp.com/projects/24342/tickets/174) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/34897240e80470a36ee7778dd3d62f79891c5c84))
 
 * **1.4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip)
 	* [CHANGE] Rename WebPluginDescription from `ClickToFlash Flash 9.0 r151` to `Shockwave Flash 9.0 r151 (ClickToFlash)` to better spoof sites (like CNN video) that check for specific flash versions. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/6b60d2d802afe06404725d92d2a121acdb7b4f47))
@@ -124,6 +131,12 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [DEV] Populate CFBundleVersion with ${PRODUCT_VERSION} instead of hard-coding with 700. (Dave Dribin)
 
+* **1.3+tiger** [download tiger/leo version](http://portway-ave.com/clicktoflash/ClickToFlash-1.3+Tiger.zip)
+	* [NEW] Universal Tiger/Leo PPC/Intel Compatibility! (Well, its been tested on Tiger/PPC and Leo/Intel, but the plugin is now universal and should work everywhere)
+	* [NEW] The installer now also works on Tiger
+	* [FIX] Darkened gradient on Tiger for better visibility
+	* [FIX] Removed Copy address contextual menu as it was flakey
+
 * **1.3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.3.zip)
 	* [NEW] Flash badge is now drawn in code (vector image), and draws smaller in smaller flash boxes. [bug 12](http://rentzsch.lighthouseapp.com/projects/24342/tickets/12)
 
@@ -141,6 +154,9 @@ flash boxes when whitelisting one ([bug 10](http://rentzsch.lighthouseapp.com/pr
 	* [FIX] Remove CTFInstaller.m from the bare plugin target. [bug 44](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/44) ([Chris Parker](http://github.com/tgaul/clicktoflash/commit/17d455844a7428471dca018d1461f5c5d1cbb692))
 
 	* [DEV] Make Rakefile honor build products directory. [bug 43](http://rentzsch.lighthouseapp.com/projects/24342/tickets/43) ([Chris Parker](http://github.com/tgaul/clicktoflash/commit/021eebfd274b4e415c31c2ac9e4bb2ffed569ee4))
+
+* **1.2+tiger** [download tiger version](http://portway-ave.com/clicktoflash/ClickToFlashTiger-1.2.zip)
+	* [NEW] Added copy address to clipboard ([Peter Hosey](http://github.com/boredzo/clicktoflash/commit/19cc5b9b25f1e9ad2e62e61d795a1b0e5368822b))
 
 * **1.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.2.zip)
 	* [NEW] Handle `<object>` and `<embed>` that are missing a `type` attribute. That fixes a number of the broken sites. [bug #19](http://rentzsch.lighthouseapp.com/projects/24342/tickets/19-banner-ad-appears-without-whitelisting) ([Jason Foreman](http://github.com/threeve/clicktoflash/commit/e4a7ad83c312bcc3d7400562905122951ae85763))
