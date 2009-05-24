@@ -66,7 +66,24 @@ typedef unsigned int MATrackingAreaOptions;
     @private
     NSRect _rect;
     MATrackingAreaOptions _options;
-    __weak id _owner;
+    /*
+        Work-around: __weak breaks under ClickToFlash's specific environment:
+        
+            * 10.5-or-later Base SDK (GC-aware)
+            * -fobjc-gc (GC supported but not required)
+            * 10.4 deployment target (MACOSX_DEPLOYMENT_TARGET=10.4)
+        
+        The problem is 10.5 SDK + -fobjc-gc settings means function calls
+        such as _objc_assign_weak are emitted, but don't actually exist on
+        10.4. We die with an "Symbol not found" dyld error.
+
+        We work-around this by commenting-out __weak. In the general case
+        this is a too-broad work-around, but is fine for ClickToFlash's
+        specific case: we only use MATrackingArea when NSTrackingArea isn't
+        available. That means we only use MATrackingArea on 10.4, and 10.4
+        doesn't support GC anyways.
+    */
+    /*__weak*/ id _owner;
     NSDictionary * _userInfo;
     NSPoint _lastMovedPoint;
     BOOL _inside;
