@@ -71,7 +71,12 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
     NSAssert(sparkleFramework, nil);
     
     NSError *error = nil;
-    BOOL loaded = [sparkleFramework loadAndReturnError:&error];
+    BOOL loaded;
+    if ([sparkleFramework respondsToSelector:@selector(loadAndReturnError:)]) {
+        loaded = [sparkleFramework loadAndReturnError:&error];
+    } else {
+        loaded = [sparkleFramework load];
+    }
     if (loaded) {
         NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
         NSAssert(clickToFlashBundle, nil);
