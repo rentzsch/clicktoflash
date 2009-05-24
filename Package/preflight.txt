@@ -1,5 +1,0 @@
-#!/bin/sh
-
-pkgutil --forget com.github.rentzsch.clicktoflash.pkg
-
-exit 0

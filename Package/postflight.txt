@@ -1,8 +1,0 @@
-#!/bin/sh
-
-rm -rf "$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin"
-rm -rf "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin"
-mv /tmp/ClickToFlash.webplugin "$HOME/Library/Internet Plug-Ins/"
-pkgutil --forget com.github.rentzsch.clicktoflash.pkg
-
-exit 0
