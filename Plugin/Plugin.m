@@ -690,6 +690,12 @@ BOOL usingMATrackingArea = NO;
 
         float margin = 5.0;
         NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
+        // On systems older than 10.5 we need to supply our own image.
+        if (gearImage == nil)
+        {
+            NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"NSActionTemplate" ofType:@"png"];
+            gearImage = [[[NSImage alloc] initWithContentsOfFile:path] autorelease];
+        }
 
         if( gearImage ) {
             CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
