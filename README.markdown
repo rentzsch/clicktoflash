@@ -36,7 +36,7 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 	* [CHANGE] 10.4 compatiblity: only use `-[NSBundle loadAndReturnError:]` when it's available. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/3674219a5ddc7debb28385655c82a42ef8027b67))
 
-	* [FIX] Work-around `MATrackingArea` 10.4 GC incompatiblity. ([rentzsch(http://github.com/rentzsch/clicktoflash/commit/f027c415cadd1dada95017e57fc117c55152199c))
+	* [FIX] Work-around `MATrackingArea` 10.4 GC incompatiblity. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/f027c415cadd1dada95017e57fc117c55152199c))
 
 * **1.4.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
 
