@@ -22,6 +22,22 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 ##Version History
 
+* **1.5b2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b2.zip)
+
+	* [NEW] Gear icon only appears upon mouse-over (hovering). ([Otyr Ugla](http://github.com/rentzsch/clicktoflash/commit/909dbed81aca5e89af97d12aca546162efb17df3))
+
+	* [NEW] Add custom gear image (derived from Cocoatron) for 10.4 systems which lack `NSActionTemplate`. ([Michael Baltaks](http://github.com/rentzsch/clicktoflash/commit/0e28fe15bd93b3adcb9ef86c00a21e14b5e48b79), [Math Campbell](http://www.mathcampbell.co.uk))
+
+* **1.5b1**
+
+	* [NEW] Restoring 10.4 compatibility. ([Michael Baltaks](http://github.com/rentzsch/clicktoflash/commit/6d1803dfb903e87af13674d4944e4bcbb29df1a4))
+
+	* [NEW] Installer-package-building overhaul. Now creates 10.4-compatible .pkgs. Abandons evil .pmdoc files. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/25393e0eaa7cd1b5b8ad9d628d9193dc031459ba))
+
+	* [CHANGE] 10.4 compatiblity: only use `-[NSBundle loadAndReturnError:]` when it's available. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/3674219a5ddc7debb28385655c82a42ef8027b67))
+
+	* [FIX] Work-around `MATrackingArea` 10.4 GC incompatiblity. ([rentzsch(http://github.com/rentzsch/clicktoflash/commit/f027c415cadd1dada95017e57fc117c55152199c))
+
 * **1.4.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
 
 	* [CHANGE] Set `WebPluginDescription` to `Shockwave Flash 10.0 r22`. We have to bald-face lie in order to tip-toe around various in-the-wild broken Flash version detection scripts. bugs [176](http://rentzsch.lighthouseapp.com/projects/24342/tickets/176), [177](http://rentzsch.lighthouseapp.com/projects/24342/tickets/177), [178](http://rentzsch.lighthouseapp.com/projects/24342/tickets/178), [180](http://rentzsch.lighthouseapp.com/projects/24342/tickets/180), [185](http://rentzsch.lighthouseapp.com/projects/24342/tickets/185), [187](http://rentzsch.lighthouseapp.com/projects/24342/tickets/187), [188](http://rentzsch.lighthouseapp.com/projects/24342/tickets/188), [192](http://rentzsch.lighthouseapp.com/projects/24342/tickets/192) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/d470c3dbdf1a1068a6feac4661f09ec380024fbe))
