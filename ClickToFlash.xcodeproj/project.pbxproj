@@ -36,6 +36,7 @@
 /* Begin PBXBuildFile section */
 		0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */; };
 		0038DE320FC0CE7B007B54E9 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0038DE310FC0CE7B007B54E9 /* Carbon.framework */; };
+		00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */; };
 		072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BA0F30D9C3008C8944 /* ContextualMenu.xib */; };
 		072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
 		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
@@ -131,6 +132,7 @@
 		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATrackingArea.h; sourceTree = "<group>"; };
 		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATrackingArea.m; sourceTree = "<group>"; };
 		0038DE310FC0CE7B007B54E9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NSActionTemplate.png; sourceTree = "<group>"; };
 		072189BB0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		072189BD0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
 				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
+				00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 				79E2EB910F86AAD3005CF170 /* SparkleManager.h */,
 				79E2EB920F86AAD3005CF170 /* SparkleManager.m */,
@@ -407,6 +410,7 @@
 				072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */,
 				6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */,
 				A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */,
+				00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +450,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate package.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\n# Sparkle currently can't handle -$VERSION in .pkg names.\nBUILT_PKG=\"$BUILT_PRODUCTS_DIR/ClickToFlash.pkg\"\nVERSIONED_NAME=\"ClickToFlash-$PRODUCT_VERSION\"\nBUILT_ZIP=\"$BUILT_PRODUCTS_DIR/$VERSIONED_NAME.zip\"\n\n# Delete old files if there are any around.\nif [ -f \"$BUILT_PKG\" ]; then\n\trm -rf \"$BUILT_PKG\"\nfi\nif [ -f \"$BUILT_ZIP\" ]; then\n\trm -rf \"$BUILT_ZIP\"\nfi\n\n# Create the .pkg.\ncd \"$PROJECT_DIR/Package\"\n\"$SYSTEM_DEVELOPER_UTILITIES_DIR/PackageMaker.app/Contents/MacOS/PackageMaker\" --doc \"Package Template.pmdoc\" -i com.github.rentzsch.clicktoflash.pkg -n \"$PRODUCT_VERSION\" -o \"$BUILT_PKG\"\n\n# Stuff it into a .zip.\ncd \"$BUILT_PRODUCTS_DIR\"\nzip -r \"$VERSIONED_NAME.zip\" \"ClickToFlash.pkg\"\n\n# Delete the intermediate .pkg.\nrm -rf \"$BUILT_PKG\"";
+			shellScript = "bash $PROJECT_DIR/Installer/build_installer_pkg.command\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -551,7 +555,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PRODUCT_VERSION = 1.4.2;
+				PRODUCT_VERSION = 1.5b2;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -566,7 +570,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PRODUCT_VERSION = 1.4.2;
+				PRODUCT_VERSION = 1.5b2;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;

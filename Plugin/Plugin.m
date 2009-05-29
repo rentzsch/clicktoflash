@@ -63,6 +63,8 @@ BOOL usingMATrackingArea = NO;
 
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
+- (void) _addTrackingAreaForCTF;
+- (void) _removeTrackingAreaForCTF;
 
 - (void) _loadContent: (NSNotification*) notification;
 - (void) _loadContentForWindow: (NSNotification*) notification;
@@ -322,6 +324,8 @@ BOOL usingMATrackingArea = NO;
 		}
 		
 		[self setOriginalOpacityAttributes:originalOpacityDict];
+
+        [self _addTrackingAreaForCTF];
     }
 
     return self;
@@ -329,6 +333,7 @@ BOOL usingMATrackingArea = NO;
 
 - (void) dealloc
 {
+    [self _removeTrackingAreaForCTF];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
 	[self _abortAlert];        // to be on the safe side
@@ -359,11 +364,14 @@ BOOL usingMATrackingArea = NO;
 		[self _drawBackground];
 }
 
-- (void) mouseDown:(NSEvent *)event
+- (BOOL) _gearVisible
 {
 	NSRect bounds = [ self bounds ];
-	float viewWidth = bounds.size.width;
-	float viewHeight = bounds.size.height;
+	return NSWidth( bounds ) > 32 && NSHeight( bounds ) > 32;
+}
+
+- (void) mouseDown:(NSEvent *)event
+{
 	float margin = 5.0;
 	float gearImageHeight = 16.0;
 	float gearImageWidth = 16.0;
@@ -374,7 +382,8 @@ BOOL usingMATrackingArea = NO;
 	// if the view is 32 pixels or smaller in either direction,
 	// the gear image is not drawn, so we shouldn't pop-up the contextual
 	// menu on a single-click either
-	if ( (viewWidth > 32) && (viewHeight > 32) ) {
+	if ( [ self _gearVisible ] ) {
+        float viewHeight = NSHeight( [ self bounds ] );
 		NSPoint mouseLocation = [event locationInWindow];
 		NSPoint localMouseLocation = [self convertPoint:mouseLocation fromView:nil];
 		
@@ -391,27 +400,11 @@ BOOL usingMATrackingArea = NO;
 		mouseIsDown = YES;
 		mouseInside = YES;
 		[self setNeedsDisplay:YES];
-		
+
 		// Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
-        trackingArea = [NSClassFromString(@"NSTrackingArea") alloc];
-        if (trackingArea != nil)
-        {
-            [trackingArea initWithRect:[self bounds]
-                               options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
-                                 owner:self
-                              userInfo:nil];
-            [self addTrackingArea:trackingArea];
-        }
-        else
-        {
-            trackingArea = [NSClassFromString(@"MATrackingArea") alloc];
-            [trackingArea initWithRect:[self bounds]
-                               options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag
-                                 owner:self
-                              userInfo:nil];
-            [MATrackingArea addTrackingArea:trackingArea toView:self];
-            usingMATrackingArea = YES;
-        }
+        //[self _addTrackingAreaForCTF];
+            // Now that we track the mouse for mouse-over when the mouse is up 
+            // for drawing the gear only on mouse-over, we don't need to add it here.
 	}
 }
 
@@ -433,16 +426,9 @@ BOOL usingMATrackingArea = NO;
     [self display];
     
     // We're done tracking.
-    if (usingMATrackingArea)
-    {
-        [MATrackingArea removeTrackingArea:trackingArea fromView:self];
-    }
-    else
-    {
-        [self removeTrackingArea:trackingArea];
-    }
-    [trackingArea release];
-    trackingArea = nil;
+    //[self _removeTrackingAreaForCTF];
+        // Now that we track the mouse for mouse-over when the mouse is up 
+        // for drawing the gear only on mouse-over, we don't remove it here.
     
     if (mouseInside) {
         if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
@@ -618,8 +604,6 @@ BOOL usingMATrackingArea = NO;
 	// Set up for drawing.
 	
 	NSRect bounds = [ self bounds ];
-	float viewWidth = bounds.size.width;
-	float viewHeight = bounds.size.height;
 	
 	// How large would this text be?
 	
@@ -652,7 +636,7 @@ BOOL usingMATrackingArea = NO;
 		
 		if( maxH + kMinMargin < kMinHeight )
 			return;
-
+        
 		maxH = kMinHeight;
 	}
 	
@@ -660,7 +644,7 @@ BOOL usingMATrackingArea = NO;
 	
 	if( maxW < w )
 		scaleFactor = maxW / w;
-
+    
 	if( maxH < h && maxH / h < scaleFactor )
 		scaleFactor = maxH / h;
 	
@@ -707,53 +691,67 @@ BOOL usingMATrackingArea = NO;
 	
     [ str drawAtPoint: loc withAttributes: attrs ];
 	
-	
-	// add the gear for the contextual menu, but only if the view is
-	// greater than a certain size
-	
-	// de-apply the scaling factor first, otherwise drawing will be off
-	NSAffineTransform *xformTwo = [NSAffineTransform transform];
-	[xformTwo scaleBy: 1/scaleFactor];
-	[xformTwo concat];
-	
-	if ((viewWidth > 32) && (viewHeight > 32)) {
-		float margin = 5.0;
-		NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
-		
-		NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
-		NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
-
-		NSPoint gearImageCenter = NSMakePoint(0 - viewWidth/2 + margin + [gearImage size].height/2,
-											   viewHeight/2 - margin - [gearImage size].height/2);
-
-        id gradient = [NSClassFromString(@"NSGradient") alloc];
-        if (gradient != nil)
-        {
-            [gradient initWithStartingColor:startingColor endingColor:endingColor];
-
-            // draw gradient behind gear so that it's visible even on dark backgrounds
-            [gradient drawFromCenter:gearImageCenter
-                              radius:0.0
-                            toCenter:gearImageCenter
-                              radius:[gearImage size].height/2*2
-                             options:0];
-
-            [gradient release];
-        }
-
-		// draw the gear image
-		[gearImage drawAtPoint:NSMakePoint(0 - viewWidth/2 + margin,viewHeight/2 - margin - [gearImage size].height)
-					  fromRect:NSZeroRect
-					 operation:NSCompositeSourceOver
-					  fraction:1.0];
-	}
-	
-
 	// Now restore the graphics state:
 	
     CGContextEndTransparencyLayer( context );
     
     [ NSGraphicsContext restoreGraphicsState ];
+}
+
+- (void) _drawGearIcon
+{
+    // add the gear for the contextual menu, but only if the view is
+    // greater than a certain size
+        
+    if ([self _gearVisible]) {
+        NSRect bounds = [ self bounds ];
+
+        float margin = 5.0;
+        NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
+        // On systems older than 10.5 we need to supply our own image.
+        if (gearImage == nil)
+        {
+            NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"NSActionTemplate" ofType:@"png"];
+            gearImage = [[[NSImage alloc] initWithContentsOfFile:path] autorelease];
+        }
+
+        if( gearImage ) {
+            CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
+            
+            CGContextSetAlpha( context, 0.25 );
+            CGContextBeginTransparencyLayer( context, nil );
+            
+            NSPoint gearImageCenter = NSMakePoint(NSMinX( bounds ) + ( margin + [gearImage size].width/2 ),
+                                                  NSMaxY( bounds ) - ( margin + [gearImage size].height/2 ));
+            
+            id gradient = [NSClassFromString(@"NSGradient") alloc];
+            if (gradient != nil)
+            {
+                NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
+                NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
+                
+                [gradient initWithStartingColor:startingColor endingColor:endingColor];
+                
+                // draw gradient behind gear so that it's visible even on dark backgrounds
+                [gradient drawFromCenter:gearImageCenter
+                                  radius:0.0
+                                toCenter:gearImageCenter
+                                  radius:[gearImage size].height/2*1.5
+                                 options:0];
+                
+                [gradient release];
+            }
+            
+            // draw the gear image
+            [gearImage drawAtPoint:NSMakePoint(gearImageCenter.x - [gearImage size].width/2, 
+                                               gearImageCenter.y - [gearImage size].height/2)
+                          fromRect:NSZeroRect
+                         operation:NSCompositeSourceOver
+                          fraction:1.0];
+
+            CGContextEndTransparencyLayer( context );
+       }
+    }
 }
 
 - (void) _drawBackground
@@ -799,6 +797,53 @@ BOOL usingMATrackingArea = NO;
 
     // Draw label
     [ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
+    
+    // Draw the gear icon
+    if( mouseInside && !mouseIsDown )
+        [ self _drawGearIcon ];
+}
+
+- (void) _addTrackingAreaForCTF
+{
+    if (trackingArea)
+        return;
+    
+    trackingArea = [NSClassFromString(@"NSTrackingArea") alloc];
+    if (trackingArea != nil)
+    {
+        [trackingArea initWithRect:[self bounds]
+                           options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
+                             owner:self
+                          userInfo:nil];
+        [self addTrackingArea:trackingArea];
+    }
+    else
+    {
+        trackingArea = [NSClassFromString(@"MATrackingArea") alloc];
+        [trackingArea initWithRect:[self bounds]
+                           options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
+                             owner:self
+                          userInfo:nil];
+        [MATrackingArea addTrackingArea:trackingArea toView:self];
+        usingMATrackingArea = YES;
+    }
+}
+
+- (void) _removeTrackingAreaForCTF
+{
+    if (trackingArea)
+    {
+        if (usingMATrackingArea)
+        {
+            [MATrackingArea removeTrackingArea:trackingArea fromView:self];
+        }
+        else
+        {
+            [self removeTrackingArea:trackingArea];
+        }
+        [trackingArea release];
+        trackingArea = nil;
+    }
 }
 
 
