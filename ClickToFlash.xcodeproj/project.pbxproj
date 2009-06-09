@@ -52,11 +52,6 @@
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
-		B5028E930F413553004886D7 /* HarnessAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B5028E910F413553004886D7 /* HarnessAppDelegate.m */; };
-		B5CFF17A0F40EEF1005DB9CC /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
-		B5CFF1870F40F000005DB9CC /* HarnessMain.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CFF1860F40F000005DB9CC /* HarnessMain.xib */; };
-		B5CFF18A0F40F013005DB9CC /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
-		B5CFF1AE0F40F070005DB9CC /* HarnessMain.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
 		D9566D8D0F380C9F00358646 /* sifr3-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2D0F37EA0800358646 /* sifr3-addons.js */; };
 /* End PBXBuildFile section */
@@ -156,12 +151,6 @@
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
 		845704590F47BC170017F3F4 /* CTFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUtilities.m; path = Plugin/CTFUtilities.m; sourceTree = "<group>"; };
 		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ctf.icns; sourceTree = "<group>"; };
-		B5028E910F413553004886D7 /* HarnessAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarnessAppDelegate.m; path = "TestFiles/Debugging Harness/HarnessAppDelegate.m"; sourceTree = "<group>"; };
-		B5028E920F413553004886D7 /* HarnessAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HarnessAppDelegate.h; path = "TestFiles/Debugging Harness/HarnessAppDelegate.h"; sourceTree = "<group>"; };
-		B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whitelist Panel Harness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5CFF1860F40F000005DB9CC /* HarnessMain.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HarnessMain.xib; path = "TestFiles/Debugging Harness/HarnessMain.xib"; sourceTree = "<group>"; };
-		B5CFF1AB0F40F064005DB9CC /* Harness-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Harness-Info.plist"; path = "TestFiles/Debugging Harness/Harness-Info.plist"; sourceTree = "<group>"; };
-		B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarnessMain.m; path = "TestFiles/Debugging Harness/HarnessMain.m"; sourceTree = "<group>"; };
 		D9566C2C0F37EA0800358646 /* sifr2-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr2-addons.js"; sourceTree = "<group>"; };
 		D9566C2D0F37EA0800358646 /* sifr3-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr3-addons.js"; sourceTree = "<group>"; };
 		D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickToFlash_Prefix.pch; path = Plugin/ClickToFlash_Prefix.pch; sourceTree = "<group>"; };
@@ -175,13 +164,6 @@
 				55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */,
 				55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */,
 				0038DE320FC0CE7B007B54E9 /* Carbon.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B5CFF1720F40EEDB005DB9CC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +184,6 @@
 			children = (
 				0038DE210FC0CCF0007B54E9 /* MATrackingArea */,
 				55EB70540E04A89C0016593D /* Plugin */,
-				B5CFF1810F40EF98005DB9CC /* Debugging Harness */,
 				55EB70550E04A8A40016593D /* Frameworks */,
 				55EB70430E04A8640016593D /* Products */,
 				79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */,
@@ -213,7 +194,6 @@
 			isa = PBXGroup;
 			children = (
 				55EB70420E04A8640016593D /* ClickToFlash.webplugin */,
-				B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -270,18 +250,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B5CFF1810F40EF98005DB9CC /* Debugging Harness */ = {
-			isa = PBXGroup;
-			children = (
-				B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */,
-				B5CFF1AB0F40F064005DB9CC /* Harness-Info.plist */,
-				B5CFF1860F40F000005DB9CC /* HarnessMain.xib */,
-				B5028E910F413553004886D7 /* HarnessAppDelegate.m */,
-				B5028E920F413553004886D7 /* HarnessAppDelegate.h */,
-			);
-			name = "Debugging Harness";
-			sourceTree = "<group>";
-		};
 		D9566C2B0F37EA0800358646 /* deSIFR Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -314,23 +282,6 @@
 			productReference = 55EB70420E04A8640016593D /* ClickToFlash.webplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
-		B5CFF1730F40EEDB005DB9CC /* Whitelist Panel Harness */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B5CFF1790F40EEDC005DB9CC /* Build configuration list for PBXNativeTarget "Whitelist Panel Harness" */;
-			buildPhases = (
-				B5CFF1700F40EEDB005DB9CC /* Resources */,
-				B5CFF1710F40EEDB005DB9CC /* Sources */,
-				B5CFF1720F40EEDB005DB9CC /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Whitelist Panel Harness";
-			productName = "Whitelist Panel Harness";
-			productReference = B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -352,7 +303,6 @@
 			targets = (
 				55EB70410E04A8640016593D /* ClickToFlash */,
 				2B9260570F36854B000F1583 /* Install plugin for user */,
-				B5CFF1730F40EEDB005DB9CC /* Whitelist Panel Harness */,
 				FADCD4220F421EAE00749805 /* Build Package */,
 			);
 		};
@@ -404,15 +354,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B5CFF1700F40EEDB005DB9CC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5CFF17A0F40EEF1005DB9CC /* WhitelistPanel.xib in Resources */,
-				B5CFF1870F40F000005DB9CC /* HarnessMain.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -458,16 +399,6 @@
 				8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */,
 				79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */,
 				0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B5CFF1710F40EEDB005DB9CC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5CFF18A0F40F013005DB9CC /* CTFWhitelistWindowController.m in Sources */,
-				B5CFF1AE0F40F070005DB9CC /* HarnessMain.m in Sources */,
-				B5028E930F413553004886D7 /* HarnessAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,54 +543,6 @@
 			};
 			name = Release;
 		};
-		B5CFF1770F40EEDC005DB9CC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "TestFiles/Debugging Harness/Harness-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = "Whitelist Panel Harness";
-			};
-			name = Debug;
-		};
-		B5CFF1780F40EEDC005DB9CC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Whitelist Panel Harness-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = "Whitelist Panel Harness";
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		FADCD4230F421EAE00749805 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -700,15 +583,6 @@
 			buildConfigurations = (
 				55EB70450E04A8640016593D /* Debug */,
 				55EB70460E04A8640016593D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B5CFF1790F40EEDC005DB9CC /* Build configuration list for PBXNativeTarget "Whitelist Panel Harness" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B5CFF1770F40EEDC005DB9CC /* Debug */,
-				B5CFF1780F40EEDC005DB9CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
