@@ -125,7 +125,7 @@
 		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATrackingArea.h; sourceTree = "<group>"; };
 		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATrackingArea.m; sourceTree = "<group>"; };
 		0038DE310FC0CE7B007B54E9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
-		00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NSActionTemplate.png; sourceTree = "<group>"; };
+		00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSActionTemplate.png; path = Plugin/NSActionTemplate.png; sourceTree = "<group>"; };
 		072189BB0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		072189BD0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
@@ -142,15 +142,15 @@
 		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
-		79E2EB910F86AAD3005CF170 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparkleManager.h; sourceTree = "<group>"; };
-		79E2EB920F86AAD3005CF170 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparkleManager.m; sourceTree = "<group>"; };
+		79E2EB910F86AAD3005CF170 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkleManager.h; path = Plugin/SparkleManager.h; sourceTree = "<group>"; };
+		79E2EB920F86AAD3005CF170 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparkleManager.m; path = Plugin/SparkleManager.m; sourceTree = "<group>"; };
 		844695900F46FC6600DC783A /* CTFsIFRSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFsIFRSupport.h; path = Plugin/CTFsIFRSupport.h; sourceTree = "<group>"; };
 		844695910F46FC6600DC783A /* CTFsIFRSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFsIFRSupport.m; path = Plugin/CTFsIFRSupport.m; sourceTree = "<group>"; };
 		845704530F4792320017F3F4 /* CTFWhitelist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelist.h; path = Plugin/CTFWhitelist.h; sourceTree = "<group>"; };
 		845704540F4792320017F3F4 /* CTFWhitelist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelist.m; path = Plugin/CTFWhitelist.m; sourceTree = "<group>"; };
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
 		845704590F47BC170017F3F4 /* CTFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUtilities.m; path = Plugin/CTFUtilities.m; sourceTree = "<group>"; };
-		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ctf.icns; sourceTree = "<group>"; };
+		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ctf.icns; path = Plugin/ctf.icns; sourceTree = "<group>"; };
 		D9566C2C0F37EA0800358646 /* sifr2-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr2-addons.js"; sourceTree = "<group>"; };
 		D9566C2D0F37EA0800358646 /* sifr3-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr3-addons.js"; sourceTree = "<group>"; };
 		D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickToFlash_Prefix.pch; path = Plugin/ClickToFlash_Prefix.pch; sourceTree = "<group>"; };
