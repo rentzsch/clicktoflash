@@ -122,8 +122,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATrackingArea.h; sourceTree = "<group>"; };
-		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATrackingArea.m; sourceTree = "<group>"; };
+		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MATrackingArea.h; path = Plugin/MATrackingArea.h; sourceTree = "<group>"; };
+		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MATrackingArea.m; path = Plugin/MATrackingArea.m; sourceTree = "<group>"; };
 		0038DE310FC0CE7B007B54E9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSActionTemplate.png; path = Plugin/NSActionTemplate.png; sourceTree = "<group>"; };
 		072189BB0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
@@ -170,19 +170,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0038DE210FC0CCF0007B54E9 /* MATrackingArea */ = {
-			isa = PBXGroup;
-			children = (
-				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
-				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
-			);
-			path = MATrackingArea;
-			sourceTree = "<group>";
-		};
 		55EB70300E04A8410016593D = {
 			isa = PBXGroup;
 			children = (
-				0038DE210FC0CCF0007B54E9 /* MATrackingArea */,
 				55EB70540E04A89C0016593D /* Plugin */,
 				55EB70550E04A8A40016593D /* Frameworks */,
 				55EB70430E04A8640016593D /* Products */,
@@ -225,6 +215,8 @@
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 				79E2EB910F86AAD3005CF170 /* SparkleManager.h */,
 				79E2EB920F86AAD3005CF170 /* SparkleManager.m */,
+				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
+				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";
