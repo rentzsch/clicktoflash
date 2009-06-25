@@ -389,7 +389,21 @@ BOOL usingMATrackingArea = NO;
 		NSString *currentParasiticDefault = [parasiticDefaultsNameArray objectAtIndex:i];
 		id prefValue = [[NSUserDefaults standardUserDefaults] objectForKey:currentParasiticDefault];
 		if (prefValue) {
-			[externalFileDefaults setObject:prefValue forKey:[externalDefaultsNameArray objectAtIndex:i]];
+			NSString *externalPrefDefaultName = [externalDefaultsNameArray objectAtIndex:i];
+			id existingExternalPref = [[CTFUserDefaultsController standardUserDefaults] objectForKey:externalPrefDefaultName];
+			if (! existingExternalPref) {
+				// don't overwrite existing external preferences
+				[externalFileDefaults setObject:prefValue forKey:externalPrefDefaultName];
+			} else {
+				if ([currentParasiticDefault isEqualToString:@"ClickToFlash_siteInfo"]) {
+					// merge the arrays of whitelisted sites, in case they're not identical
+					
+					NSMutableArray *combinedWhitelist = [NSMutableArray arrayWithArray:prefValue];
+					[combinedWhitelist addObjectsFromArray:existingExternalPref];
+					[externalFileDefaults setObject:combinedWhitelist forKey:externalPrefDefaultName];
+				}
+			}
+			// eliminate the parasitic default, regardless of whether we transferred them or not
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:currentParasiticDefault];
 		}
 	}
