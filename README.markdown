@@ -22,6 +22,10 @@ Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.co
 
 ##Version History
 
+* **1.5b3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b3.zip)
+
+	* [NEW] Additional executable architechure: `x86_64`. This addition enables ClickToFlash to work on Safari 4 on Mac OS X 10.6 Snow Leopard. ClickToFlash retains compatiblity with 10.4-and-later on both PowerPC and Intel (the full list: 10.4/ppc, 10.4/i386, 10.5/ppc, 10.5/i386 and 10.6/x86_64). ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/1ea61443b8f6005dffb3d846c1ecc9eb41165472))
+
 * **1.5b2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b2.zip)
 
 	* [NEW] Gear icon only appears upon mouse-over (hovering). ([Otyr Ugla](http://github.com/rentzsch/clicktoflash/commit/909dbed81aca5e89af97d12aca546162efb17df3))

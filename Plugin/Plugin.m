@@ -846,19 +846,19 @@ BOOL usingMATrackingArea = NO;
     trackingArea = [NSClassFromString(@"NSTrackingArea") alloc];
     if (trackingArea != nil)
     {
-        [trackingArea initWithRect:[self bounds]
-                           options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
-                             owner:self
-                          userInfo:nil];
+        [(MATrackingArea *)trackingArea initWithRect:[self bounds]
+                                             options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
+                                               owner:self
+                                            userInfo:nil];
         [self addTrackingArea:trackingArea];
     }
     else
     {
         trackingArea = [NSClassFromString(@"MATrackingArea") alloc];
-        [trackingArea initWithRect:[self bounds]
-                           options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
-                             owner:self
-                          userInfo:nil];
+        [(MATrackingArea *)trackingArea initWithRect:[self bounds]
+                                             options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
+                                               owner:self
+                                            userInfo:nil];
         [MATrackingArea addTrackingArea:trackingArea toView:self];
         usingMATrackingArea = YES;
     }
@@ -1252,8 +1252,10 @@ d_alpha;
 
 @implementation NSBezierPath(MRGradientFill)
 
+//typedef void (*CGFunctionEvaluateCallback)(void *info, const CGFloat *in, CGFloat *out);
+
 static void
-evaluate(void *info, const float *in, float *out)
+evaluate(void *info, const CGFloat *in, CGFloat *out)
 {
     // red
     *out++ = start_red + *in * d_red;
@@ -1316,8 +1318,8 @@ float absDiff(float a, float b)
     colorspace = CGColorSpaceCreateDeviceRGB();
 
     size_t components;
-    static const float domain[2] = { 0.0, 1.0 };
-    static const float range[10] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+    static const CGFloat domain[2] = { 0.0, 1.0 };
+    static const CGFloat range[10] = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
     static const CGFunctionCallbacks callbacks = { 0, &evaluate, NULL };
 
     components = 1 + CGColorSpaceGetNumberOfComponents(colorspace);
