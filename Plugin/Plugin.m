@@ -46,6 +46,7 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"pluginEnabled";
+static NSString *sApplicationWhitelist = @"applicationWhitelist";
 
 BOOL usingMATrackingArea = NO;
 
@@ -125,6 +126,7 @@ BOOL usingMATrackingArea = NO;
         
         [self _migrateWhitelist];
 		[self _migratePrefsToExternalFile];
+		[self _addApplicationWhitelistToPrefsFile];
         
 		
         // Get URL
@@ -189,7 +191,11 @@ BOOL usingMATrackingArea = NO;
 		
 		// check whether plugin is disabled, load all content as normal if so
 		
-		if ( ![ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ] ) {
+		CTFUserDefaultsController *standardUserDefaults = [CTFUserDefaultsController standardUserDefaults];
+		BOOL pluginEnabled = [standardUserDefaults boolForKey:sPluginEnabled ];
+		NSString *hostAppBundleID = [[NSBundle mainBundle] bundleIdentifier];
+		BOOL hostAppIsInWhitelist = [[standardUserDefaults arrayForKey:sApplicationWhitelist] containsObject:hostAppBundleID];
+		if ( (! pluginEnabled) || (hostAppIsInWhitelist) ) {
             _isLoadingFromWhitelist = YES;
 			[self _convertTypesForContainer];
 			return self;
@@ -358,7 +364,7 @@ BOOL usingMATrackingArea = NO;
     [super dealloc];
 }
 
-- (void)_migratePrefsToExternalFile
+- (void) _migratePrefsToExternalFile
 {
 	NSArray *parasiticDefaultsNameArray = [NSArray arrayWithObjects:@"ClickToFlash_pluginEnabled",
 										   @"ClickToFlash_useYouTubeH264",
@@ -386,6 +392,20 @@ BOOL usingMATrackingArea = NO;
 			[externalFileDefaults setObject:prefValue forKey:[externalDefaultsNameArray objectAtIndex:i]];
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:currentParasiticDefault];
 		}
+	}
+}
+
+- (void) _addApplicationWhitelistToPrefsFile
+{
+	CTFUserDefaultsController *standardUserDefaults = [CTFUserDefaultsController standardUserDefaults];
+	NSArray *applicationWhitelist = [standardUserDefaults arrayForKey:sApplicationWhitelist];
+	if (! applicationWhitelist) {
+		// add the default list of apps to the whitelist
+		NSArray *defaultWhitelist = [NSArray arrayWithObjects:@"com.hulu.HuluDesktop",
+									 @"com.riverfold.WiiTransfer",
+									 @"com.bitcartel.pandorajam",
+		nil];
+		[standardUserDefaults setObject:defaultWhitelist forKey:sApplicationWhitelist];
 	}
 }
 

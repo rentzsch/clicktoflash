@@ -53,6 +53,7 @@ THE SOFTWARE.
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 - (void)_migratePrefsToExternalFile;
+- (void) _addApplicationWhitelistToPrefsFile;
 
 - (DOMElement *)container;
 - (void)setContainer:(DOMElement *)newValue;
