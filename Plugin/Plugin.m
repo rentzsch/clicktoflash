@@ -402,8 +402,10 @@ BOOL usingMATrackingArea = NO;
 	if (! applicationWhitelist) {
 		// add the default list of apps to the whitelist
 		NSArray *defaultWhitelist = [NSArray arrayWithObjects:@"com.hulu.HuluDesktop",
+									 @"com.echoone.iSwiff",
 									 @"com.riverfold.WiiTransfer",
 									 @"com.bitcartel.pandorajam",
+									 @"com.adobe.flexbuilder",
 		nil];
 		[standardUserDefaults setObject:defaultWhitelist forKey:sApplicationWhitelist];
 	}
