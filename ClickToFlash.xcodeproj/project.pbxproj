@@ -92,6 +92,13 @@
 			remoteGlobalIDString = 612279D90DB5470200AB99EA;
 			remoteInfo = "Sparkle Unit Tests";
 		};
+		79E095390FF32596008A21AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
 		FADCD4250F421EBD00749805 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55EB70320E04A8410016593D /* Project object */;
@@ -260,6 +267,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				79E0953A0FF32596008A21AD /* PBXTargetDependency */,
 			);
 			name = ClickToFlash;
 			productName = ClickToFlash;
@@ -393,6 +401,11 @@
 			isa = PBXTargetDependency;
 			target = 55EB70410E04A8640016593D /* ClickToFlash */;
 			targetProxy = 2B92605A0F368559000F1583 /* PBXContainerItemProxy */;
+		};
+		79E0953A0FF32596008A21AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sparkle;
+			targetProxy = 79E095390FF32596008A21AD /* PBXContainerItemProxy */;
 		};
 		FADCD4260F421EBD00749805 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
