@@ -18,6 +18,15 @@ static CTFUserDefaultsController *sharedInstance = nil;
 	return sharedInstance;
 }
 
++ (id)allocWithZone:(NSZone *)zone;
+{
+	if (sharedInstance) {
+		return [sharedInstance retain];
+	} else {
+		return [super allocWithZone:zone];
+	}
+}
+
 - (id)init;
 {
 	if (! sharedInstance) {
@@ -56,7 +65,9 @@ static CTFUserDefaultsController *sharedInstance = nil;
 	// and if that call detects that the user defaults dictionary hasn't
 	// been set up yet, it sets it up and *then* returns the values
 	
-	if (! userDefaultsDict) [self setUpExternalPrefsDictionary];
+	if (! userDefaultsDict) {
+		[self setUpExternalPrefsDictionary];
+	}
 	return userDefaultsDict;
 }
 

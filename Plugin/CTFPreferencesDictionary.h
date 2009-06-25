@@ -11,6 +11,7 @@
 
 @interface CTFPreferencesDictionary : NSMutableDictionary {
 	NSMutableDictionary *realMutableDictionary;
+	BOOL hasInited;
 }
 
 @end

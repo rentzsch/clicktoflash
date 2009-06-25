@@ -35,7 +35,7 @@ typedef enum {
 	CTFSifrModeDeSifr		= 2
 } CTFSifrMode;
 
-static NSString *sSifrModeDefaultsKey = @"ClickToFlash_sifrMode";
+static NSString *sSifrModeDefaultsKey = @"sifrMode";
 
 static NSString *sSifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
 static NSString *sSifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";

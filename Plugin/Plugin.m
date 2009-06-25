@@ -104,13 +104,11 @@ BOOL usingMATrackingArea = NO;
     self = [super init];
     if (self) {		
 		[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
-				NSLog(@"ummmm0");
 		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
 		NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
 		NSString *pathToRelaunch = [sharedWorkspace absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
 		[sharedSparkleManager setPathToRelaunch:pathToRelaunch];
         [sharedSparkleManager startAutomaticallyCheckingForUpdates];
-        		NSLog(@"ummmm");
         if (![[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
             //  Default to auto-loading invisible flash views.
             [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
@@ -119,7 +117,6 @@ BOOL usingMATrackingArea = NO;
 			// Default to enable the plugin
 			[[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sPluginEnabled];
 		}
-				NSLog(@"ummmm2");
 		[self setLaunchedAppBundleIdentifier:[self launchedAppBundleIdentifier]];
 		
 		[self setWebView:[[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView]];
@@ -384,7 +381,6 @@ BOOL usingMATrackingArea = NO;
 	unsigned int i;
 	for (i = 0; i < [parasiticDefaultsNameArray count]; i++) {
 		NSString *currentParasiticDefault = [parasiticDefaultsNameArray objectAtIndex:i];
-		NSLog(@"sending objectForKey: to a CTFUserDefaultsController");
 		id prefValue = [[NSUserDefaults standardUserDefaults] objectForKey:currentParasiticDefault];
 		if (prefValue) {
 			[externalFileDefaults setObject:prefValue forKey:[externalDefaultsNameArray objectAtIndex:i]];

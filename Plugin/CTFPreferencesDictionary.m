@@ -13,6 +13,7 @@
 
 #import "CTFPreferencesDictionary.h"
 
+static CTFPreferencesDictionary *sharedInstance = nil;
 
 @implementation CTFPreferencesDictionary
 
@@ -21,10 +22,22 @@
 	return [[CTFPreferencesDictionary alloc] initWithDictionary:otherDictionary];
 }
 
++ (id)allocWithZone:(NSZone *)zone;
+{
+	if (sharedInstance) {
+		return [sharedInstance retain];
+	} else {
+		return [super allocWithZone:zone];
+	}
+}
+
 - (id)init;
 {
-	if ((self = [super init])) {
-		realMutableDictionary = [[NSMutableDictionary alloc] init];
+	if (! sharedInstance) {
+		if ((self = [super init])) {
+			realMutableDictionary = [[NSMutableDictionary alloc] init];
+			hasInited = YES;
+		}
 	}
 	
 	return self;
@@ -32,8 +45,13 @@
 
 - (id)initWithDictionary:(NSDictionary *)otherDictionary;
 {
-	if ((self = [super init])) {
-		realMutableDictionary = [[NSMutableDictionary dictionaryWithDictionary:otherDictionary] retain];
+	if (! sharedInstance) {
+		if ((self = [super init])) {
+			realMutableDictionary = [[NSMutableDictionary dictionaryWithDictionary:otherDictionary] retain];
+			hasInited = YES;
+		}
+	} else {
+		[sharedInstance setDictionary:otherDictionary];
 	}
 	
 	return self;

@@ -31,7 +31,7 @@
 #import "CTFPreferencesDictionary.h"
 
 // NSUserDefaults keys
-static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesOnFirstLoad";
+static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 
 @implementation SparkleManager
 
