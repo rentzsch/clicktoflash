@@ -25,6 +25,8 @@ THE SOFTWARE.
 */
 
 #import "Plugin.h"
+#import "CTFUserDefaultsController.h"
+#import "CTFPreferencesDictionary.h"
 
 #import "MATrackingArea.h"
 #import "CTFMenubarMenuController.h"
@@ -40,10 +42,10 @@ THE SOFTWARE.
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
-    // NSUserDefaults keys
-static NSString *sUseYouTubeH264DefaultsKey = @"ClickToFlash_useYouTubeH264";
-static NSString *sAutoLoadInvisibleFlashViewsKey = @"ClickToFlash_autoLoadInvisibleViews";
-static NSString *sPluginEnabled = @"ClickToFlash_pluginEnabled";
+    // CTFUserDefaultsController keys
+static NSString *sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
+static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
+static NSString *sPluginEnabled = @"pluginEnabled";
 
 BOOL usingMATrackingArea = NO;
 
@@ -100,24 +102,24 @@ BOOL usingMATrackingArea = NO;
 - (id) initWithArguments:(NSDictionary *)arguments
 {
     self = [super init];
-    if (self) {
+    if (self) {		
 		[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
-		
+				NSLog(@"ummmm0");
 		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
 		NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
 		NSString *pathToRelaunch = [sharedWorkspace absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
 		[sharedSparkleManager setPathToRelaunch:pathToRelaunch];
         [sharedSparkleManager startAutomaticallyCheckingForUpdates];
-        
-        if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
+        		NSLog(@"ummmm");
+        if (![[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
             //  Default to auto-loading invisible flash views.
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
+            [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
         }
-		if (![[NSUserDefaults standardUserDefaults] objectForKey:sPluginEnabled]) {
+		if (![[CTFUserDefaultsController standardUserDefaults] objectForKey:sPluginEnabled]) {
 			// Default to enable the plugin
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:sPluginEnabled];
+			[[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sPluginEnabled];
 		}
-		
+				NSLog(@"ummmm2");
 		[self setLaunchedAppBundleIdentifier:[self launchedAppBundleIdentifier]];
 		
 		[self setWebView:[[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView]];
@@ -125,6 +127,7 @@ BOOL usingMATrackingArea = NO;
         [self setContainer:[arguments objectForKey:WebPlugInContainingElementKey]];
         
         [self _migrateWhitelist];
+		[self _migratePrefsToExternalFile];
         
 		
         // Get URL
@@ -189,7 +192,7 @@ BOOL usingMATrackingArea = NO;
 		
 		// check whether plugin is disabled, load all content as normal if so
 		
-		if ( ![ [ NSUserDefaults standardUserDefaults ] boolForKey: sPluginEnabled ] ) {
+		if ( ![ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ] ) {
             _isLoadingFromWhitelist = YES;
 			[self _convertTypesForContainer];
 			return self;
@@ -218,7 +221,7 @@ BOOL usingMATrackingArea = NO;
 			}
         }
 		
-		if ( [ [ NSUserDefaults standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
+		if ( [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
 			&& [ self isConsideredInvisible ] ) {
 			// auto-loading is on and this view meets the size constraints
             _isLoadingFromWhitelist = YES;
@@ -356,6 +359,38 @@ BOOL usingMATrackingArea = NO;
 #endif
 	
     [super dealloc];
+}
+
+- (void)_migratePrefsToExternalFile
+{
+	NSArray *parasiticDefaultsNameArray = [NSArray arrayWithObjects:@"ClickToFlash_pluginEnabled",
+										   @"ClickToFlash_useYouTubeH264",
+										   @"ClickToFlash_autoLoadInvisibleViews",
+										   @"ClickToFlash_sifrMode",
+										   @"ClickToFlash_checkForUpdatesOnFirstLoad",
+										   @"ClickToFlash_siteInfo",
+										   nil];
+	
+	NSArray *externalDefaultsNameArray = [NSArray arrayWithObjects:@"pluginEnabled",
+										  @"useYouTubeH264",
+										  @"autoLoadInvisibleViews",
+										  @"sifrMode",
+										  @"checkForUpdatesOnFirstLoad",
+										  @"siteInfo",
+										  nil];
+	
+	NSMutableDictionary *externalFileDefaults = [[CTFUserDefaultsController standardUserDefaults] dictionaryRepresentation];
+
+	unsigned int i;
+	for (i = 0; i < [parasiticDefaultsNameArray count]; i++) {
+		NSString *currentParasiticDefault = [parasiticDefaultsNameArray objectAtIndex:i];
+		NSLog(@"sending objectForKey: to a CTFUserDefaultsController");
+		id prefValue = [[NSUserDefaults standardUserDefaults] objectForKey:currentParasiticDefault];
+		if (prefValue) {
+			[externalFileDefaults setObject:prefValue forKey:[externalDefaultsNameArray objectAtIndex:i]];
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:currentParasiticDefault];
+		}
+	}
 }
 
 - (void) drawRect:(NSRect)rect
@@ -896,8 +931,8 @@ BOOL usingMATrackingArea = NO;
 - (BOOL) _useH264Version
 {
     return [ self _hasH264Version ] 
-	&& [ [ NSUserDefaults standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
-	&& [ [ NSUserDefaults standardUserDefaults ] boolForKey: sPluginEnabled ];
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
 }
 
 - (void) _convertElementForMP4: (DOMElement*) element

@@ -26,6 +26,9 @@ THE SOFTWARE.
 
 #import "CTFsIFRSupport.h"
 
+#import "CTFUserDefaultsController.h"
+#import "CTFPreferencesDictionary.h"
+
 typedef enum {
 	CTFSifrModeDoNothing	= 0, 
 	CTFSifrModeAutoLoadSifr	= 1, 
@@ -61,7 +64,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 
 - (BOOL) _shouldDeSIFR
 {
-    if ([[NSUserDefaults standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr) {
+    if ([[CTFUserDefaultsController standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr) {
         _sifrVersion = [self _sifrVersionInstalled];
         
         if( _sifrVersion != 0 )
@@ -73,7 +76,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 
 - (BOOL) _shouldAutoLoadSIFR
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAutoLoadSifr;
+    return [[CTFUserDefaultsController standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAutoLoadSifr;
 }        
 
 - (void) _disableSIFR

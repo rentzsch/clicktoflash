@@ -5,6 +5,11 @@
 //  Created by Simone Manganelli on 2009-05-25.
 //  Copyright 2009 __MyCompanyName__. All rights reserved.
 //
+//	the rationale for this class is so that we can monitor when
+//	defaults change, and update the *external* preference file accordingly.
+//	to do so, we need to monitor the mutable dictionary that represents the
+//  defaults.  this class follows @bbum's suggestion at this URL:
+//  http://www.omnigroup.com/mailman/archive/macosx-dev/1999-April/007726.html
 
 #import "CTFPreferencesDictionary.h"
 
@@ -43,7 +48,6 @@
 - (void)setObject:(id)object forKey:(id)key;
 {
 	[realMutableDictionary setObject:object forKey:key];
-	NSLog(@"posting a notification of defaults change");
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ClickToFlashPluginDefaultsDidChange" object:self];
 }
 

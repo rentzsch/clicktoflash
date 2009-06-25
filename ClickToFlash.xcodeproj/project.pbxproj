@@ -51,9 +51,9 @@
 		844695F70F470D1F00DC783A /* CTFsIFRSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 844695910F46FC6600DC783A /* CTFsIFRSupport.m */; };
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
-		A41626600FCB535300181427 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A416265F0FCB535300181427 /* CTFPreferencesDictionary.m */; };
-		A461B6590FC8ECB20028C966 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A461B6580FC8ECB20028C966 /* CTFUserDefaultsController.m */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
+		A4DEFC460FF33D2D00CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC430FF33D2D00CCB6A8 /* CTFPreferencesDictionary.m */; };
+		A4DEFC470FF33D2D00CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC450FF33D2D00CCB6A8 /* CTFUserDefaultsController.m */; };
 		B5028E930F413553004886D7 /* HarnessAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B5028E910F413553004886D7 /* HarnessAppDelegate.m */; };
 		B5CFF17A0F40EEF1005DB9CC /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
 		B5CFF1870F40F000005DB9CC /* HarnessMain.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CFF1860F40F000005DB9CC /* HarnessMain.xib */; };
@@ -157,11 +157,11 @@
 		845704540F4792320017F3F4 /* CTFWhitelist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelist.m; path = Plugin/CTFWhitelist.m; sourceTree = "<group>"; };
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
 		845704590F47BC170017F3F4 /* CTFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUtilities.m; path = Plugin/CTFUtilities.m; sourceTree = "<group>"; };
-		A416265E0FCB535300181427 /* CTFPreferencesDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFPreferencesDictionary.h; sourceTree = "<group>"; };
-		A416265F0FCB535300181427 /* CTFPreferencesDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFPreferencesDictionary.m; sourceTree = "<group>"; };
-		A461B6570FC8ECB20028C966 /* CTFUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFUserDefaultsController.h; sourceTree = "<group>"; };
-		A461B6580FC8ECB20028C966 /* CTFUserDefaultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFUserDefaultsController.m; sourceTree = "<group>"; };
 		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ctf.icns; sourceTree = "<group>"; };
+		A4DEFC420FF33D2D00CCB6A8 /* CTFPreferencesDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFPreferencesDictionary.h; path = Plugin/CTFPreferencesDictionary.h; sourceTree = "<group>"; };
+		A4DEFC430FF33D2D00CCB6A8 /* CTFPreferencesDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFPreferencesDictionary.m; path = Plugin/CTFPreferencesDictionary.m; sourceTree = "<group>"; };
+		A4DEFC440FF33D2D00CCB6A8 /* CTFUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUserDefaultsController.h; path = Plugin/CTFUserDefaultsController.h; sourceTree = "<group>"; };
+		A4DEFC450FF33D2D00CCB6A8 /* CTFUserDefaultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUserDefaultsController.m; path = Plugin/CTFUserDefaultsController.m; sourceTree = "<group>"; };
 		B5028E910F413553004886D7 /* HarnessAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarnessAppDelegate.m; path = "TestFiles/Debugging Harness/HarnessAppDelegate.m"; sourceTree = "<group>"; };
 		B5028E920F413553004886D7 /* HarnessAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HarnessAppDelegate.h; path = "TestFiles/Debugging Harness/HarnessAppDelegate.h"; sourceTree = "<group>"; };
 		B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whitelist Panel Harness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,10 +229,10 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
-				A416265E0FCB535300181427 /* CTFPreferencesDictionary.h */,
-				A416265F0FCB535300181427 /* CTFPreferencesDictionary.m */,
-				A461B6570FC8ECB20028C966 /* CTFUserDefaultsController.h */,
-				A461B6580FC8ECB20028C966 /* CTFUserDefaultsController.m */,
+				A4DEFC420FF33D2D00CCB6A8 /* CTFPreferencesDictionary.h */,
+				A4DEFC430FF33D2D00CCB6A8 /* CTFPreferencesDictionary.m */,
+				A4DEFC440FF33D2D00CCB6A8 /* CTFUserDefaultsController.h */,
+				A4DEFC450FF33D2D00CCB6A8 /* CTFUserDefaultsController.m */,
 				845704580F47BC170017F3F4 /* CTFUtilities.h */,
 				845704590F47BC170017F3F4 /* CTFUtilities.m */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
@@ -468,8 +468,8 @@
 				8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */,
 				79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */,
 				0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */,
-				A461B6590FC8ECB20028C966 /* CTFUserDefaultsController.m in Sources */,
-				A41626600FCB535300181427 /* CTFPreferencesDictionary.m in Sources */,
+				A4DEFC460FF33D2D00CCB6A8 /* CTFPreferencesDictionary.m in Sources */,
+				A4DEFC470FF33D2D00CCB6A8 /* CTFUserDefaultsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

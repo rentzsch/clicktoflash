@@ -29,11 +29,14 @@ THE SOFTWARE.
 #import "CTFUtilities.h"
 #import "CTFMenubarMenuController.h"
 
+#import "CTFUserDefaultsController.h"
+#import "CTFPreferencesDictionary.h"
+
 
     // NSNotification names
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
-    // NSUserDefaults keys
+    // CTFUserDefaultsController keys
 static NSString *sHostSiteInfoDefaultsKey = @"ClickToFlash_siteInfo";
 
 typedef enum {
@@ -160,13 +163,13 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (BOOL) _isWhiteListedForHostString:(NSString *)hostString
 {
-	NSArray *hostWhitelist = [[NSUserDefaults standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
+	NSArray *hostWhitelist = [[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
     return hostWhitelist && itemForSite(hostWhitelist, hostString) != nil;
 }
 
 - (NSMutableArray *) _mutableSiteInfo
 {
-    NSMutableArray *hostWhitelist = [[[[NSUserDefaults standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
+    NSMutableArray *hostWhitelist = [[[[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
     if (hostWhitelist == nil) {
         hostWhitelist = [NSMutableArray array];
     }
@@ -177,7 +180,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 {
     NSMutableArray *siteInfo = [self _mutableSiteInfo];
     [siteInfo addObject: whitelistItemForSite([self host])];
-    [[NSUserDefaults standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
+    [[CTFUserDefaultsController standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
     [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
 
@@ -188,7 +191,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
     
     if(foundIndex != NSNotFound) {
         [siteInfo removeObjectAtIndex: foundIndex];
-        [[NSUserDefaults standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
+        [[CTFUserDefaultsController standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
     }
 }
 
