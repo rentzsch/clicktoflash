@@ -558,8 +558,11 @@ BOOL usingMATrackingArea = NO;
                                           action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
 										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 2];
+				[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
+										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: 3];
                 [[[self menu] itemAtIndex: 1] setTarget: self];
 				[[[self menu] itemAtIndex: 2] setTarget: self];
+				[[[self menu] itemAtIndex: 3] setTarget: self];
             } else if (_fromYouTube) {
 				// has no H.264 version but is from YouTube; it's an embedded view!
 				
@@ -1073,6 +1076,22 @@ BOOL usingMATrackingArea = NO;
 									options:NSWorkspaceLaunchDefault
 			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
 						  launchIdentifiers:nil];
+}
+
+- (IBAction)openFullscreenInQTPlayer:(id)sender;
+{
+	NSString* video_id = [self videoId];
+    NSString* video_hash = [ self _videoHash ];
+    
+    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+					 video_id, video_hash ];
+	
+	NSString *scriptSource = [NSString stringWithFormat:
+							  @"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
+	NSLog(@"%@",scriptSource);
+	NSAppleScript *openInQTPlayerScript = [[NSAppleScript alloc] initWithSource:scriptSource];
+	[openInQTPlayerScript executeAndReturnError:nil];
+	[openInQTPlayerScript release];
 }
 
 
