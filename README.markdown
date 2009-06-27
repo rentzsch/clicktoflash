@@ -26,11 +26,11 @@ To uninstall ClickToFlash: for versions 1.5b4 and later, go to the Settings wind
 
 * **1.5b4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b4.zip)
 
-	* [NEW] User preferences now are stored in a separate file, allowing them to be shared across application. Parasitic prefs are migrated to the external file and then deleted. [bug 73](http://rentzsch.lighthouseapp.com/projects/24342/tickets/73) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/39a3ae3522e168e76f97511fa9623eff587d7580))
+	* [NEW] "Play Fullscreen in QuickTime Player" contextual menu command for viewing YouTube videos in QuickTime Player (which has niceties like supporting the Apple remote). [bug 216](http://rentzsch.lighthouseapp.com/projects/24342/tickets/216) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/27dd7e5d64b5993fc492b06ec940d2820f323330))
 	
 	* [NEW] Application-wide whitelisting for apps like Hulu Desktop, PandoraJam and Wii Transfer that utilize Flash. [bugs 26](http://rentzsch.lighthouseapp.com/projects/24342/tickets/216), [118](http://rentzsch.lighthouseapp.com/projects/24342/tickets/118) and [230](http://rentzsch.lighthouseapp.com/projects/24342/tickets/230) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/f2a1e755c78d6b1edd52b4bb85fb643eae3783c9))
 
-	* [NEW] "Play Fullscreen in QuickTime Player" contextual menu command for viewing YouTube videos in QuickTime Player (which has niceties like supporting the Apple remote). [bug 216](http://rentzsch.lighthouseapp.com/projects/24342/tickets/216) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/27dd7e5d64b5993fc492b06ec940d2820f323330))
+	* [NEW] User preferences now are stored in a separate file, allowing them to be shared across application. Parasitic prefs are migrated to the external file and then deleted. [bug 73](http://rentzsch.lighthouseapp.com/projects/24342/tickets/73) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/39a3ae3522e168e76f97511fa9623eff587d7580))
 
 	* [NEW] Uninstall button (with a confirmation sheet) in the settings window. [bug 226](http://rentzsch.lighthouseapp.com/projects/24342/tickets/226) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/7851b478da8ee0fa951362cd04853b035a46fb38))
 
