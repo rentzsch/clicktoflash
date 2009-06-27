@@ -103,7 +103,7 @@ BOOL usingMATrackingArea = NO;
 - (id) initWithArguments:(NSDictionary *)arguments
 {
     self = [super init];
-    if (self) {		
+    if (self) {
 		[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
 		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
 		NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
