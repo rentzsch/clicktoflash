@@ -52,6 +52,8 @@ THE SOFTWARE.
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
 
 - (id) initWithArguments:(NSDictionary *)arguments;
+- (void)_migratePrefsToExternalFile;
+- (void) _addApplicationWhitelistToPrefsFile;
 
 - (DOMElement *)container;
 - (void)setContainer:(DOMElement *)newValue;

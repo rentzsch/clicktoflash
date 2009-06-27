@@ -26,13 +26,16 @@ THE SOFTWARE.
 
 #import "CTFsIFRSupport.h"
 
+#import "CTFUserDefaultsController.h"
+#import "CTFPreferencesDictionary.h"
+
 typedef enum {
 	CTFSifrModeDoNothing	= 0, 
 	CTFSifrModeAutoLoadSifr	= 1, 
 	CTFSifrModeDeSifr		= 2
 } CTFSifrMode;
 
-static NSString *sSifrModeDefaultsKey = @"ClickToFlash_sifrMode";
+static NSString *sSifrModeDefaultsKey = @"sifrMode";
 
 static NSString *sSifr2Test		= @"sIFR != null && typeof sIFR == \"function\"";
 static NSString *sSifr3Test		= @"sIFR != null && typeof sIFR == \"object\"";
@@ -61,7 +64,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 
 - (BOOL) _shouldDeSIFR
 {
-    if ([[NSUserDefaults standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr) {
+    if ([[CTFUserDefaultsController standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeDeSifr) {
         _sifrVersion = [self _sifrVersionInstalled];
         
         if( _sifrVersion != 0 )
@@ -73,7 +76,7 @@ static NSString *sSifr3AddOnJSFilename = @"sifr3-addons";
 
 - (BOOL) _shouldAutoLoadSIFR
 {
-    return [[NSUserDefaults standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAutoLoadSifr;
+    return [[CTFUserDefaultsController standardUserDefaults] integerForKey: sSifrModeDefaultsKey] == CTFSifrModeAutoLoadSifr;
 }        
 
 - (void) _disableSIFR

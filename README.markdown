@@ -20,6 +20,8 @@ Please [report bugs and request features](http://rentzsch.lighthouseapp.com/proj
 
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
+To uninstall ClickToFlash: for versions 1.5b4 and later, go to the Settings window and click the "Uninstall ClickToFlash" button.  For versions prior to 1.5b4, navigate to ~/Library/Internet Plug-ins/ in the Finder, where ~ is your home folder, and delete the item named "ClickToFlash.webplugin" (or "ClickToFlash.plugin").
+
 ##Version History
 
 * **1.5b3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b3.zip)

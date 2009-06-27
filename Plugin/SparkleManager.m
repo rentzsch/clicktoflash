@@ -27,8 +27,11 @@
 #import "SparkleManager.h"
 #import <Sparkle/Sparkle.h>
 
+#import "CTFUserDefaultsController.h"
+#import "CTFPreferencesDictionary.h"
+
 // NSUserDefaults keys
-static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesOnFirstLoad";
+static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 
 @implementation SparkleManager
 
@@ -99,11 +102,11 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 }
 
 - (void)startAutomaticallyCheckingForUpdates {
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
+    if (![[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
         // If the key isn't set yet, default to YES, automatically check for updates.
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
+        [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
     }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
+    if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
         static BOOL checkedForUpdate = NO;
         if (!checkedForUpdate) {
             checkedForUpdate = YES;

@@ -52,6 +52,8 @@
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
+		A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */; };
+		A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
 		D9566D8D0F380C9F00358646 /* sifr3-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2D0F37EA0800358646 /* sifr3-addons.js */; };
 /* End PBXBuildFile section */
@@ -151,6 +153,10 @@
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
 		845704590F47BC170017F3F4 /* CTFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUtilities.m; path = Plugin/CTFUtilities.m; sourceTree = "<group>"; };
 		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ctf.icns; path = Plugin/ctf.icns; sourceTree = "<group>"; };
+		A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFPreferencesDictionary.h; path = Plugin/CTFPreferencesDictionary.h; sourceTree = "<group>"; };
+		A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFPreferencesDictionary.m; path = Plugin/CTFPreferencesDictionary.m; sourceTree = "<group>"; };
+		A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUserDefaultsController.h; path = Plugin/CTFUserDefaultsController.h; sourceTree = "<group>"; };
+		A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUserDefaultsController.m; path = Plugin/CTFUserDefaultsController.m; sourceTree = "<group>"; };
 		D9566C2C0F37EA0800358646 /* sifr2-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr2-addons.js"; sourceTree = "<group>"; };
 		D9566C2D0F37EA0800358646 /* sifr3-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr3-addons.js"; sourceTree = "<group>"; };
 		D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickToFlash_Prefix.pch; path = Plugin/ClickToFlash_Prefix.pch; sourceTree = "<group>"; };
@@ -193,6 +199,10 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
+				A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */,
+				A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */,
+				A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */,
+				A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */,
 				845704580F47BC170017F3F4 /* CTFUtilities.h */,
 				845704590F47BC170017F3F4 /* CTFUtilities.m */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
@@ -391,6 +401,8 @@
 				8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */,
 				79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */,
 				0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */,
+				A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */,
+				A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
