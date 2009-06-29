@@ -47,6 +47,7 @@ static NSString *sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
+static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
 
 BOOL usingMATrackingArea = NO;
 
@@ -869,8 +870,12 @@ BOOL usingMATrackingArea = NO;
     [ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
     
     // Draw the gear icon
-    if( mouseInside && !mouseIsDown )
-        [ self _drawGearIcon ];
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sDrawGearImageOnlyOnMouseOverHiddenPref]) {
+		if( mouseInside && !mouseIsDown )
+			[ self _drawGearIcon ];
+	} else {
+		[ self _drawGearIcon ];
+	}
 }
 
 - (void) _addTrackingAreaForCTF
