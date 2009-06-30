@@ -19,7 +19,7 @@ static CTFPreferencesDictionary *sharedInstance = nil;
 
 + (id)dictionaryWithDictionary:(NSDictionary *)otherDictionary;
 {
-	return [[CTFPreferencesDictionary alloc] initWithDictionary:otherDictionary];
+	return [[[CTFPreferencesDictionary alloc] initWithDictionary:otherDictionary] autorelease];
 }
 
 + (id)allocWithZone:(NSZone *)zone;
