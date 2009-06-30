@@ -415,6 +415,7 @@ BOOL usingMATrackingArea = NO;
 									 @"com.riverfold.WiiTransfer",
 									 @"com.bitcartel.pandorajam",
 									 @"com.adobe.flexbuilder",
+									 @"com.Zattoo.prefs",
 		nil];
 		[standardUserDefaults setObject:defaultWhitelist forKey:sApplicationWhitelist];
 	}
