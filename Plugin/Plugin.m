@@ -74,6 +74,7 @@ BOOL usingMATrackingArea = NO;
 - (void) _loadContentForWindow: (NSNotification*) notification;
 
 - (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
+- (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML;
 - (NSString*) flashvarWithName: (NSString*) argName;
 - (BOOL) _hasH264Version;
 - (BOOL) _useH264Version;
@@ -174,7 +175,9 @@ BOOL usingMATrackingArea = NO;
 			if (videoId != nil) {
 				[self setVideoId:videoId];
 			} else {
-				// scrub the URL to determine the video_id
+				// it's an embedded YouTube flash view; scrub the URL to
+				// determine the video_id, then get the source of the YouTube
+				// page to get the Flash vars
 				
 				NSString *videoIdFromURL = nil;
 				NSScanner *URLScanner = [[NSScanner alloc] initWithString:[self src]];
@@ -186,6 +189,16 @@ BOOL usingMATrackingArea = NO;
 					if (videoIdFromURL) [self setVideoId:videoIdFromURL];
 				}
 				[URLScanner release];
+				
+				if (videoIdFromURL) {
+					NSString *URLString = [NSString stringWithFormat:@"http://youtube.com/watch?v=%@",videoIdFromURL];
+					NSURL *YouTubePageURL = [NSURL URLWithString:URLString];
+					NSError *pageSourceError = nil;
+					NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
+																	  usedEncoding:nil
+																			 error:&pageSourceError];
+					if (! pageSourceError) _flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
+				}
 			}
 		}
 		
@@ -945,6 +958,49 @@ BOOL usingMATrackingArea = NO;
     return flashVarsDictionary;
 }
 
+- (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML
+{
+	NSMutableDictionary* flashVarsDictionary = [ NSMutableDictionary dictionary ];
+	NSScanner *HTMLScanner = [[NSScanner alloc] initWithString:youTubePageHTML];
+	
+	[HTMLScanner scanUpToString:@"var swfArgs = {" intoString:nil];
+	BOOL swfArgsFound = [HTMLScanner scanString:@"var swfArgs = {" intoString:nil];
+	
+	if (swfArgsFound) {
+		NSString *swfArgsString = nil;
+		[HTMLScanner scanUpToString:@"}" intoString:&swfArgsString];
+		NSArray *arrayOfSWFArgs = [swfArgsString componentsSeparatedByString:@", "];
+		CTFForEachObject( NSString, currentArgPairString, arrayOfSWFArgs ) {
+			NSRange sepRange = [ currentArgPairString rangeOfString:@": "];
+			if (sepRange.location != NSNotFound) {
+				NSString *potentialKey = [currentArgPairString substringToIndex:sepRange.location];
+				NSString *potentialVal = [currentArgPairString substringFromIndex:NSMaxRange(sepRange)];
+				
+				// we might need to strip the surrounding quotes from the keys and values
+				// (but not always)
+				NSString *key = nil;
+				if ([[potentialKey substringToIndex:1] isEqualToString:@"\""]) {
+					key = [potentialKey substringWithRange:NSMakeRange(1,[potentialKey length] - 2)];
+				} else {
+					key = potentialKey;
+				}
+				
+				NSString *val = nil;
+				if ([[potentialVal substringToIndex:1] isEqualToString:@"\""]) {
+					val = [potentialVal substringWithRange:NSMakeRange(1,[potentialVal length] - 2)];
+				} else {
+					val = potentialVal;
+				}
+				
+				[flashVarsDictionary setObject:val forKey:key];
+			}
+		}
+	}
+	
+	[HTMLScanner release];
+	return flashVarsDictionary;
+}
+
 - (NSString*) flashvarWithName: (NSString*) argName
 {
     return [ _flashVars objectForKey: argName ];
@@ -1093,7 +1149,6 @@ BOOL usingMATrackingArea = NO;
 	
 	NSString *scriptSource = [NSString stringWithFormat:
 							  @"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
-	NSLog(@"%@",scriptSource);
 	NSAppleScript *openInQTPlayerScript = [[NSAppleScript alloc] initWithSource:scriptSource];
 	[openInQTPlayerScript executeAndReturnError:nil];
 	[openInQTPlayerScript release];
