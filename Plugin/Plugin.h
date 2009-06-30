@@ -39,6 +39,8 @@ THE SOFTWARE.
     BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
     BOOL _fromYouTube;
+	BOOL _hasH264Version;
+	BOOL _hasHDH264Version;
 	WebView *_webView;
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
