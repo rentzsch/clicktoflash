@@ -1252,8 +1252,14 @@ BOOL usingMATrackingArea = NO;
 	NSString* video_id = [self videoId];
     NSString* video_hash = [ self _videoHash ];
     
-    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+	NSString *src;
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey]) {
+		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
 					 video_id, video_hash ];
+	} else {
+		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+			   video_id, video_hash ];
+	}
 	
 	NSString *scriptSource = [NSString stringWithFormat:
 							  @"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
