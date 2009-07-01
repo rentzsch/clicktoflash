@@ -29,6 +29,8 @@ THE SOFTWARE.
 #import <WebKit/WebKit.h>
 
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
+	NSArray *defaultWhitelist;
+	
     DOMElement *_container;
     NSString *_host;
     NSDictionary* _flashVars;
@@ -55,7 +57,7 @@ THE SOFTWARE.
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 - (void)_migratePrefsToExternalFile;
-- (void) _addApplicationWhitelistToPrefsFile;
+- (void) _addApplicationWhitelistArrayToPrefsFile;
 
 - (DOMElement *)container;
 - (void)setContainer:(DOMElement *)newValue;
