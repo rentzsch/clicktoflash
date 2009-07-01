@@ -45,6 +45,7 @@
 		6953E4360F3EDE9D0014ECF7 /* CTFMenubarMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */; };
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
+		79166CBD0FF69E1800B1F69B /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79166CBB0FF69E1800B1F69B /* CTGradient.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		79C040700FF1CCE6002DA6A5 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E2EB920F86AAD3005CF170 /* SparkleManager.m */; };
@@ -52,7 +53,7 @@
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
-		A4CB75010FFA209300CC819F /* CTFURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CB75000FFA209300CC819F /* CTFURLConnection.m */; };
+		A4CB766F0FFB041500CC819F /* CTFURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CB766D0FFB041500CC819F /* CTFURLConnection.m */; };
 		A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */; };
 		A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
@@ -142,6 +143,8 @@
 		6953E43B0F3EDEB50014ECF7 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
+		79166CBB0FF69E1800B1F69B /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTGradient.m; path = Plugin/CTGradient.m; sourceTree = "<group>"; };
+		79166CBC0FF69E1800B1F69B /* CTGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTGradient.h; path = Plugin/CTGradient.h; sourceTree = "<group>"; };
 		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Plugin/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
@@ -154,8 +157,8 @@
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
 		845704590F47BC170017F3F4 /* CTFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUtilities.m; path = Plugin/CTFUtilities.m; sourceTree = "<group>"; };
 		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ctf.icns; path = Plugin/ctf.icns; sourceTree = "<group>"; };
-		A4CB74FF0FFA209300CC819F /* CTFURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFURLConnection.h; path = Plugin/CTFURLConnection.h; sourceTree = "<group>"; };
-		A4CB75000FFA209300CC819F /* CTFURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFURLConnection.m; path = Plugin/CTFURLConnection.m; sourceTree = "<group>"; };
+		A4CB766D0FFB041500CC819F /* CTFURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFURLConnection.m; path = Plugin/CTFURLConnection.m; sourceTree = "<group>"; };
+		A4CB766E0FFB041500CC819F /* CTFURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFURLConnection.h; path = Plugin/CTFURLConnection.h; sourceTree = "<group>"; };
 		A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFPreferencesDictionary.h; path = Plugin/CTFPreferencesDictionary.h; sourceTree = "<group>"; };
 		A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFPreferencesDictionary.m; path = Plugin/CTFPreferencesDictionary.m; sourceTree = "<group>"; };
 		A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUserDefaultsController.h; path = Plugin/CTFUserDefaultsController.h; sourceTree = "<group>"; };
@@ -202,14 +205,14 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
-				A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */,
 				A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */,
-				A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */,
+				A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */,
 				A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */,
-				A4CB74FF0FFA209300CC819F /* CTFURLConnection.h */,
-				A4CB75000FFA209300CC819F /* CTFURLConnection.m */,
-				845704580F47BC170017F3F4 /* CTFUtilities.h */,
+				A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */,
+				A4CB766D0FFB041500CC819F /* CTFURLConnection.m */,
+				A4CB766E0FFB041500CC819F /* CTFURLConnection.h */,
 				845704590F47BC170017F3F4 /* CTFUtilities.m */,
+				845704580F47BC170017F3F4 /* CTFUtilities.h */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
 				6953E4350F3EDE9D0014ECF7 /* CTFMenubarMenuController.h */,
 				844695910F46FC6600DC783A /* CTFsIFRSupport.m */,
@@ -218,20 +221,16 @@
 				845704530F4792320017F3F4 /* CTFWhitelist.h */,
 				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
 				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
-				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
-				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
+				79E2EB920F86AAD3005CF170 /* SparkleManager.m */,
+				79E2EB910F86AAD3005CF170 /* SparkleManager.h */,
+				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
+				79166CBF0FF69E2900B1F69B /* 10.4 Support */,
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
 				6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */,
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
-				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
-				00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
-				79E2EB910F86AAD3005CF170 /* SparkleManager.h */,
-				79E2EB920F86AAD3005CF170 /* SparkleManager.m */,
-				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
-				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";
@@ -244,6 +243,20 @@
 				55EB70570E04A8B80016593D /* WebKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		79166CBF0FF69E2900B1F69B /* 10.4 Support */ = {
+			isa = PBXGroup;
+			children = (
+				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
+				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
+				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
+				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
+				79166CBB0FF69E1800B1F69B /* CTGradient.m */,
+				79166CBC0FF69E1800B1F69B /* CTGradient.h */,
+				00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */,
+			);
+			name = "10.4 Support";
 			sourceTree = "<group>";
 		};
 		79A060E40FF1CBF50035F03A /* Products */ = {
@@ -408,7 +421,8 @@
 				0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */,
 				A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */,
 				A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */,
-				A4CB75010FFA209300CC819F /* CTFURLConnection.m in Sources */,
+				79166CBD0FF69E1800B1F69B /* CTGradient.m in Sources */,
+				A4CB766F0FFB041500CC819F /* CTFURLConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +495,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.5b3;
+				PRODUCT_VERSION = 1.5b4;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -493,7 +507,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.5b3;
+				PRODUCT_VERSION = 1.5b4;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
