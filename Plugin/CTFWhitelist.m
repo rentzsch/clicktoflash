@@ -180,7 +180,11 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 {
     NSMutableArray *siteInfo = [self _mutableSiteInfo];
     [siteInfo addObject: whitelistItemForSite([self host])];
-    [[CTFUserDefaultsController standardUserDefaults] setObject: siteInfo forKey: sHostSiteInfoDefaultsKey];
+	
+	[[CTFUserDefaultsController standardUserDefaults] setValue:siteInfo forKeyPath:@"values.siteInfo"];
+    //[values setObject:siteInfo forKey:sHostSiteInfoDefaultsKey];
+	//[[CTFUserDefaultsController standardUserDefaults] setValues:values];
+	
     [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }
 
