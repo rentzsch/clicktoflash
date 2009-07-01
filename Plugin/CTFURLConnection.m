@@ -30,7 +30,7 @@
 	
 	// since the Range header is not always honored, we also stop getting data
 	// from the NSURLConnection by stopping it once we get the NSURLResponse
-	//[request setValue:@"bytes=0-1" forHTTPHeaderField:@"Range"];
+	[request setValue:@"bytes=0-1" forHTTPHeaderField:@"Range"];
 	
 	[NSThread detachNewThreadSelector:@selector(startRequest:) toTarget:self withObject:request];
 
