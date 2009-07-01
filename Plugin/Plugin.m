@@ -27,6 +27,7 @@ THE SOFTWARE.
 #import "Plugin.h"
 #import "CTFUserDefaultsController.h"
 #import "CTFPreferencesDictionary.h"
+#import "CTFURLConnection.h"
 
 #import "MATrackingArea.h"
 #import "CTFMenubarMenuController.h"
@@ -1022,42 +1023,40 @@ BOOL usingMATrackingArea = NO;
 	NSString* video_id = [self videoId];
 	NSString* video_hash = [ self _videoHash ];
 	
-	NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-					 video_id, video_hash ];
-	NSString* HDSrc = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-					   video_id, video_hash ];
+	if (video_id && video_hash) {
+		
+		NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+						 video_id, video_hash ];
+		NSString* HDSrc = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
+						   video_id, video_hash ];
+		
+		NSError *error = nil;
+		CTFURLConnection *theConnection = [[CTFURLConnection alloc] init];
+		NSHTTPURLResponse *H264Response = [theConnection getURLResponseHeaders:[NSURL URLWithString:src]
+																		 error:&error];
+		[theConnection release];
+		
+		int statusCode = [H264Response statusCode];
+		
+		// 206 status code means partial content has been delivered, because of the
+		// range header, 200 means the request was OK
+		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) _hasH264Version = YES;
+		
+		CTFURLConnection *connectionTwo = [[CTFURLConnection alloc] init];
+		NSHTTPURLResponse *HDH264Response = [connectionTwo getURLResponseHeaders:[NSURL URLWithString:HDSrc]
+																		   error:&error];
+		[connectionTwo release];
+		
+		statusCode = [HDH264Response statusCode];
+		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) _hasHDH264Version = YES;
+	}
+}
+
+// this method should be called on another thread,
+// (so that we can use an NSConditionLock)
+- (void)checkVideoVariant:(NSURLRequest *)request;
+{
 	
-	NSMutableURLRequest *URLRequest = [[NSMutableURLRequest alloc] init];
-	[URLRequest setURL:[NSURL URLWithString:src]];
-	
-	
-	// this header is required, because otherwise the URLRequest will download
-	// the whole video before returning, which completely defeats the purpose
-	// of checking for the video variants in the first place
-	
-	// this limits the download to the first 2 bytes of the video, which is
-	// sufficient to see if there is a video there or not.
-	[URLRequest setValue:@"bytes=0-1" forHTTPHeaderField:@"Range"];
-	NSError *requestError = nil;
-	NSHTTPURLResponse *requestResponse = nil;
-	NSData *returnedData = [NSURLConnection sendSynchronousRequest:URLRequest
-										 returningResponse:&requestResponse
-													 error:&requestError];
-	int statusCode = [requestResponse statusCode];
-	
-	// 206 status code means partial content has been delivered, because of the
-	// range header
-	if (statusCode == 206) _hasH264Version = YES;
-	
-	[URLRequest setURL:[NSURL URLWithString:HDSrc]];
-	returnedData = [NSURLConnection sendSynchronousRequest:URLRequest
-												 returningResponse:&requestResponse
-															 error:&requestError];
-	
-	statusCode = [requestResponse statusCode];
-	if (statusCode == 206) _hasHDH264Version = YES;
-	
-	[URLRequest release];
 }
 
 - (BOOL) _hasHDH264Version
