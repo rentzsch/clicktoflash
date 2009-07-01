@@ -1045,11 +1045,10 @@ BOOL usingMATrackingArea = NO;
 		[theConnection release];
 		
 		int statusCode = [H264Response statusCode];
-		NSLog(@"src: %@, statusCode: %d",src,statusCode);
 		
 		// 206 status code means partial content has been delivered, because of the
-		// range header
-		if ((statusCode == 206) && (! error)) _hasH264Version = YES;
+		// range header, 200 means the request was OK
+		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) _hasH264Version = YES;
 		
 		CTFURLConnection *connectionTwo = [[CTFURLConnection alloc] init];
 		NSHTTPURLResponse *HDH264Response = [connectionTwo getURLResponseHeaders:[NSURL URLWithString:HDSrc]
@@ -1057,8 +1056,7 @@ BOOL usingMATrackingArea = NO;
 		[connectionTwo release];
 		
 		statusCode = [HDH264Response statusCode];
-		if ((statusCode == 206) && (! error)) _hasHDH264Version = YES;
-		NSLog(@"HDSrc: %@, statusCode: %d",HDSrc,statusCode);
+		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) _hasHDH264Version = YES;
 	}
 }
 

@@ -16,8 +16,7 @@
 									   error:(NSError **)error;
 {
 	theLock = [[NSConditionLock alloc] initWithCondition:0];
-	
-	NSLog(@"URL: %@",[URL absoluteString]);
+
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
 	[request setHTTPMethod:@"HEAD"];
 	
@@ -34,10 +33,11 @@
 	//[request setValue:@"bytes=0-1" forHTTPHeaderField:@"Range"];
 	
 	[NSThread detachNewThreadSelector:@selector(startRequest:) toTarget:self withObject:request];
-	NSLog(@"Locking...");
+
 	[theLock lockWhenCondition:1];
 	*error = errorToReturn;
-	return responseToReturn;
+
+	return [responseToReturn autorelease];
 }
 
 + (NSHTTPURLResponse *)getURLResponseHeaders:(NSURL *)URL
@@ -52,19 +52,22 @@
 
 - (void)startRequest:(NSURLRequest *)request;
 {
-	NSLog(@"Starting request...");
+
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[request retain];
 	[[NSURLConnection alloc] initWithRequest:request
 									delegate:self
 							startImmediately:YES];
-	NSLog(@"%@",request);
+	[[NSRunLoop currentRunLoop] run];
+
+	[request release];
 	[pool drain];
-	NSLog(@"Request should have started...");
+
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 {
-	NSLog(@"Connection errored.");
+
 	[theLock tryLock];
 	
 	errorToReturn = error;
@@ -73,20 +76,21 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)theResponse;
 {
-	NSLog(@"Connection responded.");
+
 	[theLock tryLock];
 	
 	// we cancel here, because otherwise NSURLConnection will continue to download
 	// data due to a bug; even though we made a HEAD request, it still downloads
 	// all the data at the given URL instead of stopping after receiving headers
 	[connection cancel];
-	responseToReturn = theResponse;
+	responseToReturn = [theResponse retain];
 	[theLock unlockWithCondition:1];
+
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 {
-	NSLog(@"Connection finished.");
+
 	[theLock tryLock];
 	
 	[theLock unlockWithCondition:1];
