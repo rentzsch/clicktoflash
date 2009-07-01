@@ -37,7 +37,7 @@ THE SOFTWARE.
 static NSString *sCTFWhitelistAdditionMade = @"CTFWhitelistAdditionMade";
 
     // CTFUserDefaultsController keys
-static NSString *sHostSiteInfoDefaultsKey = @"ClickToFlash_siteInfo";
+static NSString *sHostSiteInfoDefaultsKey = @"siteInfo";
 
 typedef enum {
     CTFSiteKindWhitelist = 0
