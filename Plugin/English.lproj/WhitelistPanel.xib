@@ -8,6 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="42"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -37,7 +38,7 @@
 			<object class="NSWindowTemplate" id="1005">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{80, 209}, {527, 494}}</string>
+				<string key="NSWindowRect">{{80, 187}, {527, 516}}</string>
 				<int key="NSWTFlags">-534248448</int>
 				<string type="base64-UTF8" key="NSWindowTitle">Q2xpY2sgdG8gRmxhc2gg4oCUIFNldHRpbmdzA</string>
 				<string key="NSWindowClass">NSPanel</string>
@@ -45,7 +46,7 @@
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<string key="NSWindowContentMinSize">{420, 400}</string>
 				<object class="NSView" key="NSWindowView" id="1006">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -287,7 +288,7 @@
 								<object class="NSButton" id="619486495">
 									<reference key="NSNextResponder" ref="235344690"/>
 									<int key="NSvFlags">268</int>
-									<string key="NSFrame">{{93, 194}, {286, 18}}</string>
+									<string key="NSFrame">{{93, 216}, {286, 18}}</string>
 									<reference key="NSSuperview" ref="235344690"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="356052318">
@@ -309,6 +310,28 @@
 										<object class="NSButtonImageSource" key="NSAlternateImage" id="664243181">
 											<string key="NSImageName">NSSwitch</string>
 										</object>
+										<string key="NSAlternateContents"/>
+										<string key="NSKeyEquivalent"/>
+										<int key="NSPeriodicDelay">200</int>
+										<int key="NSPeriodicInterval">25</int>
+									</object>
+								</object>
+								<object class="NSButton" id="499897961">
+									<reference key="NSNextResponder" ref="235344690"/>
+									<int key="NSvFlags">268</int>
+									<string key="NSFrame">{{120, 196}, {259, 18}}</string>
+									<reference key="NSSuperview" ref="235344690"/>
+									<bool key="NSEnabled">YES</bool>
+									<object class="NSButtonCell" key="NSCell" id="471351824">
+										<int key="NSCellFlags">-2080244224</int>
+										<int key="NSCellFlags2">0</int>
+										<string key="NSContents">Load HD videos</string>
+										<reference key="NSSupport" ref="906693409"/>
+										<reference key="NSControlView" ref="499897961"/>
+										<int key="NSButtonFlags">1211912703</int>
+										<int key="NSButtonFlags2">130</int>
+										<reference key="NSNormalImage" ref="1064838318"/>
+										<reference key="NSAlternateImage" ref="664243181"/>
 										<string key="NSAlternateContents"/>
 										<string key="NSKeyEquivalent"/>
 										<int key="NSPeriodicDelay">200</int>
@@ -340,7 +363,7 @@
 								<object class="NSTextField" id="972818591">
 									<reference key="NSNextResponder" ref="235344690"/>
 									<int key="NSvFlags">268</int>
-									<string key="NSFrame">{{17, 215}, {67, 17}}</string>
+									<string key="NSFrame">{{17, 237}, {67, 17}}</string>
 									<reference key="NSSuperview" ref="235344690"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSTextFieldCell" key="NSCell" id="1061234246">
@@ -717,7 +740,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 								<object class="NSButton" id="596693856">
 									<reference key="NSNextResponder" ref="235344690"/>
 									<int key="NSvFlags">268</int>
-									<string key="NSFrame">{{93, 214}, {286, 18}}</string>
+									<string key="NSFrame">{{93, 236}, {286, 18}}</string>
 									<reference key="NSSuperview" ref="235344690"/>
 									<bool key="NSEnabled">YES</bool>
 									<object class="NSButtonCell" key="NSCell" id="410759951">
@@ -757,7 +780,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 									</object>
 								</object>
 							</object>
-							<string key="NSFrame">{{65, 246}, {397, 252}}</string>
+							<string key="NSFrame">{{65, 246}, {397, 274}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<string key="NSClassName">NSView</string>
 						</object>
@@ -778,7 +801,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							</object>
 						</object>
 					</object>
-					<string key="NSFrameSize">{527, 494}</string>
+					<string key="NSFrameSize">{527, 516}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{420, 422}</string>
@@ -812,6 +836,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>sifrMode</string>
 					<string>checkForUpdatesOnFirstLoad</string>
 					<string>siteInfo</string>
+					<string>useYouTubeHDH264</string>
 				</object>
 				<bool key="NSAppliesImmediately">YES</bool>
 			</object>
@@ -1306,22 +1331,6 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: values.useYouTubeH264</string>
-						<reference key="source" ref="619486495"/>
-						<reference key="destination" ref="961452516"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="619486495"/>
-							<reference key="NSDestination" ref="961452516"/>
-							<string key="NSLabel">value: values.useYouTubeH264</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">values.useYouTubeH264</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">179</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: values.autoLoadInvisibleViews</string>
 						<reference key="source" ref="90714319"/>
 						<reference key="destination" ref="961452516"/>
@@ -1451,6 +1460,38 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 						<reference key="destination" ref="138907006"/>
 					</object>
 					<int key="connectionID">239</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.useYouTubeHDH264</string>
+						<reference key="source" ref="499897961"/>
+						<reference key="destination" ref="961452516"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="499897961"/>
+							<reference key="NSDestination" ref="961452516"/>
+							<string key="NSLabel">value: values.useYouTubeHDH264</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.useYouTubeHDH264</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">245</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.useYouTubeH264</string>
+						<reference key="source" ref="619486495"/>
+						<reference key="destination" ref="961452516"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="619486495"/>
+							<reference key="NSDestination" ref="961452516"/>
+							<string key="NSLabel">value: values.useYouTubeH264</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.useYouTubeH264</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">251</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1608,17 +1649,18 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 						<reference key="object" ref="235344690"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="90714319"/>
-							<reference ref="1020124743"/>
-							<reference ref="211748724"/>
 							<reference ref="972818591"/>
 							<reference ref="619486495"/>
-							<reference ref="800069556"/>
-							<reference ref="912083957"/>
-							<reference ref="124868638"/>
 							<reference ref="596693856"/>
-							<reference ref="138907006"/>
+							<reference ref="499897961"/>
+							<reference ref="90714319"/>
+							<reference ref="211748724"/>
+							<reference ref="1020124743"/>
+							<reference ref="800069556"/>
 							<reference ref="48241452"/>
+							<reference ref="124868638"/>
+							<reference ref="912083957"/>
+							<reference ref="138907006"/>
 						</object>
 						<reference key="parent" ref="1006"/>
 					</object>
@@ -2068,6 +2110,20 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 						<reference key="object" ref="870402495"/>
 						<reference key="parent" ref="209359137"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">240</int>
+						<reference key="object" ref="499897961"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="471351824"/>
+						</object>
+						<reference key="parent" ref="235344690"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">241</int>
+						<reference key="object" ref="471351824"/>
+						<reference key="parent" ref="499897961"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2190,6 +2246,9 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 					<string>232.IBPluginDependency</string>
 					<string>233.IBPluginDependency</string>
 					<string>234.IBPluginDependency</string>
+					<string>240.IBAttributePlaceholdersKey</string>
+					<string>240.IBPluginDependency</string>
+					<string>241.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
 					<string>32.IBPluginDependency</string>
 					<string>36.IBAttributePlaceholdersKey</string>
@@ -2208,9 +2267,9 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{12, 251}, {527, 494}}</string>
-					<reference ref="8"/>
-					<string>{{12, 251}, {527, 494}}</string>
+					<string>{{186, 118}, {527, 516}}</string>
+					<reference ref="5"/>
+					<string>{{186, 118}, {527, 516}}</string>
 					<integer value="1" id="9"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
@@ -2363,6 +2422,16 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSMutableDictionary">
+						<string key="NS.key.0">ToolTip</string>
+						<object class="IBToolTipAttribute" key="NS.object.0">
+							<string key="name">ToolTip</string>
+							<reference key="object" ref="499897961"/>
+							<string key="toolTip">Loads HD versions of the movie, if possible.</string>
+						</object>
+					</object>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableDictionary">
@@ -2404,7 +2473,7 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">239</int>
+			<int key="maxID">251</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
