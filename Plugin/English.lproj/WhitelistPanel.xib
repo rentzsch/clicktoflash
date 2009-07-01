@@ -8,7 +8,11 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
 			<integer value="12"/>
+=======
+			<integer value="42"/>
+>>>>>>> 93544a517b18869d169bb706676471d1d1842fae:Plugin/English.lproj/WhitelistPanel.xib
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1461,6 +1465,7 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 					</object>
 					<int key="connectionID">251</int>
 				</object>
+<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.site</string>
@@ -1490,6 +1495,8 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 					</object>
 					<int key="connectionID">256</int>
 				</object>
+=======
+>>>>>>> 93544a517b18869d169bb706676471d1d1842fae:Plugin/English.lproj/WhitelistPanel.xib
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2257,9 +2264,15 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
+<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
 					<string>{{323, 126}, {527, 516}}</string>
 					<reference ref="5"/>
 					<string>{{323, 126}, {527, 516}}</string>
+=======
+					<string>{{186, 118}, {527, 516}}</string>
+					<reference ref="5"/>
+					<string>{{186, 118}, {527, 516}}</string>
+>>>>>>> 93544a517b18869d169bb706676471d1d1842fae:Plugin/English.lproj/WhitelistPanel.xib
 					<integer value="1" id="9"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
@@ -2461,7 +2474,11 @@ dG8gdW5pbnN0YWxsIENsaWNrVG9GbGFzaC4</string>
 				</object>
 			</object>
 			<nil key="sourceID"/>
+<<<<<<< HEAD:Plugin/English.lproj/WhitelistPanel.xib
 			<int key="maxID">256</int>
+=======
+			<int key="maxID">251</int>
+>>>>>>> 93544a517b18869d169bb706676471d1d1842fae:Plugin/English.lproj/WhitelistPanel.xib
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
