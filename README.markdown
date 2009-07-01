@@ -14,7 +14,7 @@ Currently requires Mac OS X 10.5 Leopard.
 
 ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to the whitelist.
 
-Try control-clicking (or right-clicking) on an unloaded Flash box to access ClickToFlash's contextual menu which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
+Click on the gear in the upper-left corner of any unloaded Flash box to access ClickToFlash's contextual menu, which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
 
 Please [report bugs and request features](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new) on the [Lighthouse ClickToFlash project site](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all).
 
