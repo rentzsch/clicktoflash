@@ -51,6 +51,9 @@ static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
 static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
 
+	// Info.plist key for app developers
+static NSString *sCTFOptOutKey = @"ClickToFlashOptOut";
+
 BOOL usingMATrackingArea = NO;
 
 @interface CTFClickToFlashPlugin (Internal)
@@ -105,6 +108,17 @@ BOOL usingMATrackingArea = NO;
 {
     self = [super init];
     if (self) {
+		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
+														@"com.apple.dashboard",
+														@"com.apple.dashboard.client",
+														@"com.apple.ScreenSaver.Engine",
+														@"com.hulu.HuluDesktop",
+														@"com.riverfold.WiiTransfer",
+														@"com.bitcartel.pandorajam",
+														@"com.adobe.flexbuilder",
+														@"com.Zattoo.prefs",
+							nil];
+		
 		[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
 		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
 		NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
@@ -127,7 +141,7 @@ BOOL usingMATrackingArea = NO;
         
         [self _migrateWhitelist];
 		[self _migratePrefsToExternalFile];
-		[self _addApplicationWhitelistToPrefsFile];
+		[self _addApplicationWhitelistArrayToPrefsFile];
         
 		
         // Get URL
@@ -210,8 +224,11 @@ BOOL usingMATrackingArea = NO;
 		CTFUserDefaultsController *standardUserDefaults = [CTFUserDefaultsController standardUserDefaults];
 		BOOL pluginEnabled = [standardUserDefaults boolForKey:sPluginEnabled ];
 		NSString *hostAppBundleID = [[NSBundle mainBundle] bundleIdentifier];
-		BOOL hostAppIsInWhitelist = [[standardUserDefaults arrayForKey:sApplicationWhitelist] containsObject:hostAppBundleID];
-		if ( (! pluginEnabled) || (hostAppIsInWhitelist) ) {
+		BOOL hostAppIsInDefaultWhitelist = [defaultWhitelist containsObject:hostAppBundleID];
+		BOOL hostAppIsInUserWhitelist = [[standardUserDefaults arrayForKey:sApplicationWhitelist] containsObject:hostAppBundleID];
+		BOOL hostAppWhitelistedInInfoPlist = NO;
+		if ([[[NSBundle mainBundle] infoDictionary] objectForKey:sCTFOptOutKey]) hostAppWhitelistedInInfoPlist = YES;
+		if ( (! pluginEnabled) || (hostAppIsInDefaultWhitelist || hostAppIsInUserWhitelist || hostAppWhitelistedInInfoPlist) ) {
             _isLoadingFromWhitelist = YES;
 			[self _convertTypesForContainer];
 			return self;
@@ -425,20 +442,15 @@ BOOL usingMATrackingArea = NO;
 	}
 }
 
-- (void) _addApplicationWhitelistToPrefsFile
+- (void) _addApplicationWhitelistArrayToPrefsFile
 {
 	CTFUserDefaultsController *standardUserDefaults = [CTFUserDefaultsController standardUserDefaults];
 	NSArray *applicationWhitelist = [standardUserDefaults arrayForKey:sApplicationWhitelist];
 	if (! applicationWhitelist) {
-		// add the default list of apps to the whitelist
-		NSArray *defaultWhitelist = [NSArray arrayWithObjects:@"com.hulu.HuluDesktop",
-									 @"com.echoone.iSwiff",
-									 @"com.riverfold.WiiTransfer",
-									 @"com.bitcartel.pandorajam",
-									 @"com.adobe.flexbuilder",
-									 @"com.Zattoo.prefs",
-		nil];
-		[standardUserDefaults setObject:defaultWhitelist forKey:sApplicationWhitelist];
+		// add an empty array to the plist file so people know exactly where to
+		// whitelist apps
+		
+		[standardUserDefaults setObject:[NSArray array] forKey:sApplicationWhitelist];
 	}
 }
 
