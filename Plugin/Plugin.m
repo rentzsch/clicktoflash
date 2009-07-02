@@ -67,6 +67,7 @@ BOOL usingMATrackingArea = NO;
 
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
+- (void) _checkMouseLocation;
 - (void) _addTrackingAreaForCTF;
 - (void) _removeTrackingAreaForCTF;
 
@@ -363,6 +364,7 @@ BOOL usingMATrackingArea = NO;
 		
 		[self setOriginalOpacityAttributes:originalOpacityDict];
 
+		[self _checkMouseLocation];
         [self _addTrackingAreaForCTF];
     }
 
@@ -890,6 +892,18 @@ BOOL usingMATrackingArea = NO;
 			[ self _drawGearIcon ];
 	} else {
 		[ self _drawGearIcon ];
+	}
+}
+
+- (void) _checkMouseLocation
+{
+	NSPoint mouseLoc = [NSEvent mouseLocation];
+	
+	BOOL nowInside = NSPointInRect(mouseLoc, [_webView bounds]);
+	if (nowInside) {
+		mouseInside = YES;
+	} else {
+		mouseInside = NO;
 	}
 }
 
