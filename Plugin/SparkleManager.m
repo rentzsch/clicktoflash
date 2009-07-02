@@ -106,18 +106,14 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
         // If the key isn't set yet, default to YES, automatically check for updates.
         [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
     }
-    if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
-        static BOOL checkedForUpdate = NO;
-        if (!checkedForUpdate) {
-            checkedForUpdate = YES;
-            
-			SUUpdater *updater = [self _updater];
-            if (_canUpdate) {
-                [updater checkForUpdatesInBackground];
-                [updater setAutomaticallyChecksForUpdates:YES];
-            }
-        }
-    }
+    
+	SUUpdater *updater = [self _updater];
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
+		if (_canUpdate) {
+			[updater checkForUpdatesInBackground];
+			[updater setAutomaticallyChecksForUpdates:YES];
+		}
+	}
 }
 
 - (void)checkForUpdates {
