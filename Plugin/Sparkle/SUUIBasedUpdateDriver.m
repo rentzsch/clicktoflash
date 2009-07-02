@@ -141,7 +141,17 @@
 {
 	[statusController beginActionWithTitle:SULocalizedString(@"Installing update...", @"Take care not to overflow the status window.") maxProgressValue:0 statusText:nil];
 	[statusController setButtonEnabled:NO];
-	[super installUpdate];	
+	[super installUpdate];
+	
+	// modification by @simX, 2009-07-02; if a user chooses to not relaunch
+	// the app, the status window still stays on the screen; with this fix,
+	// it doesn't; unsure if this is the best place to do this, but it seems
+	// to work
+	if (statusController)
+	{
+		[statusController close];
+		[statusController autorelease];
+	}
 }
 
 - (void)abortUpdateWithError:(NSError *)error
