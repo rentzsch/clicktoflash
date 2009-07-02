@@ -110,7 +110,6 @@ BOOL usingMATrackingArea = NO;
     self = [super init];
     if (self) {
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
-														@"com.apple.dashboard",
 														@"com.apple.dashboard.client",
 														@"com.apple.ScreenSaver.Engine",
 														@"com.hulu.HuluDesktop",
