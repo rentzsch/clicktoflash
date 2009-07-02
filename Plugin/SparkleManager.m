@@ -124,6 +124,30 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     return _pathToRelaunch;
 }
 
+- (BOOL)updater:(SUUpdater *)updater
+shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
+  untilInvoking:(NSInvocation *)invocation;
+{
+	NSString *appNameString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
+										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],
+										 @"Relaunch",
+										 @"Do not relaunch",
+										 nil);
+	
+	BOOL shouldPostpone = YES;
+	if (relaunchResult == NSAlertDefaultReturn) {
+		// we want to relaunch now, so don't postpone the relaunch
+		
+		shouldPostpone = NO;
+	} else {
+		// we want to postpone the relaunch and let the user decide when to do so,
+		// so we don't even bother with saving the invocation and reinvoking
+		// it later
+	}
+	return shouldPostpone;
+}
+
 - (NSString *)pathToRelaunch
 {
 	return _pathToRelaunch;
