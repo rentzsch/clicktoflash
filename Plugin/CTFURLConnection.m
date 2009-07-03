@@ -33,9 +33,10 @@
 	[request setValue:@"bytes=0-1" forHTTPHeaderField:@"Range"];
 	
 	[NSThread detachNewThreadSelector:@selector(startRequest:) toTarget:self withObject:request];
-
+	[request release];
+	
 	[theLock lockWhenCondition:1];
-	*error = errorToReturn;
+	if (error) (*error) = errorToReturn;
 
 	return [responseToReturn autorelease];
 }
@@ -55,10 +56,12 @@
 
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[request retain];
-	[[NSURLConnection alloc] initWithRequest:request
-									delegate:self
-							startImmediately:YES];
+	
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request
+																  delegate:self
+														  startImmediately:YES];
 	[[NSRunLoop currentRunLoop] run];
+	[connection release];
 
 	[request release];
 	[pool drain];
