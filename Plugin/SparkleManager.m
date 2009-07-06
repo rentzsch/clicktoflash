@@ -30,6 +30,8 @@
 #import "CTFUserDefaultsController.h"
 #import "CTFPreferencesDictionary.h"
 
+#import <objc/runtime.h>
+
 // NSUserDefaults keys
 static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 
