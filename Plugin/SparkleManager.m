@@ -27,8 +27,11 @@
 #import "SparkleManager.h"
 #import <Sparkle/Sparkle.h>
 
+#import "CTFUserDefaultsController.h"
+#import "CTFPreferencesDictionary.h"
+
 // NSUserDefaults keys
-static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesOnFirstLoad";
+static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 
 @implementation SparkleManager
 
@@ -99,22 +102,18 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 }
 
 - (void)startAutomaticallyCheckingForUpdates {
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
+    if (![[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
         // If the key isn't set yet, default to YES, automatically check for updates.
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
+        [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
     }
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
-        static BOOL checkedForUpdate = NO;
-        if (!checkedForUpdate) {
-            checkedForUpdate = YES;
-            
-			SUUpdater *updater = [self _updater];
-            if (_canUpdate) {
-                [updater checkForUpdatesInBackground];
-                [updater setAutomaticallyChecksForUpdates:YES];
-            }
-        }
-    }
+    
+	SUUpdater *updater = [self _updater];
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
+		if (_canUpdate) {
+			[updater checkForUpdatesInBackground];
+			[updater setAutomaticallyChecksForUpdates:YES];
+		}
+	}
 }
 
 - (void)checkForUpdates {
@@ -123,6 +122,30 @@ static NSString *sAutomaticallyCheckForUpdates = @"ClickToFlash_checkForUpdatesO
 
 - (NSString*)pathToRelaunchForUpdater:(SUUpdater*)updater {
     return _pathToRelaunch;
+}
+
+- (BOOL)updater:(SUUpdater *)updater
+shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
+  untilInvoking:(NSInvocation *)invocation;
+{
+	NSString *appNameString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
+										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],
+										 @"Relaunch",
+										 @"Do not relaunch",
+										 nil);
+	
+	BOOL shouldPostpone = YES;
+	if (relaunchResult == NSAlertDefaultReturn) {
+		// we want to relaunch now, so don't postpone the relaunch
+		
+		shouldPostpone = NO;
+	} else {
+		// we want to postpone the relaunch and let the user decide when to do so,
+		// so we don't even bother with saving the invocation and reinvoking
+		// it later
+	}
+	return shouldPostpone;
 }
 
 - (NSString *)pathToRelaunch

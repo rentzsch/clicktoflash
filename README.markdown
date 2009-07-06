@@ -14,13 +14,47 @@ Currently requires Mac OS X 10.5 Leopard.
 
 ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to the whitelist.
 
-Try control-clicking (or right-clicking) on an unloaded Flash box to access ClickToFlash's contextual menu which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
+Click on the gear in the upper-left corner of any unloaded Flash box to access ClickToFlash's contextual menu, which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
 
 Please [report bugs and request features](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new) on the [Lighthouse ClickToFlash project site](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all).
 
 Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
 
+To uninstall ClickToFlash: for versions 1.5b4 and later, go to the Settings window and click the "Uninstall ClickToFlash" button.  For versions prior to 1.5b4, navigate to ~/Library/Internet Plug-ins/ in the Finder, where ~ is your home folder, and delete the item named "ClickToFlash.webplugin" (or "ClickToFlash.plugin").
+
 ##Version History
+
+* **1.5b4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b4.zip)
+
+	* [NEW] "Play Fullscreen in QuickTime Player" contextual menu command for viewing YouTube videos in QuickTime Player (which has niceties like supporting the Apple remote). [bug 216](http://rentzsch.lighthouseapp.com/projects/24342/tickets/216) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/27dd7e5d64b5993fc492b06ec940d2820f323330))
+	
+	* [NEW] Application-wide whitelisting for apps like Hulu Desktop, PandoraJam and Wii Transfer that utilize Flash. [bugs 26](http://rentzsch.lighthouseapp.com/projects/24342/tickets/216), [118](http://rentzsch.lighthouseapp.com/projects/24342/tickets/118) and [230](http://rentzsch.lighthouseapp.com/projects/24342/tickets/230) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/f2a1e755c78d6b1edd52b4bb85fb643eae3783c9))
+
+	* [NEW] User preferences now are stored in a separate file, allowing them to be shared across application. Parasitic prefs are migrated to the external file and then deleted. [bug 73](http://rentzsch.lighthouseapp.com/projects/24342/tickets/73) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/39a3ae3522e168e76f97511fa9623eff587d7580))
+
+	* [NEW] Uninstall button (with a confirmation sheet) in the settings window. [bug 226](http://rentzsch.lighthouseapp.com/projects/24342/tickets/226) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/7851b478da8ee0fa951362cd04853b035a46fb38))
+
+	* [NEW] Gradient on 10.4 now looks the same as 10.5 and 10.6. ([Kevin Hiscott](http://github.com/mbaltaks/clicktoflash/commit/566097de9e74610e7ae9819d020a404f1fc6223e))
+
+* **1.5b3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b3.zip)
+
+	* [NEW] Additional executable architechure: `x86_64`. This addition enables ClickToFlash to work on Safari 4 on Mac OS X 10.6 Snow Leopard. ClickToFlash retains compatiblity with 10.4-and-later on both PowerPC and Intel (the full list: 10.4/ppc, 10.4/i386, 10.5/ppc, 10.5/i386 and 10.6/x86_64). ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/1ea61443b8f6005dffb3d846c1ecc9eb41165472))
+
+* **1.5b2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b2.zip)
+
+	* [NEW] Gear icon only appears upon mouse-over (hovering). ([Otyr Ugla](http://github.com/rentzsch/clicktoflash/commit/909dbed81aca5e89af97d12aca546162efb17df3))
+
+	* [NEW] Add custom gear image (derived from Cocoatron) for 10.4 systems which lack `NSActionTemplate`. ([Michael Baltaks](http://github.com/rentzsch/clicktoflash/commit/0e28fe15bd93b3adcb9ef86c00a21e14b5e48b79), [Math Campbell](http://www.mathcampbell.co.uk))
+
+* **1.5b1**
+
+	* [NEW] Restoring 10.4 compatibility. ([Michael Baltaks](http://github.com/rentzsch/clicktoflash/commit/6d1803dfb903e87af13674d4944e4bcbb29df1a4))
+
+	* [NEW] Installer-package-building overhaul. Now creates 10.4-compatible .pkgs. Abandons evil .pmdoc files. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/25393e0eaa7cd1b5b8ad9d628d9193dc031459ba))
+
+	* [CHANGE] 10.4 compatiblity: only use `-[NSBundle loadAndReturnError:]` when it's available. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/3674219a5ddc7debb28385655c82a42ef8027b67))
+
+	* [FIX] Work-around `MATrackingArea` 10.4 GC incompatiblity. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/f027c415cadd1dada95017e57fc117c55152199c))
 
 * **1.4.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
 

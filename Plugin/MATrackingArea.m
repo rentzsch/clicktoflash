@@ -24,6 +24,12 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
 // This method is because -[NSWindow frame] isn't updated continually during a drag.
 - (NSRect)liveFrame {
     Rect qdRect;
+    extern OSStatus 
+    GetWindowBounds(
+                    WindowRef          window,
+                    WindowRegionCode   regionCode,
+                    Rect *             globalBounds);
+    
     GetWindowBounds([self windowRef], kWindowStructureRgn, &qdRect);
 
     return NSMakeRect(qdRect.left,
@@ -215,7 +221,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
         return;
     }
 
-    int index = [_views indexOfObject:view];
+    NSUInteger index = [_views indexOfObject:view];
     if (index == NSNotFound) {
         // Add view to _views and create appropriate entry in _trackingAreas.
         [_views addObject:view];
@@ -252,7 +258,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
         return;
     }
 
-    int index = [_views indexOfObject:view];
+    NSUInteger index = [_views indexOfObject:view];
     if (index == NSNotFound) {
         // We don't have any trackingAreas for that view.
         return;
@@ -285,7 +291,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
 + (NSArray *)trackingAreasForView:(NSView *)view
 {
     if (view) {
-        int index = [_views indexOfObject:view];
+        NSUInteger index = [_views indexOfObject:view];
         if (index != NSNotFound) {
             return [NSArray arrayWithArray:[_trackingAreas objectAtIndex:index]];
         }
@@ -387,7 +393,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    MATrackingArea *copy = (MATrackingArea *)[[[self class] allocWithZone:zone]
+    MATrackingArea *copy = (MATrackingArea *)[(MATrackingArea *)[[self class] allocWithZone:zone]
                             initWithRect:[self rect]
                                  options:[self options]
                                    owner:[self owner]
@@ -406,7 +412,7 @@ static NSMutableArray *_trackingAreas; // 2-dimensional
     NSDictionary *userInfo = [coder decodeObjectForKey:@"_userInfo"];
     id owner = [coder decodeObjectForKey:@"_owner"];
 
-    self = (MATrackingArea *)[[MATrackingArea alloc] initWithRect:rect
+    self = (MATrackingArea *)[(MATrackingArea *)[MATrackingArea alloc] initWithRect:rect
                                         options:options
                                           owner:owner
                                        userInfo:userInfo];

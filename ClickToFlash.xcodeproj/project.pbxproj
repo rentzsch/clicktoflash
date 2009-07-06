@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 44;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -36,6 +36,7 @@
 /* Begin PBXBuildFile section */
 		0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */; };
 		0038DE320FC0CE7B007B54E9 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0038DE310FC0CE7B007B54E9 /* Carbon.framework */; };
+		00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */ = {isa = PBXBuildFile; fileRef = 00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */; };
 		072189BE0F30D9C3008C8944 /* ContextualMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BA0F30D9C3008C8944 /* ContextualMenu.xib */; };
 		072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
 		55EB70480E04A8850016593D /* Plugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 55EB703D0E04A84F0016593D /* Plugin.m */; };
@@ -44,18 +45,17 @@
 		6953E4360F3EDE9D0014ECF7 /* CTFMenubarMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */; };
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
+		79166CBD0FF69E1800B1F69B /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79166CBB0FF69E1800B1F69B /* CTGradient.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
+		79C040700FF1CCE6002DA6A5 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E2EB920F86AAD3005CF170 /* SparkleManager.m */; };
-		79E76F1C0F658DEB000A58FC /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79475E170F658D9A00FD82E3 /* Sparkle.framework */; };
 		844695F70F470D1F00DC783A /* CTFsIFRSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 844695910F46FC6600DC783A /* CTFsIFRSupport.m */; };
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
-		B5028E930F413553004886D7 /* HarnessAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B5028E910F413553004886D7 /* HarnessAppDelegate.m */; };
-		B5CFF17A0F40EEF1005DB9CC /* WhitelistPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */; };
-		B5CFF1870F40F000005DB9CC /* HarnessMain.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CFF1860F40F000005DB9CC /* HarnessMain.xib */; };
-		B5CFF18A0F40F013005DB9CC /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
-		B5CFF1AE0F40F070005DB9CC /* HarnessMain.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */; };
+		A4CB766F0FFB041500CC819F /* CTFURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A4CB766D0FFB041500CC819F /* CTFURLConnection.m */; };
+		A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */; };
+		A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
 		D9566D8D0F380C9F00358646 /* sifr3-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2D0F37EA0800358646 /* sifr3-addons.js */; };
 /* End PBXBuildFile section */
@@ -68,35 +68,35 @@
 			remoteGlobalIDString = 55EB70410E04A8640016593D;
 			remoteInfo = ClickToFlash;
 		};
-		79475E160F658D9A00FD82E3 /* PBXContainerItemProxy */ = {
+		79A060EA0FF1CBF50035F03A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = Sparkle;
 		};
-		79475E180F658D9A00FD82E3 /* PBXContainerItemProxy */ = {
+		79A060EC0FF1CBF50035F03A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
 			remoteInfo = "Sparkle Test App";
 		};
-		79475E1A0F658D9A00FD82E3 /* PBXContainerItemProxy */ = {
+		79A060EE0FF1CBF50035F03A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = DAAEFC960DA571DF0051E0D0;
 			remoteInfo = "relaunch tool";
 		};
-		79475E1C0F658D9A00FD82E3 /* PBXContainerItemProxy */ = {
+		79A060F00FF1CBF50035F03A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 612279D90DB5470200AB99EA;
 			remoteInfo = "Sparkle Unit Tests";
 		};
-		79E76F1F0F658E25000A58FC /* PBXContainerItemProxy */ = {
+		79E095390FF32596008A21AD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
 			proxyType = 1;
@@ -119,16 +119,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				79E76F1C0F658DEB000A58FC /* Sparkle.framework in CopyFiles */,
+				79C040700FF1CCE6002DA6A5 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATrackingArea.h; sourceTree = "<group>"; };
-		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATrackingArea.m; sourceTree = "<group>"; };
+		0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MATrackingArea.h; path = Plugin/MATrackingArea.h; sourceTree = "<group>"; };
+		0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MATrackingArea.m; path = Plugin/MATrackingArea.m; sourceTree = "<group>"; };
 		0038DE310FC0CE7B007B54E9 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NSActionTemplate.png; path = Plugin/NSActionTemplate.png; sourceTree = "<group>"; };
 		072189BB0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		072189BD0F30D9C3008C8944 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		55EB703C0E04A84F0016593D /* Plugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Plugin.h; path = Plugin/Plugin.h; sourceTree = "<group>"; };
@@ -142,24 +143,26 @@
 		6953E43B0F3EDEB50014ECF7 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
-		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
+		79166CBB0FF69E1800B1F69B /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTGradient.m; path = Plugin/CTGradient.m; sourceTree = "<group>"; };
+		79166CBC0FF69E1800B1F69B /* CTGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTGradient.h; path = Plugin/CTGradient.h; sourceTree = "<group>"; };
+		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Plugin/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
-		79E2EB910F86AAD3005CF170 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparkleManager.h; sourceTree = "<group>"; };
-		79E2EB920F86AAD3005CF170 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparkleManager.m; sourceTree = "<group>"; };
+		79E2EB910F86AAD3005CF170 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkleManager.h; path = Plugin/SparkleManager.h; sourceTree = "<group>"; };
+		79E2EB920F86AAD3005CF170 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparkleManager.m; path = Plugin/SparkleManager.m; sourceTree = "<group>"; };
 		844695900F46FC6600DC783A /* CTFsIFRSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFsIFRSupport.h; path = Plugin/CTFsIFRSupport.h; sourceTree = "<group>"; };
 		844695910F46FC6600DC783A /* CTFsIFRSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFsIFRSupport.m; path = Plugin/CTFsIFRSupport.m; sourceTree = "<group>"; };
 		845704530F4792320017F3F4 /* CTFWhitelist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelist.h; path = Plugin/CTFWhitelist.h; sourceTree = "<group>"; };
 		845704540F4792320017F3F4 /* CTFWhitelist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelist.m; path = Plugin/CTFWhitelist.m; sourceTree = "<group>"; };
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
 		845704590F47BC170017F3F4 /* CTFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUtilities.m; path = Plugin/CTFUtilities.m; sourceTree = "<group>"; };
-		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ctf.icns; sourceTree = "<group>"; };
-		B5028E910F413553004886D7 /* HarnessAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarnessAppDelegate.m; path = "TestFiles/Debugging Harness/HarnessAppDelegate.m"; sourceTree = "<group>"; };
-		B5028E920F413553004886D7 /* HarnessAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HarnessAppDelegate.h; path = "TestFiles/Debugging Harness/HarnessAppDelegate.h"; sourceTree = "<group>"; };
-		B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Whitelist Panel Harness.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5CFF1860F40F000005DB9CC /* HarnessMain.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HarnessMain.xib; path = "TestFiles/Debugging Harness/HarnessMain.xib"; sourceTree = "<group>"; };
-		B5CFF1AB0F40F064005DB9CC /* Harness-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Harness-Info.plist"; path = "TestFiles/Debugging Harness/Harness-Info.plist"; sourceTree = "<group>"; };
-		B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarnessMain.m; path = "TestFiles/Debugging Harness/HarnessMain.m"; sourceTree = "<group>"; };
+		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ctf.icns; path = Plugin/ctf.icns; sourceTree = "<group>"; };
+		A4CB766D0FFB041500CC819F /* CTFURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFURLConnection.m; path = Plugin/CTFURLConnection.m; sourceTree = "<group>"; };
+		A4CB766E0FFB041500CC819F /* CTFURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFURLConnection.h; path = Plugin/CTFURLConnection.h; sourceTree = "<group>"; };
+		A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFPreferencesDictionary.h; path = Plugin/CTFPreferencesDictionary.h; sourceTree = "<group>"; };
+		A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFPreferencesDictionary.m; path = Plugin/CTFPreferencesDictionary.m; sourceTree = "<group>"; };
+		A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUserDefaultsController.h; path = Plugin/CTFUserDefaultsController.h; sourceTree = "<group>"; };
+		A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFUserDefaultsController.m; path = Plugin/CTFUserDefaultsController.m; sourceTree = "<group>"; };
 		D9566C2C0F37EA0800358646 /* sifr2-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr2-addons.js"; sourceTree = "<group>"; };
 		D9566C2D0F37EA0800358646 /* sifr3-addons.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "sifr3-addons.js"; sourceTree = "<group>"; };
 		D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClickToFlash_Prefix.pch; path = Plugin/ClickToFlash_Prefix.pch; sourceTree = "<group>"; };
@@ -176,31 +179,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B5CFF1720F40EEDB005DB9CC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0038DE210FC0CCF0007B54E9 /* MATrackingArea */ = {
-			isa = PBXGroup;
-			children = (
-				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
-				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
-			);
-			path = MATrackingArea;
-			sourceTree = "<group>";
-		};
 		55EB70300E04A8410016593D = {
 			isa = PBXGroup;
 			children = (
-				0038DE210FC0CCF0007B54E9 /* MATrackingArea */,
 				55EB70540E04A89C0016593D /* Plugin */,
-				B5CFF1810F40EF98005DB9CC /* Debugging Harness */,
 				55EB70550E04A8A40016593D /* Frameworks */,
 				55EB70430E04A8640016593D /* Products */,
 				79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */,
@@ -211,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				55EB70420E04A8640016593D /* ClickToFlash.webplugin */,
-				B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,8 +205,14 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
-				845704580F47BC170017F3F4 /* CTFUtilities.h */,
+				A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */,
+				A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */,
+				A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */,
+				A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */,
+				A4CB766D0FFB041500CC819F /* CTFURLConnection.m */,
+				A4CB766E0FFB041500CC819F /* CTFURLConnection.h */,
 				845704590F47BC170017F3F4 /* CTFUtilities.m */,
+				845704580F47BC170017F3F4 /* CTFUtilities.h */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
 				6953E4350F3EDE9D0014ECF7 /* CTFMenubarMenuController.h */,
 				844695910F46FC6600DC783A /* CTFsIFRSupport.m */,
@@ -231,17 +221,16 @@
 				845704530F4792320017F3F4 /* CTFWhitelist.h */,
 				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
 				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
-				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
-				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
+				79E2EB920F86AAD3005CF170 /* SparkleManager.m */,
+				79E2EB910F86AAD3005CF170 /* SparkleManager.h */,
+				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
+				79166CBF0FF69E2900B1F69B /* 10.4 Support */,
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
 				6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */,
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
-				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
-				79E2EB910F86AAD3005CF170 /* SparkleManager.h */,
-				79E2EB920F86AAD3005CF170 /* SparkleManager.m */,
 			);
 			name = Plugin;
 			sourceTree = "<group>";
@@ -256,27 +245,29 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		79475E0D0F658D9A00FD82E3 /* Products */ = {
+		79166CBF0FF69E2900B1F69B /* 10.4 Support */ = {
 			isa = PBXGroup;
 			children = (
-				79475E170F658D9A00FD82E3 /* Sparkle.framework */,
-				79475E190F658D9A00FD82E3 /* Sparkle Test App.app */,
-				79475E1B0F658D9A00FD82E3 /* relaunch */,
-				79475E1D0F658D9A00FD82E3 /* Sparkle Unit Tests.octest */,
+				69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */,
+				69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */,
+				0038DE230FC0CCF0007B54E9 /* MATrackingArea.m */,
+				0038DE220FC0CCF0007B54E9 /* MATrackingArea.h */,
+				79166CBB0FF69E1800B1F69B /* CTGradient.m */,
+				79166CBC0FF69E1800B1F69B /* CTGradient.h */,
+				00FBE92E0FCD68CE00BC0995 /* NSActionTemplate.png */,
 			);
-			name = Products;
+			name = "10.4 Support";
 			sourceTree = "<group>";
 		};
-		B5CFF1810F40EF98005DB9CC /* Debugging Harness */ = {
+		79A060E40FF1CBF50035F03A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B5CFF1AD0F40F070005DB9CC /* HarnessMain.m */,
-				B5CFF1AB0F40F064005DB9CC /* Harness-Info.plist */,
-				B5CFF1860F40F000005DB9CC /* HarnessMain.xib */,
-				B5028E910F413553004886D7 /* HarnessAppDelegate.m */,
-				B5028E920F413553004886D7 /* HarnessAppDelegate.h */,
+				79A060EB0FF1CBF50035F03A /* Sparkle.framework */,
+				79A060ED0FF1CBF50035F03A /* Sparkle Test App.app */,
+				79A060EF0FF1CBF50035F03A /* relaunch */,
+				79A060F10FF1CBF50035F03A /* Sparkle Unit Tests.octest */,
 			);
-			name = "Debugging Harness";
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D9566C2B0F37EA0800358646 /* deSIFR Resources */ = {
@@ -304,29 +295,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				79E76F200F658E25000A58FC /* PBXTargetDependency */,
+				79E0953A0FF32596008A21AD /* PBXTargetDependency */,
 			);
 			name = ClickToFlash;
 			productName = ClickToFlash;
 			productReference = 55EB70420E04A8640016593D /* ClickToFlash.webplugin */;
 			productType = "com.apple.product-type.bundle";
-		};
-		B5CFF1730F40EEDB005DB9CC /* Whitelist Panel Harness */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B5CFF1790F40EEDC005DB9CC /* Build configuration list for PBXNativeTarget "Whitelist Panel Harness" */;
-			buildPhases = (
-				B5CFF1700F40EEDB005DB9CC /* Resources */,
-				B5CFF1710F40EEDB005DB9CC /* Sources */,
-				B5CFF1720F40EEDB005DB9CC /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Whitelist Panel Harness";
-			productName = "Whitelist Panel Harness";
-			productReference = B5CFF1740F40EEDB005DB9CC /* Whitelist Panel Harness.app */;
-			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -334,14 +308,14 @@
 		55EB70320E04A8410016593D /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 0;
 			mainGroup = 55EB70300E04A8410016593D;
 			productRefGroup = 55EB70430E04A8640016593D /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 79475E0D0F658D9A00FD82E3 /* Products */;
+					ProductGroup = 79A060E40FF1CBF50035F03A /* Products */;
 					ProjectRef = 79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */;
 				},
 			);
@@ -349,39 +323,38 @@
 			targets = (
 				55EB70410E04A8640016593D /* ClickToFlash */,
 				2B9260570F36854B000F1583 /* Install plugin for user */,
-				B5CFF1730F40EEDB005DB9CC /* Whitelist Panel Harness */,
 				FADCD4220F421EAE00749805 /* Build Package */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		79475E170F658D9A00FD82E3 /* Sparkle.framework */ = {
+		79A060EB0FF1CBF50035F03A /* Sparkle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Sparkle.framework;
-			remoteRef = 79475E160F658D9A00FD82E3 /* PBXContainerItemProxy */;
+			remoteRef = 79A060EA0FF1CBF50035F03A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		79475E190F658D9A00FD82E3 /* Sparkle Test App.app */ = {
+		79A060ED0FF1CBF50035F03A /* Sparkle Test App.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = "Sparkle Test App.app";
-			remoteRef = 79475E180F658D9A00FD82E3 /* PBXContainerItemProxy */;
+			remoteRef = 79A060EC0FF1CBF50035F03A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		79475E1B0F658D9A00FD82E3 /* relaunch */ = {
+		79A060EF0FF1CBF50035F03A /* relaunch */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
 			path = relaunch;
-			remoteRef = 79475E1A0F658D9A00FD82E3 /* PBXContainerItemProxy */;
+			remoteRef = 79A060EE0FF1CBF50035F03A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		79475E1D0F658D9A00FD82E3 /* Sparkle Unit Tests.octest */ = {
+		79A060F10FF1CBF50035F03A /* Sparkle Unit Tests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Sparkle Unit Tests.octest";
-			remoteRef = 79475E1C0F658D9A00FD82E3 /* PBXContainerItemProxy */;
+			remoteRef = 79A060F00FF1CBF50035F03A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -397,15 +370,7 @@
 				072189BF0F30D9C3008C8944 /* WhitelistPanel.xib in Resources */,
 				6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */,
 				A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B5CFF1700F40EEDB005DB9CC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5CFF17A0F40EEF1005DB9CC /* WhitelistPanel.xib in Resources */,
-				B5CFF1870F40F000005DB9CC /* HarnessMain.xib in Resources */,
+				00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,7 +401,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ $BUILD_STYLE != \"Release\" ]; then\n     echo \"Could not generate package.\"\n\techo \"Active Configuration needs to be set to 'Release'.\"\n\texit 1\nfi\n\n# Sparkle currently can't handle -$VERSION in .pkg names.\nBUILT_PKG=\"$BUILT_PRODUCTS_DIR/ClickToFlash.pkg\"\nVERSIONED_NAME=\"ClickToFlash-$PRODUCT_VERSION\"\nBUILT_ZIP=\"$BUILT_PRODUCTS_DIR/$VERSIONED_NAME.zip\"\n\n# Delete old files if there are any around.\nif [ -f \"$BUILT_PKG\" ]; then\n\trm -rf \"$BUILT_PKG\"\nfi\nif [ -f \"$BUILT_ZIP\" ]; then\n\trm -rf \"$BUILT_ZIP\"\nfi\n\n# Create the .pkg.\ncd \"$PROJECT_DIR/Package\"\n\"$SYSTEM_DEVELOPER_UTILITIES_DIR/PackageMaker.app/Contents/MacOS/PackageMaker\" --doc \"Package Template.pmdoc\" -i com.github.rentzsch.clicktoflash.pkg -n \"$PRODUCT_VERSION\" -o \"$BUILT_PKG\"\n\n# Stuff it into a .zip.\ncd \"$BUILT_PRODUCTS_DIR\"\nzip -r \"$VERSIONED_NAME.zip\" \"ClickToFlash.pkg\"\n\n# Delete the intermediate .pkg.\nrm -rf \"$BUILT_PKG\"";
+			shellScript = "bash $PROJECT_DIR/Installer/build_installer_pkg.command\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -454,16 +419,10 @@
 				8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */,
 				79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */,
 				0038DE240FC0CCF0007B54E9 /* MATrackingArea.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B5CFF1710F40EEDB005DB9CC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B5CFF18A0F40F013005DB9CC /* CTFWhitelistWindowController.m in Sources */,
-				B5CFF1AE0F40F070005DB9CC /* HarnessMain.m in Sources */,
-				B5028E930F413553004886D7 /* HarnessAppDelegate.m in Sources */,
+				A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */,
+				A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */,
+				79166CBD0FF69E1800B1F69B /* CTGradient.m in Sources */,
+				A4CB766F0FFB041500CC819F /* CTFURLConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,10 +434,10 @@
 			target = 55EB70410E04A8640016593D /* ClickToFlash */;
 			targetProxy = 2B92605A0F368559000F1583 /* PBXContainerItemProxy */;
 		};
-		79E76F200F658E25000A58FC /* PBXTargetDependency */ = {
+		79E0953A0FF32596008A21AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Sparkle;
-			targetProxy = 79E76F1F0F658E25000A58FC /* PBXContainerItemProxy */;
+			targetProxy = 79E095390FF32596008A21AD /* PBXContainerItemProxy */;
 		};
 		FADCD4260F421EBD00749805 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -532,14 +491,11 @@
 		55EB70330E04A8410016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PRODUCT_VERSION = 1.4.2;
+				PRODUCT_VERSION = 1.5b5;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -547,14 +503,11 @@
 		55EB70340E04A8410016593D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
-				PRODUCT_VERSION = 1.4.2;
+				PRODUCT_VERSION = 1.5b5;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
@@ -562,23 +515,29 @@
 		55EB70450E04A8640016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				ARCHS = (
+					ppc,
+					i386,
+					x86_64,
+				);
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_ENABLE_OBJC_GC = YES;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = Plugin/ClickToFlash_Prefix.pch;
 				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
-				VALID_ARCHS = "i386 ppc ppc7400 ppc970 x86_64";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				VALID_ARCHS = "ppc i386 x86_64";
 				WRAPPER_EXTENSION = webplugin;
 				ZERO_LINK = NO;
 			};
@@ -587,71 +546,29 @@
 		55EB70460E04A8640016593D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				ARCHS = (
+					ppc,
+					i386,
+					x86_64,
+				);
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_GC = YES;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
-				VALID_ARCHS = "i386 ppc ppc7400 ppc970 x86_64";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				VALID_ARCHS = "ppc i386 x86_64";
 				WRAPPER_EXTENSION = webplugin;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		B5CFF1770F40EEDC005DB9CC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "TestFiles/Debugging Harness/Harness-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = "Whitelist Panel Harness";
-			};
-			name = Debug;
-		};
-		B5CFF1780F40EEDC005DB9CC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "Whitelist Panel Harness-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = "Whitelist Panel Harness";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -696,15 +613,6 @@
 			buildConfigurations = (
 				55EB70450E04A8640016593D /* Debug */,
 				55EB70460E04A8640016593D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B5CFF1790F40EEDC005DB9CC /* Build configuration list for PBXNativeTarget "Whitelist Panel Harness" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B5CFF1770F40EEDC005DB9CC /* Debug */,
-				B5CFF1780F40EEDC005DB9CC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
