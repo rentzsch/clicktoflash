@@ -1224,8 +1224,14 @@ BOOL usingMATrackingArea = NO;
 	NSString* video_id = [self videoId];
     NSString* video_hash = [ self _videoHash ];
     
-    NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-					 video_id, video_hash ];
+	NSString *src;
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey]) {
+		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
+			   video_id, video_hash ];
+	} else {
+		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+			   video_id, video_hash ];
+	}
 	
 	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:src]]
 					withAppBundleIdentifier:[self launchedAppBundleIdentifier]
