@@ -17,6 +17,14 @@ body {
 	padding-bottom: 75px;
 }
 
+code {
+	border: 1px solid gray;
+}
+
+pre {
+	text-indent: 1em;
+}
+
 .big_icon {
 	width: 256px;
 	height: 160px;

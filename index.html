@@ -60,8 +60,8 @@
 							Play H.264 videos in QuickTime.</li>
 						<li><span class="feature_header">HD YouTube support (beta only)</span><br />
 							No more crappy, blocky video.</li>
-						</ul>
-					</div>
+					</ul>
+				</div>
 				<div class="features_column_2">
 					<ul>
 						<li><span class="feature_header">Website Whitelist</span><br />
@@ -72,10 +72,33 @@
 							Load quality typesetting automatically.</li>
 						<li><span class="feature_header">Automatic Updating</span><br />
 							Download updates when they're ready.</li>
-						</ul>
-					</div>
-				
+					</ul>
 				</div>
+				
+			</div>
+			
+			<div class="content_box">
+				<div class="section_header" style="font-weight: bold; color: red;">Important Note:</div>
+				
+				<p>When installing ClickToFlash, you may receive this error:
+				
+				<pre><code>Install could not install files in /tmp</code></pre>
+				
+				<p>This is a known problem with pre-release versions of 1.4 and 1.5.  To fix it, open the Terminal
+				(located in the Applications folder), and type in the following command, followed by
+				a return:
+				
+				<pre><code>sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg</code></pre>
+				
+				<p>A password may be required.  If it asks for your password, type it in (you will not
+				see any letters, numbers, or bullets), and then press return again.</p>
+				
+				<p>You may also see this error after issuing the aforementioned Terminal command: 
+				
+				<pre><code>No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'</code></pre>
+				
+				<p>Don't worry, that's OK.  ClickToFlash should now install normally.</p>
+			</div>
 			
 			<div class="content_box">
 				<p>Ever wanted to get rid of the scourge of the web that is Adobe Flash, but still retain the ability
@@ -96,6 +119,32 @@
 				same, higher quality videos.</p>
 				
 				<p>Come join us!  The web is so much better without Flash.</p>
+			</div>
+			
+			<div class="content_box">
+				<div class="section_header">Usage Notes:</div>
+					<p><span style="font-weight: bold;">Contextual menu:</span> the gear in the upper-left corner of any unloaded
+					Flash box allows access to ClickToFlash's contextual menu.  This menu allows you to do advanced things
+					like edit ClickToFlash's whitelist, specify settings, and load all Flash on the page.</p>
+					
+					<p><span style="font-weight: bold;">ClickToFlash menu:</span> in certain applications, ClickToFlash will
+					activate a menu item in the application's menu.  For example, Safari has a ClickToFlash menu located at
+					[Safari --> ClickToFlash], near the "Preferences..." menu item.  This gives access to ClickToFlash's settings
+					window and a few other features.</p>
+					
+					<p><span style="font-weight: bold;">Uninstalling ClickToFlash:</span> for versions 1.5b4 and later, go to the
+					Settings window and click the "Uninstall ClickToFlash" button.  For versions prior to 1.5b4, navigate to
+					~/Library/Internet Plug-ins/ in the Finder, where ~ is your home folder, and delete the item named
+					"ClickToFlash.webplugin" (or "ClickToFlash.plugin").</p>
+
+					<p>Please <a href="http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new">report bugs
+					and request features</a> on the
+					<a href="http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all">Lighthouse ClickToFlash
+					project site</a>.</p>
+
+					<p>Want to chip in?
+					<a href="http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&amp;filter=">Here's
+					what needs to be done</a>.</p>
 			</div>
 			
 			<div class="content_box" style="display: none;">
