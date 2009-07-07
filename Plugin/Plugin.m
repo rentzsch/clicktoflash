@@ -1225,7 +1225,7 @@ BOOL usingMATrackingArea = NO;
     NSString* video_hash = [ self _videoHash ];
     
 	NSString *src;
-	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey]) {
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey] && [self _hasHDH264Version]) {
 		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
 			   video_id, video_hash ];
 	} else {
@@ -1257,7 +1257,7 @@ BOOL usingMATrackingArea = NO;
     NSString* video_hash = [ self _videoHash ];
     
 	NSString *src;
-	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey]) {
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey] && [self _hasHDH264Version]) {
 		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
 					 video_id, video_hash ];
 	} else {
