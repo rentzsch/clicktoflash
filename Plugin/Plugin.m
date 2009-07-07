@@ -834,7 +834,7 @@ BOOL usingMATrackingArea = NO;
                 NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
                 NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
                 
-                [gradient initWithStartingColor:startingColor endingColor:endingColor];
+                gradient = [gradient initWithStartingColor:startingColor endingColor:endingColor];
                 
                 // draw gradient behind gear so that it's visible even on dark backgrounds
                 [gradient drawFromCenter:gearImageCenter
@@ -873,7 +873,7 @@ BOOL usingMATrackingArea = NO;
     id gradient = [NSClassFromString(@"NSGradient") alloc];
     if (gradient != nil)
     {
-        [gradient initWithStartingColor:startingColor endingColor:endingColor];
+        gradient = [gradient initWithStartingColor:startingColor endingColor:endingColor];
 
         [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:90.0 + ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
 
