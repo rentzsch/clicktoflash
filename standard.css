@@ -142,6 +142,19 @@ pre {
 	float: left;
 }
 
+.important_content_box {
+	width: 120%;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	left: -5em;
+	padding: 10px;
+	border: 1px solid red;
+	float: left;
+	font-size: 12px;
+}
+
 .features_column_1 {
 	float: right;
 	width: 270px;
