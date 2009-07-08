@@ -62,7 +62,9 @@ pre {
 .product_header_box {
 	float: left;
 	padding-top: 5px;
-	width: 600px;
+	width: 610px;
+	position: relative;
+	left: -40px;
 }
 
 .product_title {
