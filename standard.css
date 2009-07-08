@@ -90,9 +90,10 @@ pre {
 .link_box {
 	width: 18em;
 	text-align: center;
-	margin-top: 10px;
+	margin-top: 7px;
 	margin-left: auto;
 	margin-right: auto;
+	font-size: 12px;
 }
 
 .download_button_box {
