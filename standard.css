@@ -12,9 +12,8 @@ a.white_image_button:hover { border: none; background-color: #FFFFFF; color: #FF
 body {
 	font-family: optima, verdana, arial, sans-serif;
 	font-size: 1em;
-	margin: 0px 0px 75px 0px;
+	margin: 0 0 0 0;
 	background-color: #E1E1E1;
-	padding-bottom: 75px;
 }
 
 code {
@@ -31,13 +30,11 @@ pre {
 }
 
 .main_box_high {
-	width: 560px;
+	width: 700px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 22px;
 	padding: 10px 20px 10px 10px;
-	margin-bottom: 50px;
-	padding-bottom: 50px;
 }
 
 .product_header_left_side
@@ -60,11 +57,10 @@ pre {
 }
 
 .product_header_box {
-	float: left;
 	padding-top: 5px;
 	width: 610px;
-	position: relative;
-	left: -40px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .product_title {
@@ -128,27 +124,30 @@ pre {
 }
 
 .topmost_content_box {
-	width: 100%;
+	width: 80%;
 	margin-top: 10px;
-	padding-top: 10px;
-	float: left;
+	padding-top: 2em;
+	margin-left: auto;
+	margin-right: auto;
+	clear: both;
 }
 
 .content_box {
-	width: 100%;
-	margin-top: 10px;
+	width: 80%;
+	margin-top: 1em;
 	padding-top: 10px;
 	border-top: 1px solid #C8C8C8;
-	float: left;
+	margin-left: auto;
+	margin-right: auto;
+	clear: both;
 }
 
 .important_content_box {
-	width: 120%;
+	width: 700px;
+	margin-bottom: 10px;
 	margin-top: 10px;
 	margin-left: auto;
 	margin-right: auto;
-	position: relative;
-	left: -5em;
 	padding: 10px;
 	border: 1px solid red;
 	float: left;
