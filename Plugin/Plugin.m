@@ -76,6 +76,7 @@ BOOL usingMATrackingArea = NO;
 
 - (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
 - (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML;
+- (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId;
 - (NSString*) flashvarWithName: (NSString*) argName;
 - (void) _checkForH264VideoVariants;
 - (BOOL) _hasH264Version;
@@ -110,6 +111,8 @@ BOOL usingMATrackingArea = NO;
 {
     self = [super init];
     if (self) {
+		_hasH264Version = NO;
+		_hasHDH264Version = NO;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
 														@"com.apple.ScreenSaver.Engine",
@@ -183,6 +186,12 @@ BOOL usingMATrackingArea = NO;
 			NSString *videoId = [ self flashvarWithName: @"video_id" ];
 			if (videoId != nil) {
 				[self setVideoId:videoId];
+				
+				// this retrieves new data from the internets, so it should
+				// spawn a new thread
+				[NSThread detachNewThreadSelector:@selector(_checkForH264VideoVariants)
+										 toTarget:self
+									   withObject:nil];
 			} else {
 				// it's an embedded YouTube flash view; scrub the URL to
 				// determine the video_id, then get the source of the YouTube
@@ -200,17 +209,13 @@ BOOL usingMATrackingArea = NO;
 				[URLScanner release];
 				
 				if (videoIdFromURL) {
-					NSString *URLString = [NSString stringWithFormat:@"http://youtube.com/watch?v=%@",videoIdFromURL];
-					NSURL *YouTubePageURL = [NSURL URLWithString:URLString];
-					NSError *pageSourceError = nil;
-					NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
-																	  usedEncoding:nil
-																			 error:&pageSourceError];
-					if (! pageSourceError) _flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
+					// this block of code introduces a situation where we have to download
+					// additional data from the internets, so we want to spin this off
+					// to another thread to prevent blocking of the Safari user interface
+					
+					[self _getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:videoIdFromURL];
 				}
 			}
-			
-			[self _checkForH264VideoVariants];
 		}
 		
 		
@@ -577,6 +582,30 @@ BOOL usingMATrackingArea = NO;
 #pragma mark -
 #pragma mark Contextual menu
 
+- (void) setUpExtraMenuItems
+{
+	if ([self _hasH264Version]) {
+		[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
+								  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
+		[[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
+								  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 2];
+		[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
+								  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 3];
+		[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
+								  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: 4];
+		[[[self menu] itemAtIndex: 1] setTarget: self];
+		[[[self menu] itemAtIndex: 2] setTarget: self];
+		[[[self menu] itemAtIndex: 3] setTarget: self];
+		[[[self menu] itemAtIndex: 4] setTarget: self];
+	} else if (_fromYouTube) {
+		// has no H.264 version but is from YouTube; it's an embedded view!
+		
+		[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
+								  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
+		[[[self menu] itemAtIndex: 1] setTarget: self];
+	}
+}
+
 - (NSMenu*) menuForEvent: (NSEvent*) event
 {
     // Set up contextual menu
@@ -586,23 +615,10 @@ BOOL usingMATrackingArea = NO;
             NSLog(@"Could not load contextual menu plugin");
         }
         else {
-            if ([self _hasH264Version]) {
-                [[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
-                                          action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
-				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
-										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 2];
-				[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
-										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: 3];
-                [[[self menu] itemAtIndex: 1] setTarget: self];
-				[[[self menu] itemAtIndex: 2] setTarget: self];
-				[[[self menu] itemAtIndex: 3] setTarget: self];
-            } else if (_fromYouTube) {
-				// has no H.264 version but is from YouTube; it's an embedded view!
-				
-				[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
-										  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
-				[[[self menu] itemAtIndex: 1] setTarget: self];
-			}
+			// extra menu items will be set up by the 
+			// _checkForH264VideoVariants method
+			
+			//[self setUpExtraMenuItems];
         }
     }
     
@@ -1055,7 +1071,9 @@ BOOL usingMATrackingArea = NO;
 		
 		// 206 status code means partial content has been delivered, because of the
 		// range header, 200 means the request was OK
-		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) _hasH264Version = YES;
+		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
+			[self setHasH264Version:YES];
+		}
 		
 		CTFURLConnection *connectionTwo = [[CTFURLConnection alloc] init];
 		NSHTTPURLResponse *HDH264Response = [connectionTwo getURLResponseHeaders:[NSURL URLWithString:HDSrc]
@@ -1063,7 +1081,15 @@ BOOL usingMATrackingArea = NO;
 		[connectionTwo release];
 		
 		statusCode = [HDH264Response statusCode];
-		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) _hasHDH264Version = YES;
+		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
+			[self setHasHDH264Version:YES];
+		}
+		
+		// this is here because the user may have already opened the contextual
+		// menu before the H.264 variants were determined, so we need to
+		// make sure these features are made available to them
+		
+		[self setUpExtraMenuItems];
 	}
 }
 
@@ -1273,6 +1299,29 @@ BOOL usingMATrackingArea = NO;
 	[openInQTPlayerScript release];
 }
 
+- (void)_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSString *URLString = [NSString stringWithFormat:@"http://youtube.com/watch?v=%@",videoId];
+	NSURL *YouTubePageURL = [NSURL URLWithString:URLString];
+	NSError *pageSourceError = nil;
+	NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
+													  usedEncoding:nil
+															 error:&pageSourceError];
+	if (! pageSourceError) _flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
+	[self _checkForH264VideoVariants];
+	
+	[pool drain];
+}
+
+- (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
+{
+	[NSThread detachNewThreadSelector:@selector(_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:)
+							 toTarget:self
+						   withObject:videoId];
+}
+
 
 #pragma mark -
 #pragma mark DOM Conversion
@@ -1454,6 +1503,28 @@ BOOL usingMATrackingArea = NO;
     [newValue retain];
     [_videoId release];
     _videoId = newValue;
+}
+
+- (BOOL)hasH264Version
+{
+	return _hasH264Version;
+}
+
+- (void)setHasH264Version:(BOOL)newValue
+{
+	_hasH264Version = newValue;
+	[self performSelectorOnMainThread:@selector(_drawBackground) withObject:nil waitUntilDone:NO];
+}
+
+- (BOOL)hasHDH264Version
+{
+	return _hasHDH264Version;
+}
+
+- (void)setHasHDH264Version:(BOOL)newValue
+{
+	_hasHDH264Version = newValue;
+	[self performSelectorOnMainThread:@selector(_drawBackground) withObject:nil waitUntilDone:NO];
 }
 
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue

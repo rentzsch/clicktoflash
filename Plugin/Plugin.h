@@ -75,6 +75,10 @@ THE SOFTWARE.
 - (void)setSrc:(NSString *)newValue;
 - (NSString *)videoId;
 - (void)setVideoId:(NSString *)newValue;
+- (BOOL)hasH264Version;
+- (void)setHasH264Version:(BOOL)newValue;
+- (BOOL)hasHDH264Version;
+- (void)setHasHDH264Version:(BOOL)newValue;
 - (NSString *)launchedAppBundleIdentifier;
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
 
