@@ -113,6 +113,7 @@ BOOL usingMATrackingArea = NO;
     if (self) {
 		_hasH264Version = NO;
 		_hasHDH264Version = NO;
+		_contextMenuIsVisible = NO;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
 														@"com.apple.ScreenSaver.Engine",
@@ -475,7 +476,7 @@ BOOL usingMATrackingArea = NO;
 	return NSWidth( bounds ) > 32 && NSHeight( bounds ) > 32;
 }
 
-- (void) mouseDown:(NSEvent *)event
+- (BOOL) mouseEventIsWithinGearIconBorders:(NSEvent *)event
 {
 	float margin = 5.0;
 	float gearImageHeight = 16.0;
@@ -499,7 +500,13 @@ BOOL usingMATrackingArea = NO;
 								 (localMouseLocation.y <= (viewHeight - margin)) );
 	}
 	
-	if (xCoordWithinGearImage && yCoordWithinGearImage) {
+	return (xCoordWithinGearImage && yCoordWithinGearImage);
+}
+
+- (void) mouseDown:(NSEvent *)event
+{
+	if ([self mouseEventIsWithinGearIconBorders:event]) {
+		_contextMenuIsVisible = YES;
 		[NSMenu popUpContextMenu:[self menuForEvent:event] withEvent:event forView:self];
 	} else {
 		mouseIsDown = YES;
@@ -535,13 +542,15 @@ BOOL usingMATrackingArea = NO;
         // Now that we track the mouse for mouse-over when the mouse is up 
         // for drawing the gear only on mouse-over, we don't remove it here.
     
-    if (mouseInside) {
+    if (mouseInside && (! _contextMenuIsVisible) ) {
         if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
             [self _askToAddCurrentSiteToWhitelist];
         } else {
             [self _convertTypesForContainer];
         }
-    }
+    } else {
+		_contextMenuIsVisible = NO;
+	}
 }
 
 - (BOOL) _isOptionPressed

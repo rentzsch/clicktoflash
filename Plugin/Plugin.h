@@ -51,6 +51,8 @@ THE SOFTWARE.
 	NSString *_src;
 	NSString *_videoId;
 	NSString *_launchedAppBundleIdentifier;
+	
+	BOOL _contextMenuIsVisible;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
