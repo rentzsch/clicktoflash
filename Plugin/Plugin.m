@@ -1105,7 +1105,9 @@ BOOL usingMATrackingArea = NO;
 		// menu before the H.264 variants were determined, so we need to
 		// make sure these features are made available to them
 		
-		[self setUpExtraMenuItems];
+		[self performSelectorOnMainThread:@selector(setUpExtraMenuItems)
+							   withObject:nil
+							waitUntilDone:NO];
 	}
 }
 
