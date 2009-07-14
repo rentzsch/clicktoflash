@@ -593,26 +593,36 @@ BOOL usingMATrackingArea = NO;
 
 - (void) setUpExtraMenuItems
 {
-	if ([self _hasH264Version]) {
-		[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
-								  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
-		[[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
-								  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 2];
-		[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
-								  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 3];
-		[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
-								  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: 4];
-		[[[self menu] itemAtIndex: 1] setTarget: self];
-		[[[self menu] itemAtIndex: 2] setTarget: self];
-		[[[self menu] itemAtIndex: 3] setTarget: self];
-		[[[self menu] itemAtIndex: 4] setTarget: self];
-	} else if (_fromYouTube) {
-		// has no H.264 version but is from YouTube; it's an embedded view!
+	if( [ self menu ] ) {
+		// if the menu is not set up, then the menuForEvent: method will call
+		// this method when the menu is requested
 		
-		[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
-								  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 1];
-		[[[self menu] itemAtIndex: 1] setTarget: self];
+		if (_fromYouTube) {
+			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadYouTubePage:)] == -1) {
+				[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+				[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
+										  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 3];
+				[[[self menu] itemAtIndex: 3] setTarget: self];
+			}
+		}
+			
+		if ([self _hasH264Version]) {
+			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadH264:)] == -1) {
+				// 
+				
+				[[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
+										  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
+				[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
+										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: 5];
+				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
+										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 6];
+				[[[self menu] itemAtIndex: 1] setTarget: self];
+				[[[self menu] itemAtIndex: 5] setTarget: self];
+				[[[self menu] itemAtIndex: 6] setTarget: self];
+			}
+		}
 	}
+	
 }
 
 - (NSMenu*) menuForEvent: (NSEvent*) event
@@ -624,10 +634,7 @@ BOOL usingMATrackingArea = NO;
             NSLog(@"Could not load contextual menu plugin");
         }
         else {
-			// extra menu items will be set up by the 
-			// _checkForH264VideoVariants method
-			
-			//[self setUpExtraMenuItems];
+			[self setUpExtraMenuItems];
         }
     }
     
