@@ -606,10 +606,8 @@ BOOL usingMATrackingArea = NO;
 			}
 		}
 			
-		if ([self _hasH264Version]) {
+		if (_fromYouTube && [self _hasH264Version]) {
 			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadH264:)] == -1) {
-				// 
-				
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
 										  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
