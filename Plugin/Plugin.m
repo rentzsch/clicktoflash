@@ -114,6 +114,7 @@ BOOL usingMATrackingArea = NO;
 		_hasH264Version = NO;
 		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
+		_embeddedYouTubeView = NO;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
 														@"com.apple.ScreenSaver.Engine",
@@ -197,6 +198,8 @@ BOOL usingMATrackingArea = NO;
 				// it's an embedded YouTube flash view; scrub the URL to
 				// determine the video_id, then get the source of the YouTube
 				// page to get the Flash vars
+				
+				_embeddedYouTubeView = YES;
 				
 				NSString *videoIdFromURL = nil;
 				NSScanner *URLScanner = [[NSScanner alloc] initWithString:[self src]];
@@ -599,24 +602,37 @@ BOOL usingMATrackingArea = NO;
 		
 		if (_fromYouTube) {
 			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadYouTubePage:)] == -1) {
-				[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
-				[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
-										  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 3];
-				[[[self menu] itemAtIndex: 3] setTarget: self];
+				if (_embeddedYouTubeView) {
+					[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+					[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
+											  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 3];
+					[[[self menu] itemAtIndex: 3] setTarget: self];
+				}
 			}
 		}
 			
 		if (_fromYouTube && [self _hasH264Version]) {
 			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadH264:)] == -1) {
+				int QTMenuItemIndex, downloadMenuItemIndex;
+				if (! _embeddedYouTubeView) {
+					[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+					
+					QTMenuItemIndex = 4;
+					downloadMenuItemIndex = 5;
+				} else {
+					QTMenuItemIndex = 5;
+					downloadMenuItemIndex = 6;
+				}
+				
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
 										  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
-										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: 5];
+										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: QTMenuItemIndex];
 				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
-										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: 6];
+										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: downloadMenuItemIndex];
 				[[[self menu] itemAtIndex: 1] setTarget: self];
-				[[[self menu] itemAtIndex: 5] setTarget: self];
-				[[[self menu] itemAtIndex: 6] setTarget: self];
+				[[[self menu] itemAtIndex: QTMenuItemIndex] setTarget: self];
+				[[[self menu] itemAtIndex: downloadMenuItemIndex] setTarget: self];
 			}
 		}
 	}
