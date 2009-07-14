@@ -1124,56 +1124,6 @@ BOOL usingMATrackingArea = NO;
 	[pool drain];
 }
 
-// this method should be called on another thread,
-// (so that we can use an NSConditionLock)
-- (void)checkVideoVariant:(NSURLRequest *)request;
-{
-	
-}
-
-- (BOOL) _hasHDH264Version
-{
-	/*BOOL _hasHDH264Version = NO;
-	if (_fromYouTube) {
-		NSString *fmtMapString = [ self flashvarWithName: @"fmt_map" ];
-		NSArray *fmtMapArray = [fmtMapString componentsSeparatedByString:@","];
-		
-		CTFForEachObject( NSString, currentMapString, fmtMapArray ) {
-			NSString *fmtQuality = [[currentMapString componentsSeparatedByString:@"/"] objectAtIndex:0];
-			if ([fmtQuality isEqualToString:@"22"]) {
-				_hasHDH264Version = YES;
-				break;
-			}
-		}
-	}*/
-	
-	return (_fromYouTube && _hasHDH264Version);
-}
-
-- (BOOL) _hasH264Version
-{
-	/*BOOL _hasH264Version = NO;
-    if ( _fromYouTube ) {
-		NSString *fmtMapString = [ self flashvarWithName: @"fmt_map" ];
-		NSArray *fmtMapArray = [fmtMapString componentsSeparatedByString:@","];
-		
-		CTFForEachObject( NSString, currentMapString, fmtMapArray ) {
-			NSString *fmtQuality = [[currentMapString componentsSeparatedByString:@"/"] objectAtIndex:0];
-			if ([fmtQuality isEqualToString:@"18"] || [fmtQuality isEqualToString:@"22"]) {
-				_hasH264Version = YES;
-				break;
-			}
-		}
-	}*/
-	
-	return (_fromYouTube && _hasH264Version);
-	
-	// sometimes, even though we have a videoId and a videoHash, the movie
-	// still doesn't have an H.264 version, so this logic is flawed
-	
-	// return [self videoId] != nil && [ self _videoHash ] != nil;
-}
-
 - (BOOL) _useHDH264Version
 {
 	return [ self _hasHDH264Version ]
@@ -1540,7 +1490,7 @@ BOOL usingMATrackingArea = NO;
 
 - (BOOL)hasH264Version
 {
-	return _hasH264Version;
+	return (_fromYouTube && _hasH264Version);
 }
 
 - (void)setHasH264Version:(BOOL)newValue
@@ -1551,7 +1501,7 @@ BOOL usingMATrackingArea = NO;
 
 - (BOOL)hasHDH264Version
 {
-	return _hasHDH264Version;
+	return (_fromYouTube && _hasHDH264Version);
 }
 
 - (void)setHasHDH264Version:(BOOL)newValue
