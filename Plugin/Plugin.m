@@ -1060,6 +1060,8 @@ BOOL usingMATrackingArea = NO;
 
 - (void) _checkForH264VideoVariants
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	NSString* video_id = [self videoId];
 	NSString* video_hash = [ self _videoHash ];
 	
@@ -1102,6 +1104,8 @@ BOOL usingMATrackingArea = NO;
 							   withObject:nil
 							waitUntilDone:NO];
 	}
+	
+	[pool drain];
 }
 
 // this method should be called on another thread,
@@ -1321,7 +1325,9 @@ BOOL usingMATrackingArea = NO;
 													  usedEncoding:nil
 															 error:&pageSourceError];
 	if (! pageSourceError) _flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
-	[self _checkForH264VideoVariants];
+	[NSThread detachNewThreadSelector:@selector(_checkForH264VideoVariants)
+							 toTarget:self
+						   withObject:nil];
 	
 	[pool drain];
 }
