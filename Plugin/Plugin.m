@@ -1546,7 +1546,7 @@ BOOL usingMATrackingArea = NO;
 - (void)setHasH264Version:(BOOL)newValue
 {
 	_hasH264Version = newValue;
-	[self performSelectorOnMainThread:@selector(_drawBackground) withObject:nil waitUntilDone:NO];
+	[self setNeedsDisplay:YES];
 }
 
 - (BOOL)hasHDH264Version
@@ -1557,7 +1557,7 @@ BOOL usingMATrackingArea = NO;
 - (void)setHasHDH264Version:(BOOL)newValue
 {
 	_hasHDH264Version = newValue;
-	[self performSelectorOnMainThread:@selector(_drawBackground) withObject:nil waitUntilDone:NO];
+	[self setNeedsDisplay:YES];
 }
 
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue
