@@ -36,7 +36,9 @@
 	[request release];
 	
 	[theLock lockWhenCondition:1];
+	[theLock unlock];
 	if (error) (*error) = errorToReturn;
+	
 
 	return [responseToReturn autorelease];
 }
@@ -53,25 +55,29 @@
 
 - (void)startRequest:(NSURLRequest *)request;
 {
-
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[request retain];
 	
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request
 																  delegate:self
 														  startImmediately:YES];
-	[[NSRunLoop currentRunLoop] run];
+	
+	NSRunLoop *rl = [NSRunLoop currentRunLoop];
+	
+	while ([rl runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
+		if ([theLock tryLockWhenCondition:1]) {
+			[theLock unlock];
+			break;
+		}
+	}
+
 	[connection release];
 
-	[request release];
 	[pool drain];
-
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 {
-
-	[theLock tryLock];
+	[theLock lock];
 	
 	errorToReturn = error;
 	[theLock unlockWithCondition:1];
@@ -79,8 +85,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)theResponse;
 {
-
-	[theLock tryLock];
+	[theLock lock];
 	
 	// we cancel here, because otherwise NSURLConnection will continue to download
 	// data due to a bug; even though we made a HEAD request, it still downloads
@@ -93,8 +98,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 {
-
-	[theLock tryLock];
+	[theLock lock];
 	
 	[theLock unlockWithCondition:1];
 }
