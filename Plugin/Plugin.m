@@ -1370,8 +1370,11 @@ BOOL usingMATrackingArea = NO;
     // Remove & reinsert the node to persuade the plugin system to notice the type change:
     id parent = [[self container] parentNode];
     id successor = [[self container] nextSibling];
-    [parent removeChild:[self container]];
-    [parent insertBefore:[self container] refChild:successor];
+	
+	DOMElement *theContainer = [[self container] retain];
+    [parent removeChild:theContainer];
+    [parent insertBefore:theContainer refChild:successor];
+	[theContainer release];
     [self setContainer:nil];
 }
 
