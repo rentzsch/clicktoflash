@@ -1099,12 +1099,15 @@ BOOL usingMATrackingArea = NO;
 																		 error:&error];
 		[theConnection release];
 		
-		int statusCode = [H264Response statusCode];
-		
-		// 206 status code means partial content has been delivered, because of the
-		// range header, 200 means the request was OK
-		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
-			[self _setHasH264Version:YES];
+		int statusCode = 0;
+		if (H264Response) {
+			statusCode = [H264Response statusCode];
+			
+			// 206 status code means partial content has been delivered, because of the
+			// range header, 200 means the request was OK
+			if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
+				[self _setHasH264Version:YES];
+			}
 		}
 		
 		CTFURLConnection *connectionTwo = [[CTFURLConnection alloc] init];
@@ -1112,9 +1115,11 @@ BOOL usingMATrackingArea = NO;
 																		   error:&error];
 		[connectionTwo release];
 		
-		statusCode = [HDH264Response statusCode];
-		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
-			[self _setHasHDH264Version:YES];
+		if (HDH264Response) {
+			statusCode = [HDH264Response statusCode];
+			if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
+				[self _setHasHDH264Version:YES];
+			}
 		}
 		
 		// this is here because the user may have already opened the contextual
