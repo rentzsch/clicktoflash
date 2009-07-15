@@ -1167,7 +1167,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	NSMutableURLRequest *newRequest = [request mutableCopy];
 	[newRequest setHTTPMethod:@"HEAD"];
 	
-	return newRequest;
+	return [newRequest autorelease];
 }
 
 - (BOOL) _useHDH264Version
