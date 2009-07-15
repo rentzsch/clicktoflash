@@ -401,7 +401,7 @@ BOOL usingMATrackingArea = NO;
     return self;
 }
 
-- (void) webPlugInDestroy
+- (void) dealloc
 {
     [self _removeTrackingAreaForCTF];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -424,6 +424,8 @@ BOOL usingMATrackingArea = NO;
 #if LOGGING_ENABLED
 	NSLog(@"ClickToFlash:\tdealloc");
 #endif
+	
+    [super dealloc];
 }
 
 - (void) _migratePrefsToExternalFile
