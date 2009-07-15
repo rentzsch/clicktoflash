@@ -401,26 +401,35 @@ BOOL usingMATrackingArea = NO;
     return self;
 }
 
-- (void) dealloc
+- (void)webPlugInDestroy
 {
-    [self _removeTrackingAreaForCTF];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+	[self _removeTrackingAreaForCTF];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
 	[self _abortAlert];        // to be on the safe side
 	
 	// notify that this ClickToFlash plugin is going away
-	[[CTFMenubarMenuController sharedController] unregisterView: self];
-    
-    [self setContainer:nil];
-    [self setHost:nil];
-    [self setWebView:nil];
-    [self setBaseURL:nil];
-    [self setAttributes:nil];
-    
-    [_flashVars release];
-    [_badgeText release];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self];
+	[[CTFMenubarMenuController sharedController] unregisterView:self];
+	
+	[self setContainer:nil];
+	[self setHost:nil];
+	[self setWebView:nil];
+	[self setBaseURL:nil];
+	[self setAttributes:nil];
+	
+	[_flashVars release];
+	_flashVars = nil;
+	[_badgeText release];
+	_badgeText = nil;
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void) dealloc
+{
+	// Just in case...
+	[self webPlugInDestroy];
+	
 #if LOGGING_ENABLED
 	NSLog(@"ClickToFlash:\tdealloc");
 #endif
@@ -1408,8 +1417,11 @@ BOOL usingMATrackingArea = NO;
     // Remove & reinsert the node to persuade the plugin system to notice the type change:
     id parent = [[self container] parentNode];
     id successor = [[self container] nextSibling];
-    [parent removeChild:[self container]];
-    [parent insertBefore:[self container] refChild:successor];
+	
+	DOMElement *theContainer = [[self container] retain];
+    [parent removeChild:theContainer];
+    [parent insertBefore:theContainer refChild:successor];
+	[theContainer release];
     [self setContainer:nil];
 }
 
