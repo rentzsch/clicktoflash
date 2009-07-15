@@ -115,6 +115,7 @@ BOOL usingMATrackingArea = NO;
 		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
 		_embeddedYouTubeView = NO;
+		_delayingTimer = nil;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
 														@"com.apple.ScreenSaver.Engine",
@@ -275,8 +276,8 @@ BOOL usingMATrackingArea = NO;
 			return self;
 		}
 		
-        BOOL loadFromWhiteList = [self _isHostWhitelisted];
 		
+		BOOL loadFromWhiteList = [self _isHostWhitelisted];
 		
 		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
 		
@@ -297,7 +298,26 @@ BOOL usingMATrackingArea = NO;
         
         if(loadFromWhiteList && ![self _isOptionPressed]) {
             _isLoadingFromWhitelist = YES;
-			[self _convertTypesForContainer];
+			
+			if (_fromYouTube) {
+				// we do this because checking for H.264 variants is handled
+				// on another thread, so the results of that check may not have
+				// been returned yet; if the user has this site on a whitelist
+				// and the results haven't been returned, then the *Flash* will
+				// load (ewwwwwww!) instead of the H.264, even if the user's
+				// preferences are for the H.264
+				
+				// the _checkForH264VideoVariants method will manually fire
+				// this timer if it finishes before the 3 seconds are up
+				_delayingTimer = [NSTimer scheduledTimerWithTimeInterval:3
+																  target:self
+																selector:@selector(_convertTypesForContainer)
+																userInfo:nil
+																 repeats:NO];
+			} else {
+				[self _convertTypesForContainer];
+			}
+			
 			return self;
         }
 		
@@ -1130,6 +1150,12 @@ BOOL usingMATrackingArea = NO;
 							   withObject:nil
 							waitUntilDone:NO];
 	}
+	
+	// without doing this on the main thread, it causes the DOM conversion
+	// on a secondary thread which WebKit does not like and will cause a crash
+	if (_delayingTimer) [_delayingTimer performSelectorOnMainThread:@selector(fire)
+														 withObject:nil
+													  waitUntilDone:NO];
 	
 	[pool drain];
 }

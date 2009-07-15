@@ -54,6 +54,7 @@ THE SOFTWARE.
 	NSString *_launchedAppBundleIdentifier;
 	
 	BOOL _contextMenuIsVisible;
+	NSTimer *_delayingTimer;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
