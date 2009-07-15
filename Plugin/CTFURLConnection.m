@@ -61,15 +61,13 @@
 
 - (void)startRequest:(NSURLRequest *)request;
 {
-
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[request retain];
 	
-	NSLog(@"Connection is starting immediately.");
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request
 																  delegate:self
 														  startImmediately:YES];
-	[[NSRunLoop currentRunLoop] run];
+	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:10]];
 	[connection release];
 
 	[request release];
@@ -79,8 +77,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 {
-	NSLog(@"Connection failed with error: %@",error);
-	[theLock tryLock];
+	[theLock lock];
 	
 	errorToReturn = error;
 	[theLock unlockWithCondition:1];
@@ -88,8 +85,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)theResponse;
 {
-
-	[theLock tryLock];
+	[theLock lock];
 	
 	// we cancel here, because otherwise NSURLConnection will continue to download
 	// data due to a bug; even though we made a HEAD request, it still downloads
@@ -97,13 +93,11 @@
 	[connection cancel];
 	responseToReturn = [theResponse retain];
 	[theLock unlockWithCondition:1];
-
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 {
-	NSLog(@"Connection did finish loading.");
-	[theLock tryLock];
+	[theLock lock];
 	
 	[theLock unlockWithCondition:1];
 }
