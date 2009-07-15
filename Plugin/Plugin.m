@@ -1108,6 +1108,8 @@ BOOL usingMATrackingArea = NO;
 						 @"http://www.youtube.com/get_video?fmt=%u&video_id=%@&t=%@",
 						 formats[i], video_id, video_hash]]];
 			
+			[request setHTTPMethod:@"HEAD"];
+			
 			connections[i] = [[NSURLConnection alloc] initWithRequest:request
 															 delegate:self];
 		}
@@ -1151,6 +1153,21 @@ didReceiveResponse:(NSHTTPURLResponse *)response
   didFailWithError:(NSError *)error
 {
 	[self finishedWithConnection:connection];
+}
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection 
+			 willSendRequest:(NSURLRequest *)request 
+			redirectResponse:(NSURLResponse *)redirectResponse
+{
+	/* We need to fix the redirects to make sure the method they use
+	   is HEAD. */
+	if ([[request HTTPMethod] isEqualTo:@"HEAD"])
+		return request;
+
+	NSMutableURLRequest *newRequest = [request mutableCopy];
+	[newRequest setHTTPMethod:@"HEAD"];
+	
+	return newRequest;
 }
 
 - (BOOL) _useHDH264Version
