@@ -11,6 +11,14 @@
 
 @implementation CTFURLConnection
 
+- (id)init;
+{
+	if ((self = [super init])) {
+		responseToReturn = nil;
+	}
+	
+	return self;
+}
 
 - (NSHTTPURLResponse *)getURLResponseHeaders:(NSURL *)URL
 									   error:(NSError **)error;
@@ -35,7 +43,7 @@
 	[NSThread detachNewThreadSelector:@selector(startRequest:) toTarget:self withObject:request];
 	[request release];
 	
-	[theLock lockWhenCondition:1];
+	[theLock lockWhenCondition:1 beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
 	if (error) (*error) = errorToReturn;
 
 	return [responseToReturn autorelease];
@@ -57,6 +65,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[request retain];
 	
+	NSLog(@"Connection is starting immediately.");
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request
 																  delegate:self
 														  startImmediately:YES];
@@ -70,7 +79,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 {
-
+	NSLog(@"Connection failed with error: %@",error);
 	[theLock tryLock];
 	
 	errorToReturn = error;
@@ -93,7 +102,7 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 {
-
+	NSLog(@"Connection did finish loading.");
 	[theLock tryLock];
 	
 	[theLock unlockWithCondition:1];
