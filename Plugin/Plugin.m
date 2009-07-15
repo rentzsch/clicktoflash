@@ -27,7 +27,6 @@ THE SOFTWARE.
 #import "Plugin.h"
 #import "CTFUserDefaultsController.h"
 #import "CTFPreferencesDictionary.h"
-#import "CTFURLConnection.h"
 
 #import "MATrackingArea.h"
 #import "CTFMenubarMenuController.h"
@@ -191,9 +190,7 @@ BOOL usingMATrackingArea = NO;
 				
 				// this retrieves new data from the internets, so it should
 				// spawn a new thread
-				[NSThread detachNewThreadSelector:@selector(_checkForH264VideoVariants)
-										 toTarget:self
-									   withObject:nil];
+				[self _checkForH264VideoVariants];
 			} else {
 				// it's an embedded YouTube flash view; scrub the URL to
 				// determine the video_id, then get the source of the YouTube
@@ -403,6 +400,11 @@ BOOL usingMATrackingArea = NO;
 	_badgeText = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	for (int i = 0; i < 2; ++i) {
+		[connections[i] release];
+		connections[i] = nil;
+	}	
 }
 
 - (void) dealloc
@@ -1088,54 +1090,67 @@ BOOL usingMATrackingArea = NO;
     return [ self flashvarWithName: @"t" ];
 }
 
-- (void) _checkForH264VideoVariants
+- (void)_checkForH264VideoVariants
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSString* video_id = [self videoId];
-	NSString* video_hash = [ self _videoHash ];
+	NSString *video_id = [self videoId];
+	NSString *video_hash = [self _videoHash];
 	
 	if (video_id && video_hash) {
-		
-		NSString* src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-						 video_id, video_hash ];
-		NSString* HDSrc = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-						   video_id, video_hash ];
-		
-		NSError *error = nil;
-		CTFURLConnection *theConnection = [[CTFURLConnection alloc] init];
-		NSHTTPURLResponse *H264Response = [theConnection getURLResponseHeaders:[NSURL URLWithString:src]
-																		 error:&error];
-		[theConnection release];
-		
-		int statusCode = [H264Response statusCode];
-		
-		// 206 status code means partial content has been delivered, because of the
-		// range header, 200 means the request was OK
-		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
-			[self _setHasH264Version:YES];
+		// The standard H264 stream is format 18. HD is 22
+		unsigned formats[] = { 18, 22 };
+
+		for (int i = 0; i < 2; ++i) {
+			NSMutableURLRequest *request;
+			
+			request = [NSMutableURLRequest requestWithURL:
+					   [NSURL URLWithString:
+						[NSString stringWithFormat:
+						 @"http://www.youtube.com/get_video?fmt=%u&video_id=%@&t=%@",
+						 formats[i], video_id, video_hash]]];
+			
+			connections[i] = [[NSURLConnection alloc] initWithRequest:request
+															 delegate:self];
 		}
-		
-		CTFURLConnection *connectionTwo = [[CTFURLConnection alloc] init];
-		NSHTTPURLResponse *HDH264Response = [connectionTwo getURLResponseHeaders:[NSURL URLWithString:HDSrc]
-																		   error:&error];
-		[connectionTwo release];
-		
-		statusCode = [HDH264Response statusCode];
-		if (  ((statusCode == 206) || (statusCode == 200))   &&   (! error)  ) {
-			[self _setHasHDH264Version:YES];
-		}
-		
-		// this is here because the user may have already opened the contextual
-		// menu before the H.264 variants were determined, so we need to
-		// make sure these features are made available to them
-		
-		[self performSelectorOnMainThread:@selector(setUpExtraMenuItems)
-							   withObject:nil
-							waitUntilDone:NO];
+
+		expectedResponses = 2;
+	}
+}
+
+- (void)finishedWithConnection:(NSURLConnection *)connection
+{
+	BOOL receivedAllResponses = YES;
+	
+	for (int i = 0; i < 2; ++i) {
+		if (connection == connections[i]) {
+			[connection release];
+			connections[i] = nil;
+		} else if (connections[i])
+			receivedAllResponses = NO;
 	}
 	
-	[pool drain];
+	if (receivedAllResponses)
+		[self setUpExtraMenuItems];
+}
+
+- (void)connection:(NSURLConnection *)connection
+didReceiveResponse:(NSHTTPURLResponse *)response
+{
+	int statusCode = [response statusCode];
+	
+	if (statusCode == 200) {
+		if (connection == connections[0])
+			[self _setHasH264Version:YES];
+		else 
+			[self _setHasHDH264Version:YES];
+	}
+	
+	[self finishedWithConnection:connection];
+}
+
+- (void)connection:(NSURLConnection *)connection
+  didFailWithError:(NSError *)error
+{
+	[self finishedWithConnection:connection];
 }
 
 - (BOOL) _useHDH264Version
