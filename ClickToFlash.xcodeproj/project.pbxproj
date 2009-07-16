@@ -232,8 +232,10 @@
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 			);
+			indentWidth = 4;
 			name = Plugin;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		55EB70550E04A8A40016593D /* Frameworks */ = {
 			isa = PBXGroup;

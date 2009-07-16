@@ -43,7 +43,8 @@
 	[NSThread detachNewThreadSelector:@selector(startRequest:) toTarget:self withObject:request];
 	[request release];
 	
-	[theLock lockWhenCondition:1 beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+	[theLock lockWhenCondition:1];
+	[theLock unlock];
 	if (error) (*error) = errorToReturn;
 
 	return [responseToReturn autorelease];
@@ -67,12 +68,20 @@
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request
 																  delegate:self
 														  startImmediately:YES];
-	[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:10]];
+	
+	NSRunLoop *rl = [NSRunLoop currentRunLoop];
+	
+	while ([rl runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
+		if ([theLock tryLockWhenCondition:1]) {
+			[theLock unlock];
+			break;
+		}
+	}
+
 	[connection release];
 
 	[request release];
 	[pool drain];
-
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
