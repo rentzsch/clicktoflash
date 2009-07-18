@@ -1,26 +1,4 @@
-#[Download ClickToFlash 1.4.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
-
-**Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
-
-	sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg
-
-Please note: if you see the following error:
-
-	No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.
-
-**you do not need to worry about anything.**  If you see this error, then the next time you install ClickToFlash, it should work correctly.
-
-Currently requires Mac OS X 10.5 Leopard.
-
-ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to the whitelist.
-
-Click on the gear in the upper-left corner of any unloaded Flash box to access ClickToFlash's contextual menu, which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
-
-Please [report bugs and request features](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new) on the [Lighthouse ClickToFlash project site](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all).
-
-Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
-
-To uninstall ClickToFlash: for versions 1.5b4 and later, go to the Settings window and click the "Uninstall ClickToFlash" button.  For versions prior to 1.5b4, navigate to ~/Library/Internet Plug-ins/ in the Finder, where ~ is your home folder, and delete the item named "ClickToFlash.webplugin" (or "ClickToFlash.plugin").
+This website only hosts the source code for ClickToFlash.  To download ClickToFlash, learn how to use it, solve installation problems, fix a PandoraJam incompatibility issue, and more, please visit the [ClickToFlash website](http://simx.github.com/clicktoflash/).
 
 ##Version History
 
