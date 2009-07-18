@@ -190,6 +190,23 @@
 				</ol>
 			</div>
 			
+			<div class="content_box" id="application-whitelist">
+				<div class="section_header">Application Whitelist:</div>
+				<p>ClickToFlash 1.5b4 and higher now include an application whitelist.  For apps that absolutely require
+				Flash, ClickToFlash may cause the app to not function at all, or it may cause severe inconveniences.  If an
+				app is on the application whitelist, ClickToFlash will automatically load all Flash.</p>
+				
+				<p>Currently, the application whitelist does not have a GUI.  To edit the whitelist, you have two options.
+				First, you can use an application like Property List Editor (included with Apple's free developer tools).
+				Simply open ~/Library/Preferences/com.github.rentzsch.clicktoflash.plist with such an editor.  There should
+				be an array named "applicationWhitelist"; just add the bundle ID of an app to this whitelist.  Save the
+				file, and relaunch the app.</p>
+				
+				<p><b>App developers:</b> you do not need to wait for a new release of ClickToFlash in order to use the
+				application whitelist.  Simply include a key named "ClickToFlashOptOut" in your app's Info.plist file, set
+				it's value to "YES", and your app will automatically be whitelisted by ClickToFlash.</p>
+			</div>
+			
 			<div class="content_box" style="display: none;">
 				<div class="section_header">Screenshots:</div>
 				<div class="screenshot_images_box" style="float: left; position: relative; left: 25px; height: 250px;">
