@@ -1160,6 +1160,7 @@ BOOL usingMATrackingArea = NO;
 	
 	for (int i = 0; i < 2; ++i) {
 		if (connection == connections[i]) {
+			[connection cancel];
 			[connection release];
 			connections[i] = nil;
 		} else if (connections[i])
