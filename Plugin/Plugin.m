@@ -1336,10 +1336,14 @@ BOOL usingMATrackingArea = NO;
 	NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
 													  usedEncoding:nil
 															 error:&pageSourceError];
-	if (! pageSourceError) _flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
-	[NSThread detachNewThreadSelector:@selector(_checkForH264VideoVariants)
-							 toTarget:self
-						   withObject:nil];
+	if (! pageSourceError) {
+		_flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
+		_videoId = [self flashvarWithName:@"video_id"];
+	}
+	
+	[self performSelectorOnMainThread:@selector(_checkForH264VideoVariants)
+						   withObject:nil
+						waitUntilDone:NO];
 	
 	[pool drain];
 }
