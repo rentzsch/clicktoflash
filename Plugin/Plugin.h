@@ -52,9 +52,10 @@ THE SOFTWARE.
 	NSString *_src;
 	NSString *_videoId;
 	NSString *_launchedAppBundleIdentifier;
-	
+
 	BOOL _contextMenuIsVisible;
-	NSTimer *_delayingTimer;
+	NSURLConnection *connections[2];
+	unsigned expectedResponses;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
