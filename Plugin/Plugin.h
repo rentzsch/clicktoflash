@@ -56,6 +56,7 @@ THE SOFTWARE.
 	BOOL _contextMenuIsVisible;
 	NSURLConnection *connections[2];
 	unsigned expectedResponses;
+	NSTimer *_delayingTimer;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
