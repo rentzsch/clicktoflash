@@ -124,7 +124,7 @@ BOOL usingMATrackingArea = NO;
 														@"com.adobe.flexbuilder",
 														@"com.Zattoo.prefs",
 														@"fr.understudy.HuluPlayer",
-														@"com.apple.iWeb"
+														@"com.apple.iWeb",
 							nil];
 		
 		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];

@@ -215,6 +215,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (IBAction) removeFromWhitelist: (id)sender
 {
+    assert(0);
     if (![self _isHostWhitelisted])
         return;
     
