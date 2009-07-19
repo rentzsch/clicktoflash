@@ -700,11 +700,6 @@ BOOL usingMATrackingArea = NO;
         if ([self _isHostWhitelisted])
             enabled = NO;
     }
-    else if (action == @selector(removeFromWhitelist:))
-    {
-        if (![self _isHostWhitelisted])
-            enabled = NO;
-    }
     
     return enabled;
 }
