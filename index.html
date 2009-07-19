@@ -155,6 +155,63 @@
 				<p>Don't worry, that's OK.  ClickToFlash should now install normally.</p>
 			</div>
 			
+			<div class="content_box" id="pandorajam-issue">
+				<div class="section_header" style="font-weight: bold; color: red;">PandoraJam Troubles:</div>
+				<p>PandoraJam and ClickToFlash are known to conflict, causing PandoraJam to cease functioning entirely.
+				There are two issues here which, combined, cause the problem.  The first: you can't click on ClickToFlash
+				views to activate them in PandoraJam.  We've already solved this in the latest versions of ClickToFlash:
+				PandoraJam has been added to an application whitelist in ClickToFlash 1.5b4 and higher.<p>
+				
+				<p>Despite this fix, however, there is another bug in PandoraJam that still causes problems.  The version
+				of WebKit they use <a href="https://bugs.webkit.org/show_bug.cgi?id=25332">has a bug</a> that makes it
+				impossible for the Flash plug-in to take over.  This has been fixed in the latest versions of WebKit, but
+				PandoraJam's version of WebKit has not been updated to include this fix.</p>
+				
+				<p>If you're adventurous, you can fix this problem yourself by following these steps:</p>
+				
+				<ol>
+					<li>Install ClickToFlash 1.5b4 or higher.</li>
+					<li>Download the <a href="http://nightly.webkit.org/">latest WebKit nightly</a>.  Once downloaded,
+					copy the WebKit application into /Applications</li>
+					<li>Quit PandoraJam if it's already open.</li>
+					<li>Find PandoraJam in the Finder.  Control-click on it, and select "Show Package Contents".</li>
+					<li>Navigate to Contents/Frameworks/ </li>
+					<li>Rename "WebKit.framework" to "WebKit-old.framework"</li>
+					<li>Create a new Finder window (leaving the old one open), and find WebKit in /Applications</li>
+					<li>Control-click on WebKit, and select "Show Package Contents".</li>
+					<li>Navigate to Contents/Frameworks/10.#/ , where # is "4" for Tiger, "5" for Leopard, and "6" for
+					Snowy Leopard.</li>
+					<li>Command-option click on WebKit.framework, and drag it to the other Finder window that shows
+					PandoraJam's frameworks.  Basically what you're doing here is creating an alias to replace PandoraJam's
+					old version of WebKit with the newest one.  If you've done this correctly, you should now see both
+					"WebKit-old.framework" and "WebKit.framework" in PandoraJam's frameworks folder.  In addition,
+					"WebKit.framework" should show a little arrow on its folder icon.</li>
+					<li>Launch PandoraJam.  It should now work.</li>
+				</ol>
+			</div>
+			
+			<div class="content_box" id="application-whitelist">
+				<div class="section_header">Application Whitelist:</div>
+				<p>ClickToFlash 1.5b4 and higher now include an application whitelist.  For apps that absolutely require
+				Flash, ClickToFlash may cause the app to not function at all, or it may cause severe inconveniences.  If an
+				app is on the application whitelist, ClickToFlash will automatically load all Flash.</p>
+				
+				<p>Currently, the application whitelist does not have a GUI.  To edit the whitelist, you have two options.
+				First, you can use an application like Property List Editor (included with Apple's free developer tools).
+				Simply open ~/Library/Preferences/com.github.rentzsch.clicktoflash.plist with such an editor.  There should
+				be an array named "applicationWhitelist"; just add the bundle ID of an app to this whitelist.  Save the
+				file, and relaunch the app.</p>
+				
+				<p>If you would prefer, you can use the Terminal to add apps to the whitelist instead.  To do so, simply
+				use the following command, replacing "bundleId" with the bundle ID of the app you're whitelisting:</p>
+				
+				<pre><code>defaults write com.github.rentzsch.clicktoflash applicationWhitelist -array-add bundleID</code></pre>
+				
+				<p><b>App developers:</b> you do not need to wait for a new release of ClickToFlash in order to use the
+				application whitelist.  Simply include a key named "ClickToFlashOptOut" in your app's Info.plist file, set
+				it's value to "YES", and your app will automatically be whitelisted by ClickToFlash.</p>
+			</div>
+			
 			<div class="content_box" style="display: none;">
 				<div class="section_header">Screenshots:</div>
 				<div class="screenshot_images_box" style="float: left; position: relative; left: 25px; height: 250px;">
@@ -173,8 +230,7 @@
 		</div>
 		
 		<div class="footer">
-			Last updated 2009-07-07. Copyright &copy; 2009 ClickToFlash Developers.
-			<!-- test2 -->
+			Last updated 2009-07-18. Copyright &copy; 2009 ClickToFlash Developers.
 		</div>
 		
 	<script type="text/javascript">
