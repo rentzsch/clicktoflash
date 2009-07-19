@@ -202,6 +202,11 @@
 				be an array named "applicationWhitelist"; just add the bundle ID of an app to this whitelist.  Save the
 				file, and relaunch the app.</p>
 				
+				<p>If you would prefer, you can use the Terminal to add apps to the whitelist instead.  To do so, simply
+				use the following command, replacing "bundleId" with the bundle ID of the app you're whitelisting:</p>
+				
+				<pre><code>defaults write com.github.rentzsch.clicktoflash applicationWhitelist -array-add bundleID</code></pre>
+				
 				<p><b>App developers:</b> you do not need to wait for a new release of ClickToFlash in order to use the
 				application whitelist.  Simply include a key named "ClickToFlashOptOut" in your app's Info.plist file, set
 				it's value to "YES", and your app will automatically be whitelisted by ClickToFlash.</p>
