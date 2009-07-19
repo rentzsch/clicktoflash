@@ -54,6 +54,8 @@ THE SOFTWARE.
 	NSString *_launchedAppBundleIdentifier;
 	
 	BOOL _contextMenuIsVisible;
+	NSURLConnection *connections[2];
+	unsigned expectedResponses;
 	NSTimer *_delayingTimer;
 }
 
