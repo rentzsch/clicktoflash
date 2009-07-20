@@ -82,11 +82,11 @@
 			</div>
 			
 			<div class="important_content_box">
-				<span class="section_header" style="font-weight: bold; color: red;">Important Note:</span> if
+				<span class="section_header header_important">Important Note:</span> if
 				ClickToFlash gives you an error during installation, please see <a href="#installer-issue">this section</a>.
 			</div>
 			
-			<div class="content_box">
+			<div class="content_box less_padding">
 				<p>Ever wanted to get rid of the scourge of the web that is Adobe Flash, but still retain the ability
 				to view Flash whenever you want?  With ClickToFlash, you can!  Using ClickToFlash, all of those
 				icky Flash bits that have infected most webpages on the internets are replaced with a nice, smooth
@@ -109,16 +109,16 @@
 			
 			<div class="content_box" id="usage">
 				<div class="section_header">Usage Notes:</div>
-				<p id="context-menu"><span style="font-weight: bold;">Contextual menu:</span> the gear in the upper-left corner of any unloaded
+				<p id="context-menu"><span class="header_standard">Contextual menu:</span> the gear in the upper-left corner of any unloaded
 				Flash box allows access to ClickToFlash's contextual menu.  This menu allows you to do advanced things
 				like edit ClickToFlash's whitelist, specify settings, and load all Flash on the page.</p>
 				
-				<p id="app-menu"><span style="font-weight: bold;">ClickToFlash menu:</span> in certain applications, ClickToFlash will
+				<p id="app-menu"><span class="header_standard">ClickToFlash menu:</span> in certain applications, ClickToFlash will
 				activate a menu item in the application's menu.  For example, Safari has a ClickToFlash menu located at
 				[Safari --> ClickToFlash], near the "Preferences..." menu item.  This gives access to ClickToFlash's settings
 				window and a few other features.</p>
 				
-				<p id="uninstall"><span style="font-weight: bold;">Uninstalling ClickToFlash:</span> for versions 1.5b4 and later, go to the
+				<p id="uninstall"><span class="header_standard">Uninstalling ClickToFlash:</span> for versions 1.5b4 and later, go to the
 				Settings window and click the "Uninstall ClickToFlash" button.  For versions prior to 1.5b4, navigate to
 				~/Library/Internet Plug-ins/ in the Finder, where ~ is your home folder, and delete the item named
 				"ClickToFlash.webplugin" (or "ClickToFlash.plugin").</p>
@@ -134,7 +134,7 @@
 			</div>
 			
 			<div class="content_box" id="installer-issue">
-				<div class="section_header" style="font-weight: bold; color: red;">Installation Troubles:</div>
+				<div class="section_header header_important">Installation Troubles:</div>
 				<p>When installing ClickToFlash, you may receive this error if you've installed ClickToFlash before:
 				
 				<pre><code>Installer could not install files in /tmp</code></pre>
@@ -156,7 +156,7 @@
 			</div>
 			
 			<div class="content_box" id="pandorajam-issue">
-				<div class="section_header" style="font-weight: bold; color: red;">PandoraJam Troubles:</div>
+				<div class="section_header header_important">PandoraJam Troubles:</div>
 				<p>PandoraJam and ClickToFlash are known to conflict, causing PandoraJam to cease functioning entirely.
 				There are two issues here which, combined, cause the problem.  The first: you can't click on ClickToFlash
 				views to activate them in PandoraJam.  We've already solved this in the latest versions of ClickToFlash:
@@ -196,14 +196,8 @@
 				Flash, ClickToFlash may cause the app to not function at all, or it may cause severe inconveniences.  If an
 				app is on the application whitelist, ClickToFlash will automatically load all Flash.</p>
 				
-				<p>Currently, the application whitelist does not have a GUI.  To edit the whitelist, you have two options.
-				First, you can use an application like Property List Editor (included with Apple's free developer tools).
-				Simply open ~/Library/Preferences/com.github.rentzsch.clicktoflash.plist with such an editor.  There should
-				be an array named "applicationWhitelist"; just add the bundle ID of an app to this whitelist.  Save the
-				file, and relaunch the app.</p>
-				
-				<p>If you would prefer, you can use the Terminal to add apps to the whitelist instead.  To do so, simply
-				use the following command, replacing "bundleId" with the bundle ID of the app you're whitelisting:</p>
+				<p>Currently, the application whitelist does not have a GUI.  Use the following Terminal command (or your favorite
+				plist editor) to add apps to the whitelist, replacing "bundleID" with the bundle ID of the app you're whitelisting:</p>
 				
 				<pre><code>defaults write com.github.rentzsch.clicktoflash applicationWhitelist -array-add bundleID</code></pre>
 				
