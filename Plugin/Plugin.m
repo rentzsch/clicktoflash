@@ -752,6 +752,11 @@ BOOL usingMATrackingArea = NO;
     if( [ self _useH264Version ] && [self _hasH264Version])
         return NSLocalizedString( @"H.264", @"H.264 badge text" );
     else if( _fromYouTube && _videoId)
+		// we check the video ID too because if it's a flash ad on YouTube.com,
+		// we don't want to identify it as an actual YouTube video -- but if
+		// the flash object actually has a video ID parameter, it means its
+		// a bona fide YouTube video
+		
         return NSLocalizedString( @"YouTube", @"YouTube badge text" );
     else if( _badgeText )
         return _badgeText;
