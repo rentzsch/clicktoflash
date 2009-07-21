@@ -87,6 +87,17 @@ pre {
 	margin-right: auto;
 }
 
+.small_text_box {
+	width: 20em;
+	text-align: center;
+	margin-top: 2px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 10px;
+	font-family: monaco sans-serif;
+}
+	
+
 .link_box {
 	width: 18em;
 	text-align: center;
@@ -103,7 +114,7 @@ pre {
 	padding-right: 5px;
 	height: 100%;
 	font-size: 32px;
-	margin: 0.35em 0 0.25em 0.35em;
+	margin: 0.35em 0 0 0.35em;
 	width: 80px;
 }
 
