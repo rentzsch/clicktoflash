@@ -190,8 +190,9 @@ BOOL usingMATrackingArea = NO;
 			if (videoId != nil) {
 				[self setVideoId:videoId];
 				
-				// this retrieves new data from the internets, so it should
-				// spawn a new thread
+				// this retrieves new data from the internets, but the NSURLConnection
+				// methods already spawn separate threads for the data retrieval,
+				// so no need to spawn a separate thread
 				[self _checkForH264VideoVariants];
 			} else {
 				// it's an embedded YouTube flash view; scrub the URL to
@@ -216,6 +217,7 @@ BOOL usingMATrackingArea = NO;
 					// additional data from the internets, so we want to spin this off
 					// to another thread to prevent blocking of the Safari user interface
 					
+					// this method is a stub for calling the real method on a different thread
 					[self _getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:videoIdFromURL];
 				}
 			}
