@@ -20,6 +20,10 @@ code {
 	border: 1px solid gray;
 }
 
+.small_code {
+	font-size: 10px;
+}
+
 pre {
 	text-indent: 1em;
 }
