@@ -749,11 +749,11 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) badgeLabelText
 {
-	if( [ self _useHDH264Version ] )
+	if( [ self _useHDH264Version ] && [self _hasHDH264Version])
 		return NSLocalizedString( @"HD H.264", @"HD H.264 badge text" );
-    if( [ self _useH264Version ] )
+    if( [ self _useH264Version ] && [self _hasH264Version])
         return NSLocalizedString( @"H.264", @"H.264 badge text" );
-    else if( [ self _hasH264Version ] )
+    else if( _fromYouTube && _videoId)
         return NSLocalizedString( @"YouTube", @"YouTube badge text" );
     else if( _badgeText )
         return _badgeText;
