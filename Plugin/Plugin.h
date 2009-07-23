@@ -52,8 +52,9 @@ THE SOFTWARE.
 	NSString *_src;
 	NSString *_videoId;
 	NSString *_launchedAppBundleIdentifier;
-	
+
 	BOOL _contextMenuIsVisible;
+	BOOL _receivedAllResponses;
 	NSURLConnection *connections[2];
 	unsigned expectedResponses;
 	NSTimer *_delayingTimer;

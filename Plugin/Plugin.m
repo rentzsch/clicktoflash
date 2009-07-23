@@ -747,21 +747,30 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) badgeLabelText
 {
-	if( [ self _useHDH264Version ] && [self _hasHDH264Version])
+	if( [ self _useHDH264Version ] && [self _hasHDH264Version]) {
 		return NSLocalizedString( @"HD H.264", @"HD H.264 badge text" );
-    if( [ self _useH264Version ] && [self _hasH264Version])
-        return NSLocalizedString( @"H.264", @"H.264 badge text" );
-    else if( _fromYouTube && _videoId)
+	} else if( [ self _useH264Version ] && [self _hasH264Version]) {
+		if (_receivedAllResponses) {
+			return NSLocalizedString( @"H.264", @"H.264 badge text" );
+		} else {
+			return NSLocalizedString( @"H.264…", @"H.264 badge waiting text" );
+		}
+    } else if( _fromYouTube && _videoId) {
 		// we check the video ID too because if it's a flash ad on YouTube.com,
 		// we don't want to identify it as an actual YouTube video -- but if
 		// the flash object actually has a video ID parameter, it means its
 		// a bona fide YouTube video
 		
-        return NSLocalizedString( @"YouTube", @"YouTube badge text" );
-    else if( _badgeText )
+		if (_receivedAllResponses) {
+			return NSLocalizedString( @"YouTube", @"YouTube badge text" );
+		} else {
+			return NSLocalizedString( @"YouTube…", @"YouTube badge waiting text" );
+		}
+    } else if( _badgeText ) {
         return _badgeText;
-    else
+    } else {
         return NSLocalizedString( @"Flash", @"Flash badge text" );
+	}
 }
 
 - (void) _drawBadgeWithPressed: (BOOL) pressed
@@ -1138,12 +1147,13 @@ BOOL usingMATrackingArea = NO;
 		}
 
 		expectedResponses = 2;
+		_receivedAllResponses = NO;
 	}
 }
 
 - (void)finishedWithConnection:(NSURLConnection *)connection
 {
-	BOOL receivedAllResponses = YES;
+	BOOL didReceiveAllResponses = YES;
 	
 	for (int i = 0; i < 2; ++i) {
 		if (connection == connections[i]) {
@@ -1151,11 +1161,13 @@ BOOL usingMATrackingArea = NO;
 			[connection release];
 			connections[i] = nil;
 		} else if (connections[i])
-			receivedAllResponses = NO;
+			didReceiveAllResponses = NO;
 	}
 	
-	if (receivedAllResponses)
-		[self setUpExtraMenuItems];
+	if (didReceiveAllResponses) _receivedAllResponses = YES;
+	
+	[self setUpExtraMenuItems];
+	[self setNeedsDisplay:YES];
 }
 
 - (void)connection:(NSURLConnection *)connection
