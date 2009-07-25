@@ -124,6 +124,7 @@ BOOL usingMATrackingArea = NO;
 														@"com.adobe.flexbuilder",
 														@"com.Zattoo.prefs",
 														@"fr.understudy.HuluPlayer",
+														@"com.apple.iWeb",
 							nil];
 		
 		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
@@ -719,11 +720,6 @@ BOOL usingMATrackingArea = NO;
         if ([self _isHostWhitelisted])
             enabled = NO;
     }
-    else if (action == @selector(removeFromWhitelist:))
-    {
-        if (![self _isHostWhitelisted])
-            enabled = NO;
-    }
     
     return enabled;
 }
@@ -806,15 +802,10 @@ BOOL usingMATrackingArea = NO;
 	
 	NSString* str = [ self badgeLabelText ];
 	
-	NSShadow *superAwesomeShadow = [[NSShadow alloc] init];
-	[superAwesomeShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
-	[superAwesomeShadow setShadowColor:[NSColor whiteColor]];
-	[superAwesomeShadow autorelease];
 	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
 						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
 						   [ NSNumber numberWithInt: -1 ], NSKernAttributeName,
 						   [ NSColor blackColor ], NSForegroundColorAttributeName,
-						   superAwesomeShadow, NSShadowAttributeName,
 						   nil ];
 	
 	// Set up for drawing.
@@ -879,7 +870,7 @@ BOOL usingMATrackingArea = NO;
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.50 : 0.35 );
+    CGContextSetAlpha( context, pressed ? 0.40 : 0.25 );
     CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
@@ -888,24 +879,13 @@ BOOL usingMATrackingArea = NO;
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
 	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
-	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
+	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.25 ] set ];
 	[ fillPath fill ];
 	
-	NSUInteger thickLineWidth = 5;
 	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
 	[ [ NSColor blackColor ] set ];
-	[ path setLineWidth: thickLineWidth ];
+	[ path setLineWidth: 3 ];
 	[ path stroke ];
-	
-	NSUInteger thinLineWidth = 2;
-	NSRect thinBorderRect = NSMakeRect( loc.x - kFrameXInset - thickLineWidth/4,
-										loc.y - kFrameYInset - thickLineWidth/4,
-										w + thickLineWidth/2,
-										h + thickLineWidth/2);
-	NSBezierPath* thinPath = bezierPathWithRoundedRectCornerRadius( thinBorderRect, 4 );
-	[ [ NSColor whiteColor ] set ];
-	[ thinPath setLineWidth: thinLineWidth ];
-	[ thinPath stroke ];
 	
     [ str drawAtPoint: loc withAttributes: attrs ];
 	

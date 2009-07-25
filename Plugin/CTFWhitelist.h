@@ -31,7 +31,6 @@ THE SOFTWARE.
 @interface CTFClickToFlashPlugin( Whitelist )
 
 - (IBAction) addToWhitelist: (id) sender;
-- (IBAction) removeFromWhitelist: (id) sender;
 - (IBAction) editWhitelist: (id) sender;
 
 - (void) _migrateWhitelist;
