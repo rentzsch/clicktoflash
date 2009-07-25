@@ -152,9 +152,12 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (BOOL) _isHostWhitelisted
 {
-	// Nil hosts whitelisted by default (e.g. Dashboard)
-	if (![self host])
-	{
+	if ( [[self baseURL] hasPrefix:@"about:"] ) {
+		// encountered an ad on addictinggames.com where it loaded an
+		// about:blank page and then inserted ads there
+		return NO;
+	} else if ( ![self host] ) {
+		// Nil hosts whitelisted by default (e.g. Dashboard)
 		return YES;
 	}
 	

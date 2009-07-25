@@ -704,10 +704,18 @@ BOOL usingMATrackingArea = NO;
     SEL action = [menuItem action];
     if (action == @selector(addToWhitelist:))
     {
-        NSString* title = [NSString stringWithFormat:
-                NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), 
-                [self host]];
-        [menuItem setTitle: title];
+		if ([self host]) {
+			NSString* title = [NSString stringWithFormat:
+							   NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), 
+							   [self host]];
+			[menuItem setTitle: title];
+		} else {
+			// this case happens sometimes if the base URL is "about:blank",
+			// so there's no base URL to use for the whitelist, so just disable
+			// the menu item
+			enabled = NO;
+		}
+       
         if ([self _isHostWhitelisted])
             enabled = NO;
     }
