@@ -823,7 +823,8 @@ BOOL usingMATrackingArea = NO;
 	// Compute a scale factor based on the view's size.
 	
 	float maxW = NSWidth( bounds ) - kMinMargin;
-	float maxH = NSHeight( bounds ) - kMinMargin;
+	// the 9/10 factor here is to account for the 60% vertical top-biasing
+	float maxH = NSHeight( bounds )*9/10 - kMinMargin;
 	float minW = kMinHeight * w / h;
 	
 	BOOL rotate = NO;
@@ -861,7 +862,8 @@ BOOL usingMATrackingArea = NO;
 	[ NSGraphicsContext saveGraphicsState ];
     
 	NSAffineTransform* xform = [ NSAffineTransform transform ];
-	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
+	// vertical top-bias by 60% here
+	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 10 * 6 ];
 	[ xform scaleBy: scaleFactor ];
 	if( rotate )
 		[ xform rotateByDegrees: 90 ];
