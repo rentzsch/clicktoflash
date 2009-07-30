@@ -192,8 +192,11 @@ BOOL usingMATrackingArea = NO;
 		// check whether it's from YouTube and get the video_id
 		
         _fromYouTube = [[self host] isEqualToString:@"www.youtube.com"]
+		|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]
 		|| ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound )
-		|| ([self src] != nil && [[self src] rangeOfString: @"youtube.com"].location != NSNotFound );
+		|| ( flashvars != nil && [flashvars rangeOfString: @"www.youtube-nocookie.com"].location != NSNotFound )
+		|| ([self src] != nil && [[self src] rangeOfString: @"youtube.com"].location != NSNotFound )
+		|| ([self src] != nil && [[self src] rangeOfString: @"youtube-nocookie.com"].location != NSNotFound );
 		
         if (_fromYouTube) {
 			NSString *videoId = [ self flashvarWithName: @"video_id" ];
@@ -219,6 +222,13 @@ BOOL usingMATrackingArea = NO;
 					
 					[URLScanner scanUpToString:@"&" intoString:&videoIdFromURL];
 					if (videoIdFromURL) [self setVideoId:videoIdFromURL];
+				} else {
+					[URLScanner setScanLocation:0];
+					[URLScanner scanUpToString:@"youtube-nocookie.com/v/" intoString:nil];
+					if ([URLScanner scanString:@"youtube-nocookie.com/v/" intoString:nil]) {
+						[URLScanner scanUpToString:@"&" intoString:&videoIdFromURL];
+						if (videoIdFromURL) [self setVideoId:videoIdFromURL];
+					}
 				}
 				[URLScanner release];
 				
