@@ -34,7 +34,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 	* [CHANGE] Deleted unused 'Remove from Whitelist...' contextual menu item. bug [79](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/79) ([Jonathan Rentzsch](http://github.com/rentzsch/clicktoflash/commit/506c049859d0aa78896e0ebcda2aaf1abab7a934))
 
-	* [FIX] Added :restart task to Rakefile so that Safari is restarted when compiling a new ClickToFlash version. ([Ale Mu–oz](http://github.com/rentzsch/clicktoflash/commit/c1c717dfb213d8e88af746fad3c06b9db3f96a1d))
+	* [FIX] Added :restart task to Rakefile so that Safari is restarted when compiling a new ClickToFlash version. ([Ale Mu&ntilde;oz](http://github.com/rentzsch/clicktoflash/commit/c1c717dfb213d8e88af746fad3c06b9db3f96a1d))
 
 	* [FIX] YouTube views now have a 'YouTube' badge if the 'Load H.264' preference is checked. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c34feb0d3ad76dc18e73a13f9203d94e355975bc))
 
@@ -42,7 +42,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 	* [FIX] Shortened obscenely long tooltips to 200 characters. bug [234](http://rentzsch.lighthouseapp.com/projects/24342/tickets/234) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/69ddaf9b5ba93516e0e388b3bf2d52166b957ce2))
 
-	* [FIX] Vertical top-bias the badge by 60% so that centered loading text doesn't obscure the badge. bug [56](http://rentzsch.lighthouseapp.com/projects/24342/tickets/234) ([Simone Manganelli])(http://github.com/rentzsch/clicktoflash/commit/056f38b4a23b9e9b5494efdd35e6a25f0890209d))
+	* [FIX] Vertical top-bias the badge by 60% so that centered loading text doesn't obscure the badge. bug [56](http://rentzsch.lighthouseapp.com/projects/24342/tickets/56) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/056f38b4a23b9e9b5494efdd35e6a25f0890209d))
 
 	* [FIX] Sites that loaded 'about:blank' into an iFrame for ads were having their ads auto-loaded. bug [240](http://rentzsch.lighthouseapp.com/projects/24342/tickets/240) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/ec2265a152b28b8edaee5518ca1101a2ae6a6eb5))
 
