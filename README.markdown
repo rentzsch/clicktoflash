@@ -2,6 +2,54 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 ##Version History
 
+* **1.5b5** [download](http://rentzsch.github.com/clicktoflash/)
+
+	* [NEW] Support for HD YouTube videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e03c375ae6358d09e23e371c8402902c2fae14de))
+
+	* [NEW] YouTube H.264 support now works with embedded videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/fe5d72cec8d65ab3ea78650fbeb985a9718b6c3f))
+
+	* [FIX] Website whitelist works again. (Simone Manganelli's fault for the bug, also for the fix [1](http://github.com/rentzsch/clicktoflash/commit/2a7423af19ed8d1ea37b3a37a6cee68ef8e8f8f2), [2](http://github.com/rentzsch/clicktoflash/commit/a87d6f32f60353e931cfa0ad6e24321e9fd80b1b) )
+
+	* [NEW] Mac app devs can opt out of ClickToFlash on their own by setting 'ClickToFlashOptOut' to YES in their app's Info.plist file. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/7afbf03f62dd77eac1377d6bf4a38f4efd780771))
+
+	* [CHANGE] Gear contextual menu is now always displayed, unless hidden pref 'drawGearImageOnlyOnMouseOver' is set to YES. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/9524aea31f41cb769b3b2f9bc1d15955d5ed2a1a))
+
+	* [FIX] Zattoo, iWeb added to the internal application whitelist. ([Mo McRoberts](http://github.com/rentzsch/clicktoflash/commit/4ec7893e3fd7768c8e9179c866eea258fdbe4660), [Jonathan Rentzsch](http://github.com/rentzsch/clicktoflash/commit/29b08bf159fa3d6291e77f59110c6990461623b9))
+
+	* [FIX] Added Front Row to the application whitelist so that understudy works. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c94e3f0af2e5c48ec7aaef3d2bdce5bae7001ccf))
+
+	* [FIX] 'Check Now' button is still enabled even if auto-updating is turned off. bug [200](http://rentzsch.lighthouseapp.com/projects/24342/tickets/200) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/d8bb666ad9cf007e1d581dba656bde2c80cbd340))
+
+	* [FIX] Sparkle status window goes away if the user chooses to restart the app after install at a later date. bug [191](http://rentzsch.lighthouseapp.com/projects/24342/tickets/191) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c768f07087c769f12f7645e78dd42802da46048b))
+
+	* [FIX] Modified installer package bundle ID back to 'com.github.rentzsch.clicktoflash.pkg' ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/62c89295fa30edc7af73dc40216efd18be6f296f))
+
+	* [FIX] More clang static analyzer fixes. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/0236542d1adc5d0aece70ab37b4276e01da32171))
+
+	* [FIX] Changed plugin name to the canonical spelling 'ClickToFlash' plug-in-wide. (Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/1ffec928b54ab55a4475de65c20410c84bff9b26), [2](http://github.com/rentzsch/clicktoflash/commit/33b9caaa4ce6bfac5aa7985d170d04cef9c3d18c), [3](http://github.com/rentzsch/clicktoflash/commit/047eedd562e43eac024da17504e183b0347b0cba))
+
+	* [FIX] Various fixes for H.264 variant checking. (Chris Suter [1](http://github.com/rentzsch/clicktoflash/commit/3b7739e4244e6ac77300df2526e1f47850f16582), [2](http://github.com/rentzsch/clicktoflash/commit/df8cb97f3333d87193af73b8479d888484c4e86b), Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/5ad0fe636d59809146c6f13b5ff50cc8833e3df5), [2](http://github.com/rentzsch/clicktoflash/commit/32aacf1279ccbabb53a41932c65d647475c1fdd4))
+
+	* [FIX] Enable building when the project path has spaces. ([Nathan de Vries](http://github.com/rentzsch/clicktoflash/commit/b87e08bce2a1ac0dc7b31ea5ad633f6afd7e1256))
+
+	* [CHANGE] Deleted unused 'Remove from Whitelist...' contextual menu item. bug [79](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/79) ([Jonathan Rentzsch](http://github.com/rentzsch/clicktoflash/commit/506c049859d0aa78896e0ebcda2aaf1abab7a934))
+
+	* [FIX] Added :restart task to Rakefile so that Safari is restarted when compiling a new ClickToFlash version. ([Ale Mu–oz](http://github.com/rentzsch/clicktoflash/commit/c1c717dfb213d8e88af746fad3c06b9db3f96a1d))
+
+	* [FIX] YouTube views now have a 'YouTube' badge if the 'Load H.264' preference is checked. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c34feb0d3ad76dc18e73a13f9203d94e355975bc))
+
+	* [CHANGE] Badge shows an ellipsis (...) if it's still checking for H.264 variants. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/f1d8c95336945de0fd126cfce98708870ecfc357))
+
+	* [FIX] Shortened obscenely long tooltips to 200 characters. bug [234](http://rentzsch.lighthouseapp.com/projects/24342/tickets/234) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/69ddaf9b5ba93516e0e388b3bf2d52166b957ce2))
+
+	* [FIX] Vertical top-bias the badge by 60% so that centered loading text doesn't obscure the badge. bug [56](http://rentzsch.lighthouseapp.com/projects/24342/tickets/234) ([Simone Manganelli])(http://github.com/rentzsch/clicktoflash/commit/056f38b4a23b9e9b5494efdd35e6a25f0890209d))
+
+	* [FIX] Sites that loaded 'about:blank' into an iFrame for ads were having their ads auto-loaded. bug [240](http://rentzsch.lighthouseapp.com/projects/24342/tickets/240) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/ec2265a152b28b8edaee5518ca1101a2ae6a6eb5))
+
+	* [FIX] YouTube videos loaded from www.youtube-nocookie.com were not being recognized by ClickToFlash. bug [249](http://rentzsch.lighthouseapp.com/projects/24342/tickets/249) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/dc5bf53f963e914c81285340d05ee7cdc8cae049))
+
+	* [FIX] Changed 'Open YouTube.com page for this video' to open in the current window in the host app rather than in a new window in Safari. ([Sven-S. Porst](http://github.com/ssp/clicktoflash/commit/26de0f0bd64fd259d96fa15bb43d3f9d87588ff5))
+
 * **1.5b4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b4.zip)
 
 	* [NEW] "Play Fullscreen in QuickTime Player" contextual menu command for viewing YouTube videos in QuickTime Player (which has niceties like supporting the Apple remote). [bug 216](http://rentzsch.lighthouseapp.com/projects/24342/tickets/216) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/27dd7e5d64b5993fc492b06ec940d2820f323330))
