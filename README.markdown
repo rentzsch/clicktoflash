@@ -8,7 +8,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 	* [NEW] YouTube H.264 support now works with embedded videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/fe5d72cec8d65ab3ea78650fbeb985a9718b6c3f))
 
-	* [FIX] Website whitelist works again. (Simone Manganelli's fault for the bug, also for the fix [1](http://github.com/rentzsch/clicktoflash/commit/2a7423af19ed8d1ea37b3a37a6cee68ef8e8f8f2), [2](http://github.com/rentzsch/clicktoflash/commit/a87d6f32f60353e931cfa0ad6e24321e9fd80b1b) )
+	* [FIX] Website whitelist works again. (Simone Manganelli's fault for the bug, also for the fix [1](http://github.com/rentzsch/clicktoflash/commit/2a7423af19ed8d1ea37b3a37a6cee68ef8e8f8f2), [2](http://github.com/rentzsch/clicktoflash/commit/a87d6f32f60353e931cfa0ad6e24321e9fd80b1b))
 
 	* [NEW] Mac app devs can opt out of ClickToFlash on their own by setting 'ClickToFlashOptOut' to YES in their app's Info.plist file. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/7afbf03f62dd77eac1377d6bf4a38f4efd780771))
 
