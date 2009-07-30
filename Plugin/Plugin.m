@@ -1380,11 +1380,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 {
 	NSString* YouTubePageURL = [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@", [self videoId] ];
 	
-	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:YouTubePageURL]]
-					withAppBundleIdentifier:[self launchedAppBundleIdentifier]
-									options:NSWorkspaceLaunchDefault
-			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
-						  launchIdentifiers:nil];
+    [_webView setMainFrameURL:YouTubePageURL];
 }
 
 - (IBAction)openFullscreenInQTPlayer:(id)sender;
