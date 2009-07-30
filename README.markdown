@@ -26,7 +26,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 	* [FIX] More clang static analyzer fixes. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/0236542d1adc5d0aece70ab37b4276e01da32171))
 
-	* [FIX] Changed plugin name to the canonical spelling 'ClickToFlash' plug-in-wide. (Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/1ffec928b54ab55a4475de65c20410c84bff9b26), [2](http://github.com/rentzsch/clicktoflash/commit/33b9caaa4ce6bfac5aa7985d170d04cef9c3d18c), [3](http://github.com/rentzsch/clicktoflash/commit/047eedd562e43eac024da17504e183b0347b0cba))
+	* [FIX] Changed name to the canonical spelling 'ClickToFlash' plug-in-wide. (Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/1ffec928b54ab55a4475de65c20410c84bff9b26), [2](http://github.com/rentzsch/clicktoflash/commit/33b9caaa4ce6bfac5aa7985d170d04cef9c3d18c), [3](http://github.com/rentzsch/clicktoflash/commit/047eedd562e43eac024da17504e183b0347b0cba))
 
 	* [FIX] Various fixes for H.264 variant checking. (Chris Suter [1](http://github.com/rentzsch/clicktoflash/commit/3b7739e4244e6ac77300df2526e1f47850f16582), [2](http://github.com/rentzsch/clicktoflash/commit/df8cb97f3333d87193af73b8479d888484c4e86b), Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/5ad0fe636d59809146c6f13b5ff50cc8833e3df5), [2](http://github.com/rentzsch/clicktoflash/commit/32aacf1279ccbabb53a41932c65d647475c1fdd4))
 
