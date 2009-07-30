@@ -44,7 +44,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 	* [FIX] Vertical top-bias the badge by 60% so that centered loading text doesn't obscure the badge. bug [56](http://rentzsch.lighthouseapp.com/projects/24342/tickets/56) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/056f38b4a23b9e9b5494efdd35e6a25f0890209d))
 
-	* [FIX] Sites that loaded 'about:blank' into an iFrame for ads were having their ads auto-loaded. bug [240](http://rentzsch.lighthouseapp.com/projects/24342/tickets/240) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/ec2265a152b28b8edaee5518ca1101a2ae6a6eb5))
+	* [FIX] Sites that loaded 'about:blank' into an iframe for ads were having their ads auto-loaded. bug [240](http://rentzsch.lighthouseapp.com/projects/24342/tickets/240) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/ec2265a152b28b8edaee5518ca1101a2ae6a6eb5))
 
 	* [FIX] YouTube videos loaded from www.youtube-nocookie.com were not being recognized by ClickToFlash. bug [249](http://rentzsch.lighthouseapp.com/projects/24342/tickets/249) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/dc5bf53f963e914c81285340d05ee7cdc8cae049))
 
