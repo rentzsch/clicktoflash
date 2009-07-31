@@ -95,7 +95,9 @@ static NSMenu* appMenu()
 			
 			NSMenuItem* item = [ applicationMenu itemAtIndex: i ];
 			
-			if( [ item action ] == @selector( showPreferences: ) )
+			if( [ item action ] == @selector( showPreferences: )
+			   || [ item action ] == @selector( showPreferencePanel: )
+			   || [ item action ] == @selector( showPreferencesPanel: ) )
 				showPrefsItem = i;
 			
 			if( showPrefsItem >= 0 && [ item isSeparatorItem ] ) {
