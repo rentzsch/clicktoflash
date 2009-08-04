@@ -2,7 +2,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 ##Version History
 
-* **1.5b5** [download](http://rentzsch.github.com/clicktoflash/)
+* **1.5b5** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b5.zip)
 
 	* [NEW] Support for HD YouTube videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e03c375ae6358d09e23e371c8402902c2fae14de))
 
