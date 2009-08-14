@@ -1271,18 +1271,21 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	}
     
     [ element setAttribute: @"src" value: src ];
-    [ element setAttribute: @"type" value: @"video/mp4" ];
-    [ element setAttribute: @"scale" value: @"aspect" ];
-    [ element setAttribute: @"autoplay" value: @"true" ];
-    [ element setAttribute: @"cache" value: @"false" ];
-   
-    if( ! [ element hasAttribute: @"width" ] )
+	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
+	[ element setAttribute: @"autoplay" value:@"autoplay"];
+	[ element setAttribute: @"controls" value:@"controls"];
+	
+	DOMElement* container = [self container];
+	
+    if( [ container hasAttribute: @"width" ] )
+		[ element setAttribute: @"width" value:[ container getAttribute:@"width"]];
+	else
         [ element setAttribute: @"width" value: @"640" ];
    
-    if( ! [ element hasAttribute: @"height" ] )
+    if( [ container hasAttribute: @"height" ] )
+	   [ element setAttribute: @"height" value:[ container getAttribute:@"height"]];
+	else
        [ element setAttribute: @"height" value: @"500" ];
-
-    [ element setAttribute: @"flashvars" value: nil ];
 }
 
 - (void) _convertToMP4Container
@@ -1296,7 +1299,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (void) _convertToMP4ContainerAfterDelay
 {
-    DOMElement* newElement = (DOMElement*) [ [self container] cloneNode: NO ];
+	DOMElement* newElement = [[[self container] ownerDocument] createElement:@"video"];
     
     [ self _convertElementForMP4: newElement ];
     
