@@ -1256,21 +1256,55 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
 }
 
-- (void) _convertElementForMP4: (DOMElement*) element
+- (BOOL)_isVideoElementAvailable
+{
+	/* <video> element compatibility was added to WebKit in or shortly before version 5525. */
+	
+    NSBundle* webKitBundle;
+    webKitBundle = [ NSBundle bundleForClass: [ DOMNode class ] ];
+    if (webKitBundle) {
+        return [ (NSString*) [ [ webKitBundle infoDictionary ] valueForKey: @"CFBundleShortVersionString" ] 
+				 intValue ] >= 5525;
+    }
+	return NO;
+}
+
+- (NSString*) _h264VersionUrl
 {
     NSString* video_id = [self videoId];
     NSString* video_hash = [ self _videoHash ];
     
 	NSString* src;
-	if ([self _hasHDH264Version]) {
+	if ([ self _hasHDH264Version ]) {
 		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-						 video_id, video_hash ];
+			   video_id, video_hash ];
 	} else {
 		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-													video_id, video_hash ];
+			   video_id, video_hash ];
 	}
-    
-    [ element setAttribute: @"src" value: src ];
+	return src;
+}
+
+- (void) _convertElementForMP4: (DOMElement*) element
+{
+    [ element setAttribute: @"src" value: [ self _h264VersionUrl ]];
+    [ element setAttribute: @"type" value: @"video/mp4" ];
+    [ element setAttribute: @"scale" value: @"aspect" ];
+    [ element setAttribute: @"autoplay" value: @"true" ];
+    [ element setAttribute: @"cache" value: @"false" ];
+	
+    if( ! [ element hasAttribute: @"width" ] )
+        [ element setAttribute: @"width" value: @"640" ];
+	
+    if( ! [ element hasAttribute: @"height" ] )
+		[ element setAttribute: @"height" value: @"500" ];
+	
+    [ element setAttribute: @"flashvars" value: nil ];
+}
+
+- (void) _convertElementForVideoElement: (DOMElement*) element
+{
+    [ element setAttribute: @"src" value: [ self _h264VersionUrl ] ];
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
 	[ element setAttribute: @"autoplay" value:@"autoplay"];
 	[ element setAttribute: @"controls" value:@"controls"];
@@ -1299,10 +1333,14 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (void) _convertToMP4ContainerAfterDelay
 {
-	DOMElement* newElement = [[[self container] ownerDocument] createElement:@"video"];
-    
-    [ self _convertElementForMP4: newElement ];
-    
+	DOMElement* newElement;
+	if ([ self _isVideoElementAvailable ]) {
+		newElement = [[[self container] ownerDocument] createElement:@"video"];
+		[ self _convertElementForVideoElement: newElement ];
+    } else {
+		newElement = (DOMElement*) [ [self container] cloneNode: NO ];
+		[ self _convertElementForMP4:newElement ];
+	}
     // Just to be safe, since we are about to replace our containing element
     [[self retain] autorelease];
     

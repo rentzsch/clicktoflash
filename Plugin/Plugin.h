@@ -85,6 +85,8 @@ THE SOFTWARE.
 - (BOOL)_hasH264Version;
 - (void)_setHasH264Version:(BOOL)newValue;
 - (BOOL)_hasHDH264Version;
+- (NSString*)_h264VersionUrl;
+- (BOOL)_isVideoElementAvailable;
 - (void)_setHasHDH264Version:(BOOL)newValue;
 - (NSString *)launchedAppBundleIdentifier;
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
