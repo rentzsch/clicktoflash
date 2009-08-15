@@ -39,6 +39,10 @@ THE SOFTWARE.
 
 #define LOGGING_ENABLED 0
 
+#ifndef NSAppKitVersionNumber10_5
+#define NSAppKitVersionNumber10_5 949
+#endif
+
     // MIME types
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
@@ -1397,8 +1401,14 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 			   video_id, video_hash ];
 	}
 	
-	NSString *scriptSource = [NSString stringWithFormat:
+	NSString *scriptSource = nil;
+	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+		scriptSource = [NSString stringWithFormat:
+							  @"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\npresent front document\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
+	} else {
+		scriptSource = [NSString stringWithFormat:
 							  @"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
+	}
 	NSAppleScript *openInQTPlayerScript = [[NSAppleScript alloc] initWithSource:scriptSource];
 	[openInQTPlayerScript executeAndReturnError:nil];
 	[openInQTPlayerScript release];
