@@ -1403,8 +1403,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	
 	NSString *scriptSource = nil;
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+		// Snowy Leopard
 		scriptSource = [NSString stringWithFormat:
-							  @"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\npresent front document\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
+							  @"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\nrepeat while (front document is not presenting)\ndelay 1\npresent front document\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
 	} else {
 		scriptSource = [NSString stringWithFormat:
 							  @"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
