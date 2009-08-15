@@ -1322,15 +1322,8 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	
 	DOMElement* container = [self container];
 	
-    if( [ container hasAttribute: @"width" ] )
-		[ element setAttribute: @"width" value:[ container getAttribute:@"width"]];
-	else
-        [ element setAttribute: @"width" value: @"640" ];
-   
-    if( [ container hasAttribute: @"height" ] )
-	   [ element setAttribute: @"height" value:[ container getAttribute:@"height"]];
-	else
-       [ element setAttribute: @"height" value: @"500" ];
+	[ element setAttribute:@"width" value:[ NSString stringWithFormat:@"%dpx", [ container clientWidth ]]];
+	[ element setAttribute:@"height" value:[ NSString stringWithFormat:@"%dpx", [ container clientHeight ]]];
 }
 
 - (void) _convertToMP4Container
