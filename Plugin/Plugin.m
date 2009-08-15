@@ -1258,14 +1258,25 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (BOOL)_isVideoElementAvailable
 {
-	/* <video> element compatibility was added to WebKit in or shortly before version 5525. */
+	/* <video> element compatibility was added to WebKit in or shortly before version 525. */
 	
     NSBundle* webKitBundle;
     webKitBundle = [ NSBundle bundleForClass: [ WebView class ] ];
     if (webKitBundle) {
-        return [ (NSString*) [ [ webKitBundle infoDictionary ] valueForKey: @"CFBundleShortVersionString" ] 
-				 intValue ] >= 5525;
-    }
+		/* ref. http://lists.apple.com/archives/webkitsdk-dev/2008/Nov/msg00003.html:
+		 * CFBundleVersion is 5xxx.y on WebKits built to run on Leopard, 4xxx.y on Tiger.
+		 * Unspecific builds (such as the ones in OmniWeb) get xxx.y numbers without a prefix.
+		 */
+		int normalizedVersion;
+		float wkVersion = [ (NSString*) [ [ webKitBundle infoDictionary ] 
+										 valueForKey: @"CFBundleVersion" ] 
+						   floatValue ];
+		if (wkVersion > 4000)
+			normalizedVersion = (int)wkVersion % 1000;
+		else
+			normalizedVersion = wkVersion;
+        return normalizedVersion >= 525;
+	}
 	return NO;
 }
 
