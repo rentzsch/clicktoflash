@@ -1261,7 +1261,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	/* <video> element compatibility was added to WebKit in or shortly before version 5525. */
 	
     NSBundle* webKitBundle;
-    webKitBundle = [ NSBundle bundleForClass: [ DOMNode class ] ];
+    webKitBundle = [ NSBundle bundleForClass: [ WebView class ] ];
     if (webKitBundle) {
         return [ (NSString*) [ [ webKitBundle infoDictionary ] valueForKey: @"CFBundleShortVersionString" ] 
 				 intValue ] >= 5525;
