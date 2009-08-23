@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ClickToFlash 1.4fc1 release notes</title>
+</head>
+<body>
+	<li>
+		<p>
+			<strong>1.4fc1</strong>
+		</p>
+		<ul>
+			<li>
+				<p>
+					[NEW] Menu command to load all flash views &mdash; or just invisible ones &mdash; on a page. This should fix a number of sites that don&rsquo;t at first seem to work with ClickToFlash. (Simone Manganelli, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] &ldquo;Click To Flash&rdquo; menu item(s). Installs automatically into Safari and Vienna under their application menus. (Simone Manganelli, Jeff Johnson, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Explicit YouTube support. Built-in support for directly loading higher-quality H.264 versions of videos (contextual menu item &ldquo;Load H.264&rdquo;). (<a href="http://www.joeyhagedorn.com/2008/04/16/youtube-in-mp4-via-quicktime-plugin">Joey Hagedorn</a>, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Explicit <a href="http://www.mikeindustries.com/sifr">sIFR</a> support: ignore sIFR, always load it or always suppress it. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/49">bug 49</a> (Ian Wessman, et al.)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Edit whitelist in Settings panel. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/25">bug 25</a> (Ben Gottlieb <a href="http://github.com/rentzsch/clicktoflash/commit/4e013686359f7a11371e16919f292eb91c249ebb">1</a>, <a href="http://github.com/rentzsch/clicktoflash/commit/d193a728c32af21345af083cc4a22c7a26c97f42">2</a>, et al. <a href="http://github.com/rentzsch/clicktoflash/commit/1da96792eecc4252c90c706576fbfc1f1afd3860">1</a>, <a href="http://github.com/rentzsch/clicktoflash/commit/16b844c96b6423629d6de707ee3fe69257dbd7ce">2</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Old custom installer replaced with a standard Installer.app .pkg. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/27">bug 27</a> (<a href="http://github.com/xoob/clicktoflash/commit/2866d8e8415114ae75f60ff8d107e78e5fe40b2c">Alexander Brausewetter</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Automatic plugin updating via Sparkle. <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/28">bug 28</a> (rentzsch)
+				</p>
+			</li>
+			<li>
+				<p>
+					[NEW] Whitelisting now takes into account an object&rsquo;s <code>src</code> URL, which should allow embedded videos from whitelisted sites to play (e.g. YouTube). <a href="http://rentzsch.lighthouseapp.com/projects/24342/tickets/57">bug 57</a> (<a href="http://github.com/rentzsch/clicktoflash/commit/a4388f32d13f00263d11d9d06f21778bea5724dc">Ian Wessman</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[CHANGE] Badge now renders better on a variety of backgrounds.
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Fixed bugs identified by clang static analyzer. (<a href="http://github.com/rentzsch/clicktoflash/commit/aced770608344960131f58e49457d0a73687d38c">Jeff Johnson</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[FIX] Fixed leak that caused all CtF views to not be deallocated by using validateMenuItem to update the Add <code>&lt;site&gt;</code> to Whitelist menu item instead of a binding. (<a href="http://github.com/rentzsch/clicktoflash/commit/912e28f5befe90db92be971d5899de5cbd3b6a89">1</a>) 
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Fix deprecated use of <code>+stringWithContentsOfFile:</code>. (<a href="http://github.com/rentzsch/clicktoflash/commit/7a1e8490737db4734b3e8fc3374fabfdc49ee756">Chris Parker</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Clean up build settings. No need to build universal in Debug or link to Carbon. (<a href="http://github.com/rentzsch/clicktoflash/commit/9a47274242904b8928b17d842137e75c71fe1c73">Jeff Johnson</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Add build warnings. Fix resulting warnings. Treat warnings as errors. (Jeff Johnson <a href="http://github.com/rentzsch/clicktoflash/commit/cf6dfbb4978596961ba232279994a65b00b9e30b">1</a>, <a href="http://github.com/rentzsch/clicktoflash/commit/69c0083117174d05b69a62c164fc1779e5fc55b0">2</a>)
+				</p>
+			</li>
+			<li>
+				<p>
+					[DEV] Populate CFBundleVersion with ${PRODUCT_VERSION} instead of hard-coding with 700. (Dave Dribin)
+				</p>
+			</li>
+		</ul>
+	</li>
+</body>
+</html>
