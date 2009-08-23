@@ -1,28 +1,54 @@
-#[Download ClickToFlash 1.4.2 here](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip)
-
-**Note: if ClickToFlash installation fails, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash:** 
-
-	sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg
-
-Please note: if you see the following error:
-
-	No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.
-
-**you do not need to worry about anything.**  If you see this error, then the next time you install ClickToFlash, it should work correctly.
-
-Currently requires Mac OS X 10.5 Leopard.
-
-ClickToFlash is a WebKit plug-in that prevents automatic loading of Adobe Flash content. If you want to see the content, you can opt-in by clicking on it or adding an entire site to the whitelist.
-
-Try control-clicking (or right-clicking) on an unloaded Flash box to access ClickToFlash's contextual menu which allows you to do advanced things like edit its whitelist, specify settings, and load all Flash on the page.
-
-Please [report bugs and request features](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/new) on the [Lighthouse ClickToFlash project site](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=all).
-
-Want to chip in? [Here's what needs to be done](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets?q=not-tagged%3Abrokensite+state%3Aopen&filter=).
-
-To uninstall ClickToFlash: for versions 1.5b4 and later, go to the Settings window and click the "Uninstall ClickToFlash" button.  For versions prior to 1.5b4, navigate to ~/Library/Internet Plug-ins/ in the Finder, where ~ is your home folder, and delete the item named "ClickToFlash.webplugin" (or "ClickToFlash.plugin").
+This page only hosts the source code for ClickToFlash.  To download ClickToFlash, learn how to use it, solve installation problems, fix a PandoraJam incompatibility issue, and more, please visit the [ClickToFlash website](http://rentzsch.github.com/clicktoflash/).
 
 ##Version History
+
+* **1.5b5** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b5.zip)
+
+	* [NEW] Support for HD YouTube videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e03c375ae6358d09e23e371c8402902c2fae14de))
+
+	* [NEW] YouTube H.264 support now works with embedded videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/fe5d72cec8d65ab3ea78650fbeb985a9718b6c3f))
+
+	* [FIX] Website whitelist works again. (Simone Manganelli's fault for the bug, also for the fix [1](http://github.com/rentzsch/clicktoflash/commit/2a7423af19ed8d1ea37b3a37a6cee68ef8e8f8f2), [2](http://github.com/rentzsch/clicktoflash/commit/a87d6f32f60353e931cfa0ad6e24321e9fd80b1b))
+
+	* [NEW] Mac app devs can opt out of ClickToFlash on their own by setting 'ClickToFlashOptOut' to YES in their app's Info.plist file. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/7afbf03f62dd77eac1377d6bf4a38f4efd780771))
+
+	* [CHANGE] Gear contextual menu is now always displayed, unless hidden pref 'drawGearImageOnlyOnMouseOver' is set to YES. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/9524aea31f41cb769b3b2f9bc1d15955d5ed2a1a))
+
+	* [FIX] Zattoo, iWeb added to the internal application whitelist. ([Mo McRoberts](http://github.com/rentzsch/clicktoflash/commit/4ec7893e3fd7768c8e9179c866eea258fdbe4660), [Jonathan Rentzsch](http://github.com/rentzsch/clicktoflash/commit/29b08bf159fa3d6291e77f59110c6990461623b9))
+
+	* [FIX] Added Front Row to the application whitelist so that understudy works. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c94e3f0af2e5c48ec7aaef3d2bdce5bae7001ccf))
+
+	* [FIX] 'Check Now' button is still enabled even if auto-updating is turned off. bug [200](http://rentzsch.lighthouseapp.com/projects/24342/tickets/200) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/d8bb666ad9cf007e1d581dba656bde2c80cbd340))
+
+	* [FIX] Sparkle status window goes away if the user chooses to restart the app after install at a later date. bug [191](http://rentzsch.lighthouseapp.com/projects/24342/tickets/191) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c768f07087c769f12f7645e78dd42802da46048b))
+
+	* [FIX] Modified installer package bundle ID back to 'com.github.rentzsch.clicktoflash.pkg' ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/62c89295fa30edc7af73dc40216efd18be6f296f))
+
+	* [FIX] More clang static analyzer fixes. ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/0236542d1adc5d0aece70ab37b4276e01da32171))
+
+	* [FIX] Changed name to the canonical spelling 'ClickToFlash' plug-in-wide. (Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/1ffec928b54ab55a4475de65c20410c84bff9b26), [2](http://github.com/rentzsch/clicktoflash/commit/33b9caaa4ce6bfac5aa7985d170d04cef9c3d18c), [3](http://github.com/rentzsch/clicktoflash/commit/047eedd562e43eac024da17504e183b0347b0cba))
+
+	* [FIX] Various fixes for H.264 variant checking. (Chris Suter [1](http://github.com/rentzsch/clicktoflash/commit/3b7739e4244e6ac77300df2526e1f47850f16582), [2](http://github.com/rentzsch/clicktoflash/commit/df8cb97f3333d87193af73b8479d888484c4e86b), Simone Manganelli [1](http://github.com/rentzsch/clicktoflash/commit/5ad0fe636d59809146c6f13b5ff50cc8833e3df5), [2](http://github.com/rentzsch/clicktoflash/commit/32aacf1279ccbabb53a41932c65d647475c1fdd4))
+
+	* [FIX] Enable building when the project path has spaces. ([Nathan de Vries](http://github.com/rentzsch/clicktoflash/commit/b87e08bce2a1ac0dc7b31ea5ad633f6afd7e1256))
+
+	* [CHANGE] Deleted unused 'Remove from Whitelist...' contextual menu item. bug [79](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/79) ([Jonathan Rentzsch](http://github.com/rentzsch/clicktoflash/commit/506c049859d0aa78896e0ebcda2aaf1abab7a934))
+
+	* [FIX] Added :restart task to Rakefile so that Safari is restarted when compiling a new ClickToFlash version. ([Ale Mu&ntilde;oz](http://github.com/rentzsch/clicktoflash/commit/c1c717dfb213d8e88af746fad3c06b9db3f96a1d))
+
+	* [FIX] YouTube views now have a 'YouTube' badge if the 'Load H.264' preference is checked. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/c34feb0d3ad76dc18e73a13f9203d94e355975bc))
+
+	* [CHANGE] Badge shows an ellipsis (...) if it's still checking for H.264 variants. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/f1d8c95336945de0fd126cfce98708870ecfc357))
+
+	* [FIX] Shortened obscenely long tooltips to 200 characters. bug [234](http://rentzsch.lighthouseapp.com/projects/24342/tickets/234) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/69ddaf9b5ba93516e0e388b3bf2d52166b957ce2))
+
+	* [FIX] Vertical top-bias the badge by 60% so that centered loading text doesn't obscure the badge. bug [56](http://rentzsch.lighthouseapp.com/projects/24342/tickets/56) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/056f38b4a23b9e9b5494efdd35e6a25f0890209d))
+
+	* [FIX] Sites that loaded 'about:blank' into an iframe for ads were having their ads auto-loaded. bug [240](http://rentzsch.lighthouseapp.com/projects/24342/tickets/240) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/ec2265a152b28b8edaee5518ca1101a2ae6a6eb5))
+
+	* [FIX] YouTube videos loaded from www.youtube-nocookie.com were not being recognized by ClickToFlash. bug [249](http://rentzsch.lighthouseapp.com/projects/24342/tickets/249) ([Simone Manganelli](http://github.com/simX/clicktoflash/commit/dc5bf53f963e914c81285340d05ee7cdc8cae049))
+
+	* [FIX] Changed 'Open YouTube.com page for this video' to open in the current window in the host app rather than in a new window in Safari. ([Sven-S. Porst](http://github.com/ssp/clicktoflash/commit/26de0f0bd64fd259d96fa15bb43d3f9d87588ff5))
 
 * **1.5b4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b4.zip)
 
@@ -89,9 +115,6 @@ To uninstall ClickToFlash: for versions 1.5b4 and later, go to the Settings wind
 	* [FIX] Quote pathnames in installation script. ([Cédric Luthi](http://github.com/rentzsch/clicktoflash/commit/80c7687a9b88b7c74afe28e31be791fe50a81ff5))
 
 * **1.4fc6** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip)
-	* **If you've been using any of the 1.4fcX releases, please issue the following Terminal command.  After doing so, again attempt reinstallation of ClickToFlash: `sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg`** 
-	Please note, if you receive this error: `No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'.`, you do not need to worry.  If you see this error, then the next time you install ClickToFlash, it should work correctly.
-
 	* [NEW] Option to disable ClickToFlash globally. [bug 94](http://rentzsch.lighthouseapp.com/projects/24342/tickets/94) ([Patrick McCarron](http://github.com/rentzsch/clicktoflash/commit/b224861719aebaed81e9909c4fd5526d55032454))
 
 	* [NEW] Contextual menu item to download H.264 file from YouTube. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/95cec2c6481772f8d448b4cf98555ea91690b448))

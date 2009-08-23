@@ -2,7 +2,7 @@
 
 The MIT License
 
-Copyright (c) 2008-2009 Click to Flash Developers
+Copyright (c) 2008-2009 ClickToFlash Developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@ THE SOFTWARE.
 #import <WebKit/WebKit.h>
 
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
+	NSArray *defaultWhitelist;
+	
     DOMElement *_container;
     NSString *_host;
     NSDictionary* _flashVars;
@@ -39,6 +41,9 @@ THE SOFTWARE.
     BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
     BOOL _fromYouTube;
+	BOOL _embeddedYouTubeView;
+	BOOL _hasH264Version;
+	BOOL _hasHDH264Version;
 	WebView *_webView;
 	NSUInteger _sifrVersion;
 	NSString *_baseURL;
@@ -47,13 +52,19 @@ THE SOFTWARE.
 	NSString *_src;
 	NSString *_videoId;
 	NSString *_launchedAppBundleIdentifier;
+
+	BOOL _contextMenuIsVisible;
+	BOOL _receivedAllResponses;
+	NSURLConnection *connections[2];
+	unsigned expectedResponses;
+	NSTimer *_delayingTimer;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 - (void)_migratePrefsToExternalFile;
-- (void) _addApplicationWhitelistToPrefsFile;
+- (void) _addApplicationWhitelistArrayToPrefsFile;
 
 - (DOMElement *)container;
 - (void)setContainer:(DOMElement *)newValue;
@@ -71,6 +82,12 @@ THE SOFTWARE.
 - (void)setSrc:(NSString *)newValue;
 - (NSString *)videoId;
 - (void)setVideoId:(NSString *)newValue;
+- (BOOL)_hasH264Version;
+- (void)_setHasH264Version:(BOOL)newValue;
+- (BOOL)_hasHDH264Version;
+- (NSString*)_h264VersionUrl;
+- (BOOL)_isVideoElementAvailable;
+- (void)_setHasHDH264Version:(BOOL)newValue;
 - (NSString *)launchedAppBundleIdentifier;
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
 

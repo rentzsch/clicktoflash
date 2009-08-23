@@ -2,7 +2,7 @@
 
 The MIT License
 
-Copyright (c) 2008-2009 Click to Flash Developers
+Copyright (c) 2008-2009 ClickToFlash Developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -38,6 +38,7 @@ NSInteger maxInvisibleDimension = 8;
 static NSString* kApplicationsToInstallMenuInto[] = {
     @"com.apple.Safari",
     @"uk.co.opencommunity.vienna2",
+	@"com.omnigroup.OmniWeb5",
 #if 0
     @"com.panic.Coda", // for debugging an app that includes its own old Sparkle framework.
 #endif
@@ -94,7 +95,9 @@ static NSMenu* appMenu()
 			
 			NSMenuItem* item = [ applicationMenu itemAtIndex: i ];
 			
-			if( [ item action ] == @selector( showPreferences: ) )
+			if( [ item action ] == @selector( showPreferences: )
+			   || [ item action ] == @selector( showPreferencePanel: )
+			   || [ item action ] == @selector( showPreferencesPanel: ) )
 				showPrefsItem = i;
 			
 			if( showPrefsItem >= 0 && [ item isSeparatorItem ] ) {

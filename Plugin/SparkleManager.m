@@ -2,7 +2,7 @@
  
  The MIT License
  
- Copyright (c) 2008-2009 Click to Flash Developers
+ Copyright (c) 2008-2009 ClickToFlash Developers
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@
 
 #import "CTFUserDefaultsController.h"
 #import "CTFPreferencesDictionary.h"
+
+#import <objc/runtime.h>
 
 // NSUserDefaults keys
 static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
@@ -106,18 +108,14 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
         // If the key isn't set yet, default to YES, automatically check for updates.
         [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutomaticallyCheckForUpdates];
     }
-    if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
-        static BOOL checkedForUpdate = NO;
-        if (!checkedForUpdate) {
-            checkedForUpdate = YES;
-            
-			SUUpdater *updater = [self _updater];
-            if (_canUpdate) {
-                [updater checkForUpdatesInBackground];
-                [updater setAutomaticallyChecksForUpdates:YES];
-            }
-        }
-    }
+    
+	SUUpdater *updater = [self _updater];
+	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
+		if (_canUpdate) {
+			[updater checkForUpdatesInBackground];
+			[updater setAutomaticallyChecksForUpdates:YES];
+		}
+	}
 }
 
 - (void)checkForUpdates {
@@ -126,6 +124,30 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 
 - (NSString*)pathToRelaunchForUpdater:(SUUpdater*)updater {
     return _pathToRelaunch;
+}
+
+- (BOOL)updater:(SUUpdater *)updater
+shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
+  untilInvoking:(NSInvocation *)invocation;
+{
+	NSString *appNameString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
+										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],
+										 @"Relaunch",
+										 @"Do not relaunch",
+										 nil);
+	
+	BOOL shouldPostpone = YES;
+	if (relaunchResult == NSAlertDefaultReturn) {
+		// we want to relaunch now, so don't postpone the relaunch
+		
+		shouldPostpone = NO;
+	} else {
+		// we want to postpone the relaunch and let the user decide when to do so,
+		// so we don't even bother with saving the invocation and reinvoking
+		// it later
+	}
+	return shouldPostpone;
 }
 
 - (NSString *)pathToRelaunch

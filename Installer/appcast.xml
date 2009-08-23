@@ -314,7 +314,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4.2" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4.2" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip"/>
 		</item>
 		<item>
 			<title>version 1.4.1</title>
@@ -608,7 +608,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4.1" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4.1" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip"/>
 		</item>
 		<item>
 			<title>version 1.4</title>
@@ -892,7 +892,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc6</title>
@@ -1114,7 +1114,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc6" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc6" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc5</title>
@@ -1256,7 +1256,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc5" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc5" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc4</title>
@@ -1390,7 +1390,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc4" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc4.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc4" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc4.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc3</title>
@@ -1514,7 +1514,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc3" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc3" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc2</title>
@@ -1628,7 +1628,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc2" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc2" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip"/>
 		</item>
 		<item>
 			<title>version 1.4fc1</title>
@@ -1720,7 +1720,7 @@
 	</li>
 </ul>
 ]]>			</description>
-			<enclosure type="application/zip" sparkle:version="1.4fc1" title="Zip File" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc1.zip"/>
+			<enclosure type="application/zip" sparkle:version="1.4fc1" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc1.zip"/>
 		</item>
 	</channel>
 </rss>

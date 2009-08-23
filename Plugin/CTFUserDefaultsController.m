@@ -38,6 +38,17 @@ static CTFUserDefaultsController *sharedInstance = nil;
 	return self;
 }
 
+- (id)initWithCoder:(NSCoder *)decoder;
+{
+	if (! sharedInstance) {
+		if ((self = [super init])) {
+			hasInited = YES;
+		}
+	}
+	
+	return self;
+}
+
 - (void)dealloc;
 {
 	[userDefaultsDict release];
@@ -50,9 +61,11 @@ static CTFUserDefaultsController *sharedInstance = nil;
 											 selector:@selector(pluginDefaultsDidChange:)
 												 name:@"ClickToFlashPluginDefaultsDidChange"
 											   object:nil];
+	[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
 	[self setValues:[CTFPreferencesDictionary dictionaryWithDictionary:
 					 [[NSUserDefaults standardUserDefaults] persistentDomainForName:@"com.github.rentzsch.clicktoflash"]]
 	 ];	
+	[[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.github.rentzsch.clicktoflash"];
 }
 
 - (CTFPreferencesDictionary *)values;
@@ -78,9 +91,11 @@ static CTFUserDefaultsController *sharedInstance = nil;
 
 - (void)setValues:(CTFPreferencesDictionary *)newUserDefaultsDict;
 {
+	CTFPreferencesDictionary *newDictCopy = [newUserDefaultsDict copy];
 	if (! userDefaultsDict) userDefaultsDict = [[CTFPreferencesDictionary alloc] init]; 
 	[userDefaultsDict removeAllObjects];
-	[userDefaultsDict addEntriesFromDictionary:newUserDefaultsDict];
+	[userDefaultsDict addEntriesFromDictionary:newDictCopy];
+	[newDictCopy release];
 }
 
 - (void)pluginDefaultsDidChange:(NSNotification *)notification;
