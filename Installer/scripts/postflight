@@ -4,6 +4,10 @@ rm -rf "$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin"
 rm -rf "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin"
 mv /tmp/ClickToFlash.webplugin "$HOME/Library/Internet Plug-Ins/"
 chown -R $USER "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin"
+chmod -R 664 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin"
+chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin/Contents/MacOS/ClickToFlash"
+chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle"
+chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/relaunch"
 pkgutil --forget com.github.rentzsch.clicktoflash.pkg
 
 exit 0
