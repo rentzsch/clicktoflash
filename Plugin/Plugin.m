@@ -1291,7 +1291,14 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 			normalizedVersion = (int)wkVersion % 1000;
 		else
 			normalizedVersion = wkVersion;
-        return normalizedVersion >= 525;
+		
+		// unfortunately, versions of WebKit above 531.5 also introduce a nasty
+		// scrolling bug with video elements that cause them to be unviewable, so we'll
+		// have to basically disable this support until this bug is fixed;
+		//
+		// https://bugs.webkit.org/show_bug.cgi?id=28705
+		
+        return ((normalizedVersion >= 525) && (normalizedVersion < 531.5));
 	}
 	return NO;
 }
