@@ -899,26 +899,20 @@ BOOL usingMATrackingArea = NO;
 	NSPoint loc = { -strSize.width / 2, -strSize.height / 2 };
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
-	NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect( borderRect, -2, -2 ), 6 );
-	[ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
-	[ fillPath fill ];
-	
-	NSUInteger thickLineWidth = 5;
-	NSBezierPath* path = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
-	[ [ NSColor blackColor ] set ];
-	[ path setLineWidth: thickLineWidth ];
-	[ path stroke ];
-	
-	NSUInteger thinLineWidth = 2;
-	NSRect thinBorderRect = NSMakeRect( loc.x - kFrameXInset - thickLineWidth/4,
-										loc.y - kFrameYInset - thickLineWidth/4,
-										w + thickLineWidth/2,
-										h + thickLineWidth/2);
-	NSBezierPath* thinPath = bezierPathWithRoundedRectCornerRadius( thinBorderRect, 4 );
-	[ [ NSColor whiteColor ] set ];
-	[ thinPath setLineWidth: thinLineWidth ];
-	[ thinPath stroke ];
-	
+    NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
+    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
+    [ fillPath fill ];
+    
+    NSBezierPath* darkBorderPath = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
+    [[NSColor blackColor] set];
+    [ darkBorderPath setLineWidth: 3 ];
+    [ darkBorderPath stroke ];
+    
+    NSBezierPath* lightBorderPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect(borderRect, -2, -2), 6 );
+    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
+    [ lightBorderPath setLineWidth: 2 ];
+    [ lightBorderPath stroke ];
+    
     [ str drawAtPoint: loc withAttributes: attrs ];
 	
 	// Now restore the graphics state:
