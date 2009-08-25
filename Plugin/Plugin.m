@@ -896,7 +896,7 @@ BOOL usingMATrackingArea = NO;
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.50 : 0.35 );
+    CGContextSetAlpha( context, pressed ? 0.45 : 0.30 );
     CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
