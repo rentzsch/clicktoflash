@@ -248,7 +248,8 @@ BOOL usingMATrackingArea = NO;
 				}
 			}
 		}
-		
+        
+        _fromFlickr = [[self host] rangeOfString:@"flickr.com"].location != NSNotFound;
 		
 #if LOGGING_ENABLED
         NSLog( @"arguments = %@", arguments );
@@ -844,7 +845,7 @@ BOOL usingMATrackingArea = NO;
 	
 	float maxW = NSWidth( bounds ) - kMinMargin;
 	// the 9/10 factor here is to account for the 60% vertical top-biasing
-	float maxH = NSHeight( bounds )*9/10 - kMinMargin;
+	float maxH = _fromFlickr ? NSHeight( bounds )*9/10 - kMinMargin : NSHeight( bounds ) - kMinMargin;
 	float minW = kMinHeight * w / h;
 	
 	BOOL rotate = NO;
@@ -883,7 +884,11 @@ BOOL usingMATrackingArea = NO;
     
 	NSAffineTransform* xform = [ NSAffineTransform transform ];
 	// vertical top-bias by 60% here
-	[ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 10 * 6 ];
+    if (_fromFlickr) {
+        [ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 10 * 6 ];
+    } else {
+        [ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
+    }
 	[ xform scaleBy: scaleFactor ];
 	if( rotate )
 		[ xform rotateByDegrees: 90 ];
