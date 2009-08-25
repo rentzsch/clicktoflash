@@ -8,6 +8,7 @@ chmod -R 664 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin"
 chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin/Contents/MacOS/ClickToFlash"
 chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin/Contents/Frameworks/Sparkle.framework/Versions/A/Sparkle"
 chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin/Contents/Frameworks/Sparkle.framework/Versions/A/Resources/relaunch"
+chmod 775 "$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin"
 pkgutil --forget com.github.rentzsch.clicktoflash.pkg
 
 exit 0
