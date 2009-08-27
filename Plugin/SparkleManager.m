@@ -110,16 +110,23 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     }
     
 	SUUpdater *updater = [self _updater];
-	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
-		if (_canUpdate) {
+	if (_canUpdate) {
+		if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
 			[updater checkForUpdatesInBackground];
 			[updater setAutomaticallyChecksForUpdates:YES];
+		} else {
+			[updater setAutomaticallyChecksForUpdates:NO];
 		}
 	}
 }
 
 - (void)checkForUpdates {
     [[self _updater] checkForUpdates:nil];
+}
+
+- (void)setAutomaticallyChecksForUpdates:(BOOL)checksForUpdates
+{
+	[[self _updater] setAutomaticallyChecksForUpdates:checksForUpdates];
 }
 
 - (NSString*)pathToRelaunchForUpdater:(SUUpdater*)updater {
