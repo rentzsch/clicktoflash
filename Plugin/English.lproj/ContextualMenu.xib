@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9G55</string>
+		<string key="IBDocument.SystemVersion">9J61</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
-		<string key="IBDocument.AppKitVersion">949.43</string>
+		<string key="IBDocument.AppKitVersion">949.46</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="14"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -79,14 +79,6 @@
 						<reference key="NSOnImage" ref="121969399"/>
 						<reference key="NSMixedImage" ref="575759592"/>
 					</object>
-					<object class="NSMenuItem" id="660793203">
-						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Remove from Whitelist...</string>
-						<string key="NSKeyEquiv"/>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="121969399"/>
-						<reference key="NSMixedImage" ref="575759592"/>
-					</object>
 					<object class="NSMenuItem" id="380486120">
 						<reference key="NSMenu" ref="93442052"/>
 						<bool key="NSIsDisabled">YES</bool>
@@ -99,7 +91,7 @@
 					</object>
 					<object class="NSMenuItem" id="831790790">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Click to Flash Settings...</string>
+						<string key="NSTitle">ClickToFlash Settings...</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="121969399"/>
@@ -134,14 +126,6 @@
 						<reference key="destination" ref="975793511"/>
 					</object>
 					<int key="connectionID">11</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">removeFromWhitelist:</string>
-						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="660793203"/>
-					</object>
-					<int key="connectionID">13</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -196,7 +180,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="831790790"/>
 							<reference ref="975793511"/>
-							<reference ref="660793203"/>
 							<reference ref="1001518375"/>
 							<reference ref="688689086"/>
 							<reference ref="380486120"/>
@@ -212,11 +195,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
 						<reference key="object" ref="975793511"/>
-						<reference key="parent" ref="93442052"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">12</int>
-						<reference key="object" ref="660793203"/>
 						<reference key="parent" ref="93442052"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -251,7 +229,6 @@
 					<string>1.IBEditorWindowLastContentRect</string>
 					<string>1.IBPluginDependency</string>
 					<string>10.IBPluginDependency</string>
-					<string>12.IBPluginDependency</string>
 					<string>14.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
@@ -263,8 +240,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{371, 315}, {222, 123}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{371, 335}, {213, 103}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -301,16 +277,12 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">CTFClickToFlashPlugin</string>
-					<string key="superclassName">NSView</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addToWhitelist:</string>
 							<string>editWhitelist:</string>
-							<string>loadAllOnPage:</string>
-							<string>loadFlash:</string>
-							<string>loadH264:</string>
 							<string>removeFromWhitelist:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -318,10 +290,43 @@
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Plugin/CTFWhitelist.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CTFClickToFlashPlugin</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Plugin/CTFsIFRSupport.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">CTFClickToFlashPlugin</string>
+					<string key="superclassName">NSView</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>downloadH264:</string>
+							<string>loadAllOnPage:</string>
+							<string>loadFlash:</string>
+							<string>loadH264:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">trackingArea</string>
+						<string key="NS.object.0">id</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
