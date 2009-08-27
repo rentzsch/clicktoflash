@@ -2,6 +2,22 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 ##Version History
 
+* **1.5fc1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5fc1.zip)
+
+	* [NEW] Use HTML5 `<video>` element instead of QuickTime plugin to view H.264 YouTube content on Safari 4. `<video>` plays better with HTML in general, respecting things like CSS's `z-index`.  ([Andreas Fuchs](http://github.com/rentzsch/clicktoflash/commit/66fd859dc187d8928b9c501f1c66e6f73bde16c5))
+
+	* [NEW] Add white border to Flash badge, improving contrast against dark backgrounds. [bug 131](http://rentzsch.lighthouseapp.com/projects/24342/tickets/131) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/d870653633564040f41f093e7e208af4264ea71d), [rentzsch](http://github.com/rentzsch/clicktoflash/commit/00a3911ee2dda204a64e7e50f2016acac33c497a))
+
+	* [NEW] Only 60% top-bias badge for flickr.com. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/65e076288b92033737e2fb5246f361955c14b13a))
+
+	* [NEW] Add Realmac Software applications to application whitelist. ([Nik Fletcher](http://github.com/rentzsch/clicktoflash/commit/c73bba6cadfde92d54770dd5e3af1aa1df6fe767))
+
+	* [FIX] Yet Another Installer Rework. Move to mpkg so we require a password for installation only when necessary (on 10.4 when a non-admin user attempts to install ClickToFlash after an admin user already installed it). ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/96f78edb130f0b8d10149b9d0c053c9c6c9e5b43), [Mo McRoberts](http://github.com/rentzsch/clicktoflash/commit/622673359cc3234076b76051a380598bc1988980))
+
+	* [FIX] Open in QuickTime Player now works on Snowy. [bug 216](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/216) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/209ecc06a686ff931ba97bd76d25f67ca574eaf9))
+
+	* [FIX] Unchecking 'automatically check for updates' only stopped the check on startup, not subsequent ones. [bug 268](http://rentzsch.lighthouseapp.com/projects/24342/tickets/268) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e244b95d8378e677c6027657cab81561db5d8b29))
+
 * **1.5b5** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5b5.zip)
 
 	* [NEW] Support for HD YouTube videos. ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/e03c375ae6358d09e23e371c8402902c2fae14de))
