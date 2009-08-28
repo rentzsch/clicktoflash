@@ -4,16 +4,6 @@ SCRIPT_WD=`pwd`
 DIR=/Library/Receipts/clicktoflash-nonadmin.pkg/
 GROUPS=`id -Gn $USER`
 
-
-# 1 is a successful result, and allows installation without an admin password; if the result is 0, this package is unavailable
-
-rm -rf /tmp/ClickToFlash.webplugin
-
-if [ -d "/tmp/ClickToFlash.webplugin"]; then
-	echo "we don't have privs to delete the existing temporary file, so we will need admin privs to do so."
-	exit 0
-fi
-
 case `uname -r` in
 	[89].*)
 		true
