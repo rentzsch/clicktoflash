@@ -67,8 +67,8 @@ function pm_clicktoflashnonadmin_enabled() {
   result = result &amp;&amp; (system.run('no_admin_privs_needed.command') == true);
   return result;
 }</script>
-    <background file="background.tiff" alignment="bottomright" scaling="none"/>
-    <readme file="ReadMe.rtf"/>
+    <background file="background" alignment="bottomright" scaling="none"/>
+    <readme file="ReadMe"/>
     <choices-outline>
         <line choice="clicktoflashadmin"/>
         <line choice="clicktoflashnonadmin"/>
