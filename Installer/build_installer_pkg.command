@@ -92,7 +92,7 @@ rm -rf "$BUILT_PRODUCTS_DIR/ClickToFlash-nonadmin.pkg"
 
 # Stuff it into a .zip.
 cd "$BUILT_PRODUCTS_DIR"
-zip -r -y "$VERSIONED_NAME.zip" "ClickToFlash.mpkg"
+zip -r "$VERSIONED_NAME.zip" "ClickToFlash.mpkg"
 cd $SCRIPT_WD
 
 rm -rf "$MY_INSTALLER_ROOT"
