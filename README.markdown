@@ -2,6 +2,10 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 ##Version History
 
+* **1.5fc2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5fc2.zip)
+
+	* [FIX] Abandon 1.5fc1's Yet Another Installer Rework -- it causes Installer deadlocks that we can't figure out. [bug 214](http://rentzsch.lighthouseapp.com/projects/24342/tickets/214) (rentzsch)
+
 * **1.5fc1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5fc1.zip)
 
 	* [NEW] Use HTML5 `<video>` element instead of QuickTime plugin to view H.264 YouTube content on Safari 4. `<video>` plays better with HTML in general, respecting things like CSS's `z-index`.  ([Andreas Fuchs](http://github.com/rentzsch/clicktoflash/commit/66fd859dc187d8928b9c501f1c66e6f73bde16c5))
@@ -12,7 +16,7 @@ This page only hosts the source code for ClickToFlash.  To download ClickToFlash
 
 	* [NEW] Add Realmac Software applications to application whitelist. ([Nik Fletcher](http://github.com/rentzsch/clicktoflash/commit/c73bba6cadfde92d54770dd5e3af1aa1df6fe767))
 
-	* [FIX] Yet Another Installer Rework. Move to mpkg so we require a password for installation only when necessary (on 10.4 when a non-admin user attempts to install ClickToFlash after an admin user already installed it). ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/96f78edb130f0b8d10149b9d0c053c9c6c9e5b43), [Mo McRoberts](http://github.com/rentzsch/clicktoflash/commit/622673359cc3234076b76051a380598bc1988980))
+	* [FIX] Yet Another Installer Rework. Move to mpkg so we require a password for installation only when necessary (on 10.4 when a non-admin user attempts to install ClickToFlash after an admin user already installed it). [bug 214](http://rentzsch.lighthouseapp.com/projects/24342/tickets/214) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/96f78edb130f0b8d10149b9d0c053c9c6c9e5b43), [Mo McRoberts](http://github.com/rentzsch/clicktoflash/commit/622673359cc3234076b76051a380598bc1988980))
 
 	* [FIX] Open in QuickTime Player now works on Snowy. [bug 216](http://rentzsch.lighthouseapp.com/projects/24342-clicktoflash/tickets/216) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/209ecc06a686ff931ba97bd76d25f67ca574eaf9))
 
