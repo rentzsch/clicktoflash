@@ -148,7 +148,7 @@
 			
 			<div class="content_box" id="installer-issue">
 				<div class="section_header header_important">Installation Troubles:</div>
-				<p>When installing ClickToFlash, you may receive this error if you've installed ClickToFlash before:
+				<p>When installing ClickToFlash, you may receive this error if you've installed ClickToFlash before:</p>
 				
 				<pre><code>Installer could not install files in /tmp</code></pre>
 				
@@ -166,6 +166,15 @@
 				<pre><code>No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'</code></pre>
 				
 				<p>Don't worry, that's OK.  ClickToFlash should now install normally.</p>
+				
+				<div class="section_header header_important">Further problems:</div>
+				<p>If the installer is <strong>still</strong> giving you troubles, and you're running under a non-admin user,
+				issue the following terminal command:</p>
+				
+				<pre><code>su admin_user -c 'touch /Library/Receipts/ClickToFlash.pkg'</code></pre>
+				
+				<p>replacing "admin_user" with the short user name of an admin user.  You will need to enter a password as well,
+				and then type return.  Now attempt ClickToFlash installation again.</p>
 			</div>
 			
 			<div class="content_box" id="pandorajam-issue">
