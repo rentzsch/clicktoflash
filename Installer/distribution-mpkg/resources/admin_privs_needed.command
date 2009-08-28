@@ -2,7 +2,7 @@
 cd "`dirname \"$0\"`"
 SCRIPT_WD=`pwd`
 DIR=/Library/Receipts/clicktoflash-nonadmin.pkg/
-SOME_GROUPS=`id -G $USER`
+GROUPS=`id -Gn $USER`
 
 
 # 1 is a successful result, and requires installation with an admin password; if the result is 0, this package is unavailable
@@ -28,9 +28,14 @@ if [ -d $DIR ]; then
 	exit 0
 fi
 
-if echo "$SOME_GROUPS" | egrep "^80$|^80 | 80$| 80 " > /dev/null; then
+if [ "$GROUPS" == "20" ]; then
 	echo "User has admin privs, no admin privs required for installer pkg."
 	exit 0
+else
+	if [[ "$GROUPS" =~ " 20 " ]]; then
+		echo "User has admin privs, no admin privs required for installer pkg."
+		exit 0
+	fi
 fi
 
 echo "No receipt, no admin privs, installer must ask for admin password."
