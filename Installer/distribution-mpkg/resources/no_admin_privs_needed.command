@@ -9,7 +9,7 @@ GROUPS=`id -Gn $USER`
 
 rm -rf /tmp/ClickToFlash.webplugin
 
-if [ -d /tmp/ClickToFlash.webplugin ]; then
+if [ -d "/tmp/ClickToFlash.webplugin"]; then
 	echo "we don't have privs to delete the existing temporary file, so we will need admin privs to do so."
 	exit 0
 fi
