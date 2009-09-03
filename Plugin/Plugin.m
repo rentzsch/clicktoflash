@@ -1175,31 +1175,23 @@ BOOL usingMATrackingArea = NO;
 
 - (void)_checkForH264VideoVariants
 {
-	NSString *video_id = [self videoId];
-	NSString *video_hash = [self _videoHash];
-	
-	if (video_id && video_hash) {
-		// The standard H264 stream is format 18. HD is 22
-		unsigned formats[] = { 18, 22 };
-
-		for (int i = 0; i < 2; ++i) {
-			NSMutableURLRequest *request;
-			
-			request = [NSMutableURLRequest requestWithURL:
-					   [NSURL URLWithString:
-						[NSString stringWithFormat:
-						 @"http://www.youtube.com/get_video?fmt=%u&video_id=%@&t=%@",
-						 formats[i], video_id, video_hash]]];
-			
+	for (int i = 0; i < 2; ++i) {
+		NSMutableURLRequest *request;
+		NSString * URLString;
+		if (i == 0) { URLString = [self H264URLString]; }
+		else { URLString = [self H264HDURLString]; }
+		
+		request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:URLString]];
+		
+		if (request != nil) {
 			[request setHTTPMethod:@"HEAD"];
-			
 			connections[i] = [[NSURLConnection alloc] initWithRequest:request
 															 delegate:self];
 		}
-
-		expectedResponses = 2;
-		_receivedAllResponses = NO;
 	}
+
+	expectedResponses = 2;
+	_receivedAllResponses = NO;
 }
 
 - (void)finishedWithConnection:(NSURLConnection *)connection
@@ -1305,16 +1297,11 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (NSString*) _h264VersionUrl
 {
-    NSString* video_id = [self videoId];
-    NSString* video_hash = [ self _videoHash ];
-    
 	NSString* src;
 	if ([ self _hasHDH264Version ]) {
-		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-			   video_id, video_hash ];
+		src = [self H264HDURLString];
 	} else {
-		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-			   video_id, video_hash ];
+		src = [self H264URLString];
 	}
 	return src;
 }
@@ -1412,18 +1399,33 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	return appBundleIdentifier;
 }
 
+- (NSString *)YouTubePageURLString
+{
+	return [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@", [self videoId] ];
+}
+
+- (NSString *)H264URLString
+{
+    return [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
+			[self videoId], [ self _videoHash ] ];
+}
+
+- (NSString *)H264HDURLString
+{
+    return [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
+			[self videoId], [ self _videoHash ] ];
+}
+
+
+
+
 - (IBAction)downloadH264:(id)sender
 {
-	NSString* video_id = [self videoId];
-    NSString* video_hash = [ self _videoHash ];
-    
 	NSString *src;
 	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey] && [self _hasHDH264Version]) {
-		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-			   video_id, video_hash ];
+		src = [ self H264HDURLString ];
 	} else {
-		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-			   video_id, video_hash ];
+		src = [ self H264URLString ];
 	}
 	
 	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:src]]
@@ -1434,24 +1436,17 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 }
 
 - (IBAction)loadYouTubePage:(id)sender
-{
-	NSString* YouTubePageURL = [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@", [self videoId] ];
-	
-    [_webView setMainFrameURL:YouTubePageURL];
+{	
+    [_webView setMainFrameURL:[self YouTubePageURLString]];
 }
 
 - (IBAction)openFullscreenInQTPlayer:(id)sender;
 {
-	NSString* video_id = [self videoId];
-    NSString* video_hash = [ self _videoHash ];
-    
 	NSString *src;
 	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey] && [self _hasHDH264Version]) {
-		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-					 video_id, video_hash ];
+		src = [ self H264HDURLString ];
 	} else {
-		src = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-			   video_id, video_hash ];
+		src = [ self H264URLString ];
 	}
 	
 	NSString *scriptSource = nil;
@@ -1472,8 +1467,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *URLString = [NSString stringWithFormat:@"http://youtube.com/watch?v=%@",videoId];
-	NSURL *YouTubePageURL = [NSURL URLWithString:URLString];
+	NSURL *YouTubePageURL = [NSURL URLWithString: [self YouTubePageURLString]];
 	NSError *pageSourceError = nil;
 	NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
 													  usedEncoding:nil

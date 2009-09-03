@@ -91,6 +91,9 @@ THE SOFTWARE.
 - (void)_setHasHDH264Version:(BOOL)newValue;
 - (NSString *)launchedAppBundleIdentifier;
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
+- (NSString *)YouTubePageURLString;
+- (NSString *)H264URLString;
+- (NSString *)H264HDURLString;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
