@@ -1349,19 +1349,54 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (void) _convertToMP4ContainerAfterDelay
 {
-	DOMElement* newElement;
+	DOMDocument* document = [[self container] ownerDocument];
+	
+	DOMElement* videoElement;
 	if ([ self _isVideoElementAvailable ]) {
-		newElement = [[[self container] ownerDocument] createElement:@"video"];
-		[ self _convertElementForVideoElement: newElement ];
+		videoElement = [document createElement:@"video"];
+		[ self _convertElementForVideoElement: videoElement ];
     } else {
-		newElement = (DOMElement*) [ [self container] cloneNode: NO ];
-		[ self _convertElementForMP4:newElement ];
+		videoElement = (DOMElement*) [ [self container] cloneNode: NO ];
+		[ self _convertElementForMP4: videoElement ];
 	}
+	
+	// Put links for going to the YouTube page and downloading the video file beneath the video as these vanish once CtF is invoked and it's hard to bookmark the YouTube link otherwise.
+	NSString * linkCSS = @"margin:0px 0.5em;padding:0px;border:0px none;";
+	DOMElement* YouTubeLinkElement = [document createElement: @"a"];
+	[YouTubeLinkElement setAttribute: @"href" value: [self YouTubePageURLString]];
+	[YouTubeLinkElement setAttribute: @"style" value: linkCSS];
+	[YouTubeLinkElement setAttribute: @"class" value: @"clicktoflash-link youtube"];
+	[YouTubeLinkElement setTextContent:NSLocalizedString(@"Go to YouTube page", @"Text of link to YouTube page appearing beneath the video")];
+	
+	DOMElement* downloadLinkElement = [document createElement: @"a"];
+	[downloadLinkElement setAttribute: @"href" value: [self _h264VersionUrl]];
+	[downloadLinkElement setAttribute: @"style" value: linkCSS];
+	[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link h264download"];
+	[downloadLinkElement setTextContent:NSLocalizedString(@"Download video file", @"Text of link to H.264 Download appearing beneath the video")];
+	
+	NSString * divCSS = @"margin:auto;padding:0px;border:0px none;text-align:center;display:block;float:none;";
+	DOMElement* linkContainerElement = [document createElement: @"div"];
+	[linkContainerElement setAttribute: @"style" value: divCSS];
+	[linkContainerElement setAttribute: @"class" value: @"clicktoflash-linkcontainer"];
+	if ( ![[self baseURL] hasPrefix: [self YouTubePageURLString]]) {
+		[linkContainerElement appendChild:YouTubeLinkElement];
+	}
+	[linkContainerElement appendChild:downloadLinkElement];
+	
+	NSString * widthCSS = [NSString stringWithFormat:@"%@width:%dpx", divCSS, [[self container] clientWidth]];
+	DOMElement* CtFContainerElement = [document createElement: @"div"]; 
+	[CtFContainerElement setAttribute: @"style" value: widthCSS];
+	[CtFContainerElement setAttribute: @"class" value: @"clicktoflash-container"];
+	[CtFContainerElement appendChild: videoElement];
+	[CtFContainerElement appendChild: linkContainerElement];
+	
+	
     // Just to be safe, since we are about to replace our containing element
     [[self retain] autorelease];
     
     // Replace self with element.
-    [[[self container] parentNode] replaceChild:newElement oldChild:[self container]];
+	[[[self container] parentNode] replaceChild:CtFContainerElement oldChild:[self container]];
+
     [self setContainer:nil];
 }
 
