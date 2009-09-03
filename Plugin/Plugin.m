@@ -1329,7 +1329,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
 	[ element setAttribute: @"autoplay" value:@"autoplay"];
 	[ element setAttribute: @"controls" value:@"controls"];
-	
+	// make videos with the wrong aspect ratio look more letterboxed. Would it be better or worse to just change the element's size?
+	[ element setAttribute: @"style" value :@"background:#111"]; 	
+
 	DOMElement* container = [self container];
 	
 	[ element setAttribute:@"width" value:[ NSString stringWithFormat:@"%dpx", [ container clientWidth ]]];
