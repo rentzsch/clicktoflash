@@ -17,13 +17,13 @@
 "YouTube" = "YouTube";
 
 /* H.264 badge waiting text */
-"H.264…" = "H.264…";
+"H.264…" = "Movie…";
 
 /* H.264 badge text */
-"H.264" = "H.264";
+"H.264" = "Movie";
 
 /* HD H.264 badge text */
-"HD H.264" = "HD H.264";
+"HD H.264" = "HD Movie";
 
 /* sIFR Flash badge text */
 "sIFR Flash" = "sIFR Flash";
@@ -35,7 +35,7 @@
 */
 
 /* Load H.264 context menu item */
-"Load H.264" = "Load Movie as H.264 using QuickTime";
+"Load H.264" = "Load Movie using QuickTime";
 
 /* Load YouTube page menu item */
 "Load YouTube.com page for this video" = "Go to YouTube Page for this Movie";
