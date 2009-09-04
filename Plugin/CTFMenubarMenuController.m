@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 #import "CTFMenubarMenuController.h"
 #import "CTFWhitelistWindowController.h"
+#import "CTFAboutBoxWindowController.h"
 
 #import "Plugin.h"
 
@@ -151,6 +152,7 @@ static CTFMenubarMenuController* sSingleton = nil;
 - (void) dealloc
 {
 	[ _whitelistWindowController release ];
+	[ _aboutBoxWindowController release ];
     NSFreeHashTable( _views );
 	
 	[ super dealloc ];
@@ -318,5 +320,15 @@ static CTFMenubarMenuController* sSingleton = nil;
 	
 	[ _whitelistWindowController showWindow: sender ];
 }
+
+
+- (IBAction) showAboutBox: (id) sender
+{
+	if( _aboutBoxWindowController == nil )
+		_aboutBoxWindowController = [ [ CTFAboutBoxWindowController alloc ] init ];
+	
+	[ _aboutBoxWindowController showWindow: sender ];
+}
+
 
 @end
