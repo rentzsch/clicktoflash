@@ -85,7 +85,6 @@ BOOL usingMATrackingArea = NO;
 - (BOOL) _hasH264Version;
 - (BOOL) _useH264Version;
 - (BOOL) _hasHDH264Version;
-- (BOOL) _useHDH264Version;
 - (NSString *)launchedAppBundleIdentifier;
 @end
 
@@ -782,7 +781,7 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) badgeLabelText
 {
-	if( [ self _useHDH264Version ] && [self _hasHDH264Version]) {
+	if( [ self _useH264Version ] && [self _hasHDH264Version]) {
 		return CtFLocalizedString( @"HD H.264", @"HD H.264 badge text" );
 	} else if( [ self _useH264Version ] && [self _hasH264Version]) {
 		if (_receivedAllResponses) {
@@ -1247,14 +1246,6 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[newRequest setHTTPMethod:@"HEAD"];
 	
 	return [newRequest autorelease];
-}
-
-- (BOOL) _useHDH264Version
-{
-	return [ self _hasHDH264Version ]
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeHDH264DefaultsKey ]
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
 }
 
 - (BOOL) _useH264Version
