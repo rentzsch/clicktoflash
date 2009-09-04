@@ -142,6 +142,9 @@
 		6953E43B0F3EDEB50014ECF7 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
+		6C575A2F1050754D008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
+		6C575A311050759C008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
+		6C575A3310507740008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		79166CBB0FF69E1800B1F69B /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTGradient.m; path = Plugin/CTGradient.m; sourceTree = "<group>"; };
 		79166CBC0FF69E1800B1F69B /* CTGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTGradient.h; path = Plugin/CTGradient.h; sourceTree = "<group>"; };
 		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Plugin/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
@@ -307,6 +310,13 @@
 			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */;
 			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				de,
+			);
 			mainGroup = 55EB70300E04A8410016593D;
 			productRefGroup = 55EB70430E04A8640016593D /* Products */;
 			projectDirPath = "";
@@ -447,6 +457,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				072189BB0F30D9C3008C8944 /* English */,
+				6C575A311050759C008C5B23 /* de */,
 			);
 			name = ContextualMenu.xib;
 			sourceTree = "<group>";
@@ -455,6 +466,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				072189BD0F30D9C3008C8944 /* English */,
+				6C575A3310507740008C5B23 /* de */,
 			);
 			name = WhitelistPanel.xib;
 			sourceTree = "<group>";
@@ -463,6 +475,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6953E43B0F3EDEB50014ECF7 /* English */,
+				6C575A2F1050754D008C5B23 /* de */,
 			);
 			name = MenubarMenu.xib;
 			sourceTree = "<group>";
@@ -487,8 +500,11 @@
 		55EB70330E04A8410016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
@@ -500,6 +516,8 @@
 		55EB70340E04A8410016593D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;

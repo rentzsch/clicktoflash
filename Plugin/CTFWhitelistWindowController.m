@@ -40,6 +40,13 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 	return [CTFBundle objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
 }
 
+- (NSString *)pathToBundle {
+	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+	return [myBundle bundlePath];
+}
+
+
+
 - (IBAction)uninstallClickToFlash:(id)sender;
 {
 	[NSApp beginSheet:confirmUninstallSheet
@@ -68,22 +75,24 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 		contextInfo:(void *)contextInfo;
 {
 	if (returnCode == 1) {
-		NSString *userPluginPath = [@"~/Library/Internet Plug-ins/ClickToFlash.webplugin" stringByExpandingTildeInPath];
+		NSString *userPluginPath = [self pathToBundle];
 		BOOL isDirectory = NO;
 		BOOL userPluginExists = [[NSFileManager defaultManager] fileExistsAtPath:userPluginPath
 																	 isDirectory:&isDirectory];
 		BOOL succeeded = NO;
 		if (userPluginExists && isDirectory) {
-			// we'll move the plugin to the trash, instead of just obstinately
-			// deleting it
+			// we'll move the plugin to the trash, instead of just obstinately deleting it
 			succeeded = [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation
-																	 source:[@"~/Library/Internet Plug-ins/" stringByExpandingTildeInPath]
+																	 source:[userPluginPath stringByDeletingLastPathComponent]
 																destination:nil
-																	  files:[NSArray arrayWithObject:@"ClickToFlash.webplugin"]
+																	  files:[NSArray arrayWithObject:[userPluginPath lastPathComponent]]
 																		tag:nil];
 		}
 		
 		if (succeeded) {
+			NSString * message = [NSString stringWithFormat:NSLocalizedString(@"Please quit and relaunch '%@' for the change to take effect.", @"Successful uninstallation Sheet informational message with application name"), [[NSProcessInfo processInfo] processName]];
+			[self setValue:message forKey:@"successInformation"];
+			
 			[NSApp beginSheet:successfulUninstallationSheet
 			   modalForWindow:[self window]
 				modalDelegate:self
@@ -133,5 +142,14 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 {
 	// nothing to see here!
 }
+
+
+- (IBAction)quitApplication:(id)sender {
+	[successfulUninstallationSheet orderOut:sender];
+	[NSApp endSheet:successfulUninstallationSheet];
+
+	[NSApp performSelectorOnMainThread:@selector(terminate:) withObject:self waitUntilDone:NO];
+}
+
 
 @end
