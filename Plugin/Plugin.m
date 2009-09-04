@@ -724,7 +724,7 @@ BOOL usingMATrackingArea = NO;
     {
 		if ([self host]) {
 			NSString* title = [NSString stringWithFormat:
-							   NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu title"), 
+							   NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu item"), 
 							   [self host]];
 			[menuItem setTitle: title];
 		} else {

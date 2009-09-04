@@ -124,8 +124,8 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (void) _askToAddCurrentSiteToWhitelist
 {
-    NSString *title = NSLocalizedString(@"Always load Flash for this site?", @"Always load Flash for this site? alert title");
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %@ to the whitelist?", @"Add <sitename> to the whitelist? alert message"), [self host]];
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Always load Flash for '%@'?", @"Always load Flash for '%@'? alert title"), [self host]];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %1$@ to the whitelist? This can be undone by opening ClickToFlash Prefrences from the %2$@ menu and removing the site from the list.", @"Add <sitename> to the whitelist? alert message including removal instruction. %1$@ is the page's host name, %2$@ is the application name."), [self host], [[NSProcessInfo processInfo] processName]];
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:NSLocalizedString(@"Add to Whitelist", @"Add to Whitelist button")];
