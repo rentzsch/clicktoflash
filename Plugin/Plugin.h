@@ -24,6 +24,8 @@ THE SOFTWARE.
 
 */
 
+// so we load our localised strings from the correct bundle, use genstrings -s CtfLocalizedString
+#define CtFLocalizedString(string, explanation) NSLocalizedStringFromTableInBundle(string, nil, [NSBundle bundleForClass:[self class]], explanation)
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>

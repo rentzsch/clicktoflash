@@ -124,12 +124,12 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (void) _askToAddCurrentSiteToWhitelist
 {
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Always load Flash for '%@'?", @"Always load Flash for '%@'? alert title"), [self host]];
-    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Add %1$@ to the whitelist? This can be undone by opening ClickToFlash Prefrences from the %2$@ menu and removing the site from the list.", @"Add <sitename> to the whitelist? alert message including removal instruction. %1$@ is the page's host name, %2$@ is the application name."), [self host], [[NSProcessInfo processInfo] processName]];
+    NSString *title = [NSString stringWithFormat:CtFLocalizedString(@"Always load Flash for '%@'?", @"Always load Flash for '%@'? alert title"), [self host]];
+    NSString *message = [NSString stringWithFormat:CtFLocalizedString(@"Add %1$@ to the whitelist? This can be undone by opening ClickToFlash Prefrences from the %2$@ menu and removing the site from the list.", @"Add <sitename> to the whitelist? alert message including removal instruction. %1$@ is the page's host name, %2$@ is the application name."), [self host], [[NSProcessInfo processInfo] processName]];
     
     NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:NSLocalizedString(@"Add to Whitelist", @"Add to Whitelist button")];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
+    [alert addButtonWithTitle:CtFLocalizedString(@"Add to Whitelist", @"Add to Whitelist button")];
+    [alert addButtonWithTitle:CtFLocalizedString(@"Cancel", @"Cancel button")];
     [alert setMessageText:title];
     [alert setInformativeText:message];
     [alert setAlertStyle:NSInformationalAlertStyle];

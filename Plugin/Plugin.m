@@ -281,7 +281,7 @@ BOOL usingMATrackingArea = NO;
         // Check for sIFR
         
         if ([self _isSIFRText: arguments]) {
-            _badgeText = NSLocalizedString(@"sIFR Flash", @"sIFR Flash badge text");
+            _badgeText = CtFLocalizedString(@"sIFR Flash", @"sIFR Flash badge text");
             
             if ([self _shouldAutoLoadSIFR]) {
 				_isLoadingFromWhitelist = YES;
@@ -665,7 +665,7 @@ BOOL usingMATrackingArea = NO;
 			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadYouTubePage:)] == -1) {
 				if (_embeddedYouTubeView) {
 					[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
-					[[self menu] insertItemWithTitle: NSLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
+					[[self menu] insertItemWithTitle: CtFLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
 											  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 3];
 					[[[self menu] itemAtIndex: 3] setTarget: self];
 				}
@@ -685,11 +685,11 @@ BOOL usingMATrackingArea = NO;
 					downloadMenuItemIndex = 6;
 				}
 				
-				[[self menu] insertItemWithTitle: NSLocalizedString( @"Load H.264", "Load H.264 context menu item" )
+				[[self menu] insertItemWithTitle: CtFLocalizedString( @"Load H.264", "Load H.264 context menu item" )
 										  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
-				[[self menu] insertItemWithTitle: NSLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
+				[[self menu] insertItemWithTitle: CtFLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
 										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: QTMenuItemIndex];
-				[[self menu] insertItemWithTitle: NSLocalizedString( @"Download H.264", "Download H.264 menu item" )
+				[[self menu] insertItemWithTitle: CtFLocalizedString( @"Download H.264", "Download H.264 menu item" )
 										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: downloadMenuItemIndex];
 				[[[self menu] itemAtIndex: 1] setTarget: self];
 				[[[self menu] itemAtIndex: QTMenuItemIndex] setTarget: self];
@@ -724,7 +724,7 @@ BOOL usingMATrackingArea = NO;
     {
 		if ([self host]) {
 			NSString* title = [NSString stringWithFormat:
-							   NSLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu item"), 
+							   CtFLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu item"), 
 							   [self host]];
 			[menuItem setTitle: title];
 		} else {
@@ -783,12 +783,12 @@ BOOL usingMATrackingArea = NO;
 - (NSString*) badgeLabelText
 {
 	if( [ self _useHDH264Version ] && [self _hasHDH264Version]) {
-		return NSLocalizedString( @"HD H.264", @"HD H.264 badge text" );
+		return CtFLocalizedString( @"HD H.264", @"HD H.264 badge text" );
 	} else if( [ self _useH264Version ] && [self _hasH264Version]) {
 		if (_receivedAllResponses) {
-			return NSLocalizedString( @"H.264", @"H.264 badge text" );
+			return CtFLocalizedString( @"H.264", @"H.264 badge text" );
 		} else {
-			return NSLocalizedString( @"H.264…", @"H.264 badge waiting text" );
+			return CtFLocalizedString( @"H.264…", @"H.264 badge waiting text" );
 		}
     } else if( _fromYouTube && _videoId) {
 		// we check the video ID too because if it's a flash ad on YouTube.com,
@@ -797,14 +797,14 @@ BOOL usingMATrackingArea = NO;
 		// a bona fide YouTube video
 		
 		if (_receivedAllResponses) {
-			return NSLocalizedString( @"YouTube", @"YouTube badge text" );
+			return CtFLocalizedString( @"YouTube", @"YouTube badge text" );
 		} else {
-			return NSLocalizedString( @"YouTube…", @"YouTube badge waiting text" );
+			return CtFLocalizedString( @"YouTube…", @"YouTube badge waiting text" );
 		}
     } else if( _badgeText ) {
         return _badgeText;
     } else {
-        return NSLocalizedString( @"Flash", @"Flash badge text" );
+        return CtFLocalizedString( @"Flash", @"Flash badge text" );
 	}
 }
 
@@ -1366,13 +1366,13 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[YouTubeLinkElement setAttribute: @"href" value: [self YouTubePageURLString]];
 	[YouTubeLinkElement setAttribute: @"style" value: linkCSS];
 	[YouTubeLinkElement setAttribute: @"class" value: @"clicktoflash-link youtube"];
-	[YouTubeLinkElement setTextContent:NSLocalizedString(@"Go to YouTube page", @"Text of link to YouTube page appearing beneath the video")];
+	[YouTubeLinkElement setTextContent:CtFLocalizedString(@"Go to YouTube page", @"Text of link to YouTube page appearing beneath the video")];
 	
 	DOMElement* downloadLinkElement = [document createElement: @"a"];
 	[downloadLinkElement setAttribute: @"href" value: [self _h264VersionUrl]];
 	[downloadLinkElement setAttribute: @"style" value: linkCSS];
 	[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link h264download"];
-	[downloadLinkElement setTextContent:NSLocalizedString(@"Download video file", @"Text of link to H.264 Download appearing beneath the video")];
+	[downloadLinkElement setTextContent:CtFLocalizedString(@"Download video file", @"Text of link to H.264 Download appearing beneath the video")];
 	
 	NSString * divCSS = @"margin:auto;padding:0px;border:0px none;text-align:center;display:block;float:none;";
 	DOMElement* linkContainerElement = [document createElement: @"div"];

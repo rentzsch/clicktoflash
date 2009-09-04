@@ -1,5 +1,6 @@
 #import "CTFWhitelistWindowController.h"
 #import "SparkleManager.h"
+#import "Plugin.h"
 
 NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 
@@ -90,7 +91,7 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 		}
 		
 		if (succeeded) {
-			NSString * message = [NSString stringWithFormat:NSLocalizedString(@"Please quit and relaunch '%@' for the change to take effect.", @"Successful uninstallation Sheet informational message with application name"), [[NSProcessInfo processInfo] processName]];
+			NSString * message = [NSString stringWithFormat:CtFLocalizedString(@"Please quit and relaunch '%@' for the change to take effect.", @"Successful uninstallation Sheet informational message with application name"), [[NSProcessInfo processInfo] processName]];
 			[self setValue:message forKey:@"successInformation"];
 			
 			[NSApp beginSheet:successfulUninstallationSheet
