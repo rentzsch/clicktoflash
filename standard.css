@@ -137,6 +137,17 @@ pre {
 	text-indent:-0.5em;
 }
 
+.section_header a {
+	color: #000;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+.section_header a:hover {
+	background-color: transparent;
+	color: #000;
+}
+
 .header_important {
 	font-weight: bold;
 	color: red;
