@@ -132,9 +132,10 @@ h1 {
 	text-align: center;
 }
 
-.section_header {
+h2, h3 {
 	width: 100%;
-	margin-bottom: 10px;
+	margin: 0 0 10px;
+	font-weight: normal;
 	font-size:1.25em;
 	text-indent:-0.5em;
 }
