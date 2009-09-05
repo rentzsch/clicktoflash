@@ -67,7 +67,9 @@ pre {
 	margin-right: auto;
 }
 
-.product_title {
+h1 {
+	font-weight: normal;
+	margin: 0;
 	font-size: 48px;
 }
 
