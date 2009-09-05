@@ -39,6 +39,7 @@
 
 - (void)startAutomaticallyCheckingForUpdates;
 - (void)checkForUpdates;
+- (void)setAutomaticallyChecksForUpdates:(BOOL)checksForUpdates;
 
 - (NSString *)pathToRelaunch;
 - (void)setPathToRelaunch:(NSString *)newValue;

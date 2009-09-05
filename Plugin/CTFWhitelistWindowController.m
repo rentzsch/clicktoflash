@@ -29,6 +29,11 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 	[[SparkleManager sharedManager] checkForUpdates];
 }
 
+- (IBAction)automaticallyCheckForUpdatesDidChange:(id)sender;
+{
+	[[SparkleManager sharedManager] setAutomaticallyChecksForUpdates:[sender state]];
+}
+
 - (NSString *)versionString
 {
 	NSBundle *CTFBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];

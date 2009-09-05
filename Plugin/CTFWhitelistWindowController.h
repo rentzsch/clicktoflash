@@ -12,6 +12,7 @@ extern NSString* kCTFCheckForUpdates;
 }
 
 - (IBAction)checkForUpdates:(id)sender;
+- (IBAction)automaticallyCheckForUpdatesDidChange:(id)sender;
 - (IBAction)uninstallClickToFlash:(id)sender;
 
 - (IBAction)cancelUninstall:(id)sender;
