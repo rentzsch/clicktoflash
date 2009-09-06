@@ -23,7 +23,8 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = FADCD4270F421EDB00749805 /* Build configuration list for PBXAggregateTarget "Build Package" */;
 			buildPhases = (
-				FADCD4210F421EAE00749805 /* ShellScript */,
+				6C4B66921051D87A00412F09 /* Clean Sparkle */,
+				FADCD4210F421EAE00749805 /* Build Installer */,
 			);
 			dependencies = (
 				FADCD4260F421EBD00749805 /* PBXTargetDependency */,
@@ -159,6 +160,13 @@
 		6C4B65861051B0B000412F09 /* AboutBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutBox.xib; path = Plugin/de.lproj/AboutBox.xib; sourceTree = "<group>"; };
 		6C4B659E1051B29D00412F09 /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C4B65D11051B6EF00412F09 /* Credits.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = Credits.css; sourceTree = "<group>"; };
+		6C4B686210532BA400412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/AboutBox.xib; sourceTree = "<group>"; };
+		6C4B686510532BB200412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
+		6C4B686810532BC500412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/Credits.html; sourceTree = "<group>"; };
+		6C4B686910532BCD00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6C4B686A10532BD700412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
+		6C4B686B10532BDF00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
+		6C4B686C10532BED00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6C575A2F1050754D008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		6C575A311050759C008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		6C575A3310507740008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
@@ -340,6 +348,7 @@
 				French,
 				German,
 				de,
+				fr,
 			);
 			mainGroup = 55EB70300E04A8410016593D;
 			productRefGroup = 55EB70430E04A8640016593D /* Products */;
@@ -426,13 +435,28 @@
 			shellPath = /bin/sh;
 			shellScript = "rm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.plugin\"\nrm -Rf \"$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin\"\ncp -R \"$BUILT_PRODUCTS_DIR/ClickToFlash.webplugin\" \"$HOME/Library/Internet Plug-Ins/ClickToFlash.webplugin\"\nexit 0";
 		};
-		FADCD4210F421EAE00749805 /* ShellScript */ = {
+		6C4B66921051D87A00412F09 /* Clean Sparkle */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Clean Sparkle";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# cleans the crap out of the Sparkle framework. Be sure to adjust the script to let the existing localisations survive\n\ncd \"$BUILT_PRODUCTS_DIR\"\ncd \"ClickToFlash.webplugin/Contents/\"\n\n# Sparkle cleanup\n# kill headers\ncd \"Frameworks/Sparkle.framework/\"\nls | grep Headers | xargs rm\ncd \"Versions/A\"\nls | grep Headers | xargs rm -r \n\n# kill unused localisations\ncd \"Resources\"\nls | grep lproj | grep -v -E '(de|en|fr).lproj' | xargs rm -r";
+		};
+		FADCD4210F421EAE00749805 /* Build Installer */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Installer";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,6 +512,7 @@
 			children = (
 				072189BB0F30D9C3008C8944 /* English */,
 				6C575A311050759C008C5B23 /* de */,
+				6C4B686510532BB200412F09 /* fr */,
 			);
 			name = ContextualMenu.xib;
 			sourceTree = "<group>";
@@ -497,6 +522,7 @@
 			children = (
 				072189BD0F30D9C3008C8944 /* English */,
 				6C575A3310507740008C5B23 /* de */,
+				6C4B686B10532BDF00412F09 /* fr */,
 			);
 			name = WhitelistPanel.xib;
 			sourceTree = "<group>";
@@ -506,6 +532,7 @@
 			children = (
 				6953E43B0F3EDEB50014ECF7 /* English */,
 				6C575A2F1050754D008C5B23 /* de */,
+				6C4B686A10532BD700412F09 /* fr */,
 			);
 			name = MenubarMenu.xib;
 			sourceTree = "<group>";
@@ -515,6 +542,7 @@
 			children = (
 				6C4B630B1051453C00412F09 /* English */,
 				6C4B631F10514C6900412F09 /* de */,
+				6C4B686C10532BED00412F09 /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -524,6 +552,7 @@
 			children = (
 				6C4B651910519F3F00412F09 /* English */,
 				6C4B657E1051AF1400412F09 /* de */,
+				6C4B686810532BC500412F09 /* fr */,
 			);
 			name = Credits.html;
 			sourceTree = "<group>";
@@ -533,6 +562,7 @@
 			children = (
 				6C4B65291051A57900412F09 /* AboutBox.xib */,
 				6C4B65861051B0B000412F09 /* AboutBox.xib */,
+				6C4B686210532BA400412F09 /* fr */,
 			);
 			name = AboutBox.xib;
 			sourceTree = "<group>";
@@ -542,6 +572,7 @@
 			children = (
 				6C4B65331051A76F00412F09 /* InfoPlist.strings */,
 				6C4B659E1051B29D00412F09 /* InfoPlist.strings */,
+				6C4B686910532BCD00412F09 /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -611,6 +642,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = Plugin/ClickToFlash_Prefix.pch;
+				IBC_FLATTEN_NIBS = NO;
 				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
