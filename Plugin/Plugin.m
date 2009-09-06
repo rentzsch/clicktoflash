@@ -1601,8 +1601,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 }
 - (void)setWebView:(WebView *)newValue
 {
-    [newValue retain];
-    [_webView release];
+    // Not retained, because the WebView owns the plugin, so we'll get a retain cycle.
     _webView = newValue;
 }
 
