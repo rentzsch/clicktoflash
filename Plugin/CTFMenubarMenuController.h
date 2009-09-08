@@ -53,6 +53,8 @@ extern NSInteger maxInvisibleDimension;
 - (IBAction) showSettingsWindow: (id) sender;
 - (IBAction) showAboutBox: (id) sender;
 
+- (BOOL) multipleFlashViewsExistForWindow: (NSWindow*) window;
+
 - (void) registerView: (NSView*) view;
 - (void) unregisterView: (NSView*) view;
 

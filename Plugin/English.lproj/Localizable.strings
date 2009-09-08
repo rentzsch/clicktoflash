@@ -31,8 +31,17 @@
 
 
 /*
-	CtF Plug-In Menu
+	CtF Plug-In Contextual Menu
 */
+
+/* Title of Contextual Menu */
+"ClickToFlash Contextual menu" = "ClickToFlash Contextual Menu";
+
+/* Load Flash contextual menu item */
+"Load Flash" = "Load Flash";
+
+/* Load All on this page contextual menu item */
+"Load All on this Page" = "Load All Flash on this Page";
 
 /* Load H.264 context menu item */
 "Load H.264" = "Load Movie using QuickTime";
@@ -48,6 +57,11 @@
 
 /* Add <sitename> to Whitelist menu item */
 "Add %@ to Whitelist" = "Automatically Load Flash on “%@”";
+
+/* Preferences Contextual Menu Item */
+"ClickToFlash Preferences..." = "ClickToFlash Preferences…";
+
+
 
 
 /*

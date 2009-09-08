@@ -257,6 +257,23 @@ static CTFMenubarMenuController* sSingleton = nil;
 	return [ self _flashViewExistsForKeyWindowWithInvisibleOnly: YES ];
 }
 
+- (BOOL) multipleFlashViewsExistForWindow: (NSWindow*) window
+{
+	int count = 0;
+	
+	NSHashEnumerator enumerator = NSEnumerateHashTable( _views );
+	CTFClickToFlashPlugin* item;
+	
+	while( ( item = NSNextHashEnumeratorItem( &enumerator ) ) ) {
+		if( [ item window ] == window ) {
+			count++;
+		}
+	}
+	NSEndHashTableEnumeration( &enumerator );
+	
+	return (count > 1);
+}
+
 - (BOOL) validateMenuItem: (NSMenuItem*) item
 {
 	if ( [ item action ] == @selector( loadAllFlash: ) ) {

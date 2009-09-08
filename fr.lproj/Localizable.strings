@@ -25,6 +25,15 @@
 
 
 
+/* Title of Contextual Menu */
+"ClickToFlash Contextual menu" = "Menu contextuel ClickToFlash";
+
+/* Load Flash contextual menu item */
+"Load Flash" = "Charger Flash";
+
+/* Load All on this page contextual menu item */
+"Load All on this Page" = "Tout charger sur cette page";
+
 /* Load H.264 context menu item */
 "Load H.264" = "Charger avec QuickTime";
 
@@ -39,6 +48,11 @@
 
 /* Add <sitename> to Whitelist menu item */
 "Add %@ to Whitelist" = "Charger Flash automatiquement sur « %@ »";
+
+/* Preferences Contextual Menu Item */
+"ClickToFlash Preferences..." = "Préférences ClickToFlash…";
+
+
 
 
 

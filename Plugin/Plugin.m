@@ -74,6 +74,8 @@ BOOL usingMATrackingArea = NO;
 - (void) _addTrackingAreaForCTF;
 - (void) _removeTrackingAreaForCTF;
 
+- (void) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector;
+
 - (void) _loadContent: (NSNotification*) notification;
 - (void) _loadContentForWindow: (NSNotification*) notification;
 
@@ -654,90 +656,74 @@ BOOL usingMATrackingArea = NO;
 #pragma mark -
 #pragma mark Contextual menu
 
-- (void) setUpExtraMenuItems
-{
-	if( [ self menu ] ) {
-		// if the menu is not set up, then the menuForEvent: method will call
-		// this method when the menu is requested
-		
-		if (_fromYouTube) {
-			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadYouTubePage:)] == -1) {
-				if (_embeddedYouTubeView) {
-					[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
-					[[self menu] insertItemWithTitle: CtFLocalizedString ( @"Load YouTube.com page for this video", "Load YouTube page menu item" )
-											  action: @selector (loadYouTubePage: ) keyEquivalent: @"" atIndex: 3];
-					[[[self menu] itemAtIndex: 3] setTarget: self];
-				}
-			}
-		}
-			
-		if (_fromYouTube && [self _hasH264Version]) {
-			if ([[self menu] indexOfItemWithTarget:self andAction:@selector(loadH264:)] == -1) {
-				int QTMenuItemIndex, downloadMenuItemIndex;
-				if (! _embeddedYouTubeView) {
-					[[self menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
-					
-					QTMenuItemIndex = 4;
-					downloadMenuItemIndex = 5;
-				} else {
-					QTMenuItemIndex = 5;
-					downloadMenuItemIndex = 6;
-				}
-				
-				[[self menu] insertItemWithTitle: CtFLocalizedString( @"Load H.264", "Load H.264 context menu item" )
-										  action: @selector( loadH264: ) keyEquivalent: @"" atIndex: 1];
-				[[self menu] insertItemWithTitle: CtFLocalizedString( @"Play Fullscreen in QuickTime Player", "Open Fullscreen in QT Player menu item" )
-										  action: @selector( openFullscreenInQTPlayer: ) keyEquivalent: @"" atIndex: QTMenuItemIndex];
-				[[self menu] insertItemWithTitle: CtFLocalizedString( @"Download H.264", "Download H.264 menu item" )
-										  action: @selector( downloadH264: ) keyEquivalent: @"" atIndex: downloadMenuItemIndex];
-				[[[self menu] itemAtIndex: 1] setTarget: self];
-				[[[self menu] itemAtIndex: QTMenuItemIndex] setTarget: self];
-				[[[self menu] itemAtIndex: downloadMenuItemIndex] setTarget: self];
-			}
-		}
-	}
-	
+
+- (void) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector {
+	NSMenuItem * menuItem = [[[NSMenuItem alloc] initWithTitle: title action:selector keyEquivalent:@""] autorelease];
+	[menuItem setTarget: self];
+	[[self menu] addItem: menuItem];
 }
 
+
+
+/*
+ Build contextual menu
+*/
 - (NSMenu*) menuForEvent: (NSEvent*) event
 {
-    // Set up contextual menu
-    
-    if( ![ self menu ] ) {
-        if (![NSBundle loadNibNamed:@"ContextualMenu" owner:self]) {
-            NSLog(@"Could not load contextual menu plugin");
-        }
-        else {
-			[self setUpExtraMenuItems];
-        }
-    }
-    
+	[self setMenu: [[[NSMenu alloc] initWithTitle:CtFLocalizedString( @"ClickTo Flash Contextual menu", @"Title of Contextual Menu")] autorelease]];
+	
+	[self _addContextualMenuItemWithTitle:CtFLocalizedString( @"Load Flash", @"Contextual Menu Item: Load Flash" ) 
+								   action: @selector( loadFlash: )];
+	
+	if (_fromYouTube && [self _hasH264Version]) {
+		[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264", @"Load H.264 contextual menu item" ) 
+									   action: @selector( loadH264: )];
+	}
+	
+	if ([[CTFMenubarMenuController sharedController] multipleFlashViewsExistForWindow:[self window]]) {
+		[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load All on this Page", @"Load All on this Page contextual menu item" )
+									   action: @selector( loadAllOnPage: )];
+	}
+	
+	[[self menu] addItem: [NSMenuItem separatorItem]];
+	
+	
+	if (_fromYouTube) {
+		if (_embeddedYouTubeView) {
+			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load YouTube.com page for this video", @"Load YouTube page contextual menu item" )
+										   action: @selector( loadYouTubePage: )];
+		}
+
+		if ([self _hasH264Version]) {
+			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Fullscreen in QuickTime Player", @"Open Fullscreen in QT Player contextual menu item" )
+										   action: @selector( openFullscreenInQTPlayer: )];
+			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download H.264", @"Download H.264 menu item" )
+										   action: @selector( loadH264: )];
+
+		}	
+	
+		if (_embeddedYouTubeView || [self _hasH264Version]) {
+			[[self menu] addItem: [NSMenuItem separatorItem]];
+		}
+	}
+		
+	if ([self host] && ![self _isHostWhitelisted]) {
+		[self _addContextualMenuItemWithTitle: [NSString stringWithFormat:CtFLocalizedString( @"Add %@ to Whitelist", @"Add <sitename> to Whitelist contextual menu item" ), [self host]]
+									   action: @selector( addToWhitelist: )];
+		[[self menu] addItem: [NSMenuItem separatorItem]];
+	}
+	
+	[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"ClickToFlash Preferences...", @"Preferences contextual menu item" )
+									action: @selector( editWhitelist: )];
+	
+	
     return [self menu];
 }
 
+
 - (BOOL) validateMenuItem: (NSMenuItem *)menuItem
 {
-    BOOL enabled = YES;
-    SEL action = [menuItem action];
-    if (action == @selector(addToWhitelist:))
-    {
-		if ([self host]) {
-			NSString* title = [NSString stringWithFormat:
-							   CtFLocalizedString(@"Add %@ to Whitelist", @"Add <sitename> to Whitelist menu item"), 
-							   [self host]];
-			[menuItem setTitle: title];
-		} else {
-			// this case happens sometimes if the base URL is "about:blank",
-			// so there's no base URL to use for the whitelist, so just disable
-			// the menu item
-			enabled = NO;
-		}
-       
-        if ([self _isHostWhitelisted])
-            enabled = NO;
-    }
-    
-    return enabled;
+	return YES;
 }
 
 #pragma mark -
@@ -1208,7 +1194,6 @@ BOOL usingMATrackingArea = NO;
 	
 	if (didReceiveAllResponses) _receivedAllResponses = YES;
 	
-	[self setUpExtraMenuItems];
 	[self setNeedsDisplay:YES];
 }
 
