@@ -150,7 +150,7 @@
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
 		6C4B630B1051453C00412F09 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Plugin/English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6C4B631F10514C6900412F09 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6C4B631F10514C6900412F09 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6C4B651910519F3F00412F09 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = Plugin/English.lproj/Credits.html; sourceTree = "<group>"; };
 		6C4B65241051A54700412F09 /* CTFAboutBoxWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFAboutBoxWindowController.h; sourceTree = "<group>"; };
 		6C4B65251051A54700412F09 /* CTFAboutBoxWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFAboutBoxWindowController.m; sourceTree = "<group>"; };
@@ -158,15 +158,15 @@
 		6C4B65331051A76F00412F09 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Plugin/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C4B657E1051AF1400412F09 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = Plugin/de.lproj/Credits.html; sourceTree = "<group>"; };
 		6C4B65861051B0B000412F09 /* AboutBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutBox.xib; path = Plugin/de.lproj/AboutBox.xib; sourceTree = "<group>"; };
-		6C4B659E1051B29D00412F09 /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6C4B659E1051B29D00412F09 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C4B65D11051B6EF00412F09 /* Credits.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = Credits.css; sourceTree = "<group>"; };
 		6C4B686210532BA400412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/AboutBox.xib; sourceTree = "<group>"; };
 		6C4B686510532BB200412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		6C4B686810532BC500412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/Credits.html; sourceTree = "<group>"; };
-		6C4B686910532BCD00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6C4B686910532BCD00412F09 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C4B686A10532BD700412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		6C4B686B10532BDF00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
-		6C4B686C10532BED00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6C4B686C10532BED00412F09 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6C575A2F1050754D008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		6C575A311050759C008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/ContextualMenu.xib; sourceTree = "<group>"; };
 		6C575A3310507740008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
