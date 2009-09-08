@@ -152,18 +152,18 @@
 		6C4B651910519F3F00412F09 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = Plugin/English.lproj/Credits.html; sourceTree = "<group>"; };
 		6C4B65241051A54700412F09 /* CTFAboutBoxWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFAboutBoxWindowController.h; sourceTree = "<group>"; };
 		6C4B65251051A54700412F09 /* CTFAboutBoxWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFAboutBoxWindowController.m; sourceTree = "<group>"; };
-		6C4B65291051A57900412F09 /* AboutBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutBox.xib; path = Plugin/English.lproj/AboutBox.xib; sourceTree = "<group>"; };
-		6C4B65331051A76F00412F09 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Plugin/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6C4B65291051A57900412F09 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/AboutBox.xib; sourceTree = "<group>"; };
+		6C4B65331051A76F00412F09 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Plugin/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C4B657E1051AF1400412F09 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = Plugin/de.lproj/Credits.html; sourceTree = "<group>"; };
-		6C4B65861051B0B000412F09 /* AboutBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutBox.xib; path = Plugin/de.lproj/AboutBox.xib; sourceTree = "<group>"; };
-		6C4B659E1051B29D00412F09 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6C4B65861051B0B000412F09 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/AboutBox.xib; sourceTree = "<group>"; };
+		6C4B659E1051B29D00412F09 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6C4B65D11051B6EF00412F09 /* Credits.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = Credits.css; sourceTree = "<group>"; };
-		6C4B686210532BA400412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/AboutBox.xib; sourceTree = "<group>"; };
-		6C4B686810532BC500412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = fr.lproj/Credits.html; sourceTree = "<group>"; };
-		6C4B686910532BCD00412F09 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6C4B686A10532BD700412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
-		6C4B686B10532BDF00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
-		6C4B686C10532BED00412F09 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6C4B686210532BA400412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = Plugin/fr.lproj/AboutBox.xib; sourceTree = "<group>"; };
+		6C4B686810532BC500412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = Plugin/fr.lproj/Credits.html; sourceTree = "<group>"; };
+		6C4B686910532BCD00412F09 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6C4B686A10532BD700412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = Plugin/fr.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
+		6C4B686B10532BDF00412F09 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = Plugin/fr.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
+		6C4B686C10532BED00412F09 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		6C575A2F1050754D008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		6C575A3310507740008C5B23 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		79166CBB0FF69E1800B1F69B /* CTGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTGradient.m; path = Plugin/CTGradient.m; sourceTree = "<group>"; };
@@ -544,8 +544,8 @@
 		6C4B652B1051A58800412F09 /* AboutBox.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6C4B65291051A57900412F09 /* AboutBox.xib */,
-				6C4B65861051B0B000412F09 /* AboutBox.xib */,
+				6C4B65291051A57900412F09 /* English */,
+				6C4B65861051B0B000412F09 /* de */,
 				6C4B686210532BA400412F09 /* fr */,
 			);
 			name = AboutBox.xib;
@@ -554,8 +554,8 @@
 		6C4B65351051A77600412F09 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6C4B65331051A76F00412F09 /* InfoPlist.strings */,
-				6C4B659E1051B29D00412F09 /* InfoPlist.strings */,
+				6C4B65331051A76F00412F09 /* English */,
+				6C4B659E1051B29D00412F09 /* de */,
 				6C4B686910532BCD00412F09 /* fr */,
 			);
 			name = InfoPlist.strings;
