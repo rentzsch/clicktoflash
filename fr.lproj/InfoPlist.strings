@@ -1,0 +1,9 @@
+﻿/* 
+   InfoPlist.strings
+   ClickToFlash
+
+   Created by Sven on 04.09.09.
+   Copyright 2009 earthlingsoft. All rights reserved.
+*/
+
+NSHumanReadableCopyright = "© 2008-2009 Concepteurs ClickToFlash";
