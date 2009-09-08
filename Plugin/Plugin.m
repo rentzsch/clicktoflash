@@ -74,7 +74,7 @@ BOOL usingMATrackingArea = NO;
 - (void) _addTrackingAreaForCTF;
 - (void) _removeTrackingAreaForCTF;
 
-- (void) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector;
+- (NSMenuItem*) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector;
 
 - (void) _loadContent: (NSNotification*) notification;
 - (void) _loadContentForWindow: (NSNotification*) notification;
@@ -657,10 +657,11 @@ BOOL usingMATrackingArea = NO;
 #pragma mark Contextual menu
 
 
-- (void) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector {
+- (NSMenuItem *) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector {
 	NSMenuItem * menuItem = [[[NSMenuItem alloc] initWithTitle: title action:selector keyEquivalent:@""] autorelease];
 	[menuItem setTarget: self];
 	[[self menu] addItem: menuItem];
+	return menuItem;
 }
 
 
@@ -684,6 +685,13 @@ BOOL usingMATrackingArea = NO;
 		[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load All on this Page", @"Load All on this Page contextual menu item" )
 									   action: @selector( loadAllOnPage: )];
 	}
+	
+	[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Hide Flash", @"Hide Flash contextual menu item (sets display:none)")
+								   action: @selector( hideFlash:)];
+	NSMenuItem * menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Remove Flash", @"Remove Flash contextual menu item (sets visibility: hidden)")
+											  action: @selector( removeFlash: )];
+	[menuItem setAlternate:YES];
+	[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
 	
 	[[self menu] addItem: [NSMenuItem separatorItem]];
 	
@@ -728,6 +736,18 @@ BOOL usingMATrackingArea = NO;
 
 #pragma mark -
 #pragma mark Loading
+
+- (IBAction)removeFlash: (id) sender;
+{
+    DOMCSSStyleDeclaration *style = [[self container] style];
+	[style setProperty:@"display" value:@"none" priority:@"important"];
+}
+
+- (IBAction)hideFlash: (id) sender;
+{
+    DOMCSSStyleDeclaration *style = [[self container] style];
+	[style setProperty:@"visibility" value:@"hidden" priority:@"important"];
+}
 
 - (IBAction)loadFlash:(id)sender;
 {

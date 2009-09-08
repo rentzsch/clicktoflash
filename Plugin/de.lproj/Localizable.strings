@@ -46,6 +46,12 @@
 /* Load H.264 context menu item */
 "Load H.264" = "Film mit QuickTime abspielen";
 
+/* Hide Flash contextual menu item (sets display:none) */
+"Hide Flash" = "Flash verbergen"; 
+
+/* Remove Flash contextual menu item (sets visibility: hidden) */
+"Remove Flash" = "Flash entfernen";
+
 /* Load YouTube page menu item */
 "Load YouTube.com page for this video" = "YouTube Seite öffnen";
 
