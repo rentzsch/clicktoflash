@@ -79,6 +79,7 @@ BOOL usingMATrackingArea = NO;
 
 - (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
 - (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML;
+- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars;
 - (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId;
 - (NSString*) flashvarWithName: (NSString*) argName;
 - (void) _checkForH264VideoVariants;
@@ -1160,7 +1161,7 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) flashvarWithName: (NSString*) argName
 {
-    return [ _flashVars objectForKey: argName ];
+    return [[[ _flashVars objectForKey: argName ] retain] autorelease];
 }
 
 /*- (NSString*) _videoId
@@ -1468,6 +1469,18 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[openInQTPlayerScript release];
 }
 
+- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars
+{
+	if (flashVars)
+	{
+		_flashVars = [flashVars retain];
+		NSString *videoId = [self flashvarWithName:@"video_id"];
+		[self setVideoId:videoId];
+	}
+	
+	[self _checkForH264VideoVariants];
+}
+
 - (void)_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -1478,13 +1491,13 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
 													  usedEncoding:nil
 															 error:&pageSourceError];
-	if (! pageSourceError) {
-		_flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
-		_videoId = [self flashvarWithName:@"video_id"];
+	NSDictionary *flashVars = nil;
+	if (pageSourceString && !pageSourceError) {
+		flashVars = [self _flashVarDictionaryFromYouTubePageHTML:pageSourceString];
 	}
 	
-	[self performSelectorOnMainThread:@selector(_checkForH264VideoVariants)
-						   withObject:nil
+	[self performSelectorOnMainThread:@selector(_didRetrieveEmbeddedPlayerFlashVars:)
+						   withObject:flashVars
 						waitUntilDone:NO];
 	
 	[pool drain];
@@ -1673,7 +1686,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (NSString *)videoId
 {
-    return _videoId;
+    return [[_videoId retain] autorelease];
 }
 - (void)setVideoId:(NSString *)newValue
 {
