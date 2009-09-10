@@ -38,10 +38,10 @@ THE SOFTWARE.
     NSDictionary* _flashVars;
     id trackingArea;
     NSAlert* _activeAlert;
-    NSString* _badgeText;
     BOOL mouseIsDown;
     BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
+	BOOL _isSIFR;
     BOOL _fromYouTube;
     BOOL _fromFlickr;
 	BOOL _embeddedYouTubeView;

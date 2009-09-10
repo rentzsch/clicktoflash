@@ -119,6 +119,7 @@ BOOL usingMATrackingArea = NO;
 		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
 		_embeddedYouTubeView = NO;
+		_isSIFR = NO;
 		_delayingTimer = nil;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
@@ -282,7 +283,7 @@ BOOL usingMATrackingArea = NO;
         // Check for sIFR
         
         if ([self _isSIFRText: arguments]) {
-            _badgeText = CtFLocalizedString(@"sIFR Flash", @"sIFR Flash badge text");
+            _isSIFR = YES;
             
             if ([self _shouldAutoLoadSIFR]) {
 				_isLoadingFromWhitelist = YES;
@@ -447,8 +448,6 @@ BOOL usingMATrackingArea = NO;
 	
 	[_flashVars release];
 	_flashVars = nil;
-	[_badgeText release];
-	_badgeText = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -806,8 +805,8 @@ BOOL usingMATrackingArea = NO;
 		} else {
 			return CtFLocalizedString( @"YouTube…", @"YouTube badge waiting text" );
 		}
-    } else if( _badgeText ) {
-        return _badgeText;
+    } else if( _isSIFR ) {
+        return CtFLocalizedString( @"sIFR Flash", @"sIFR Flash badge text" );
     } else {
         return CtFLocalizedString( @"Flash", @"Flash badge text" );
 	}
