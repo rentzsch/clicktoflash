@@ -34,7 +34,7 @@ THE SOFTWARE.
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
-#import "CTGradient.h"
+#import "CTFGradient.h"
 #import "SparkleManager.h"
 
 #define LOGGING_ENABLED 0
@@ -1009,7 +1009,7 @@ BOOL usingMATrackingArea = NO;
 		//tweak the opacity of the endingColor for compatibility with CTGradient
 		endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.00];
 		
-		gradient = [CTGradient gradientWithBeginningColor:startingColor
+		gradient = [CTFGradient gradientWithBeginningColor:startingColor
 											  endingColor:endingColor];
 		
 		//angle is reversed compared to NSGradient
