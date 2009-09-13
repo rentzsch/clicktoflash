@@ -6,6 +6,12 @@
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
 		<item>
+			<title>version 1.5.1</title>
+			<pubDate>Sun, 14 Sep 2009 03:39:12 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.5.1" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.1.zip"/>
+		</item>
+		<item>
 			<title>version 1.5</title>
 			<pubDate>Sun, 13 Sep 2009 03:39:12 -0500</pubDate>
 			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.html</sparkle:releaseNotesLink>
