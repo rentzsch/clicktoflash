@@ -5,7 +5,7 @@
 		<link>http://rentzsch.github.com/clicktoflash/release_notes/appcast.xml</link>
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
-		<item>
+		<!--<item>
 			<title>version 1.5.1</title>
 			<pubDate>Sun, 13 Sep 2009 16:19:11 -0500</pubDate>
 			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.1.html</sparkle:releaseNotesLink>
@@ -16,7 +16,7 @@
 			<pubDate>Sun, 13 Sep 2009 03:39:12 -0500</pubDate>
 			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.html</sparkle:releaseNotesLink>
 			<enclosure type="application/zip" sparkle:version="1.5" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.zip"/>
-		</item>
+		</item>-->
 		<item>
 			<title>version 1.4.2</title>
 			<pubDate>Wed, 20 May 2009 22:02:03 -0500</pubDate>
