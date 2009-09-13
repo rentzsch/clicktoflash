@@ -25,7 +25,7 @@
 	<key>NSPrincipalClass</key>
 	<string>CTFClickToFlashPlugin</string>
 	<key>SUFeedURL</key>
-	<string>https://s3.amazonaws.com/clicktoflash/appcast.xml</string>
+	<string>http://rentzsch.github.com/clicktoflash/release_notes/appcast.xml</string>
 	<key>WebPluginDescription</key>
 	<string>Shockwave Flash 10.0 r22</string>
 	<key>WebPluginMIMETypes</key>
