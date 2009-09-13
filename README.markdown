@@ -1,4 +1,4 @@
-# [Official ClickToFlash Site Here](http://rentzsch.github.com/clicktoflash/)
+# Visit the [Official ClickToFlash Site Here](http://rentzsch.github.com/clicktoflash/)
 
 This is the ClickToFlash developer site.
 
