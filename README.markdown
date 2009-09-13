@@ -1,4 +1,6 @@
-This page only hosts the source code for ClickToFlash.  To download ClickToFlash, learn how to use it, solve installation problems, fix a PandoraJam incompatibility issue, and more, please visit the [ClickToFlash website](http://rentzsch.github.com/clicktoflash/).
+# [Official ClickToFlash Site Here](http://rentzsch.github.com/clicktoflash/)
+
+This is the ClickToFlash developer site.
 
 ##Version History
 
