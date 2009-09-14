@@ -24,8 +24,11 @@
 	<string>${PRODUCT_VERSION}</string>
 	<key>NSPrincipalClass</key>
 	<string>CTFClickToFlashPlugin</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
 	<key>SUFeedURL</key>
-	<string>https://s3.amazonaws.com/clicktoflash/appcast.xml</string>
+	<string>http://rentzsch.github.com/clicktoflash/release_notes/appcast.xml</string>
+    <!--<string>http://rentzsch.github.com/clicktoflash/release_notes/appcast_distantfuture.xml</string>-->
 	<key>WebPluginDescription</key>
 	<string>Shockwave Flash 10.0 r22</string>
 	<key>WebPluginMIMETypes</key>
