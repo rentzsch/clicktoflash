@@ -52,6 +52,10 @@ cp -R "$BUILT_PLUGIN" "$MY_INSTALLER_ROOT"
 # Stuff it into a .zip.
 cd "$BUILT_PRODUCTS_DIR"
 zip -r "$VERSIONED_NAME.zip" "ClickToFlash.pkg"
-cd $SCRIPT_WD
+
+if [ -f "$HOME/Documents/releases/ClickToFlash/dsa_priv.pem" ]; then
+	`openssl dgst -sha1 -binary < "$VERSIONED_NAME.zip" | openssl dgst -dss1 -sign "$HOME/Documents/releases/ClickToFlash/dsa_priv.pem" | openssl enc -base64 > $VERSIONED_NAME.dsaSignature`
+fi
+cd "$SCRIPT_WD"
 
 rm -rf "$MY_INSTALLER_ROOT"

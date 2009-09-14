@@ -47,6 +47,7 @@
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		79166CBD0FF69E1800B1F69B /* CTGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79166CBB0FF69E1800B1F69B /* CTGradient.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
+		79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */; };
 		79C040700FF1CCE6002DA6A5 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E2EB920F86AAD3005CF170 /* SparkleManager.m */; };
 		844695F70F470D1F00DC783A /* CTFsIFRSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 844695910F46FC6600DC783A /* CTFsIFRSupport.m */; };
@@ -147,6 +148,7 @@
 		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Plugin/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelistWindowController.m; path = Plugin/CTFWhitelistWindowController.m; sourceTree = "<group>"; };
 		79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelistWindowController.h; path = Plugin/CTFWhitelistWindowController.h; sourceTree = "<group>"; };
+		79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Plugin/dsa_pub.pem; sourceTree = "<group>"; };
 		79E2EB910F86AAD3005CF170 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkleManager.h; path = Plugin/SparkleManager.h; sourceTree = "<group>"; };
 		79E2EB920F86AAD3005CF170 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparkleManager.m; path = Plugin/SparkleManager.m; sourceTree = "<group>"; };
 		844695900F46FC6600DC783A /* CTFsIFRSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFsIFRSupport.h; path = Plugin/CTFsIFRSupport.h; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				072189BA0F30D9C3008C8944 /* ContextualMenu.xib */,
 				072189BC0F30D9C3008C8944 /* WhitelistPanel.xib */,
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
+				79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
 			);
 			indentWidth = 4;
@@ -368,6 +371,7 @@
 				6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */,
 				A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */,
 				00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */,
+				79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,7 +496,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.5fc2;
+				PRODUCT_VERSION = 1.5.2;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -505,7 +509,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.5fc2;
+				PRODUCT_VERSION = 1.5.2;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
