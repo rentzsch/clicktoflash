@@ -119,6 +119,7 @@ BOOL usingMATrackingArea = NO;
 		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
 		_embeddedYouTubeView = NO;
+		_youTubeAutoPlay = NO;
 		_delayingTimer = nil;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
@@ -206,6 +207,16 @@ BOOL usingMATrackingArea = NO;
 		|| ([self src] != nil && [[self src] rangeOfString: @"youtube-nocookie.com"].location != NSNotFound );
 		
         if (_fromYouTube) {
+			
+			// Check wether autoplay is wanted
+			if ([[self host] isEqualToString:@"www.youtube.com"]
+				|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]) {
+				_youTubeAutoPlay = YES;
+			} else {
+				_youTubeAutoPlay = [[[self _flashVarDictionary:[self src]] objectForKey:@"autoplay"] isEqualToString:@"1"];
+			}
+
+			
 			NSString *videoId = [ self flashvarWithName: @"video_id" ];
 			if (videoId != nil) {
 				[self setVideoId:videoId];
@@ -1325,7 +1336,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [ element setAttribute: @"src" value: [ self _h264VersionUrl ]];
     [ element setAttribute: @"type" value: @"video/mp4" ];
     [ element setAttribute: @"scale" value: @"aspect" ];
-    [ element setAttribute: @"autoplay" value: @"true" ];
+    if (_youTubeAutoPlay) {
+		[ element setAttribute: @"autoplay" value: @"true" ];
+	}
     [ element setAttribute: @"cache" value: @"false" ];
 	
     if( ! [ element hasAttribute: @"width" ] )
@@ -1341,7 +1354,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 {
     [ element setAttribute: @"src" value: [ self _h264VersionUrl ] ];
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
-	[ element setAttribute: @"autoplay" value:@"autoplay"];
+	if (_youTubeAutoPlay) {
+		[ element setAttribute: @"autoplay" value:@"autoplay"];
+	}
 	[ element setAttribute: @"controls" value:@"controls"];
 	
 	DOMElement* container = [self container];
