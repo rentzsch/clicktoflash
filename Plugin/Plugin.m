@@ -34,7 +34,7 @@ THE SOFTWARE.
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
-#import "CTGradient.h"
+#import "CTFGradient.h"
 #import "SparkleManager.h"
 
 #define LOGGING_ENABLED 0
@@ -81,6 +81,7 @@ BOOL usingMATrackingArea = NO;
 
 - (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
 - (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML;
+- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars;
 - (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId;
 - (NSString*) flashvarWithName: (NSString*) argName;
 - (void) _checkForH264VideoVariants;
@@ -120,6 +121,7 @@ BOOL usingMATrackingArea = NO;
 		_contextMenuIsVisible = NO;
 		_embeddedYouTubeView = NO;
 		_isSIFR = NO;
+		_youTubeAutoPlay = NO;
 		_delayingTimer = nil;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
@@ -207,6 +209,16 @@ BOOL usingMATrackingArea = NO;
 		|| ([self src] != nil && [[self src] rangeOfString: @"youtube-nocookie.com"].location != NSNotFound );
 		
         if (_fromYouTube) {
+			
+			// Check wether autoplay is wanted
+			if ([[self host] isEqualToString:@"www.youtube.com"]
+				|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]) {
+				_youTubeAutoPlay = YES;
+			} else {
+				_youTubeAutoPlay = [[[self _flashVarDictionary:[self src]] objectForKey:@"autoplay"] isEqualToString:@"1"];
+			}
+
+			
 			NSString *videoId = [ self flashvarWithName: @"video_id" ];
 			if (videoId != nil) {
 				[self setVideoId:videoId];
@@ -1013,7 +1025,7 @@ BOOL usingMATrackingArea = NO;
 		//tweak the opacity of the endingColor for compatibility with CTGradient
 		endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.00];
 		
-		gradient = [CTGradient gradientWithBeginningColor:startingColor
+		gradient = [CTFGradient gradientWithBeginningColor:startingColor
 											  endingColor:endingColor];
 		
 		//angle is reversed compared to NSGradient
@@ -1164,7 +1176,7 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) flashvarWithName: (NSString*) argName
 {
-    return [ _flashVars objectForKey: argName ];
+    return [[[ _flashVars objectForKey: argName ] retain] autorelease];
 }
 
 /*- (NSString*) _videoId
@@ -1306,7 +1318,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [ element setAttribute: @"src" value: [ self _h264VersionUrl ]];
     [ element setAttribute: @"type" value: @"video/mp4" ];
     [ element setAttribute: @"scale" value: @"aspect" ];
-    [ element setAttribute: @"autoplay" value: @"true" ];
+    if (_youTubeAutoPlay) {
+		[ element setAttribute: @"autoplay" value: @"true" ];
+	}
     [ element setAttribute: @"cache" value: @"false" ];
 	
     if( ! [ element hasAttribute: @"width" ] )
@@ -1322,7 +1336,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 {
     [ element setAttribute: @"src" value: [ self _h264VersionUrl ] ];
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
-	[ element setAttribute: @"autoplay" value:@"autoplay"];
+	if (_youTubeAutoPlay) {
+		[ element setAttribute: @"autoplay" value:@"autoplay"];
+	}
 	[ element setAttribute: @"controls" value:@"controls"];
 	// make videos with the wrong aspect ratio look more letterboxed. Would it be better or worse to just change the element's size?
 	[ element setAttribute: @"style" value :@"background:#111"]; 	
@@ -1495,6 +1511,18 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[openInQTPlayerScript release];
 }
 
+- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars
+{
+	if (flashVars)
+	{
+		_flashVars = [flashVars retain];
+		NSString *videoId = [self flashvarWithName:@"video_id"];
+		[self setVideoId:videoId];
+	}
+	
+	[self _checkForH264VideoVariants];
+}
+
 - (void)_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -1504,13 +1532,13 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
 													  usedEncoding:nil
 															 error:&pageSourceError];
-	if (! pageSourceError) {
-		_flashVars = [[self _flashVarDictionaryFromYouTubePageHTML:pageSourceString] retain];
-		_videoId = [self flashvarWithName:@"video_id"];
+	NSDictionary *flashVars = nil;
+	if (pageSourceString && !pageSourceError) {
+		flashVars = [self _flashVarDictionaryFromYouTubePageHTML:pageSourceString];
 	}
 	
-	[self performSelectorOnMainThread:@selector(_checkForH264VideoVariants)
-						   withObject:nil
+	[self performSelectorOnMainThread:@selector(_didRetrieveEmbeddedPlayerFlashVars:)
+						   withObject:flashVars
 						waitUntilDone:NO];
 	
 	[pool drain];
@@ -1627,8 +1655,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 }
 - (void)setWebView:(WebView *)newValue
 {
-    [newValue retain];
-    [_webView release];
+    // Not retained, because the WebView owns the plugin, so we'll get a retain cycle.
     _webView = newValue;
 }
 
@@ -1700,7 +1727,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (NSString *)videoId
 {
-    return _videoId;
+    return [[_videoId retain] autorelease];
 }
 - (void)setVideoId:(NSString *)newValue
 {

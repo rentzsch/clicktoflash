@@ -1,6 +1,20 @@
-This page only hosts the source code for ClickToFlash.  To download ClickToFlash, learn how to use it, solve installation problems, fix a PandoraJam incompatibility issue, and more, please visit the [ClickToFlash website](http://rentzsch.github.com/clicktoflash/).
+# Visit the [Official ClickToFlash Site Here](http://rentzsch.github.com/clicktoflash/)
+
+This is the ClickToFlash developer site.
 
 ##Version History
+
+* **1.5.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.2.zip)
+
+	* [NEW] Start signing Sparkle updates. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/c8f4d7f897a039d5d04ea92e178a15238adcacab))
+
+* **1.5.1** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.1.zip)
+
+	* [FIX] Was trying to update via Sparkle on every Flash load. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/330c89e5706f64f5b0073be17112d5bb864ff8bf)).
+
+	* [CHANGE] Change appcast hosting from @rentzsch's personal Amazon S3 to Github. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/f2e0796f86466cc3f4432ad81a2403e0f21e8bf6))
+
+* *promoted 1.5fc2 to 1.5* [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.zip)
 
 * **1.5fc2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5fc2.zip)
 

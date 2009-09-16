@@ -1,5 +1,5 @@
 //
-//  CTGradient.m
+//  CTFGradient.m (renamed from CTGradient to avoid namespace collisions with other projects using CTGradient and WebKit)
 //
 //  Created by Chad Weider on 2/14/07.
 //  Writtin by Chad Weider.
@@ -8,9 +8,9 @@
 //
 //  Version: 1.8
 
-#import "CTGradient.h"
+#import "CTFGradient.h"
 
-@interface CTGradient (Private)
+@interface CTFGradient (Private)
 - (void)_commonInit;
 - (void)setBlendingMode:(CTGradientBlendingMode)mode;
 - (void)addElement:(CTGradientElement*)newElement;
@@ -30,7 +30,7 @@ static void transformHSV_RGB(float *components);
 static void resolveHSV(float *color1, float *color2);
 
 
-@implementation CTGradient
+@implementation CTFGradient
 /////////////////////////////////////Initialization Type Stuff
 - (id)init
   {
@@ -66,7 +66,7 @@ static void resolveHSV(float *color1, float *color2);
 
 - (id)copyWithZone:(NSZone *)zone
   {
-  CTGradient *copy = [[[self class] allocWithZone:zone] init];
+  CTFGradient *copy = [[[self class] allocWithZone:zone] init];
   
   //now just copy my elementlist
   CTGradientElement *currentElement = elementList;
@@ -495,7 +495,7 @@ static void resolveHSV(float *color1, float *color2);
 
 
 #pragma mark Modification
-- (CTGradient *)gradientWithAlphaComponent:(float)alpha
+- (CTFGradient *)gradientWithAlphaComponent:(float)alpha
   {
   id newInstance = [[[self class] alloc] init];
   
@@ -514,9 +514,9 @@ static void resolveHSV(float *color1, float *color2);
   return [newInstance autorelease];
   }
 
-- (CTGradient *)gradientWithBlendingMode:(CTGradientBlendingMode)mode
+- (CTFGradient *)gradientWithBlendingMode:(CTGradientBlendingMode)mode
   {
-  CTGradient *newGradient = [self copy];  
+  CTFGradient *newGradient = [self copy];  
   
   [newGradient setBlendingMode:mode];
   
@@ -526,9 +526,9 @@ static void resolveHSV(float *color1, float *color2);
 
 //Adds a color stop with <color> at <position> in elementList
 //(if two elements are at the same position then added imediatly after the one that was there already)
-- (CTGradient *)addColorStop:(NSColor *)color atPosition:(float)position
+- (CTFGradient *)addColorStop:(NSColor *)color atPosition:(float)position
   {
-  CTGradient *newGradient = [self copy];
+  CTFGradient *newGradient = [self copy];
   CTGradientElement newGradientElement;
   
   //put the components of color into the newGradientElement - must make sure it is a RGB color (not Gray or CMYK) 
@@ -546,9 +546,9 @@ static void resolveHSV(float *color1, float *color2);
 
 
 //Removes the color stop at <position> from elementList
-- (CTGradient *)removeColorStopAtPosition:(float)position
+- (CTFGradient *)removeColorStopAtPosition:(float)position
   {
-  CTGradient *newGradient = [self copy];
+  CTFGradient *newGradient = [self copy];
   CTGradientElement removedElement = [newGradient removeElementAtPosition:position];
   
   if(isnan(removedElement.position))
@@ -557,9 +557,9 @@ static void resolveHSV(float *color1, float *color2);
   return [newGradient autorelease];
   }
 
-- (CTGradient *)removeColorStopAtIndex:(unsigned)index
+- (CTFGradient *)removeColorStopAtIndex:(unsigned)index
   {
-  CTGradient *newGradient = [self copy];
+  CTFGradient *newGradient = [self copy];
   CTGradientElement removedElement = [newGradient removeElementAtIndex:index];
   
   if(isnan(removedElement.position))

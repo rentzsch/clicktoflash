@@ -1,5 +1,5 @@
 //
-//  CTGradient.h
+//  CTFGradient.h (renamed from CTGradient to avoid namespace collisions with other projects using CTGradient and WebKit)
 //
 //  Created by Chad Weider on 2/14/07.
 //  Writtin by Chad Weider.
@@ -26,7 +26,7 @@ typedef enum  _CTBlendingMode
 	} CTGradientBlendingMode;
 
 
-@interface CTGradient : NSObject <NSCopying, NSCoding>
+@interface CTFGradient : NSObject <NSCopying, NSCoding>
 	{
 	CTGradientElement* elementList;
 	CTGradientBlendingMode blendingMode;
@@ -51,11 +51,11 @@ typedef enum  _CTBlendingMode
 + (id)rainbowGradient;
 + (id)hydrogenSpectrumGradient;
 
-- (CTGradient *)gradientWithAlphaComponent:(float)alpha;
+- (CTFGradient *)gradientWithAlphaComponent:(float)alpha;
 
-- (CTGradient *)addColorStop:(NSColor *)color atPosition:(float)position;	//positions given relative to [0,1]
-- (CTGradient *)removeColorStopAtIndex:(unsigned)index;
-- (CTGradient *)removeColorStopAtPosition:(float)position;
+- (CTFGradient *)addColorStop:(NSColor *)color atPosition:(float)position;	//positions given relative to [0,1]
+- (CTFGradient *)removeColorStopAtIndex:(unsigned)index;
+- (CTFGradient *)removeColorStopAtPosition:(float)position;
 
 - (CTGradientBlendingMode)blendingMode;
 - (NSColor *)colorStopAtIndex:(unsigned)index;

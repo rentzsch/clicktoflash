@@ -45,6 +45,7 @@ THE SOFTWARE.
     BOOL _fromYouTube;
     BOOL _fromFlickr;
 	BOOL _embeddedYouTubeView;
+	BOOL _youTubeAutoPlay;
 	BOOL _hasH264Version;
 	BOOL _hasHDH264Version;
 	WebView *_webView;
