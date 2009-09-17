@@ -185,37 +185,9 @@
 			
 			<div class="content_box" id="pandorajam-issue">
 				<h2 id="pandorajam_troubles">PandoraJam Troubles:</h2>
-				<p>PandoraJam and ClickToFlash are known to conflict, causing PandoraJam to cease functioning entirely.
-				There are two issues here which, combined, cause the problem.  The first: you can't click on ClickToFlash
-				views to activate them in PandoraJam.  We've already solved this in the latest versions of ClickToFlash:
-				PandoraJam has been added to an application whitelist in ClickToFlash 1.5b4 and higher.<p>
-				
-				<p>Despite this fix, however, there is another bug in PandoraJam that still causes problems.  The version
-				of WebKit they use <a href="https://bugs.webkit.org/show_bug.cgi?id=25332">has a bug</a> that makes it
-				impossible for the Flash plug-in to take over.  This has been fixed in the latest versions of WebKit, but
-				PandoraJam's version of WebKit has not been updated to include this fix.</p>
-				
-				<p>If you're adventurous, you can fix this problem yourself by following these steps:</p>
-				
-				<ol>
-					<li>Install ClickToFlash 1.5b4 or higher.</li>
-					<li>Download the <a href="http://nightly.webkit.org/">latest WebKit nightly</a>.  Once downloaded,
-					copy the WebKit application into /Applications</li>
-					<li>Quit PandoraJam if it's already open.</li>
-					<li>Find PandoraJam in the Finder.  Control-click on it, and select "Show Package Contents".</li>
-					<li>Navigate to Contents/Frameworks/ </li>
-					<li>Rename "WebKit.framework" to "WebKit-old.framework"</li>
-					<li>Create a new Finder window (leaving the old one open), and find WebKit in /Applications</li>
-					<li>Control-click on WebKit, and select "Show Package Contents".</li>
-					<li>Navigate to Contents/Frameworks/10.#/ , where # is "4" for Tiger, "5" for Leopard, and "6" for
-					Snowy Leopard.</li>
-					<li>Command-option click on WebKit.framework, and drag it to the other Finder window that shows
-					PandoraJam's frameworks.  Basically what you're doing here is creating an alias to replace PandoraJam's
-					old version of WebKit with the newest one.  If you've done this correctly, you should now see both
-					"WebKit-old.framework" and "WebKit.framework" in PandoraJam's frameworks folder.  In addition,
-					"WebKit.framework" should show a little arrow on its folder icon.</li>
-					<li>Launch PandoraJam.  It should now work.</li>
-				</ol>
+				<p>If you're having troubles with PandoraJam, make sure you are running ClickToFlash 1.5 or later, and
+				<a href="http://www.bitcartel.com/pandorajam/">upgrade to
+				PandoraJam</a> 1.4 (build 288) or later.
 			</div>
 			
 			<div class="content_box" id="application-whitelist">
