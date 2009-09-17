@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1040</int>
-		<string key="IBDocument.SystemVersion">10B503</string>
+		<string key="IBDocument.SystemVersion">10A432</string>
 		<string key="IBDocument.InterfaceBuilderVersion">732</string>
-		<string key="IBDocument.AppKitVersion">1038.2</string>
+		<string key="IBDocument.AppKitVersion">1038</string>
 		<string key="IBDocument.HIToolboxVersion">437.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -250,7 +250,7 @@
 						<object class="NSButton" id="596693856">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">264</int>
-							<string key="NSFrame">{{18, 427}, {150, 18}}</string>
+							<string key="NSFrame">{{155, 427}, {150, 18}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="410759951">
@@ -1547,7 +1547,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="object" ref="1006"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="596693856"/>
 							<reference ref="168229436"/>
 							<reference ref="211748724"/>
 							<reference ref="90714319"/>
@@ -1564,6 +1563,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="264763803"/>
 							<reference ref="43744226"/>
 							<reference ref="457146514"/>
+							<reference ref="596693856"/>
 						</object>
 						<reference key="parent" ref="1005"/>
 					</object>
@@ -2179,8 +2179,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>17.IBPluginDependency</string>
 					<string>170.CustomClassName</string>
 					<string>170.IBPluginDependency</string>
+					<string>187.IBPluginDependency</string>
 					<string>190.IBPluginDependency</string>
-					<string>191.IBPluginDependency</string>
 					<string>194.IBEditorWindowLastContentRect</string>
 					<string>194.IBPluginDependency</string>
 					<string>194.IBWindowTemplateEditedContentRect</string>
@@ -2257,11 +2257,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>263.IBPluginDependency</string>
 					<string>264.IBPluginDependency</string>
 					<string>265.IBPluginDependency</string>
+					<string>270.IBPluginDependency</string>
 					<string>271.IBPluginDependency</string>
 					<string>271.ImportedFromIB2</string>
-					<string>272.IBPluginDependency</string>
+					<string>273.IBPluginDependency</string>
 					<string>282.IBPluginDependency</string>
-					<string>283.IBPluginDependency</string>
 					<string>36.IBAttributePlaceholdersKey</string>
 					<string>36.IBPluginDependency</string>
 					<string>38.IBPluginDependency</string>
@@ -2456,8 +2456,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableDictionary">

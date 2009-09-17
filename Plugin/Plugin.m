@@ -120,10 +120,7 @@ BOOL usingMATrackingArea = NO;
 		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
 		_embeddedYouTubeView = NO;
-<<<<<<< HEAD
-=======
 		_isSIFR = NO;
->>>>>>> 86ed051e012659506321be24751897ffaa229799
 		_youTubeAutoPlay = NO;
 		_delayingTimer = nil;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",

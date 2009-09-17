@@ -1,6 +1,11 @@
-﻿
+﻿/* 
+	PLUGIN
+*/
 
 
+/*
+	CtF Plug-In Badges
+*/
 
 /* Flash badge text */
 "Flash" = "Flash";
