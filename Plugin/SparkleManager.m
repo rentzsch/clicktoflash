@@ -62,19 +62,54 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     return _canUpdate;
 }
 
+- (NSBundle *)frameworkForBundle:(NSBundle *)aBundle
+{
+	// Check the provided bundle for an embedded copy of the Sparkle framework.
+	// Return an NSBundle for the framework if found, nil if not.
+	
+	NSString *frameworksPath = [aBundle privateFrameworksPath];
+	NSString *sparkleFrameworkPath = [NSBundle pathForResource:@"Sparkle" ofType:@"framework" inDirectory:frameworksPath];
+	
+	NSBundle *framework = nil;
+	
+	if (sparkleFrameworkPath)
+	{
+		framework = [NSBundle bundleWithPath:sparkleFrameworkPath];
+	}
+	
+	return framework;
+}
+
+- (NSBundle *)sparkleFrameworkRespectingHost
+{
+	// Check the host for an embedded version of Sparkle.
+	// If we find one and it's version equals our own, return the host bundle.
+	// Otherwise, return ours.
+	
+	NSBundle *sparkleBundle = [self frameworkForBundle:[NSBundle bundleForClass:[self class]]];
+	NSBundle *sparkleForHost = [self frameworkForBundle:[NSBundle mainBundle]];
+	
+	if (sparkleForHost)
+	{
+		NSString *hostVersion = [sparkleForHost objectForInfoDictionaryKey:@"CFBundleVersion"];
+		NSString *bundledVersion = [sparkleBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+		
+		if ([hostVersion isEqualToString:bundledVersion])
+		{
+			sparkleBundle = sparkleForHost;
+		}
+	}
+	
+	return sparkleBundle;
+}
+
 - (SUUpdater*)_updater {
+	
     if (_updater)
         return _updater;
     
-    NSString *frameworksPath = [[NSBundle bundleForClass:[self class]] privateFrameworksPath];
-    NSAssert(frameworksPath, nil);
-    
-    NSString *sparkleFrameworkPath = [NSBundle pathForResource:@"Sparkle" ofType:@"framework" inDirectory:frameworksPath];
-    NSAssert(sparkleFrameworkPath, nil);
-    
-    NSBundle *sparkleFramework = [NSBundle bundleWithPath:sparkleFrameworkPath];
-    NSAssert(sparkleFramework, nil);
-    
+	NSBundle *sparkleFramework = [self sparkleFrameworkRespectingHost];
+	
     NSError *error = nil;
     BOOL loaded;
     if ([sparkleFramework respondsToSelector:@selector(loadAndReturnError:)]) {
