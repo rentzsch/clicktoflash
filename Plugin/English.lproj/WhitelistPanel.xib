@@ -318,13 +318,13 @@
 						<object class="NSButton" id="619486495">
 							<reference key="NSNextResponder" ref="1006"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{150, 403}, {197, 18}}</string>
+							<string key="NSFrame">{{150, 403}, {278, 18}}</string>
 							<reference key="NSSuperview" ref="1006"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="356052318">
 								<int key="NSCellFlags">-2080244224</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">Play Movies with QuickTime</string>
+								<string key="NSContents">Play H.264 Movies with QuickTime</string>
 								<reference key="NSSupport" ref="906693409"/>
 								<reference key="NSControlView" ref="619486495"/>
 								<int key="NSButtonFlags">1211912703</int>
