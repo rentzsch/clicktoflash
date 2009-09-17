@@ -42,37 +42,37 @@
 				<string key="NSTitle">ClickToFlash</string>
 				<object class="NSMutableArray" key="NSMenuItems">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="NSMenuItem" id="862791536">
+					<object class="NSMenuItem" id="635413295">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">About ClickToFlash</string>
+						<string key="NSTitle">Über ClickToFlash</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<object class="NSCustomResource" key="NSOnImage" id="661570174">
+						<object class="NSCustomResource" key="NSOnImage" id="215268621">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">NSMenuCheckmark</string>
 						</object>
-						<object class="NSCustomResource" key="NSMixedImage" id="594394432">
+						<object class="NSCustomResource" key="NSMixedImage" id="383371825">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">NSMenuMixedState</string>
 						</object>
 					</object>
-					<object class="NSMenuItem" id="468160473">
+					<object class="NSMenuItem" id="432981000">
 						<reference key="NSMenu" ref="93442052"/>
 						<bool key="NSIsDisabled">YES</bool>
 						<bool key="NSIsSeparator">YES</bool>
 						<string key="NSTitle"/>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="661570174"/>
-						<reference key="NSMixedImage" ref="594394432"/>
+						<reference key="NSOnImage" ref="215268621"/>
+						<reference key="NSMixedImage" ref="383371825"/>
 					</object>
 					<object class="NSMenuItem" id="831790790">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Preferences…</string>
+						<string key="NSTitle">Einstellungen …</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="661570174"/>
-						<reference key="NSMixedImage" ref="594394432"/>
+						<reference key="NSOnImage" ref="215268621"/>
+						<reference key="NSMixedImage" ref="383371825"/>
 					</object>
 					<object class="NSMenuItem" id="688689086">
 						<reference key="NSMenu" ref="93442052"/>
@@ -81,33 +81,33 @@
 						<string key="NSTitle"/>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="661570174"/>
-						<reference key="NSMixedImage" ref="594394432"/>
+						<reference key="NSOnImage" ref="215268621"/>
+						<reference key="NSMixedImage" ref="383371825"/>
 					</object>
 					<object class="NSMenuItem" id="275181830">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Flash for Frontmost Page</string>
+						<string key="NSTitle">Alles Flash auf dieser Seite laden</string>
 						<string key="NSKeyEquiv">f</string>
 						<int key="NSKeyEquivModMask">1310720</int>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="661570174"/>
-						<reference key="NSMixedImage" ref="594394432"/>
+						<reference key="NSOnImage" ref="215268621"/>
+						<reference key="NSMixedImage" ref="383371825"/>
 					</object>
 					<object class="NSMenuItem" id="401833747">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Invisible Flash for Frontmost Page</string>
+						<string key="NSTitle">Unsichtbares Flash auf dieser Seite laden</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="661570174"/>
-						<reference key="NSMixedImage" ref="594394432"/>
+						<reference key="NSOnImage" ref="215268621"/>
+						<reference key="NSMixedImage" ref="383371825"/>
 					</object>
 					<object class="NSMenuItem" id="975793511">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Flash for All Pages</string>
+						<string key="NSTitle">Alles Flash auf allen Seiten laden</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="661570174"/>
-						<reference key="NSMixedImage" ref="594394432"/>
+						<reference key="NSOnImage" ref="215268621"/>
+						<reference key="NSMixedImage" ref="383371825"/>
 					</object>
 				</object>
 			</object>
@@ -159,9 +159,9 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">showAboutBox:</string>
 						<reference key="source" ref="1001"/>
-						<reference key="destination" ref="862791536"/>
+						<reference key="destination" ref="635413295"/>
 					</object>
-					<int key="connectionID">30</int>
+					<int key="connectionID">29</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -199,10 +199,10 @@
 							<reference ref="275181830"/>
 							<reference ref="975793511"/>
 							<reference ref="401833747"/>
+							<reference ref="635413295"/>
 							<reference ref="831790790"/>
 							<reference ref="688689086"/>
-							<reference ref="468160473"/>
-							<reference ref="862791536"/>
+							<reference ref="432981000"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Menu (ClickToFlash)</string>
@@ -234,12 +234,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">27</int>
-						<reference key="object" ref="468160473"/>
+						<reference key="object" ref="635413295"/>
 						<reference key="parent" ref="93442052"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">28</int>
-						<reference key="object" ref="862791536"/>
+						<int key="objectID">30</int>
+						<reference key="object" ref="432981000"/>
 						<reference key="parent" ref="93442052"/>
 					</object>
 				</object>
@@ -256,13 +256,13 @@
 					<string>22.IBPluginDependency</string>
 					<string>25.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
-					<string>28.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
+					<string>30.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{434, 317}, {354, 123}}</string>
+					<string>{{59, 319}, {365, 123}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

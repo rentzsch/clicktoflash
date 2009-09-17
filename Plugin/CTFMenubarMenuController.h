@@ -27,7 +27,7 @@ THE SOFTWARE.
 #import <Cocoa/Cocoa.h>
 
 @class CTFWhitelistWindowController;
-
+@class CTFAboutBoxWindowController;
 
 extern NSString* kCTFLoadAllFlashViews;
 extern NSString* kCTFLoadFlashViewsForWindow;
@@ -39,6 +39,7 @@ extern NSInteger maxInvisibleDimension;
 @interface CTFMenubarMenuController : NSObject {
 	IBOutlet NSMenu* menu;
     CTFWhitelistWindowController *_whitelistWindowController;
+	CTFAboutBoxWindowController * _aboutBoxWindowController;
 	NSHashTable *_views;
 }
 
@@ -50,6 +51,9 @@ extern NSInteger maxInvisibleDimension;
 - (IBAction) loadKeyWindowFlash: (id) sender;
 - (IBAction) loadKeyWindowInvisibleFlash: (id) sender;
 - (IBAction) showSettingsWindow: (id) sender;
+- (IBAction) showAboutBox: (id) sender;
+
+- (BOOL) multipleFlashViewsExistForWindow: (NSWindow*) window;
 
 - (void) registerView: (NSView*) view;
 - (void) unregisterView: (NSView*) view;

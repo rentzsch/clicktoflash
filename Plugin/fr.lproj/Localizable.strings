@@ -1,0 +1,88 @@
+﻿
+
+
+
+/* Flash badge text */
+"Flash" = "Flash";
+
+/* YouTube badge waiting text */
+"YouTube…" = "YouTube…";
+
+/* YouTube badge text */
+"YouTube" = "YouTube";
+
+/* H.264 badge waiting text */
+"H.264…" = "Film…";
+
+/* H.264 badge text */
+"H.264" = "Film";
+
+/* HD H.264 badge text */
+"HD H.264" = "Film HD";
+
+/* sIFR Flash badge text */
+"sIFR Flash" = "sIFR Flash";
+
+
+
+/* Title of Contextual Menu */
+"ClickToFlash Contextual menu" = "Menu contextuel ClickToFlash";
+
+/* Load Flash contextual menu item */
+"Load Flash" = "Charger Flash";
+
+/* Load All on this page contextual menu item */
+"Load All on this Page" = "Tout charger sur cette page";
+
+/* Load H.264 context menu item */
+"Load H.264" = "Charger avec QuickTime";
+
+/* Hide Flash contextual menu item (sets display:none) */
+"Hide Flash" = "Masquer Flash"; 
+
+/* Remove Flash contextual menu item (sets visibility: hidden) */
+"Remove Flash" = "Supprimer Flash";
+
+/* Load YouTube page menu item */
+"Load YouTube.com page for this video" = "Aller à la page YouTube pour ce film";
+
+/* Open Fullscreen in QT Player menu item */
+"Play Fullscreen in QuickTime Player" = "Lire en plein écran dans QuickTime Player";
+
+/* Download H.264 menu item */
+"Download H.264" = "Télécharger le fichier film";
+
+/* Add <sitename> to Whitelist menu item */
+"Add %@ to Whitelist" = "Charger Flash automatiquement sur « %@ »";
+
+/* Preferences Contextual Menu Item */
+"ClickToFlash Preferences..." = "Préférences ClickToFlash…";
+
+
+
+
+
+/* Text of link to H.264 Download appearing beneath the video */
+"Download video file" = "Télécharger le fichier film";
+
+/* Text of link to YouTube page appearing beneath the video */
+"Go to YouTube page" = "Aller à la page YouTube";
+
+
+
+/* Successful uninstallation Sheet informational message with application name */
+"Please quit and relaunch '%@' for the change to take effect." = "Veuillez quitter et relancer « %@ » pour que le changement prenne effet.";
+
+
+
+/* Always load Flash for '%@'? alert title */
+"Always load Flash for '%@'?" = "Utiliser Flash automatiquement sur « %@ »?";
+
+/* Add <sitename> to the whitelist? alert message including removal instruction. %1$@ is the page's host name, %2$@ is the application name. */
+"Add %1$@ to the whitelist? This can be undone by opening ClickToFlash Prefrences from the %2$@ menu and removing the site from the list." = "Pour revenir sur la décision d’utiliser Flash automatiquement, ouvrez Préférences ClickToFlash du sous-menu « ClickToFlash » du menu « %2$@ » et supprimez « %1$@ » dans la liste de la fenêtre Préférences qui s’affiche.";
+
+/* Add to Whitelist button */
+"Add to Whitelist" = "Utiliser Flash automatiquement";
+
+/* Cancel button */
+"Cancel" = "Annuler";

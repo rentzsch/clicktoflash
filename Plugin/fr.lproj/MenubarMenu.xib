@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -44,7 +43,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSMenuItem" id="862791536">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">About ClickToFlash</string>
+						<string key="NSTitle">À propos de ClickToFlash</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<object class="NSCustomResource" key="NSOnImage" id="661570174">
@@ -68,7 +67,7 @@
 					</object>
 					<object class="NSMenuItem" id="831790790">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Preferences…</string>
+						<string key="NSTitle">Préférences…</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="661570174"/>
@@ -86,7 +85,7 @@
 					</object>
 					<object class="NSMenuItem" id="275181830">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Flash for Frontmost Page</string>
+						<string key="NSTitle">Charger Flash</string>
 						<string key="NSKeyEquiv">f</string>
 						<int key="NSKeyEquivModMask">1310720</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -95,7 +94,7 @@
 					</object>
 					<object class="NSMenuItem" id="401833747">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Invisible Flash for Frontmost Page</string>
+						<string key="NSTitle">Charger Flash invisible</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="661570174"/>
@@ -103,7 +102,7 @@
 					</object>
 					<object class="NSMenuItem" id="975793511">
 						<reference key="NSMenu" ref="93442052"/>
-						<string key="NSTitle">Load Flash for All Pages</string>
+						<string key="NSTitle">Charger Flash pour toutes les pages</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="661570174"/>
@@ -262,7 +261,7 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{434, 317}, {354, 123}}</string>
+					<string>{{434, 317}, {332, 123}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -414,7 +413,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../../ClickToFlash.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../ClickToFlash.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 	</data>
 </archive>

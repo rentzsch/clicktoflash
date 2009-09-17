@@ -1,0 +1,109 @@
+﻿/* 
+	PLUGIN
+*/
+
+
+/*
+	CtF Plug-In Badges
+*/
+
+/* Flash badge text */
+"Flash" = "Flash";
+
+/* YouTube badge waiting text */
+"YouTube…" = "YouTube …";
+
+/* YouTube badge text */
+"YouTube" = "YouTube";
+
+/* H.264 badge waiting text */
+"H.264…" = "Film …";
+
+/* H.264 badge text */
+"H.264" = "Film";
+
+/* HD H.264 badge text */
+"HD H.264" = "HD Film";
+
+/* sIFR Flash badge text */
+"sIFR Flash" = "sIFR Flash";
+
+
+
+/*
+	CtF Plug-In Contextual Menu
+*/
+
+/* Title of Contextual Menu */
+"ClickToFlash Contextual menu" = "ClickToFlash Kontextmenü";
+
+/* Load Flash contextual menu item */
+"Load Flash" = "Flash laden";
+
+/* Load All on this page contextual menu item */
+"Load All on this Page" = "Alles Flash auf dieser Seite laden";
+
+/* Load H.264 context menu item */
+"Load H.264" = "Film mit QuickTime abspielen";
+
+/* Hide Flash contextual menu item (sets display:none) */
+"Hide Flash" = "Flash verbergen"; 
+
+/* Remove Flash contextual menu item (sets visibility: hidden) */
+"Remove Flash" = "Flash entfernen";
+
+/* Load YouTube page menu item */
+"Load YouTube.com page for this video" = "YouTube Seite öffnen";
+
+/* Open Fullscreen in QT Player menu item */
+"Play Fullscreen in QuickTime Player" = "Im Vollbildmodus mit QuickTime Player abspielen";
+
+/* Download H.264 menu item */
+"Download H.264" = "Filmdatei laden";
+
+/* Add <sitename> to Whitelist menu item */
+"Add %@ to Whitelist" = "Flash auf „%@“ automatisch laden";
+
+/* Preferences Contextual Menu Item */
+"ClickToFlash Preferences..." = "ClickToFlash Einstellungen …";
+
+
+
+
+/*
+	Additional Links for inserted QuickTime film
+*/
+
+/* Text of link to H.264 Download appearing beneath the video */
+"Download video file" = "Filmdatei laden";
+
+/* Text of link to YouTube page appearing beneath the video */
+"Go to YouTube page" = "YouTube Seite öffnen";
+
+
+
+
+/* 
+	CTFWHITELISTWINDOWCONTROLLER
+*/
+
+/* Successful uninstallation Sheet informational message with application name */
+"Please quit and relaunch '%@' for the change to take effect." = "Die Änderung wird beim nächsten Start von „%@“ wirksam.";
+
+
+
+/*
+	CTFWHITELIST
+*/
+
+/* Always load Flash for '%@'? alert title */
+"Always load Flash for '%@'?" = "Flash auf „%@“ automatisch laden?";
+
+/* Add <sitename> to the whitelist? alert message including removal instruction. %1$@ is the page's host name, %2$@ is the application name. */
+"Add %1$@ to the whitelist? This can be undone by opening ClickToFlash Prefrences from the %2$@ menu and removing the site from the list." = "Um diese Entscheidung später rückgängig zu machen, öffnen Sie die Einstellungen aus dem „ClickToFlash“-Untermenü des „%2$@“-Menüs und entfernen Sie „%1$@“ aus der Liste von Websites, auf denen Flash automatisch geladen wird.";
+
+/* Add to Whitelist button */
+"Add to Whitelist" = "Flash automatisch laden";
+
+/* Cancel button */
+"Cancel" = "Abbrechen";
