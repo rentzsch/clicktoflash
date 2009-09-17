@@ -116,12 +116,17 @@ h1 {
 .download_button_box {
 	float: left;
 	position: relative;
-	top: -5px;
-	padding-right: 5px;
 	height: 100%;
 	font-size: 32px;
-	margin: 0.35em 0 0 0.35em;
-	width: 80px;
+	height: 50px;
+	width: 95px;
+	line-height: 1.5em;
+	vertical-align: middle;
+}
+
+.beta {
+	font-size: 24px;
+	line-height: 2em;
 }
 
 .sys_reqs_box {
