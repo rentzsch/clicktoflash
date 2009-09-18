@@ -568,6 +568,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Install plugin for user";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Debug;
 		};
@@ -575,6 +576,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Install plugin for user";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Release;
 		};
@@ -586,7 +588,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.5.3b3;
+				PRODUCT_VERSION = 1.5.3b4;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -599,7 +601,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.5.3b3;
+				PRODUCT_VERSION = 1.5.3b4;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
@@ -628,6 +630,7 @@
 				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
+				PRODUCT_VERSION = 1.5.3b4;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				VALID_ARCHS = "ppc i386 x86_64";
@@ -659,6 +662,7 @@
 				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
+				PRODUCT_VERSION = 1.5.3b4;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				VALID_ARCHS = "ppc i386 x86_64";
@@ -671,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Build Package";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Debug;
 		};
@@ -678,6 +683,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Build Package";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Release;
 		};
