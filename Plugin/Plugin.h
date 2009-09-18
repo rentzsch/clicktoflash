@@ -89,7 +89,6 @@ THE SOFTWARE.
 - (BOOL)_hasH264Version;
 - (void)_setHasH264Version:(BOOL)newValue;
 - (BOOL)_hasHDH264Version;
-- (NSString*)_h264VersionUrl;
 - (BOOL)_isVideoElementAvailable;
 - (void)_setHasHDH264Version:(BOOL)newValue;
 - (NSString *)launchedAppBundleIdentifier;
@@ -100,9 +99,13 @@ THE SOFTWARE.
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;
+- (IBAction)loadH264SD:(id)sender;
+- (IBAction)loadH264HD:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
 
 - (IBAction)downloadH264:(id)sender;
+- (IBAction)downloadH264SD:(id)sender;
+- (IBAction)downloadH264HD:(id)sender;
 
 - (BOOL) isConsideredInvisible;
 
