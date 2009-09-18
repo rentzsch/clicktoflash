@@ -88,6 +88,7 @@ BOOL usingMATrackingArea = NO;
 - (BOOL) _hasH264Version;
 - (BOOL) _useH264Version;
 - (BOOL) _hasHDH264Version;
+- (BOOL) _useHDH264Version;
 - (NSString *)launchedAppBundleIdentifier;
 @end
 
@@ -798,9 +799,9 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) badgeLabelText
 {
-	if( [ self _useH264Version ] && [self _hasHDH264Version]) {
+	if( [ self _useHDH264Version ] ) {
 		return CtFLocalizedString( @"HD H.264", @"HD H.264 badge text" );
-	} else if( [ self _useH264Version ] && [self _hasH264Version]) {
+	} else if( [ self _useH264Version ] ) {
 		if (_receivedAllResponses) {
 			return CtFLocalizedString( @"H.264", @"H.264 badge text" );
 		} else {
@@ -1271,6 +1272,15 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
 }
 
+- (BOOL) _useHDH264Version
+{
+	return [ self _hasHDH264Version ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeHDH264DefaultsKey ]
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
+}
+
+
 - (BOOL)_isVideoElementAvailable
 {
 	/* <video> element compatibility was added to WebKit in or shortly before version 525. */
@@ -1305,7 +1315,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 - (NSString*) _h264VersionUrl
 {
 	NSString* src;
-	if ([ self _hasHDH264Version ]) {
+	if ([ self _useHDH264Version ]) {
 		src = [self H264HDURLString];
 	} else {
 		src = [self H264URLString];
