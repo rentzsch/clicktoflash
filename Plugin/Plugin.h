@@ -24,6 +24,8 @@ THE SOFTWARE.
 
 */
 
+// so we load our localised strings from the correct bundle, use genstrings -s CtfLocalizedString
+#define CtFLocalizedString(key, explanation) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:@"" table:(nil)]
 
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
@@ -36,10 +38,10 @@ THE SOFTWARE.
     NSDictionary* _flashVars;
     id trackingArea;
     NSAlert* _activeAlert;
-    NSString* _badgeText;
     BOOL mouseIsDown;
     BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
+	BOOL _isSIFR;
     BOOL _fromYouTube;
     BOOL _fromFlickr;
 	BOOL _embeddedYouTubeView;
@@ -92,6 +94,9 @@ THE SOFTWARE.
 - (void)_setHasHDH264Version:(BOOL)newValue;
 - (NSString *)launchedAppBundleIdentifier;
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
+- (NSString *)YouTubePageURLString;
+- (NSString *)H264URLString;
+- (NSString *)H264HDURLString;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadH264:(id)sender;

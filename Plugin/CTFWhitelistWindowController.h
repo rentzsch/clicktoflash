@@ -3,6 +3,8 @@
 extern NSString* kCTFCheckForUpdates;
 
 @interface CTFWhitelistWindowController : NSWindowController {
+	NSString * successInformation;
+
 	IBOutlet NSArrayController *_controller;
     IBOutlet NSButton *_checkNowButton;
 	
@@ -21,5 +23,6 @@ extern NSString* kCTFCheckForUpdates;
 - (IBAction)dismissSuccessSheet:(id)sender;
 - (IBAction)dismissFailureSheet:(id)sender;
 
+- (IBAction)quitApplication:(id)sender;
 @end
 
