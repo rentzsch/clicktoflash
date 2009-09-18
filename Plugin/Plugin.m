@@ -54,6 +54,7 @@ static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
 static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
+static NSString *sDisableVideoElement = @"disableVideoElement";
 
 	// Info.plist key for app developers
 static NSString *sCTFOptOutKey = @"ClickToFlashOptOut";
@@ -1273,6 +1274,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (BOOL)_isVideoElementAvailable
 {
+	if ( [[CTFUserDefaultsController standardUserDefaults] boolForKey:sDisableVideoElement] )
+		return NO;
+	
 	/* <video> element compatibility was added to WebKit in or shortly before version 525. */
 	
     NSBundle* webKitBundle;
@@ -1292,12 +1296,30 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 			normalizedVersion = wkVersion;
 		
 		// unfortunately, versions of WebKit above 531.5 also introduce a nasty
-		// scrolling bug with video elements that cause them to be unviewable, so we'll
-		// have to basically disable this support until this bug is fixed;
+		// scrolling bug with video elements that cause them to be unviewable;
+		// this bug was fixed shortly after being reported by @simX, so we can
+		// now re-enable it for correct WebKit versions
+		//
+		// this bug actually only affected certain machines that had graphics
+		// cards with a certain max texture size, and it was partially fixed, but
+		// still didn't work for MacBooks with embedded graphics, and we could
+		// detect that if we really wanted, but that would require importing
+		// the OpenGL framework, which we probably shouldn't do, so we'll just
+		// wholesale disable for certain WebKit versions
 		//
 		// https://bugs.webkit.org/show_bug.cgi?id=28705
 		
-        return ((normalizedVersion >= 525) && (normalizedVersion < 531.5));
+		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+			// Snowy Leopard; this bug doesn't seem to be exhibited here
+			return (normalizedVersion >= 525);
+		} else {
+			// this bug was introduced in version 531.5, but has been fixed in
+			// 532 and above
+			
+			return ((normalizedVersion >= 532) ||
+					((normalizedVersion >= 525) && (normalizedVersion < 531.5))
+					);
+		}
 	}
 	return NO;
 }
@@ -1315,7 +1337,15 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 - (void) _convertElementForMP4: (DOMElement*) element
 {
-    [ element setAttribute: @"src" value: [ self _h264VersionUrl ]];
+	// some tags (OBJECT) want a data attribute, and some want a src attribute
+	// for some reason, though, some cloned elements are not reporting themselves
+	// as OBJECT tags, even though they are; more investigation on this is needed,
+	// but for now, setting both the data and the src attribute corrects the problem
+	// (see bug #294)
+	
+	[ element setAttribute: @"data" value: [ self _h264VersionUrl ]];
+	[ element setAttribute: @"src" value: [ self _h264VersionUrl ]];
+	
     [ element setAttribute: @"type" value: @"video/mp4" ];
     [ element setAttribute: @"scale" value: @"aspect" ];
     if (_youTubeAutoPlay) {
