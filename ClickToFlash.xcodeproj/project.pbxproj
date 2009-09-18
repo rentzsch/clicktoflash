@@ -568,6 +568,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Install plugin for user";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Debug;
 		};
@@ -575,6 +576,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Install plugin for user";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Release;
 		};
@@ -673,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Build Package";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Debug;
 		};
@@ -680,6 +683,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Build Package";
+				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Release;
 		};
