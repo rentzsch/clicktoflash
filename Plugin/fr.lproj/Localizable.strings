@@ -30,6 +30,12 @@
 
 
 
+
+
+/*
+	CtF Plug-In Contextual Menu
+*/
+
 /* Title of Contextual Menu */
 "ClickToFlash Contextual menu" = "Menu contextuel ClickToFlash";
 
@@ -41,6 +47,12 @@
 
 /* Load H.264 context menu item */
 "Load H.264" = "Charger avec QuickTime";
+
+/* Load Smaller Version contextual menu item (alternate for the standard Load H.264 item when the default uses the 'HD' version) */
+"Load H.264 SD Version" = "Charger version plus petite avec QuickTime";
+
+/* Load Larger Version contextual menu item (alternate for the standard Load H.264 item when the default uses the non-'HD' version) */
+"Load H.264 HD Version" = "Charger version plus grande avec QuickTime";
 
 /* Hide Flash contextual menu item (sets display:none) */
 "Hide Flash" = "Masquer Flash"; 
@@ -54,8 +66,20 @@
 /* Open Fullscreen in QT Player menu item */
 "Play Fullscreen in QuickTime Player" = "Lire en plein écran dans QuickTime Player";
 
+/* Open Smaller Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the 'HD' version) */
+"Play Smaller Version Fullscreen in QuickTime Player" = "Lire version plus petite en plein écran dans QuickTime Player";
+
+/* Open Larger Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the non-'HD' version) */
+"Play Larger Version Fullscreen in QuickTime Player" = "Lire version plus grande en plein écran dans QuickTime Player";
+
 /* Download H.264 menu item */
 "Download H.264" = "Télécharger le fichier film";
+
+/* Download small size H.264 menu item (alternate for the standard item when the default uses the 'HD' version) */
+"Download SD H.264" = "Télécharger version plus petite en fichier film";
+
+/* Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version) */
+"Download HD H.264" = "Télécharger version plus grande en fichier film";
 
 /* Add <sitename> to Whitelist menu item */
 "Add %@ to Whitelist" = "Charger Flash automatiquement sur « %@ »";
@@ -67,18 +91,39 @@
 
 
 
+
+/*
+	Additional Links for inserted QuickTime film
+*/
+
 /* Text of link to H.264 Download appearing beneath the video */
 "Download video file" = "Télécharger le fichier film";
+
+/* Text of link to additional Larger Size H.264 Download appearing beneath the video after the standard link */
+"(Larger Size)" = "(Taille plus grande)";
 
 /* Text of link to YouTube page appearing beneath the video */
 "Go to YouTube page" = "Aller à la page YouTube";
 
 
 
+
+
+
+/* 
+	CTFWHITELISTWINDOWCONTROLLER
+*/
+
 /* Successful uninstallation Sheet informational message with application name */
 "Please quit and relaunch '%@' for the change to take effect." = "Veuillez quitter et relancer « %@ » pour que le changement prenne effet.";
 
 
+
+
+
+/*
+	CTFWHITELIST
+*/
 
 /* Always load Flash for '%@'? alert title */
 "Always load Flash for '%@'?" = "Utiliser Flash automatiquement sur « %@ »?";
