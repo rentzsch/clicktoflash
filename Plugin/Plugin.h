@@ -102,6 +102,9 @@ THE SOFTWARE.
 - (IBAction)loadH264:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
 
+- (IBAction)removeFlash: (id) sender;
+- (IBAction)hideFlash: (id) sender;
+
 - (IBAction)downloadH264:(id)sender;
 
 - (BOOL) isConsideredInvisible;

@@ -71,6 +71,7 @@ BOOL usingMATrackingArea = NO;
 
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
+- (BOOL) _isCommandPressed;
 - (void) _checkMouseLocation;
 - (void) _addTrackingAreaForCTF;
 - (void) _removeTrackingAreaForCTF;
@@ -620,9 +621,15 @@ BOOL usingMATrackingArea = NO;
         // for drawing the gear only on mouse-over, we don't remove it here.
     
     if (mouseInside && (! _contextMenuIsVisible) ) {
-        if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
+        if ([self _isCommandPressed]) {
+			if ([self _isOptionPressed]) {
+				[self removeFlash:self];
+			} else {
+				[self hideFlash:self];
+			}
+		} else if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
             [self _askToAddCurrentSiteToWhitelist];
-        } else {
+		} else {
             [self _convertTypesForContainer];
         }
     } else {
@@ -634,6 +641,12 @@ BOOL usingMATrackingArea = NO;
 {
     BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
     return isOptionPressed;
+}
+
+- (BOOL) _isCommandPressed
+{
+	BOOL isCommandPressed = (([[NSApp currentEvent] modifierFlags] & NSCommandKeyMask) != 0);
+	return isCommandPressed;
 }
 
 - (BOOL) isConsideredInvisible
