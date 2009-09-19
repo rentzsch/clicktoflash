@@ -55,6 +55,7 @@ static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
 static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
 static NSString *sDisableVideoElement = @"disableVideoElement";
+static NSString *sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 	// Info.plist key for app developers
 static NSString *sCTFOptOutKey = @"ClickToFlashOptOut";
@@ -209,11 +210,15 @@ BOOL usingMATrackingArea = NO;
         if (_fromYouTube) {
 			
 			// Check wether autoplay is wanted
-			if ([[self host] isEqualToString:@"www.youtube.com"]
-				|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]) {
-				_youTubeAutoPlay = YES;
+			if ([[CTFUserDefaultsController standardUserDefaults] objectForKey:sYouTubeAutoPlay]) {
+				if ([[self host] isEqualToString:@"www.youtube.com"]
+					|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]) {
+					_youTubeAutoPlay = YES;
+				} else {
+					_youTubeAutoPlay = [[[self _flashVarDictionary:[self src]] objectForKey:@"autoplay"] isEqualToString:@"1"];
+				}
 			} else {
-				_youTubeAutoPlay = [[[self _flashVarDictionary:[self src]] objectForKey:@"autoplay"] isEqualToString:@"1"];
+				_youTubeAutoPlay = NO;
 			}
 
 			
@@ -1414,6 +1419,8 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [ element setAttribute: @"scale" value: @"aspect" ];
     if (_youTubeAutoPlay) {
 		[ element setAttribute: @"autoplay" value: @"true" ];
+	} else {
+		[ element setAttribute: @"autoplay" value: @"false" ];
 	}
     [ element setAttribute: @"cache" value: @"false" ];
 	
@@ -1431,7 +1438,10 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [ element setAttribute: @"src" value: URLString ];
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
 	if (_youTubeAutoPlay) {
-		[ element setAttribute: @"autoplay" value:@"autoplay"];
+		[ element setAttribute: @"autoplay" value:@"autoplay" ];
+	} else {
+		if ( [element hasAttribute:@"autoplay"] )
+			[ element removeAttribute:@"autoplay" ];
 	}
 	[ element setAttribute: @"controls" value:@"controls"];
 	// make videos with the wrong aspect ratio look more letterboxed. Would it be better or worse to just change the element's size?
