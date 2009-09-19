@@ -292,3 +292,15 @@ flash boxes when whitelisting one ([bug 10](http://rentzsch.lighthouseapp.com/pr
 	* [DEV] Store white-listed sites in an array instead of composite keys. ([Jean-Francois Roy](https://twitter.com/jfroy/status/1150564777))
 
 * **1.0** original Google Code release
+
+##Hidden Defaults
+
+ClickToFlash has a few hidden preferences that can be used to control its functionality.  These preferences have been added for development or experimental reasons and are **not** guaranteed to persist in future versions of ClickToFlash.
+
+To use these hidden preferences, open the Terminal and type the following command: `defaults write com.github.rentzsch.clicktoflash defaultName defaultValue`, replacing `defaultName` and `defaultValue` with the appropriate values, then press return.  To restore default functionality, use the following Terminal command: `defaults delete com.github.rentzsch.clicktoflash defaultName`, replacing `defaultName` with the appropriate value.
+
+* defaultName: **useYouTubeHDH264**; possible defaultValues: **"YES"**, **"NO"**; loads HD videos from YouTube by default, if the "Play H.264 Videos" option in the Preferences panel is also selected.
+* defaultName: **enableYouTubeAutoPlay**; possible defaultValues: **"YES"**, **"NO"**; autoplays videos on YouTube once you click on the ClickToFlash view, assuming you're either logged out of YouTube or are logged in and have enabled this feature in your YouTube account settings.
+* defaultName: **disableVideoElement**; possible defaultValues: **"YES"**, **"NO"**; disables the usage of the HTML 5 VIDEO tag, and uses the old QuickTime plug-in instead.  Note, the VIDEO tag usually exhibits much better performance and lower CPU usage because it supports hardware acceleration, whereas the old QuickTime plug-in does not.  However, some Macs seem to see an adverse effect on performance with the VIDEO tag.
+* defaultName: **drawGearImageOnlyOnMouseOver**; possible defaultValues: **"YES"**, **"NO"**; shows the gear menu only when you're mousing over the ClickToFlash view, reducing visual noise for Flash-heavy pages.
+* defaultName: **applicationWhitelist**; to use this hidden pref, use the following syntax: `defaults write com.github.rentzsch.clicktoflash applicationWhitelist -array-add bundleID` .  This whitelists Flash for a particular application, and causes ClickToFlash to automatically load all Flash inside the application whose bundle ID is "bundleID".
