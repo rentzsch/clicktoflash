@@ -140,11 +140,6 @@ BOOL usingMATrackingArea = NO;
 														@"com.realmacsoftware.littlesnapper",
 							nil];
 		
-		SparkleManager *sharedSparkleManager = [SparkleManager sharedManager];
-		NSWorkspace *sharedWorkspace = [NSWorkspace sharedWorkspace];
-		NSString *pathToRelaunch = [sharedWorkspace absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
-		[sharedSparkleManager setPathToRelaunch:pathToRelaunch];
-        [sharedSparkleManager startAutomaticallyCheckingForUpdates];
         if (![[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutoLoadInvisibleFlashViewsKey]) {
             //  Default to auto-loading invisible flash views.
             [[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sAutoLoadInvisibleFlashViewsKey];
@@ -289,6 +284,11 @@ BOOL usingMATrackingArea = NO;
 			return self;
 		}		
 		
+		// Plugin is enabled and the host is not white-listed. Kick off Sparkle.
+		
+		NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
+		[[SparkleManager sharedManager] setPathToRelaunch:pathToRelaunch];
+		[[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];
 		
         // Set up main menus
         

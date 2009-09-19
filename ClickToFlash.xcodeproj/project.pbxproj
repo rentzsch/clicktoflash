@@ -318,10 +318,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55EB70470E04A8650016593D /* Build configuration list for PBXNativeTarget "ClickToFlash" */;
 			buildPhases = (
-				55EB703E0E04A8640016593D /* Resources */,
-				794759ED0F6095D900FD82E3 /* CopyFiles */,
 				55EB703F0E04A8640016593D /* Sources */,
 				55EB70400E04A8640016593D /* Frameworks */,
+				55EB703E0E04A8640016593D /* Resources */,
+				794759ED0F6095D900FD82E3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -338,7 +338,7 @@
 /* Begin PBXProject section */
 		55EB70320E04A8410016593D /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */;
+			buildConfigurationList = 55EB70350E04A8410016593D /* Build configuration list for PBXProject "clicktoflash" */;
 			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -699,7 +699,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		55EB70350E04A8410016593D /* Build configuration list for PBXProject "ClickToFlash" */ = {
+		55EB70350E04A8410016593D /* Build configuration list for PBXProject "clicktoflash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				55EB70330E04A8410016593D /* Debug */,
