@@ -46,6 +46,12 @@
 /* Load H.264 context menu item */
 "Load H.264" = "Load H.264 using QuickTime";
 
+/* Load Smaller Version contextual menu item (alternate for the standard Load H.264 item when the default uses the 'HD' version) */
+"Load H.264 SD Version"	= "Load Smaller Version using QuickTime";
+
+/* Load Larger Version contextual menu item (alternate for the standard Load H.264 item when the default uses the non-'HD' version) */
+"Load H.264 HD Version"	= "Load Larger Version using QuickTime";
+
 /* Hide Flash contextual menu item (sets display:none) */
 "Hide Flash" = "Hide Flash"; 
 
@@ -58,8 +64,20 @@
 /* Open Fullscreen in QT Player menu item */
 "Play Fullscreen in QuickTime Player" = "Play Fullscreen in QuickTime Player";
 
+/* Open Smaller Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the 'HD' version) */
+"Play Smaller Version Fullscreen in QuickTime Player" = "Play Smaller Version Fullscreen in QuickTime Player";
+
+/* Open Larger Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the non-'HD' version) */
+"Play Larger Version Fullscreen in QuickTime Player" = "Play Larger Version Fullscreen in QuickTime Player";
+
 /* Download H.264 menu item */
 "Download H.264" = "Download H.264 File";
+
+/* Download small size H.264 menu item (alternate for the standard item when the default uses the 'HD' version) */
+"Download SD H.264" = "Download Smaller Version as H.264 File";
+
+/* Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version) */
+"Download HD H.264" = "Download Larger Version as H.264 File";
 
 /* Add <sitename> to Whitelist menu item */
 "Add %@ to Whitelist" = "Automatically Load Flash on “%@”";
@@ -76,6 +94,9 @@
 
 /* Text of link to H.264 Download appearing beneath the video */
 "Download video file" = "Download H.264 File";
+
+/* Text of link to additional Larger Size H.264 Download appearing beneath the video after the standard link */
+"(Larger Size)" = "(Larger Size)";
 
 /* Text of link to YouTube page appearing beneath the video */
 "Go to YouTube page" = "Go to YouTube Page";

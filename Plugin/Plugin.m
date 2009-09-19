@@ -64,8 +64,8 @@ BOOL usingMATrackingArea = NO;
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
 - (void) _convertTypesForFlashContainerAfterDelay;
-- (void) _convertToMP4Container;
-- (void) _convertToMP4ContainerAfterDelay;
+- (void) _convertToMP4ContainerUsingHD: (NSNumber*) useHD;
+- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHD;
 - (void) _prepareForConversion;
 - (void) _revertToOriginalOpacityAttributes;
 
@@ -90,6 +90,7 @@ BOOL usingMATrackingArea = NO;
 - (BOOL) _hasH264Version;
 - (BOOL) _useH264Version;
 - (BOOL) _hasHDH264Version;
+- (BOOL) _useHDH264Version;
 - (NSString *)launchedAppBundleIdentifier;
 @end
 
@@ -696,6 +697,8 @@ BOOL usingMATrackingArea = NO;
 */
 - (NSMenu*) menuForEvent: (NSEvent*) event
 {
+	NSMenuItem * menuItem;
+	
 	[self setMenu: [[[NSMenu alloc] initWithTitle:CtFLocalizedString( @"ClickTo Flash Contextual menu", @"Title of Contextual Menu")] autorelease]];
 	
 	[self _addContextualMenuItemWithTitle:CtFLocalizedString( @"Load Flash", @"Contextual Menu Item: Load Flash" ) 
@@ -704,6 +707,18 @@ BOOL usingMATrackingArea = NO;
 	if (_fromYouTube && [self _hasH264Version]) {
 		[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264", @"Load H.264 contextual menu item" ) 
 									   action: @selector( loadH264: )];
+		if ([self _hasHDH264Version]) {
+			if ([self _useHDH264Version]) {
+				menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 SD Version", @"Load Smaller Version contextual menu item (alternate for the standard Load H.264 item when the default uses the 'HD' version)" )
+														  action: @selector( loadH264SD: ) ];
+			}
+			else {
+				menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 HD Version", @"Load Larger Version  contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
+														  action: @selector( loadH264HD: ) ];
+			}
+			[menuItem setAlternate:YES];
+			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+		}
 	}
 	
 	if ([[CTFMenubarMenuController sharedController] multipleFlashViewsExistForWindow:[self window]]) {
@@ -713,7 +728,7 @@ BOOL usingMATrackingArea = NO;
 	
 	[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Hide Flash", @"Hide Flash contextual menu item (sets display:none)")
 								   action: @selector( hideFlash:)];
-	NSMenuItem * menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Remove Flash", @"Remove Flash contextual menu item (sets visibility: hidden)")
+	menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Remove Flash", @"Remove Flash contextual menu item (sets visibility: hidden)")
 											  action: @selector( removeFlash: )];
 	[menuItem setAlternate:YES];
 	[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
@@ -728,11 +743,38 @@ BOOL usingMATrackingArea = NO;
 		}
 
 		if ([self _hasH264Version]) {
+			
+			// menu item and alternate for full screen viewing in QuickTime Player
 			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Fullscreen in QuickTime Player", @"Open Fullscreen in QT Player contextual menu item" )
 										   action: @selector( openFullscreenInQTPlayer: )];
-			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download H.264", @"Download H.264 menu item" )
-										   action: @selector( loadH264: )];
+			if ([self _hasHDH264Version]) {
+				if ([self _useHDH264Version]) {
+					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Smaller Version Fullscreen in QuickTime Player", @"Open Smaller Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the 'HD' version)" )
+															  action: @selector( openFullscreenInQTPlayerSD: ) ];
+				}
+				else {
+					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Larger Version Fullscreen in QuickTime Player", @"Open Larger Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
+															  action: @selector( openFullscreenInQTPlayerHD: ) ];
+				}
+				[menuItem setAlternate:YES];
+				[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+			}
 
+			// menu item and alternate for downloading movie file
+			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download H.264", @"Download H.264 menu item" )
+										   action: @selector( downloadH264: )];
+			if ([self _hasHDH264Version]) {
+				if ([self _useHDH264Version]) {
+					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download SD H.264", @"Download small size H.264 menu item (alternate for the standard item when the default uses the 'HD' version)" )
+															  action: @selector( downloadH264SD: ) ];
+				}
+				else {
+					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download HD H.264", @"Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version)" )
+															  action: @selector( downloadH264HD: ) ];
+				}
+				[menuItem setAlternate:YES];
+				[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+			}
 		}	
 	
 		if (_embeddedYouTubeView || [self _hasH264Version]) {
@@ -781,8 +823,19 @@ BOOL usingMATrackingArea = NO;
 
 - (IBAction)loadH264:(id)sender;
 {
-    [self _convertToMP4Container];
+    [self _convertToMP4ContainerUsingHD:nil];
 }
+
+- (IBAction) loadH264SD:(id)sender;
+{
+	[self _convertToMP4ContainerUsingHD:[NSNumber numberWithBool:NO]];
+}
+
+- (IBAction) loadH264HD:(id)sender;
+{
+	[self _convertToMP4ContainerUsingHD:[NSNumber numberWithBool:YES]];
+}
+
 
 - (IBAction)loadAllOnPage:(id)sender
 {
@@ -812,9 +865,9 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) badgeLabelText
 {
-	if( [ self _useH264Version ] && [self _hasHDH264Version]) {
+	if( [ self _useHDH264Version ] ) {
 		return CtFLocalizedString( @"HD H.264", @"HD H.264 badge text" );
-	} else if( [ self _useH264Version ] && [self _hasH264Version]) {
+	} else if( [ self _useH264Version ] ) {
 		if (_receivedAllResponses) {
 			return CtFLocalizedString( @"H.264", @"H.264 badge text" );
 		} else {
@@ -1285,6 +1338,15 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
 }
 
+- (BOOL) _useHDH264Version
+{
+	return [ self _hasHDH264Version ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeHDH264DefaultsKey ]
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
+}
+
+
 - (BOOL)_isVideoElementAvailable
 {
 	if ( [[CTFUserDefaultsController standardUserDefaults] boolForKey:sDisableVideoElement] )
@@ -1337,18 +1399,8 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	return NO;
 }
 
-- (NSString*) _h264VersionUrl
-{
-	NSString* src;
-	if ([ self _hasHDH264Version ]) {
-		src = [self H264HDURLString];
-	} else {
-		src = [self H264URLString];
-	}
-	return src;
-}
 
-- (void) _convertElementForMP4: (DOMElement*) element
+- (void) _convertElementForMP4: (DOMElement*) element atURL: (NSString*) URLString
 {
 	// some tags (OBJECT) want a data attribute, and some want a src attribute
 	// for some reason, though, some cloned elements are not reporting themselves
@@ -1356,10 +1408,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	// but for now, setting both the data and the src attribute corrects the problem
 	// (see bug #294)
 	
-	[ element setAttribute: @"data" value: [ self _h264VersionUrl ]];
-	[ element setAttribute: @"src" value: [ self _h264VersionUrl ]];
-	
-    [ element setAttribute: @"type" value: @"video/mp4" ];
+	[ element setAttribute: @"data" value: URLString ];
+	[ element setAttribute: @"src" value: URLString ];
+	[ element setAttribute: @"type" value: @"video/mp4" ];
     [ element setAttribute: @"scale" value: @"aspect" ];
     if (_youTubeAutoPlay) {
 		[ element setAttribute: @"autoplay" value: @"true" ];
@@ -1375,9 +1426,9 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [ element setAttribute: @"flashvars" value: nil ];
 }
 
-- (void) _convertElementForVideoElement: (DOMElement*) element
+- (void) _convertElementForVideoElement: (DOMElement*) element atURL: (NSString*) URLString
 {
-    [ element setAttribute: @"src" value: [ self _h264VersionUrl ] ];
+    [ element setAttribute: @"src" value: URLString ];
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
 	if (_youTubeAutoPlay) {
 		[ element setAttribute: @"autoplay" value:@"autoplay"];
@@ -1392,26 +1443,43 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[ element setAttribute:@"height" value:[ NSString stringWithFormat:@"%dpx", [ container clientHeight ]]];
 }
 
-- (void) _convertToMP4Container
+
+/*
+ The useHD parameter indicates whether we want to override the default behaviour to use or not use HD.
+ Passing nil invokes the default behaviour based on user preferences and HD availability.
+*/
+- (void) _convertToMP4ContainerUsingHD: (NSNumber*) useHD
 {
 	[self _revertToOriginalOpacityAttributes];
 	
 	// Delay this until the end of the event loop, because it may cause self to be deallocated
 	[self _prepareForConversion];
-	[self performSelector:@selector(_convertToMP4ContainerAfterDelay) withObject:nil afterDelay:0.0];
+	[self performSelector:@selector(_convertToMP4ContainerAfterDelayUsingHD:) withObject:useHD afterDelay:0.0];
 }
 
-- (void) _convertToMP4ContainerAfterDelay
+- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber
 {
-	DOMDocument* document = [[self container] ownerDocument];
+	BOOL useHD = [ self _useHDH264Version ];
+	if (useHDNumber) {
+		useHD = [useHDNumber boolValue];
+	}
 	
+	NSString * URLString;
+	if ( useHD && [ self _hasHDH264Version ] ) {
+		URLString = [ self H264HDURLString ];
+	}
+	else {
+		URLString = [ self H264URLString ];
+	}
+	
+	DOMDocument* document = [[self container] ownerDocument];
 	DOMElement* videoElement;
 	if ([ self _isVideoElementAvailable ]) {
 		videoElement = [document createElement:@"video"];
-		[ self _convertElementForVideoElement: videoElement ];
+		[ self _convertElementForVideoElement: videoElement atURL: URLString ];
     } else {
 		videoElement = (DOMElement*) [ [self container] cloneNode: NO ];
-		[ self _convertElementForMP4: videoElement ];
+		[ self _convertElementForMP4: videoElement atURL: URLString ];
 	}
 	
 	// Put links for going to the YouTube page and downloading the video file beneath the video as these vanish once CtF is invoked and it's hard to bookmark the YouTube link otherwise.
@@ -1423,7 +1491,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[YouTubeLinkElement setTextContent:CtFLocalizedString(@"Go to YouTube page", @"Text of link to YouTube page appearing beneath the video")];
 	
 	DOMElement* downloadLinkElement = [document createElement: @"a"];
-	[downloadLinkElement setAttribute: @"href" value: [self _h264VersionUrl]];
+	[downloadLinkElement setAttribute: @"href" value: URLString];
 	[downloadLinkElement setAttribute: @"style" value: linkCSS];
 	[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link h264download"];
 	[downloadLinkElement setTextContent:CtFLocalizedString(@"Download video file", @"Text of link to H.264 Download appearing beneath the video")];
@@ -1436,7 +1504,18 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 		[linkContainerElement appendChild:YouTubeLinkElement];
 	}
 	[linkContainerElement appendChild:downloadLinkElement];
-	
+
+	if ( [self _hasHDH264Version] && !useHD) {
+		// offer additional link for HD download if available
+		NSString * extraLinkCSS = @"margin:0px;padding:0px;border:0px none;";
+		DOMElement * extraDownloadLinkElement = [document createElement: @"a"];
+		[extraDownloadLinkElement setAttribute: @"href" value: [self H264HDURLString]];
+		[extraDownloadLinkElement setAttribute: @"style" value: extraLinkCSS];
+		[extraDownloadLinkElement setAttribute: @"class" value: @"clicktoflash-link h264download"];
+		[extraDownloadLinkElement setTextContent: CtFLocalizedString(@"(Larger Size)", @"Text of link to additional Large Size H.264 Download appearing beneath the video after the standard link")];
+		[linkContainerElement appendChild: extraDownloadLinkElement];
+	}
+		
 	NSString * widthCSS = [NSString stringWithFormat:@"%@width:%dpx", divCSS, [[self container] clientWidth]];
 	DOMElement* CtFContainerElement = [document createElement: @"div"]; 
 	[CtFContainerElement setAttribute: @"style" value: widthCSS];
@@ -1509,32 +1588,46 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 
 
 
-
-- (IBAction)downloadH264:(id)sender
-{
-	NSString *src;
-	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey] && [self _hasHDH264Version]) {
+- (void) downloadH264UsingHD: (BOOL) useHD {
+	NSString * src;
+	if ( useHD && [self _hasHDH264Version]) {
 		src = [ self H264HDURLString ];
 	} else {
 		src = [ self H264URLString ];
 	}
 	
-	[[NSWorkspace sharedWorkspace] openURLs:[NSArray arrayWithObject:[NSURL URLWithString:src]]
-					withAppBundleIdentifier:[self launchedAppBundleIdentifier]
-									options:NSWorkspaceLaunchDefault
-			 additionalEventParamDescriptor:[NSAppleEventDescriptor nullDescriptor]
-						  launchIdentifiers:nil];
+	[[NSWorkspace sharedWorkspace] openURLs: [NSArray arrayWithObject:[NSURL URLWithString:src]]
+					withAppBundleIdentifier: [self launchedAppBundleIdentifier]
+									options: NSWorkspaceLaunchDefault
+			 additionalEventParamDescriptor: [NSAppleEventDescriptor nullDescriptor]
+						  launchIdentifiers: nil];	
 }
+
+
+- (IBAction)downloadH264:(id)sender
+{
+	BOOL wantHD = [[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey];
+	[self downloadH264UsingHD: wantHD];
+}
+
+- (IBAction)downloadH264SD:(id)sender {
+	[self downloadH264UsingHD: NO];
+}
+
+- (IBAction)downloadH264HD:(id)sender {
+	[self downloadH264UsingHD: YES];
+}
+
 
 - (IBAction)loadYouTubePage:(id)sender
 {	
     [_webView setMainFrameURL:[self YouTubePageURLString]];
 }
 
-- (IBAction)openFullscreenInQTPlayer:(id)sender;
-{
-	NSString *src;
-	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey] && [self _hasHDH264Version]) {
+
+- (void)openFullscreenInQTPlayerUsingHD:(BOOL) useHD {
+	NSString * src;
+	if (useHD && [self _hasHDH264Version]) {
 		src = [ self H264HDURLString ];
 	} else {
 		src = [ self H264URLString ];
@@ -1544,15 +1637,31 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		// Snowy Leopard
 		scriptSource = [NSString stringWithFormat:
-							  @"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\nrepeat while (front document is not presenting)\ndelay 1\npresent front document\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
+						@"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\nrepeat while (front document is not presenting)\ndelay 1\npresent front document\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
 	} else {
 		scriptSource = [NSString stringWithFormat:
-							  @"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
+						@"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
 	}
 	NSAppleScript *openInQTPlayerScript = [[NSAppleScript alloc] initWithSource:scriptSource];
 	[openInQTPlayerScript executeAndReturnError:nil];
-	[openInQTPlayerScript release];
+	[openInQTPlayerScript release];	
 }
+
+- (IBAction)openFullscreenInQTPlayer:(id)sender;
+{
+	BOOL useHD = [[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey];
+	
+	[self openFullscreenInQTPlayerUsingHD: useHD];
+}
+
+- (IBAction)openFullscreenInQTPlayerSD:(id)sender{
+	[self openFullscreenInQTPlayerUsingHD: NO];	
+}
+
+- (IBAction)openFullscreenInQTPlayerHD:(id)sender{
+	[self openFullscreenInQTPlayerUsingHD: YES];	
+}
+
 
 - (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars
 {
@@ -1611,7 +1720,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 - (void) _convertTypesForContainer
 {
     if ([self _useH264Version])
-        [self _convertToMP4Container];
+        [self _convertToMP4ContainerUsingHD: nil];
     else
         [self _convertTypesForFlashContainer];
 }
