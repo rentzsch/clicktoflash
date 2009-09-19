@@ -17,13 +17,13 @@
 "YouTube" = "YouTube";
 
 /* H.264 badge waiting text */
-"H.264…" = "H.264…";
+"H.264…" = "QuickTime…";
 
 /* H.264 badge text */
-"H.264" = "H.264";
+"H.264" = "QuickTime";
 
 /* HD H.264 badge text */
-"HD H.264" = "H.264 HD";
+"HD H.264" = "QuickTime HD";
 
 /* sIFR Flash badge text */
 "sIFR Flash" = "sIFR Flash";
