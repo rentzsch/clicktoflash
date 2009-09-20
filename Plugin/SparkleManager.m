@@ -84,20 +84,33 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 {
 	// Check the host for an embedded version of Sparkle.
 	// If we find one and it's version equals our own, return the host bundle.
-	// Otherwise, return ours.
+	// If it's version is not compatible with ours, return nil. (disables update checks)
+	// If the host doesn't make use of Sparkle, we return our own version of the bundle.
+	// * This doesn't handle playing nice with other plugins.
 	
-	NSBundle *sparkleBundle = [self frameworkForBundle:[NSBundle bundleForClass:[self class]]];
+	NSBundle *sparkleBundle = nil;
+	
+	NSBundle *sparkleForPlugin = [self frameworkForBundle:[NSBundle bundleForClass:[self class]]];
 	NSBundle *sparkleForHost = [self frameworkForBundle:[NSBundle mainBundle]];
 	
 	if (sparkleForHost)
 	{
+		// The host provides Sparkle services. Use those if they match our requirements.
+		
 		NSString *hostVersion = [sparkleForHost objectForInfoDictionaryKey:@"CFBundleVersion"];
-		NSString *bundledVersion = [sparkleBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+		NSString *bundledVersion = [sparkleForPlugin objectForInfoDictionaryKey:@"CFBundleVersion"];
 		
 		if ([hostVersion isEqualToString:bundledVersion])
 		{
 			sparkleBundle = sparkleForHost;
 		}
+	}
+	
+	else
+	{
+		// The host doesn't provide Sparkle. We'll use our version.
+		
+		sparkleBundle = sparkleForPlugin;
 	}
 	
 	return sparkleBundle;
@@ -109,6 +122,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
         return _updater;
     
 	NSBundle *sparkleFramework = [self sparkleFrameworkRespectingHost];
+	if (sparkleFramework == nil) return nil;
 	
     NSError *error = nil;
     BOOL loaded;
@@ -122,6 +136,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
         NSAssert(clickToFlashBundle, nil);
         
         Class updaterClass = objc_getClass("SUUpdater");
+		// Class updaterClass = [sparkleFramework classNamed:@"SUUpdater"];
         NSAssert(updaterClass, nil);
         
 		if ([updaterClass respondsToSelector:@selector(updaterForBundle:)]) {
