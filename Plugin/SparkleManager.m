@@ -133,30 +133,6 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 	if (_updater == nil) NSLog(@"ClickToFlash Sparkle updates disabled for host.", _cmd);
 	
 	return _updater;
-	
-		//     NSError *error = nil;
-		//     BOOL loaded;
-		//     if ([sparkleFramework respondsToSelector:@selector(loadAndReturnError:)]) {
-		//         loaded = [sparkleFramework loadAndReturnError:&error];
-		//     } else {
-		//         loaded = [sparkleFramework load];
-		//     }
-		//     if (loaded) {
-		//         NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-		//         NSAssert(clickToFlashBundle, nil);
-		//         
-		// Class updaterClass = [sparkleFramework classNamed:@"SUUpdater"];
-		//         NSAssert(updaterClass, nil);
-		//         
-		// _updater = [updaterClass updaterForBundle:clickToFlashBundle];
-		// NSAssert(_updater, nil);
-		// 
-		// [_updater setDelegate:self];
-		//     }
-		//     
-		//     if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
-		//     
-		//     return _updater;
 }
 
 - (void)startAutomaticallyCheckingForUpdates {
