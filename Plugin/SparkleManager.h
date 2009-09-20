@@ -30,7 +30,6 @@
 
 @interface SparkleManager : NSObject {
     SUUpdater *_updater;
-    BOOL _canUpdate;
 	NSString *_pathToRelaunch;
 }
 

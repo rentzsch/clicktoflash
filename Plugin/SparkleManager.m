@@ -45,21 +45,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     return result;
 }
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        _canUpdate = NO;
-    }
-    return self;
-}
-
 - (void)dealloc {
     [_updater setDelegate:nil];
     [super dealloc];
 }
 
 - (BOOL)canUpdate {
-    return _canUpdate;
+    return (_updater != nil);
 }
 
 - (NSBundle *)frameworkForBundle:(NSBundle *)aBundle
@@ -122,35 +114,49 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
         return _updater;
     
 	NSBundle *sparkleFramework = [self sparkleFrameworkRespectingHost];
-	if (sparkleFramework == nil) return nil;
 	
-    NSError *error = nil;
-    BOOL loaded;
-    if ([sparkleFramework respondsToSelector:@selector(loadAndReturnError:)]) {
-        loaded = [sparkleFramework loadAndReturnError:&error];
-    } else {
-        loaded = [sparkleFramework load];
-    }
-    if (loaded) {
-        NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-        NSAssert(clickToFlashBundle, nil);
-        
-        Class updaterClass = objc_getClass("SUUpdater");
+	// Since we only use Sparkle if it's the required version, we can assume the
+	// required methods are present. We fail silently (log to console) if we encounter
+	// any errors. Since we don't require major diagnostics the error handling is
+	// mostly via nil messaging.
+	
+	Class updaterClass = [sparkleFramework classNamed:@"SUUpdater"];
+	NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+	
+	if (clickToFlashBundle)
+	{
+		_updater = [updaterClass updaterForBundle:clickToFlashBundle];
+		
+		[_updater setDelegate:self];
+	}
+	
+	if (_updater == nil) NSLog(@"ClickToFlash Sparkle updates disabled for host.", _cmd);
+	
+	return _updater;
+	
+		//     NSError *error = nil;
+		//     BOOL loaded;
+		//     if ([sparkleFramework respondsToSelector:@selector(loadAndReturnError:)]) {
+		//         loaded = [sparkleFramework loadAndReturnError:&error];
+		//     } else {
+		//         loaded = [sparkleFramework load];
+		//     }
+		//     if (loaded) {
+		//         NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+		//         NSAssert(clickToFlashBundle, nil);
+		//         
 		// Class updaterClass = [sparkleFramework classNamed:@"SUUpdater"];
-        NSAssert(updaterClass, nil);
-        
-		if ([updaterClass respondsToSelector:@selector(updaterForBundle:)]) {
-			_canUpdate = YES;
-			_updater = [updaterClass updaterForBundle:clickToFlashBundle];
-			NSAssert(_updater, nil);
-			
-			[_updater setDelegate:self];
-		}
-    }
-    
-    if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
-    
-    return _updater;
+		//         NSAssert(updaterClass, nil);
+		//         
+		// _updater = [updaterClass updaterForBundle:clickToFlashBundle];
+		// NSAssert(_updater, nil);
+		// 
+		// [_updater setDelegate:self];
+		//     }
+		//     
+		//     if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
+		//     
+		//     return _updater;
 }
 
 - (void)startAutomaticallyCheckingForUpdates {
@@ -160,7 +166,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     }
     
 	SUUpdater *updater = [self _updater];
-	if (_canUpdate) {
+	if (updater) {
 		if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
 			[updater setAutomaticallyChecksForUpdates:YES];
             static BOOL calledUpdaterApplicationDidFinishLaunching = NO;
