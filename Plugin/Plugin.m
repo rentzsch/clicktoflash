@@ -462,6 +462,7 @@ BOOL usingMATrackingArea = NO;
 	[self setWebView:nil];
 	[self setBaseURL:nil];
 	[self setAttributes:nil];
+	[self setOriginalOpacityAttributes:nil];
 	
 	[_flashVars release];
 	_flashVars = nil;
