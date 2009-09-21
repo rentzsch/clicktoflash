@@ -45,21 +45,13 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     return result;
 }
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        _canUpdate = NO;
-    }
-    return self;
-}
-
 - (void)dealloc {
     [_updater setDelegate:nil];
     [super dealloc];
 }
 
 - (BOOL)canUpdate {
-    return _canUpdate;
+    return (_updater != nil);
 }
 
 - (NSBundle *)frameworkForBundle:(NSBundle *)aBundle
@@ -84,20 +76,33 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 {
 	// Check the host for an embedded version of Sparkle.
 	// If we find one and it's version equals our own, return the host bundle.
-	// Otherwise, return ours.
+	// If it's version is not compatible with ours, return nil. (disables update checks)
+	// If the host doesn't make use of Sparkle, we return our own version of the bundle.
+	// * This doesn't handle playing nice with other plugins.
 	
-	NSBundle *sparkleBundle = [self frameworkForBundle:[NSBundle bundleForClass:[self class]]];
+	NSBundle *sparkleBundle = nil;
+	
+	NSBundle *sparkleForPlugin = [self frameworkForBundle:[NSBundle bundleForClass:[self class]]];
 	NSBundle *sparkleForHost = [self frameworkForBundle:[NSBundle mainBundle]];
 	
 	if (sparkleForHost)
 	{
+		// The host provides Sparkle services. Use those if they match our requirements.
+		
 		NSString *hostVersion = [sparkleForHost objectForInfoDictionaryKey:@"CFBundleVersion"];
-		NSString *bundledVersion = [sparkleBundle objectForInfoDictionaryKey:@"CFBundleVersion"];
+		NSString *bundledVersion = [sparkleForPlugin objectForInfoDictionaryKey:@"CFBundleVersion"];
 		
 		if ([hostVersion isEqualToString:bundledVersion])
 		{
 			sparkleBundle = sparkleForHost;
 		}
+	}
+	
+	else
+	{
+		// The host doesn't provide Sparkle. We'll use our version.
+		
+		sparkleBundle = sparkleForPlugin;
 	}
 	
 	return sparkleBundle;
@@ -110,32 +115,24 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     
 	NSBundle *sparkleFramework = [self sparkleFrameworkRespectingHost];
 	
-    NSError *error = nil;
-    BOOL loaded;
-    if ([sparkleFramework respondsToSelector:@selector(loadAndReturnError:)]) {
-        loaded = [sparkleFramework loadAndReturnError:&error];
-    } else {
-        loaded = [sparkleFramework load];
-    }
-    if (loaded) {
-        NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
-        NSAssert(clickToFlashBundle, nil);
-        
-        Class updaterClass = objc_getClass("SUUpdater");
-        NSAssert(updaterClass, nil);
-        
-		if ([updaterClass respondsToSelector:@selector(updaterForBundle:)]) {
-			_canUpdate = YES;
-			_updater = [updaterClass updaterForBundle:clickToFlashBundle];
-			NSAssert(_updater, nil);
-			
-			[_updater setDelegate:self];
-		}
-    }
-    
-    if (error) NSLog(@"error loading ClickToFlash's Sparkle: %@", error);
-    
-    return _updater;
+	// Since we only use Sparkle if it's the required version, we can assume the
+	// required methods are present. We fail silently (log to console) if we encounter
+	// any errors. Since we don't require major diagnostics the error handling is
+	// mostly via nil messaging.
+	
+	Class updaterClass = [sparkleFramework classNamed:@"SUUpdater"];
+	NSBundle *clickToFlashBundle = [NSBundle bundleWithIdentifier:@"com.github.rentzsch.clicktoflash"];
+	
+	if (clickToFlashBundle)
+	{
+		_updater = [updaterClass updaterForBundle:clickToFlashBundle];
+		
+		[_updater setDelegate:self];
+	}
+	
+	if (_updater == nil) NSLog(@"ClickToFlash Sparkle updates disabled for host.", _cmd);
+	
+	return _updater;
 }
 
 - (void)startAutomaticallyCheckingForUpdates {
@@ -145,7 +142,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     }
     
 	SUUpdater *updater = [self _updater];
-	if (_canUpdate) {
+	if (updater) {
 		if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sAutomaticallyCheckForUpdates]) {
 			[updater setAutomaticallyChecksForUpdates:YES];
             static BOOL calledUpdaterApplicationDidFinishLaunching = NO;
