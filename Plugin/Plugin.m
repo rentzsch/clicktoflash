@@ -508,6 +508,10 @@ BOOL usingMATrackingArea = NO;
 					NSMutableArray *combinedWhitelist = [NSMutableArray arrayWithArray:prefValue];
 					[combinedWhitelist addObjectsFromArray:existingExternalPref];
 					[externalFileDefaults setObject:combinedWhitelist forKey:externalPrefDefaultName];
+					
+					// because people named Kevin Ballard messed up their preferences file and somehow
+					// managed to retain ClickToFlash_siteInfo in their com.github plist file
+					[externalFileDefaults removeObjectForKey:currentParasiticDefault];
 				}
 			}
 			// eliminate the parasitic default, regardless of whether we transferred them or not
