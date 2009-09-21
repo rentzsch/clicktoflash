@@ -1491,6 +1491,38 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 					<int key="connectionID">271</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.useYouTubeHDH264</string>
+						<reference key="source" ref="951890354"/>
+						<reference key="destination" ref="961452516"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="951890354"/>
+							<reference key="NSDestination" ref="961452516"/>
+							<string key="NSLabel">value: values.useYouTubeHDH264</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.useYouTubeHDH264</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">297</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.useYouTubeH264</string>
+						<reference key="source" ref="951890354"/>
+						<reference key="destination" ref="961452516"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="951890354"/>
+							<reference key="NSDestination" ref="961452516"/>
+							<string key="NSLabel">enabled: values.useYouTubeH264</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.useYouTubeH264</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">299</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2278,9 +2310,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{375, 243}, {446, 500}}</string>
+					<string>{{71, 217}, {446, 500}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{375, 243}, {446, 500}}</string>
+					<string>{{71, 217}, {446, 500}}</string>
 					<integer value="1"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
@@ -2513,7 +2545,7 @@ bW1hbmRzIGluIHRoZSBjb250ZXh0dWFsIG1lbnUgcHJvdmlkZWQgYnkgdGhlIEdlYXIgaWNvbi4</str
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">293</int>
+			<int key="maxID">299</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

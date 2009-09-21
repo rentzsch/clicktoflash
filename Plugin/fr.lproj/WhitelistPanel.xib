@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1300,6 +1300,38 @@
 					</object>
 					<int key="connectionID">271</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">enabled: values.useYouTubeH264</string>
+						<reference key="source" ref="13836982"/>
+						<reference key="destination" ref="961452516"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="13836982"/>
+							<reference key="NSDestination" ref="961452516"/>
+							<string key="NSLabel">enabled: values.useYouTubeH264</string>
+							<string key="NSBinding">enabled</string>
+							<string key="NSKeyPath">values.useYouTubeH264</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">277</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.useYouTubeHDH264</string>
+						<reference key="source" ref="13836982"/>
+						<reference key="destination" ref="961452516"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="13836982"/>
+							<reference key="NSDestination" ref="961452516"/>
+							<string key="NSLabel">value: values.useYouTubeHDH264</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.useYouTubeHDH264</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">279</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2317,7 +2349,7 @@ YW5zIGxlIG1lbnUgY29udGV4dHVlbCBmb3VybmllcyBwYXIgbOKAmWljw7RuZSBBY3Rpb24uA</strin
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">275</int>
+			<int key="maxID">279</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
