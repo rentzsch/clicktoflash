@@ -359,7 +359,7 @@ BOOL usingMATrackingArea = NO;
 				
 				// the _checkForH264VideoVariants method will manually fire
 				// this timer if it finishes before the 3 seconds are up
-				_delayingTimer = [NSTimer scheduledTimerWithTimeInterval:10
+				_delayingTimer = [NSTimer scheduledTimerWithTimeInterval:3
 																  target:self
 																selector:@selector(_convertTypesForContainer)
 																userInfo:nil
