@@ -466,6 +466,7 @@ BOOL usingMATrackingArea = NO;
 	[self setWebView:nil];
 	[self setBaseURL:nil];
 	[self setAttributes:nil];
+	[self setOriginalOpacityAttributes:nil];
 	
 	[_flashVars release];
 	_flashVars = nil;
@@ -1437,13 +1438,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 		[ element setAttribute: @"autoplay" value: @"false" ];
 	}
     [ element setAttribute: @"cache" value: @"false" ];
-	
-    if( ! [ element hasAttribute: @"width" ] )
-        [ element setAttribute: @"width" value: @"640" ];
-	
-    if( ! [ element hasAttribute: @"height" ] )
-		[ element setAttribute: @"height" value: @"500" ];
-	
+	[ element setAttribute: @"bgcolor" value: @"transparent" ];
     [ element setAttribute: @"flashvars" value: nil ];
 }
 
@@ -1458,13 +1453,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 			[ element removeAttribute:@"autoplay" ];
 	}
 	[ element setAttribute: @"controls" value:@"controls"];
-	// make videos with the wrong aspect ratio look more letterboxed. Would it be better or worse to just change the element's size?
-	[ element setAttribute: @"style" value :@"background:#111"]; 	
-
-	DOMElement* container = [self container];
-	
-	[ element setAttribute:@"width" value:[ NSString stringWithFormat:@"%dpx", [ container clientWidth ]]];
-	[ element setAttribute:@"height" value:[ NSString stringWithFormat:@"%dpx", [ container clientHeight ]]];
+	[ element setAttribute:@"width" value:@"100%"];
 }
 
 
@@ -1539,8 +1528,19 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 		[extraDownloadLinkElement setTextContent: CtFLocalizedString(@"(Larger Size)", @"Text of link to additional Large Size H.264 Download appearing beneath the video after the standard link")];
 		[linkContainerElement appendChild: extraDownloadLinkElement];
 	}
-		
-	NSString * widthCSS = [NSString stringWithFormat:@"%@width:%dpx", divCSS, [[self container] clientWidth]];
+	
+	DOMNode * widthNode = [[[self container] attributes ] getNamedItem:@"width"];
+	NSString * width = @"100%"; // default to 100% width
+	if (widthNode != nil) {
+		// width is already set explicitly, preserve that
+		width = [widthNode nodeValue];
+		if ( [[NSCharacterSet decimalDigitCharacterSet] characterIsMember:[width characterAtIndex:[width length] - 1]] ) {
+			// add 'px' if existing width is just a number (ends with a digit)
+			width = [width stringByAppendingString:@"px"];
+		}
+	}
+	NSString * widthCSS = [NSString stringWithFormat:@"%@width:%@;", divCSS, width];
+
 	DOMElement* CtFContainerElement = [document createElement: @"div"]; 
 	[CtFContainerElement setAttribute: @"style" value: widthCSS];
 	[CtFContainerElement setAttribute: @"class" value: @"clicktoflash-container"];
