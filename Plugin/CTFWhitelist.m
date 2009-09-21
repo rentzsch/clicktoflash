@@ -43,27 +43,18 @@ typedef enum {
     CTFSiteKindWhitelist = 0
 } CTGSiteKind;
 
-
-static NSUInteger indexOfItemForSite( NSArray* arr, NSString* site )
+static NSDictionary* itemForSite( NSSet* set, NSString* site )
 {
+	NSDictionary *specificWhitelistItem = nil;
+	
     int i = 0;
-    CTFForEachObject( NSDictionary, item, arr ) {
+    CTFForEachObject( NSDictionary, item, set ) {
         if( [ [ item objectForKey: @"site" ] isEqualToString: site ] )
-            return i;
+            specificWhitelistItem = item;
         ++i;
     }
     
-    return NSNotFound;
-}
-
-static NSDictionary* itemForSite( NSArray* arr, NSString* site )
-{
-    NSUInteger index = indexOfItemForSite( arr, site );
-    
-    if( index != NSNotFound )
-        return [ arr objectAtIndex: index ];
-    
-	return nil;
+	return specificWhitelistItem;
 }
 
 static NSDictionary* whitelistItemForSite( NSString* site )
@@ -166,25 +157,31 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 
 - (BOOL) _isWhiteListedForHostString:(NSString *)hostString
 {
-	NSArray *hostWhitelist = [[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
-    return hostWhitelist && itemForSite(hostWhitelist, hostString) != nil;
+	NSArray *hostWhitelistArray = [[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
+	NSSet *hostWhitelistSet = [NSSet setWithArray:hostWhitelistArray];
+    return hostWhitelistArray && itemForSite(hostWhitelistSet, hostString) != nil;
 }
 
-- (NSMutableArray *) _mutableSiteInfo
+- (NSMutableSet *) _mutableSiteInfo
 {
-    NSMutableArray *hostWhitelist = [[[[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
-    if (hostWhitelist == nil) {
-        hostWhitelist = [NSMutableArray array];
-    }
+    NSMutableArray *hostWhitelistArray = [[[[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey] mutableCopy] autorelease];
+	
+	NSMutableSet *hostWhitelist;
+    if (hostWhitelistArray == nil) {
+        hostWhitelist = [NSMutableSet setWithCapacity:0];
+    } else {
+		hostWhitelist = [NSMutableSet setWithArray:hostWhitelistArray];
+	}
+	
     return hostWhitelist;
 }
 
 - (void) _addHostToWhitelist
 {
-    NSMutableArray *siteInfo = [self _mutableSiteInfo];
+    NSMutableSet *siteInfo = [self _mutableSiteInfo];
     [siteInfo addObject: whitelistItemForSite([self host])];
 	
-	[[CTFUserDefaultsController standardUserDefaults] setValue:siteInfo forKeyPath:@"values.siteInfo"];
+	[[CTFUserDefaultsController standardUserDefaults] setValue:[siteInfo allObjects] forKeyPath:@"values.siteInfo"];
 	
     [[NSNotificationCenter defaultCenter] postNotificationName: sCTFWhitelistAdditionMade object: self];
 }

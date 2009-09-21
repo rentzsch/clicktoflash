@@ -157,6 +157,7 @@ BOOL usingMATrackingArea = NO;
         
         [self _migrateWhitelist];
 		[self _migratePrefsToExternalFile];
+		[self _uniquePrefsFileWhitelist];
 		[self _addApplicationWhitelistArrayToPrefsFile];
         
 		
@@ -539,6 +540,15 @@ BOOL usingMATrackingArea = NO;
 	}
 	[[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.github.rentzsch.clicktoflash"];
 }
+
+- (void) _uniquePrefsFileWhitelist
+{
+	NSArray *siteInfoArray = [[CTFUserDefaultsController standardUserDefaults] arrayForKey:@"siteInfo"];
+	NSSet *siteInfoSet = [NSSet setWithArray:siteInfoArray];
+	
+	[[CTFUserDefaultsController standardUserDefaults] setValue:[siteInfoSet allObjects] forKeyPath:@"values.siteInfo"];
+}
+
 
 - (void) _addApplicationWhitelistArrayToPrefsFile
 {
