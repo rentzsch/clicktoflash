@@ -44,6 +44,7 @@
 		6953E4360F3EDE9D0014ECF7 /* CTFMenubarMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */; };
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
+		6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A40485B110629B0E00FDC4E2 /* Credits.css */; };
 		79166CBD0FF69E1800B1F69B /* CTFGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79166CBB0FF69E1800B1F69B /* CTFGradient.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */; };
@@ -53,7 +54,6 @@
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
 		A40485A710629A3D00FDC4E2 /* AboutBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = A40485A510629A3D00FDC4E2 /* AboutBox.xib */; };
-		A40485B810629B0E00FDC4E2 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A40485B010629B0E00FDC4E2 /* Credits.css */; };
 		A40485B910629B0E00FDC4E2 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = A40485B210629B0E00FDC4E2 /* Credits.html */; };
 		A40485BA10629B0E00FDC4E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A40485B410629B0E00FDC4E2 /* InfoPlist.strings */; };
 		A40485BB10629B0E00FDC4E2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A40485B610629B0E00FDC4E2 /* Localizable.strings */; };
@@ -168,14 +168,12 @@
 		A40485AD10629AB900FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		A40485AE10629ABD00FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = Plugin/fr.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		A40485AF10629ABF00FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
-		A40485B110629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = Plugin/English.lproj/Credits.css; sourceTree = "<group>"; };
+		A40485B110629B0E00FDC4E2 /* Credits.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = Credits.css; path = Plugin/Credits.css; sourceTree = "<group>"; };
 		A40485B310629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = Plugin/English.lproj/Credits.html; sourceTree = "<group>"; };
 		A40485B510629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Plugin/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A40485B710629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Plugin/English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A40485BC10629B1D00FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = Plugin/fr.lproj/Credits.html; sourceTree = "<group>"; };
 		A40485BD10629B1E00FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = Plugin/de.lproj/Credits.html; sourceTree = "<group>"; };
-		A40485BF10629B3200FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = fr; path = Plugin/fr.lproj/Credits.css; sourceTree = "<group>"; };
-		A40485C010629B3300FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = de; path = Plugin/de.lproj/Credits.css; sourceTree = "<group>"; };
 		A40485C110629B3C00FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A40485C210629B3D00FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A40485C310629B5000FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -256,7 +254,7 @@
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
 				79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
-				A40485B010629B0E00FDC4E2 /* Credits.css */,
+				A40485B110629B0E00FDC4E2 /* Credits.css */,
 				A40485B210629B0E00FDC4E2 /* Credits.html */,
 				A40485B410629B0E00FDC4E2 /* InfoPlist.strings */,
 				A40485B610629B0E00FDC4E2 /* Localizable.strings */,
@@ -411,7 +409,7 @@
 				00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */,
 				79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */,
 				A40485A710629A3D00FDC4E2 /* AboutBox.xib in Resources */,
-				A40485B810629B0E00FDC4E2 /* Credits.css in Resources */,
+				6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */,
 				A40485B910629B0E00FDC4E2 /* Credits.html in Resources */,
 				A40485BA10629B0E00FDC4E2 /* InfoPlist.strings in Resources */,
 				A40485BB10629B0E00FDC4E2 /* Localizable.strings in Resources */,
@@ -519,16 +517,6 @@
 				A40485AB10629A9800FDC4E2 /* de */,
 			);
 			name = AboutBox.xib;
-			sourceTree = "<group>";
-		};
-		A40485B010629B0E00FDC4E2 /* Credits.css */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A40485B110629B0E00FDC4E2 /* English */,
-				A40485BF10629B3200FDC4E2 /* fr */,
-				A40485C010629B3300FDC4E2 /* de */,
-			);
-			name = Credits.css;
 			sourceTree = "<group>";
 		};
 		A40485B210629B0E00FDC4E2 /* Credits.html */ = {
