@@ -8,7 +8,7 @@
 "GB" = "GB";
 
 /* No comment provided by engineer. */
-"%1$@ can't be updated when it's running from a disk image. Move %1$@ to your Applications folder, relaunch it, and try again." = "%1$@ no se puede actualizar cuando se está ejecutando desde una imagen de disco. Traslade %1$@ a su carpeta Aplicaciones, arranque la aplicación e inténtelo de nuevo.";
+"%1$@ can't be updated when it's running from a read-only volume like a disk image or an optical drive. Move %1$@ to your Applications folder, relaunch it from there, and try again." = "%1$@ no se puede actualizar cuando se está ejecutando desde una imagen de disco. Traslade %1$@ a su carpeta Aplicaciones, arranque la aplicación e inténtelo de nuevo.";
 
 /* No comment provided by engineer. */
 "%@ %@ has been installed and will be ready to use next time %@ starts! Would you like to relaunch now?" = "%1$@ %2$@ ha sido instalada y estará disponible la próxima vez que %3$@ se inicie. ¿Desea reiniciar la aplicación?";

@@ -2,7 +2,7 @@
 "%1$@ %2$@ has been downloaded and is ready to use! Would you like to install it and relaunch %1$@ now?" = "%1$@ %2$@ è stato scaricato ed è pronto per essere utilizzato! Desideri installare e riavviare  %1$@ ora?";
 
 /* No comment provided by engineer. */
-"%1$@ can't be updated when it's running from a disk image. Move %1$@ to your Applications folder, relaunch it from there, and try again." = "%1$@ non può essere aggiornato se eseguito da un'immagine disco. Sposta %1$@ nella tua cartella Applicazioni, riavviala e prova nuovamente.";
+"%1$@ can't be updated when it's running from a read-only volume like a disk image or an optical drive. Move %1$@ to your Applications folder, relaunch it from there, and try again." = "%1$@ non può essere aggiornato se eseguito da un'immagine disco. Sposta %1$@ nella tua cartella Applicazioni, riavviala e prova nuovamente.";
 
 /* No comment provided by engineer. */
 "%@ %@ is currently the newest version available." = "%1$@ %2$@ è la versione più recente attualmente disponibile.";

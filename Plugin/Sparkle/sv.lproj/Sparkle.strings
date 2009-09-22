@@ -2,7 +2,7 @@
 "%1$@ %2$@ has been downloaded and is ready to use! Would you like to install it and relaunch %1$@ now?" = "%1$@ %2$@ har laddats ned och är redo att användas! Vill du installera det och därefter starta om %1$@?";
 
 /* No comment provided by engineer. */
-"%1$@ can't be updated when it's running from a disk image. Move %1$@ to your Applications folder, relaunch it from there, and try again." = "%1$@ kan inte uppdateras när det körs från en skivavbild. Flytta %1$@ till din Program-mapp, starta det därifrån och testa igen.";
+"%1$@ can't be updated when it's running from a read-only volume like a disk image or an optical drive. Move %1$@ to your Applications folder, relaunch it from there, and try again." = "%1$@ kan inte uppdateras när det körs från en skivavbild. Flytta %1$@ till din Program-mapp, starta det därifrån och testa igen.";
 
 /* No comment provided by engineer. */
 "%@ %@ is currently the newest version available." = "%1$@ %2$@ är just nu den nyaste versionen.";
