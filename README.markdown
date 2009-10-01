@@ -6,7 +6,7 @@ This is the ClickToFlash developer site.
 
 * **1.5.3**
 
-	* [FIX] Whitelist now checks for duplicates of sites in the whitelist, and removes them if they exist.  This fixes crashes and hangs caused by simX's bug from 1.5b4.
+	* [FIX] Whitelist now checks for duplicates, and removes them if they exist.  This fixes crashes and hangs caused by simX's bug from 1.5b4.
 
 	* [CHANGE] Disables H.264 YouTube auto-play by default.
 
