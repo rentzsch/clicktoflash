@@ -4,6 +4,14 @@ This is the ClickToFlash developer site.
 
 ##Version History
 
+* **1.5.3**
+
+	* [FIX] Whitelist now checks for duplicates of sites in the whitelist, and removes them if they exist.  This fixes crashes and hangs caused by simX's bug from 1.5b4.
+
+	* [CHANGE] Disables H.264 YouTube auto-play by default.
+
+	* [FIX] Rare crashers and memory leaks.
+
 * **1.5.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.2.zip)
 
 	* [NEW] Start signing Sparkle updates. ([rentzsch](http://github.com/rentzsch/clicktoflash/commit/c8f4d7f897a039d5d04ea92e178a15238adcacab))
