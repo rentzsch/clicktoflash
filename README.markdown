@@ -8,6 +8,8 @@ This is the ClickToFlash developer site.
 
 	* [FIX] Whitelist now checks for duplicates, and removes them if they exist.  This fixes crashes and hangs caused by simX's bug from 1.5b4.
 
+	* [FIX] Embedded YouTube videos were showing a question mark when loaded using the VIDEO element.
+
 	* [CHANGE] Disables H.264 YouTube auto-play by default.
 
 	* [FIX] Rare crashers and memory leaks.
