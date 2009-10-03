@@ -24,11 +24,10 @@ THE SOFTWARE.
 
 */
 
-// so we load our localised strings from the correct bundle, use genstrings -s CtfLocalizedString
-#define CtFLocalizedString(key, explanation) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:@"" table:(nil)]
-
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
+
+@class CTFKiller;
 
 @interface CTFClickToFlashPlugin : NSView <WebPlugInViewFactory> {
 	NSArray *defaultWhitelist;
@@ -41,30 +40,33 @@ THE SOFTWARE.
     BOOL mouseIsDown;
     BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
-	BOOL _isSIFR;
+//	BOOL _isSIFR;
     BOOL _fromYouTube;
     BOOL _fromFlickr;
-	BOOL _embeddedYouTubeView;
-	BOOL _youTubeAutoPlay;
-	BOOL _hasH264Version;
-	BOOL _hasHDH264Version;
+//	BOOL _embeddedYouTubeView;
+//	BOOL _youTubeAutoPlay;
+//	BOOL _hasH264Version;
+//	BOOL _hasHDH264Version;
 	WebView *_webView;
-	NSUInteger _sifrVersion;
+//	NSUInteger _sifrVersion;
 	NSString *_baseURL;
 	NSDictionary *_attributes;
 	NSDictionary *_originalOpacityAttributes;
 	NSString *_src;
-	NSString *_videoId;
-	NSString *_launchedAppBundleIdentifier;
+//	NSString *_videoId;
+//	NSString *_launchedAppBundleIdentifier;
 
 	BOOL _contextMenuIsVisible;
-	BOOL _receivedAllResponses;
-	NSURLConnection *connections[2];
-	unsigned expectedResponses;
+//	BOOL _receivedAllResponses;
+//	NSURLConnection *connections[2];
+//	unsigned expectedResponses;
 	NSTimer *_delayingTimer;
+	
+	CTFKiller * killer;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
++ (NSDictionary*) flashVarDictionary: (NSString*) flashvarString;
 
 - (id) initWithArguments:(NSDictionary *)arguments;
 - (void)_migratePrefsToExternalFile;
@@ -85,34 +87,50 @@ THE SOFTWARE.
 - (void)setOriginalOpacityAttributes:(NSDictionary *)newValue;
 - (NSString *)src;
 - (void)setSrc:(NSString *)newValue;
+/*
 - (NSString *)videoId;
 - (void)setVideoId:(NSString *)newValue;
 - (BOOL)_hasH264Version;
 - (void)_setHasH264Version:(BOOL)newValue;
 - (BOOL)_hasHDH264Version;
-- (BOOL)_isVideoElementAvailable;
 - (void)_setHasHDH264Version:(BOOL)newValue;
-- (NSString *)launchedAppBundleIdentifier;
-- (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
+ */
+//- (BOOL)_isVideoElementAvailable;
++ (NSString *)launchedAppBundleIdentifier;
+- (void) revertToOriginalOpacityAttributes;
+- (void) prepareForConversion;
+//- (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
+/*
 - (NSString *)YouTubePageURLString;
 - (NSString *)H264URLString;
 - (NSString *)H264HDURLString;
+*/
+- (NSMenuItem*) addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector;
+- (NSMenuItem *) addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector target:(id) target;
 
 - (IBAction)loadFlash:(id)sender;
-- (IBAction)loadH264:(id)sender;
+/*- (IBAction)loadH264:(id)sender;
 - (IBAction)loadH264SD:(id)sender;
 - (IBAction)loadH264HD:(id)sender;
+ */
 - (IBAction)loadAllOnPage:(id)sender;
+
+- (void) convertTypesForContainer;
 
 - (IBAction)removeFlash: (id) sender;
 - (IBAction)hideFlash: (id) sender;
 
-- (IBAction)downloadH264:(id)sender;
+- (void) browseToURLString: (NSString*) URLString;
+- (void) downloadURLString: (NSString*) URLString;
+/*
+ - (IBAction)downloadH264:(id)sender;
 - (IBAction)downloadH264SD:(id)sender;
 - (IBAction)downloadH264HD:(id)sender;
+*/
 
 - (BOOL) isConsideredInvisible;
+- (CTFKiller *) killer;
+- (void)setKiller:(CTFKiller *)newKiller;
 
-- (void) _convertTypesForContainer;
 
 @end

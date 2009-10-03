@@ -1,6 +1,8 @@
 #import "CTFWhitelistWindowController.h"
 #import "SparkleManager.h"
 #import "Plugin.h"
+#import "CTFUtilities.h"
+
 
 NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 

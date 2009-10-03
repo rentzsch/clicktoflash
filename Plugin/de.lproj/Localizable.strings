@@ -25,8 +25,14 @@
 /* HD H.264 badge text */
 "HD H.264" = "QuickTime HD";
 
+/* Vimeo waiting badge text */
+"Vimeo..." = "Vimeo…";
+
+/* Vimeo badge text */
+"Vimeo" = "Vimeo";
+
 /* sIFR Flash badge text */
-"sIFR Flash" = "sIFR Flash";
+"sIFR Flash" = "Textersetzung";
 
 
 
@@ -85,6 +91,8 @@
 /* Preferences Contextual Menu Item */
 "ClickToFlash Preferences..." = "ClickToFlash Einstellungen …";
 
+/* Don't use Text Replacement (CTFKillerSIFR) */
+"Don't use Text Replacement" = "Alle Textersetzungen entfernen";
 
 
 
@@ -101,6 +109,8 @@
 /* Text of link to YouTube page appearing beneath the video */
 "Go to YouTube page" = "YouTube Seite öffnen";
 
+/* Text of link to a generic video page appearing beneath the video [CTFKillerVideo] */ 
+"Go to Video Page" = "Go to Video Page";
 
 
 

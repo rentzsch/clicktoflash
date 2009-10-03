@@ -189,7 +189,7 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 - (void) _whitelistAdditionMade: (NSNotification*) notification
 {
 	if ([self _isHostWhitelisted])
-		[self _convertTypesForContainer];
+		[self convertTypesForContainer];
 }
 
 - (IBAction)addToWhitelist:(id)sender;

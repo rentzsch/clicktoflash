@@ -46,12 +46,16 @@
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A40485B110629B0E00FDC4E2 /* Credits.css */; };
+		6C8EC6F410764F810053587F /* CTFKiller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC6F310764F810053587F /* CTFKiller.m */; };
+		6C8EC7051076544D0053587F /* CTFKillerYouTube.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC7041076544D0053587F /* CTFKillerYouTube.m */; };
+		6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC774107671F20053587F /* CTFKillerVideo.m */; };
+		6C8EC7E9107686780053587F /* CTFKillerSIFR.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC7E8107686780053587F /* CTFKillerSIFR.m */; };
+		6CC18AE61076D09B00D9E1A0 /* CTFKillerVimeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC18AE51076D09B00D9E1A0 /* CTFKillerVimeo.m */; };
 		79166CBD0FF69E1800B1F69B /* CTFGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79166CBB0FF69E1800B1F69B /* CTFGradient.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */; };
 		79C040700FF1CCE6002DA6A5 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 79E2EB920F86AAD3005CF170 /* SparkleManager.m */; };
-		844695F70F470D1F00DC783A /* CTFsIFRSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 844695910F46FC6600DC783A /* CTFsIFRSupport.m */; };
 		845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704540F4792320017F3F4 /* CTFWhitelist.m */; };
 		8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 845704590F47BC170017F3F4 /* CTFUtilities.m */; };
 		A40485A710629A3D00FDC4E2 /* AboutBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = A40485A510629A3D00FDC4E2 /* AboutBox.xib */; };
@@ -148,6 +152,16 @@
 		6953E43B0F3EDEB50014ECF7 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
+		6C8EC6F210764F810053587F /* CTFKiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKiller.h; path = Plugin/CTFKiller.h; sourceTree = "<group>"; };
+		6C8EC6F310764F810053587F /* CTFKiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKiller.m; path = Plugin/CTFKiller.m; sourceTree = "<group>"; };
+		6C8EC7031076544D0053587F /* CTFKillerYouTube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerYouTube.h; path = Plugin/CTFKillerYouTube.h; sourceTree = "<group>"; };
+		6C8EC7041076544D0053587F /* CTFKillerYouTube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerYouTube.m; path = Plugin/CTFKillerYouTube.m; sourceTree = "<group>"; };
+		6C8EC773107671F20053587F /* CTFKillerVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerVideo.h; path = Plugin/CTFKillerVideo.h; sourceTree = "<group>"; };
+		6C8EC774107671F20053587F /* CTFKillerVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerVideo.m; path = Plugin/CTFKillerVideo.m; sourceTree = "<group>"; };
+		6C8EC7E7107686780053587F /* CTFKillerSIFR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerSIFR.h; path = Plugin/CTFKillerSIFR.h; sourceTree = "<group>"; };
+		6C8EC7E8107686780053587F /* CTFKillerSIFR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerSIFR.m; path = Plugin/CTFKillerSIFR.m; sourceTree = "<group>"; };
+		6CC18AE41076D09B00D9E1A0 /* CTFKillerVimeo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerVimeo.h; path = Plugin/CTFKillerVimeo.h; sourceTree = "<group>"; };
+		6CC18AE51076D09B00D9E1A0 /* CTFKillerVimeo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerVimeo.m; path = Plugin/CTFKillerVimeo.m; sourceTree = "<group>"; };
 		79166CBB0FF69E1800B1F69B /* CTFGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFGradient.m; path = Plugin/CTFGradient.m; sourceTree = "<group>"; };
 		79166CBC0FF69E1800B1F69B /* CTFGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFGradient.h; path = Plugin/CTFGradient.h; sourceTree = "<group>"; };
 		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Plugin/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
@@ -156,8 +170,6 @@
 		79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dsa_pub.pem; path = Plugin/dsa_pub.pem; sourceTree = "<group>"; };
 		79E2EB910F86AAD3005CF170 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkleManager.h; path = Plugin/SparkleManager.h; sourceTree = "<group>"; };
 		79E2EB920F86AAD3005CF170 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparkleManager.m; path = Plugin/SparkleManager.m; sourceTree = "<group>"; };
-		844695900F46FC6600DC783A /* CTFsIFRSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFsIFRSupport.h; path = Plugin/CTFsIFRSupport.h; sourceTree = "<group>"; };
-		844695910F46FC6600DC783A /* CTFsIFRSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFsIFRSupport.m; path = Plugin/CTFsIFRSupport.m; sourceTree = "<group>"; };
 		845704530F4792320017F3F4 /* CTFWhitelist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFWhitelist.h; path = Plugin/CTFWhitelist.h; sourceTree = "<group>"; };
 		845704540F4792320017F3F4 /* CTFWhitelist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFWhitelist.m; path = Plugin/CTFWhitelist.m; sourceTree = "<group>"; };
 		845704580F47BC170017F3F4 /* CTFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUtilities.h; path = Plugin/CTFUtilities.h; sourceTree = "<group>"; };
@@ -228,8 +240,18 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
-				A40485DE10629C4100FDC4E2 /* CTFAboutBoxWindowController.h */,
+				6C8EC6F310764F810053587F /* CTFKiller.m */,
+				6C8EC6F210764F810053587F /* CTFKiller.h */,
+				6C8EC774107671F20053587F /* CTFKillerVideo.m */,
+				6C8EC773107671F20053587F /* CTFKillerVideo.h */,
+				6C8EC7041076544D0053587F /* CTFKillerYouTube.m */,
+				6C8EC7031076544D0053587F /* CTFKillerYouTube.h */,
+				6CC18AE51076D09B00D9E1A0 /* CTFKillerVimeo.m */,
+				6CC18AE41076D09B00D9E1A0 /* CTFKillerVimeo.h */,
+				6C8EC7E8107686780053587F /* CTFKillerSIFR.m */,
+				6C8EC7E7107686780053587F /* CTFKillerSIFR.h */,
 				A40485DF10629C4100FDC4E2 /* CTFAboutBoxWindowController.m */,
+				A40485DE10629C4100FDC4E2 /* CTFAboutBoxWindowController.h */,
 				A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */,
 				A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */,
 				A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */,
@@ -238,8 +260,6 @@
 				845704580F47BC170017F3F4 /* CTFUtilities.h */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
 				6953E4350F3EDE9D0014ECF7 /* CTFMenubarMenuController.h */,
-				844695910F46FC6600DC783A /* CTFsIFRSupport.m */,
-				844695900F46FC6600DC783A /* CTFsIFRSupport.h */,
 				845704540F4792320017F3F4 /* CTFWhitelist.m */,
 				845704530F4792320017F3F4 /* CTFWhitelist.h */,
 				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
@@ -472,7 +492,6 @@
 				79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */,
 				55EB70480E04A8850016593D /* Plugin.m in Sources */,
 				6953E4360F3EDE9D0014ECF7 /* CTFMenubarMenuController.m in Sources */,
-				844695F70F470D1F00DC783A /* CTFsIFRSupport.m in Sources */,
 				845704550F4792320017F3F4 /* CTFWhitelist.m in Sources */,
 				8457045A0F47BC170017F3F4 /* CTFUtilities.m in Sources */,
 				79E2EB930F86AAD3005CF170 /* SparkleManager.m in Sources */,
@@ -481,6 +500,11 @@
 				A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */,
 				79166CBD0FF69E1800B1F69B /* CTFGradient.m in Sources */,
 				A40485E010629C4100FDC4E2 /* CTFAboutBoxWindowController.m in Sources */,
+				6C8EC6F410764F810053587F /* CTFKiller.m in Sources */,
+				6C8EC7051076544D0053587F /* CTFKillerYouTube.m in Sources */,
+				6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */,
+				6C8EC7E9107686780053587F /* CTFKillerSIFR.m in Sources */,
+				6CC18AE61076D09B00D9E1A0 /* CTFKillerVimeo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,7 +596,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Install plugin for user";
-				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Debug;
 		};
@@ -580,13 +603,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Install plugin for user";
-				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Release;
 		};
 		55EB70330E04A8410016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -600,6 +624,8 @@
 		55EB70340E04A8410016593D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -613,11 +639,7 @@
 		55EB70450E04A8640016593D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-					x86_64,
-				);
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -627,12 +649,14 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = Plugin/ClickToFlash_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				IBC_FLATTEN_NIBS = NO;
 				INFOPLIST_FILE = "Plugin/Info-Plugin.plist";
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.4;
 				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH_ACTUAL)";
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -678,7 +702,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Build Package";
-				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Debug;
 		};
@@ -686,7 +709,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "Build Package";
-				PRODUCT_VERSION = 1.5.3b4;
 			};
 			name = Release;
 		};

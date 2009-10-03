@@ -130,7 +130,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 		[_updater setDelegate:self];
 	}
 	
-	if (_updater == nil) NSLog(@"ClickToFlash Sparkle updates disabled for host.", _cmd);
+	if (_updater == nil) NSLog(@"ClickToFlash Sparkle updates disabled for host.");
 	
 	return _updater;
 }
