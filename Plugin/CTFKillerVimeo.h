@@ -34,7 +34,6 @@
 	NSString * clipSignature;
 	NSString * clipExpires;
 	
-	BOOL clipIsMP4;
 	BOOL clipIsHD;
 	
 	NSMutableData * downloadData;
@@ -42,17 +41,10 @@
 
 
 - (void) getXML;
-- (void) finishXMLFetching;
+- (void) finishXMLFetching: (NSURLConnection *) connection;
 - (void) finishHEADFetching: (NSURLConnection *) connection;
 - (BOOL) isFetchingXML;
 - (BOOL) isFetchingHEAD;
-- (BOOL) isProcessing;
-
-- (BOOL) hasMP4URL;
-- (NSString *) MP4URLString;
-- (NSString *) MP4HDURLString;
-- (BOOL) hasHDVersion;
-- (BOOL) useHDVersion;
 
 - (NSString *)clipID;
 - (void)setClipID:(NSString *)newClipID;

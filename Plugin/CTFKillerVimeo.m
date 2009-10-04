@@ -54,9 +54,8 @@
 	[self setClipID: nil];
 	[self setClipSignature: nil];
 	[self setClipExpires: nil];
-	clipIsMP4 = NO;
-	clipIsHD = NO;
 	downloadData = nil;
+	lookupStatus = nothing;
 	
 	NSString * myID = [ self flashVarWithName:@"clip_id" ]; 
 
@@ -86,136 +85,55 @@
 
 
 
-- (NSString*) badgeLabelText {
-	NSString * label = nil;
-	
-	if ( [self hasMP4URL] ) {
-		// can load proper video
-		label = CtFLocalizedString( @"H.264", @"");
-	}
-	else if ( [self isProcessing] ) {
-		// we're still downloading the XML
-		label = CtFLocalizedString( @"Vimeo...", @"Vimeo waiting badge text");
-	}
-	else {
-		label = CtFLocalizedString( @"Vimeo", @"Vimeo badge text");
-	}
-	
-	return label;
+
+
+#pragma mark -
+#pragma mark CTFVideoKiller subclassing overrides
+
+// Name of the video service that can be used for automatic link text generation 
+- (NSString*) siteName { 
+	return CtFLocalizedString(@"Vimeo", @"Name of Vimeo");
 }
 
 
 
-- (void) addPrincipalMenuItemToContextualMenu;
-{
-	NSMenuItem * menuItem;
+// URL to the video file used for loading it in the player.
+- (NSString *) videoURLString {
+	NSString * URLString = nil;
 	
-	if ([self hasMP4URL]) {
-		[[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264", @"Load H.264 contextual menu item" ) 
-											   action: @selector( loadH264: )
-											   target: self ];
-		if ([self hasHDVersion]) {
-			if ([self useHDVersion]) {
-				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 SD Version", @"Load Smaller Version contextual menu item (alternate for the standard Load H.264 item when the default uses the 'HD' version)" )
-																  action: @selector( loadH264SD: )
-																  target: self ];
-			}
-			else {
-				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 HD Version", @"Load Larger Version  contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
-																  action: @selector( loadH264HD: )
-																  target: self ];
-			}
-			[menuItem setAlternate:YES];
-			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-		}
+	if ( clipID != nil && clipSignature != nil && clipExpires != nil) {
+		URLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/", clipID, clipSignature, clipExpires];
 	}
+	
+	return URLString;
+}
+
+
+- (NSString *) videoHDURLString {
+	NSString * URLString = nil;
+	URLString = [[self videoURLString] stringByAppendingString:@"/?q=hd"];
+	return URLString;
 }
 
 
 
-- (void) addAdditionalMenuItemsForContextualMenu;
-{
-	NSMenuItem * menuItem;
-	
-	if ([self isOnVideoPage]) {
-		// Command to Open YouTube page for embedded videos
-		[[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load YouTube.com page for this video", @"Load YouTube page contextual menu item" )
-											   action: @selector( loadYouTubePage: )
-											   target: self ];
-	}
-	
-	if ([self hasMP4URL]) {
-		// menu item and alternate for full screen viewing in QuickTime Player
-		[[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Fullscreen in QuickTime Player", @"Open Fullscreen in QT Player contextual menu item" )
-											   action: @selector( openFullscreenInQTPlayer: )
-											   target: self ];
-		if ([self hasHDVersion]) {
-			if ([self useHDVersion]) {
-				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Smaller Version Fullscreen in QuickTime Player", @"Open Smaller Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the 'HD' version)" )
-																  action: @selector( openFullscreenInQTPlayerSD: ) 
-																  target: self ];
-			}
-			else {
-				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Larger Version Fullscreen in QuickTime Player", @"Open Larger Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
-																  action: @selector( openFullscreenInQTPlayerHD: ) 
-																  target: self ];
-			}
-			[menuItem setAlternate:YES];
-			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-		}
-		
-		// menu item and alternate for downloading movie file
-		[[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Download H.264", @"Download H.264 menu item" )
-											   action: @selector( downloadH264: )
-											   target: self ];
-		if ([self hasHDVersion]) {
-			if ([self useHDVersion]) {
-				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Download SD H.264", @"Download small size H.264 menu item (alternate for the standard item when the default uses the 'HD' version)" )
-																  action: @selector( downloadH264SD: ) 
-																  target: self ];
-			}
-			else {
-				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Download HD H.264", @"Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version)" )
-																  action: @selector( downloadH264HD: ) 
-																  target: self ];
-			}
-			[menuItem setAlternate:YES];
-			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-		}
-	}	
-}
-
-
-
-- (BOOL) convertToContainer {
-	BOOL success = NO;
-	
-	if ( clipIsMP4 ) {
-		[[self plugin] revertToOriginalOpacityAttributes];
-		[[self plugin] prepareForConversion];
-		
-		[self performSelector:@selector(convertToMP4ContainerAtURL:) withObject:[self MP4URLString] afterDelay:0.0];
-		
-		success = YES;
-	}
-
-	return success;
-}
-
-
-
-
-#pragma mark CTFKillerVideo subclass overrrides
-
+// URL of the web page displaying the video. Return nil if there is none.
 - (NSString *) videoPageURLString {
-	NSString * URLString = [NSString stringWithFormat:@"http://vimeo.com/%@", [self clipID]];
+	NSString * URLString = nil;
+	if ( [self clipID] != nil ) {
+		URLString = [NSString stringWithFormat:@"http://vimeo.com/%@", [self clipID]];
+	}
 	return URLString;
 }
 
 
 
 
-#pragma mark DETERMINE VIDEO TYPE
+
+
+#pragma mark -
+#pragma mark Determine Video type
+
 /*
  1. download the XML file which provides the keys required to construct the URL to access the video file
  2. get headers for the video file to check whether it actually is MP4 
@@ -228,7 +146,10 @@
 	if (request != nil) {
 		downloadData = [[NSMutableData alloc] initWithLength:20000];
 		[NSURLConnection connectionWithRequest: request delegate:self];
-		[[self plugin] setNeedsDisplay:YES];
+		[self setLookupStatus: inProgress];
+	}
+	else {
+		[self setLookupStatus: failed];
 	}
 }
 
@@ -243,7 +164,7 @@
 		// only run when fetching the XML file, not for the video file header
 		NSError * error;
 		NSXMLDocument * XML = [[[NSXMLDocument alloc] initWithData:downloadData options:NSXMLDocumentTidyXML error:&error] autorelease];
-		[self finishXMLFetching];
+		[self finishXMLFetching: connection];
 		
 		NSXMLNode * node;
 		if (XML != nil) {
@@ -278,23 +199,19 @@
 			nodes = [XML nodesForXPath:@"//isHD" error:&error];
 			if ([nodes count] > 0) {
 				node = [nodes objectAtIndex:0];
-				clipIsHD = ([[node stringValue] integerValue] != 0);
+				[self setHasVideoHD: ([[node stringValue] integerValue] != 0)];
 			}
-			
-		}
-		else {
-			[[self plugin] setNeedsDisplay: YES];
 		}
 
 		
 		// Now we collected the data but vimeo seem to have two video formats in the background flv/mp4. The only way I see so far to tell those apart is from the MIME Type of the video file's URL. Any better way to do this would be great.
-		NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:[self MP4URLString]]] autorelease];
+		NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:[self videoURLString]]] autorelease];
 		if (request != nil) {
 			[request setHTTPMethod:@"HEAD"];
-			[[[NSURLConnection alloc] initWithRequest: request delegate:self] autorelease];
+			[NSURLConnection connectionWithRequest: request delegate: self];
 		}
 		else {
-			[[self plugin] setNeedsDisplay:YES];
+			[self setLookupStatus: failed];
 		}
 	}	
 }
@@ -303,11 +220,12 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	if ( [self isFetchingXML]) {
-		[self finishXMLFetching];
+		[self finishXMLFetching: connection];
 	}
 	else {
 		[self finishHEADFetching: connection];
 	}
+	[self setLookupStatus: failed];
 }
 
 
@@ -319,7 +237,8 @@
 		NSString * contentType = [response MIMEType];
 	
 		if ( statusCode == 200 && [contentType isEqualToString: @"video/mp4"] ) {
-			clipIsMP4 = YES;
+			[self setHasVideo: YES];
+			[self setLookupStatus: finished];
 		}
 		
 		[self finishHEADFetching: connection];		
@@ -328,21 +247,16 @@
 
 
 
-- (void) finishXMLFetching {
+- (void) finishXMLFetching: (NSURLConnection *) connection {
+	[connection cancel];
 	[downloadData release];
 	downloadData = nil;
-	
-	[[self plugin] setNeedsDisplay: YES];
 }
 
 
 - (void) finishHEADFetching: (NSURLConnection *) connection {
 	[connection cancel];
-	[connection release];
-	
-	[[self plugin] setNeedsDisplay: YES];
 }
-
 
 
 
@@ -378,47 +292,9 @@
 }
 
 
-- (BOOL) isProcessing {
-	BOOL result = ([self clipExpires] != nil) && ([self clipSignature] != nil) && !clipIsMP4;
-	return result;
-}
 
 
 
-#pragma mark HELPERS 
-
-- (BOOL) hasMP4URL {
-	BOOL result = clipIsMP4;
-	return result;
-}
-
-
-- (NSString *) MP4URLString {
-	NSString * URLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/", clipID, clipSignature, clipExpires];
-	return URLString;
-}
-
-
-- (NSString *) MP4HDURLString {
-	NSString * URLString = [[self MP4URLString] stringByAppendingString:@"/?q=hd"];
-	return URLString;
-}
-
-
-
-/* needs figuring out, vimeo can provide smaller versions for HD videos */
-- (BOOL) hasHDVersion {
-	return clipIsHD;
-}
-
-- (BOOL) useHDVersion {
-	return [ self hasHDVersion ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeHDH264DefaultsKey ];
-}
-
-
-	 
 #pragma mark ACCESSORS
 
 - (NSString *)clipID

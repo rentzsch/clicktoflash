@@ -28,7 +28,6 @@
 #import <Cocoa/Cocoa.h>
 #import "CTFKiller.h"
 
-// static NSString *sDisableVideoElement;
 static NSString *sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
 static NSString *sUseYouTubeHDH264DefaultsKey = @"useYouTubeHDH264";
 static NSString *sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
@@ -36,34 +35,91 @@ static NSString *sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 @class DOMElement;
 
+enum CTFKVLookupStatus {
+	nothing = 0,
+	inProgress = 1,
+	finished = 2,
+	failed = 3
+};
+
 @interface CTFKillerVideo : CTFKiller {
 	BOOL autoPlay;
+	BOOL hasVideo;
+	BOOL hasVideoHD;
+	
+	enum CTFKVLookupStatus lookupStatus;
 	
 	NSSize videoSize;
 	NSURL * previewURL;
 }
 
-// to be implemented by subclasses if appropriate
-- (NSString *) videoPageURLString;
-- (NSString *) videoPageLinkText;
+// Subclasses should use setHasVideo and setHasVideoHD to indicate when they have determined movie paths.
+
+// to be implemented by subclasses if they want to
+
+// Name of the video service that can be used for automatic link text generation 
+- (NSString*) siteName;
+
+// URL to the video file used for loading it in the player.
+- (NSString*) videoURLString;
+- (NSString*) videoHDURLString;
+
+// URL for downloading the video file. Return nil to use the same URL the video element uses.
 - (NSString *) videoDownloadURLString;
+- (NSString *) videoHDDownloadURLString;
+
+// Text used for video file download link. Return nil to use standard text.
 - (NSString *) videoDownloadLinkText;
+
+// URL of the web page displaying the video. Return nil if there is none.
+- (NSString *) videoPageURLString;
+
+// Text used for link to video page. Return nil to use standard text.
+- (NSString *) videoPageLinkText;
+
+// Edit or replace the markup that is added for the links beneath the video. The descriptionElement passed to the method already conatins Go to Webpage and Download Video File links.
 - (DOMElement *) enhanceVideoDescriptionElement: (DOMElement*) descriptionElement;
+
 
 //
 - (BOOL) isOnVideoPage;
+- (NSString *) cleanURLString: (NSString*) URLString;
 
 
-// internal stuff
+// Actions
+- (IBAction) loadVideo:(id)sender;
+- (IBAction) loadVideoSD:(id)sender;
+- (IBAction) loadVideoHD:(id)sender;
+- (void) downloadVideoUsingHD: (BOOL) useHD;
+- (IBAction) downloadVideo: (id) sender;
+- (IBAction) downloadVideoSD: (id) sender;
+- (IBAction) downloadVideoHD: (id) sender;
+
+// Internal stuff
 - (void) _convertElementForMP4: (DOMElement*) element atURL: (NSString*) URLString;
 - (void) _convertElementForVideoElement: (DOMElement*) element atURL: (NSString*) URLString;
+- (void) convertToMP4ContainerUsingHD: (NSNumber*) useHD;
+- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber;
 - (void) convertToMP4ContainerAtURL: (NSString*) URLString;
 - (DOMElement*) linkContainerElementForURL: (NSString*) URLString;
 
+// Helpers
+- (BOOL) useVideo;
+- (BOOL) useVideoHD;
+- (NSString *) videoURLStringForHD: (BOOL) useHD;
 - (BOOL) isVideoElementAvailable;
 
-- (NSURL *)previewURL;
-- (void)setPreviewURL:(NSURL *)newPreviewURL;
+// Accessors
+- (BOOL) autoPlay;
+- (void) setAutoPlay:(BOOL)newAutoPlay;
+- (BOOL) hasVideo;
+- (void) setHasVideo:(BOOL)newHasVideo;
+- (BOOL) hasVideoHD;
+- (void) setHasVideoHD:(BOOL)newHasVideoHD;
+- (enum CTFKVLookupStatus) lookupStatus;
+- (void) setLookupStatus: (enum CTFKVLookupStatus) newLookupStatus;
+- (NSURL *) previewURL;
+- (void) setPreviewURL: (NSURL *) newPreviewURL;
 
 
 @end

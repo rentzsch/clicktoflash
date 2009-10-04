@@ -34,6 +34,7 @@
 static NSString * divCSS = @"margin:auto;padding:0px;border:0px none;text-align:center;display:block;float:none;";
 static NSString * sDisableVideoElement = @"disableVideoElement";
 
+
 @implementation CTFKillerVideo
 
 #pragma mark Come and Go
@@ -42,6 +43,9 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 	self = [super init];
 	if (self != nil) {
 		autoPlay = NO;
+		hasVideo = NO;
+		hasVideoHD = NO;
+		
 		videoSize = NSZeroSize;
 		[self setPreviewURL:nil];
 	}
@@ -57,30 +61,302 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 
 
 
-# pragma mark Default implementations to be overridden by subclasses
+#pragma mark -
+#pragma mark Default implementations to be overridden by subclasses
 
-- (NSString *) videoPageURLString {
-	return nil;
-}
+// Name of the video service that can be used for automatic link text generation 
+- (NSString*) siteName { return nil; }
 
-- (NSString *) videoPageLinkText {
-	return nil;
-}
+// URL to the video file used for loading it in the player.
+- (NSString*) videoURLString { return nil;} 
+- (NSString*) videoHDURLString { return nil; }
 
-- (NSString *) videoDownloadURLString {
-	return nil;
-}
+// URL for downloading the video file. Return nil to use the same URL the video element uses.
+- (NSString *) videoDownloadURLString {	return nil; }
+- (NSString *) videoHDDownloadURLString { return nil; }
 
-- (NSString *) videoDownloadLinkText {
-	return nil;
-}
+// Text used for video file download link. Return nil to use standard text.
+- (NSString *) videoDownloadLinkText { return nil; }
 
+// URL of the web page displaying the video. Return nil if there is none.
+- (NSString *) videoPageURLString { return nil; }
+
+// Text used for link to video page. Return nil to use standard text.
+- (NSString *) videoPageLinkText { return nil; }
+
+// Edit or replace the markup that is added for the links beneath the video. The descriptionElement passed to the method already conatins Go to Webpage and Download Video File links.
 - (DOMElement *) enhanceVideoDescriptionElement: (DOMElement*) descriptionElement {
 	return descriptionElement;
 }
 
 
-#pragma mark INSERT VIDEO
+
+// If we are on the video's home page return YES, otherwise NO. This is used to determine whether we need links pointing to the video's home page.
+- (BOOL) isOnVideoPage {
+	BOOL result = NO;
+	NSString * videoPage = [self cleanURLString:[self videoPageURLString]];
+	
+	if (videoPage != nil) {
+		NSString * URLString = [self cleanURLString:[[self pageURL] absoluteString]];
+		result = [URLString hasPrefix: videoPage];
+	}
+	return result;
+}
+
+
+
+// Remove http:// and www. from beginning of URL.
+- (NSString *) cleanURLString: (NSString*) URLString {
+	NSString * result = URLString;
+
+	NSRange range = [URLString rangeOfString:@"http://www." options:NSAnchoredSearch];
+	if (range.location == NSNotFound) {
+		range = [URLString rangeOfString:@"http://" options:NSAnchoredSearch];
+	}
+	if (range.location != NSNotFound) {
+		result = [URLString substringFromIndex: range.length];
+	}
+	
+	return result;
+}
+					
+
+
+					
+					
+					
+#pragma mark -
+#pragma mark Subclass override of CTFKiller
+
+// Create gemeric labels based on the Service's name, so our subclasses don't need to.
+- (NSString*) badgeLabelText {
+	NSString * label = nil;
+	if( [ self useVideoHD ] ) {
+		label = CtFLocalizedString( @"HD H.264", @"HD H.264 badge text" );
+	} 
+	else if( [ self useVideo ] ) {
+		NSString * H264Name = CtFLocalizedString( @"H.264", @"H.264 badge text" );
+		if ( [self lookupStatus] == finished ) {
+			label = H264Name;
+		} else {
+			NSString * ellipsisFormat = CtFLocalizedString(@"%@...", @"");
+			label = [NSString stringWithFormat: ellipsisFormat, H264Name];
+		}
+    } 
+	else  {
+		NSString * serviceName = [NSString stringWithFormat: CtFLocalizedString( @"%@ (VideoServiceName)", @"Format for badge text for video service. This should probably just be %@" ), [self siteName]];
+		if ( [self lookupStatus] >= finished ) {
+			label = serviceName;
+		} else {
+			NSString * ellipsisFormat = CtFLocalizedString(@"%@...", @"");
+			label = [NSString stringWithFormat:ellipsisFormat, serviceName];
+		}
+	}
+	
+	return label;
+}
+
+
+
+// Create a default principal menu item, so our subclasses don't need to. The menu item loads the MP4 video according the current settings. If the video is available in another size as well, holding the option key will reveal a command to load that version instead.
+- (void) addPrincipalMenuItemToContextualMenu;
+{
+	NSMenuItem * menuItem;
+	
+	if ([self hasVideo]) {
+		[[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264", @"Load H.264 contextual menu item" ) 
+											   action: @selector( loadVideo: )
+											   target: self ];
+		if ( [self hasVideoHD] ) {
+			if ( [self useVideoHD] ) {
+				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 SD Version", @"Load Smaller Version contextual menu item (alternate for the standard Load H.264 item when the default uses the 'HD' version)" )
+																  action: @selector( loadVideoSD: )
+																  target: self ];
+			}
+			else {
+				menuItem = [[self plugin] addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 HD Version", @"Load Larger Version  contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
+																  action: @selector( loadVideoHD: )
+																  target: self ];
+			}
+			[menuItem setAlternate:YES];
+			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+		}
+	}
+}
+
+
+
+/* 
+ Create a default set of additional menu items, so our subclasses don't need to. These consist of:
+ 1. A command to go to the web page belonging to the video (if there is one)
+ 2. A command for fullscreen playback in QuickTime Player. If the video is available in another size as well, holding the option key will reveal a command to load that version in QuickTime Player instead.
+ 3. A command to download the video file. If the video is available in another size as well, holding the option key will reveal a command to download that version instead.
+*/
+- (void) addAdditionalMenuItemsForContextualMenu;
+{
+	NSMenuItem * menuItem;
+	NSString * formatString;
+	NSString * labelString;
+	
+	if (![self isOnVideoPage] && [self videoPageURLString] != nil) {
+		// Command to Open web page for embedded videos
+		formatString = CtFLocalizedString( @"Load %@ page for this video", @"Load SITENAME page for this video contextual menu item" );
+		labelString = [NSString stringWithFormat: formatString, [self siteName]];
+		[[self plugin] addContextualMenuItemWithTitle: labelString
+											   action: @selector( gotoVideoPage: )
+											   target: self ];
+	}
+	
+	if ( [self hasVideo] ) {
+		// menu item and alternate for full screen viewing in QuickTime Player
+		labelString = CtFLocalizedString( @"Play Fullscreen in QuickTime Player", @"Open Fullscreen in QT Player contextual menu item" );
+		[[self plugin] addContextualMenuItemWithTitle: labelString
+											   action: @selector( openFullscreenInQTPlayer: )
+											   target: self ];
+		if ( [self hasVideoHD]) {
+			if ( [self useVideoHD] ) {
+				labelString = CtFLocalizedString( @"Play Smaller Version Fullscreen in QuickTime Player", @"Open Smaller Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the 'HD' version)" );
+				menuItem = [[self plugin] addContextualMenuItemWithTitle: labelString
+																  action: @selector( openFullscreenInQTPlayerSD: )
+																  target: self ];
+			}
+			else {
+				labelString = CtFLocalizedString( @"Play Larger Version Fullscreen in QuickTime Player", @"Open Larger Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" );
+				menuItem = [[self plugin] addContextualMenuItemWithTitle: labelString
+																  action: @selector( openFullscreenInQTPlayerHD: ) 
+																  target: self ];
+			}
+			[menuItem setAlternate:YES];
+			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+		}
+		
+		// menu item and alternate for downloading movie file
+		labelString = CtFLocalizedString( @"Download H.264", @"Download H.264 menu item" );
+		[[self plugin] addContextualMenuItemWithTitle: labelString
+											   action: @selector( downloadVideo: )
+											   target: self ];
+		
+		if ( [self hasVideoHD]) {
+			if ( [self useVideoHD] ) {
+				labelString = CtFLocalizedString( @"Download SD H.264", @"Download small size H.264 menu item (alternate for the standard item when the default uses the 'HD' version)" );
+				menuItem = [[self plugin] addContextualMenuItemWithTitle: labelString
+																  action: @selector( downloadVideoSD: ) 
+																  target: self ];
+			}
+			else {
+				labelString = CtFLocalizedString( @"Download HD H.264", @"Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version)" );
+				menuItem = [[self plugin] addContextualMenuItemWithTitle: labelString
+																  action: @selector( downloadVideoHD: ) 
+																  target: self ];
+			}
+			[menuItem setAlternate:YES];
+			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
+		}
+	}	
+}
+
+
+
+// Implement default container conversion: If there is a film, use it.
+- (BOOL) convertToContainer {
+	BOOL result = NO;
+	
+	if ([self hasVideo]) {
+		[self convertToMP4ContainerUsingHD:nil];
+		result = YES;
+	}
+	
+	return result;
+}
+
+
+
+#pragma mark -
+#pragma mark Actions
+
+// Load the video in the WebView
+- (IBAction) loadVideo:(id)sender {
+    [self convertToMP4ContainerUsingHD: nil];
+}
+
+- (IBAction) loadVideoSD:(id)sender {
+	[self convertToMP4ContainerUsingHD: [NSNumber numberWithBool:NO]];
+}
+
+- (IBAction) loadVideoHD:(id)sender {
+	[self convertToMP4ContainerUsingHD: [NSNumber numberWithBool:YES]];
+}
+
+
+// Download the video's movie file
+- (void) downloadVideoUsingHD: (BOOL) useHD {
+	NSString * URLString = [self videoURLStringForHD: useHD];
+	[[self plugin] downloadURLString: URLString];
+}
+
+- (IBAction) downloadVideo: (id) sender {
+	BOOL wantHD = [[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey];
+	[self downloadVideoUsingHD: wantHD];
+}
+
+- (IBAction) downloadVideoSD: (id) sender {
+	[self downloadVideoUsingHD: NO];
+}
+
+- (IBAction) downloadVideoHD: (id) sender {
+	[self downloadVideoUsingHD: YES];
+}
+
+
+// Go to video's page in the browser
+- (IBAction) gotoVideoPage:(id)sender {
+	[[self plugin] browseToURLString:[self videoPageURLString]];
+}
+
+
+
+// Play the film fullscreen in QuickTime Player
+- (void)openFullscreenInQTPlayerUsingHD:(BOOL) useHD {
+	NSString * URLString = [self videoURLStringForHD: useHD];
+	
+	NSString *scriptSource = nil;
+	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+		// Snowy Leopard
+		scriptSource = [NSString stringWithFormat:
+						@"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\nrepeat while (front document is not presenting)\ndelay 1\npresent front document\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell", URLString];
+	} else {
+		scriptSource = [NSString stringWithFormat:
+						@"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",URLString];
+	}
+	
+	NSAppleScript *openInQTPlayerScript = [[NSAppleScript alloc] initWithSource:scriptSource];
+	[openInQTPlayerScript executeAndReturnError:nil];
+	[openInQTPlayerScript release];	
+}
+
+
+- (IBAction)openFullscreenInQTPlayer:(id)sender;
+{
+	BOOL useHD = [[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey];
+	
+	[self openFullscreenInQTPlayerUsingHD: useHD];
+}
+
+- (IBAction)openFullscreenInQTPlayerSD:(id)sender{
+	[self openFullscreenInQTPlayerUsingHD: NO];	
+}
+
+- (IBAction)openFullscreenInQTPlayerHD:(id)sender{
+	[self openFullscreenInQTPlayerUsingHD: YES];	
+}
+
+
+
+
+
+
+#pragma mark -
+#pragma mark Insert Video
 
 - (void) _convertElementForMP4: (DOMElement*) element atURL: (NSString*) URLString
 {
@@ -118,6 +394,36 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 	}
 	[ element setAttribute: @"controls" value:@"controls"];
 	[ element setAttribute:@"width" value:@"100%"];
+}
+
+
+
+/*
+ The useHD parameter indicates whether we want to override the default behaviour to use or not use HD.
+ Passing nil invokes the default behaviour based on user preferences and HD availability.
+*/
+- (void) convertToMP4ContainerUsingHD: (NSNumber*) useHD
+{
+	[plugin revertToOriginalOpacityAttributes];
+	
+	// Delay this until the end of the event loop, because it may cause self to be deallocated
+	[plugin prepareForConversion];
+	[self performSelector:@selector(_convertToMP4ContainerAfterDelayUsingHD:) withObject:useHD afterDelay:0.0];
+}
+
+
+
+
+- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber
+{
+	BOOL useHD = [ self useVideoHD ];
+	if (useHDNumber != nil) {
+		useHD = [useHDNumber boolValue];
+	}
+	
+	NSString * URLString = [self videoURLStringForHD: useHD];
+	
+	[self convertToMP4ContainerAtURL: URLString];
 }
 
 
@@ -186,7 +492,8 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 		[videoPageLinkElement setAttribute: @"class" value: @"clicktoflash-link"];
 		NSString * videoPageLinkText = [self videoPageLinkText];
 		if (videoPageLinkText == nil) {
-			videoPageLinkText = CtFLocalizedString(@"Go to Video Page", @"Text of link to a video page appearing beneath the video [CTFKillerVideo]");
+			NSString * formatString = CtFLocalizedString(@"Go to %@ Page", @"Text of link to the video page on SITENAME appearing beneath the video");
+			videoPageLinkText = [NSString stringWithFormat:formatString, [self siteName]];
 		}
 		[videoPageLinkElement setTextContent: videoPageLinkText];
 
@@ -200,7 +507,7 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 	}
 	if ( videoDownloadURLString != nil ) {
 		DOMElement* downloadLinkElement = [document createElement: @"a"];
-		[downloadLinkElement setAttribute: @"href" value: videoDownloadURLString];
+		[downloadLinkElement setAttribute: @"href" value: [self videoURLString]];
 		[downloadLinkElement setAttribute: @"style" value: linkCSS];
 		[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link videodownload"];
 		NSString * videoDownloadLinkText = [self videoDownloadLinkText];
@@ -212,6 +519,18 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 		[linkContainerElement appendChild:downloadLinkElement];
 	}
 	
+	// offer additional link for HD download if available
+	if ( [self hasVideoHD] && ![self useVideoHD]) {
+		NSString * extraLinkCSS = @"margin:0px;padding:0px;border:0px none;";
+		DOMElement * extraDownloadLinkElement = [document createElement: @"a"];
+		[extraDownloadLinkElement setAttribute: @"href" value: [self videoHDURLString]];
+		[extraDownloadLinkElement setAttribute: @"style" value: extraLinkCSS];
+		[extraDownloadLinkElement setAttribute: @"class" value: @"clicktoflash-link videodownload"];
+		[extraDownloadLinkElement setTextContent: CtFLocalizedString(@"(Larger Size)", @"Text of link to additional Large Size H.264 Download appearing beneath the video after the standard link")];
+		[linkContainerElement appendChild: extraDownloadLinkElement];
+	}
+	
+	
 	// Let subclasses add their own link (or delete ours)
 	linkContainerElement = [self enhanceVideoDescriptionElement: linkContainerElement];
 
@@ -221,12 +540,39 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 
 
 
-# pragma mark HELPER
 
-- (BOOL) isOnVideoPage {
-	BOOL result = [[[self pageURL] absoluteString] hasPrefix: [self videoPageURLString]];
-	return result;
+
+#pragma mark -
+#pragma mark HELPER
+
+// Determine whether we want to use the video. Returns YES if a video is available and the relevant preference is set.
+- (BOOL) useVideo {
+    return [ self hasVideo ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ]; 
 }
+
+
+// Determine whether we want to use the video's HD version. Returns YES if the HD version is available and the relevant preferences are set.
+- (BOOL) useVideoHD {
+	return [ self hasVideoHD ] && [self hasVideo]
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
+	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeHDH264DefaultsKey ];
+}
+
+
+// Return the URL to the video. When told to provide a HD version the SD version may be provided if no HD version exists.
+- (NSString *) videoURLStringForHD: (BOOL) useHD {
+	NSString * URLString;
+	
+	if (useHD && [self hasVideoHD]) {
+		URLString = [ self videoHDURLString ];
+	} else {
+		URLString = [ self videoURLString ];
+	}
+	
+	return URLString;
+}
+
 
 
 - (BOOL) isVideoElementAvailable
@@ -282,15 +628,57 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 }
 
 
+
+
+
 #pragma mark ACCESSORS
 
-- (NSURL *)previewURL
-{
+- (BOOL)autoPlay {
+	BOOL result = autoPlay;
+	result = result && [[CTFUserDefaultsController standardUserDefaults] objectForKey:sYouTubeAutoPlay];
+	return result;
+}
+
+- (void)setAutoPlay:(BOOL)newAutoPlay {
+	autoPlay = newAutoPlay;
+}
+
+
+- (BOOL)hasVideo {
+	return hasVideo;
+}
+
+- (void)setHasVideo:(BOOL)newHasVideo {
+	hasVideo = newHasVideo;
+	[[self plugin] setNeedsDisplay: YES];
+}
+
+
+- (BOOL)hasVideoHD {
+	return hasVideoHD;
+}
+
+- (void)setHasVideoHD:(BOOL)newHasVideoHD {
+	hasVideoHD = newHasVideoHD;
+	[[self plugin] setNeedsDisplay: YES];
+}
+
+
+- (enum CTFKVLookupStatus) lookupStatus {
+	return lookupStatus;
+}
+
+- (void) setLookupStatus: (enum CTFKVLookupStatus) newLookupStatus {
+	lookupStatus = newLookupStatus;
+	[[self plugin] setNeedsDisplay: YES];
+}
+
+
+- (NSURL *)previewURL {
 	return previewURL;
 }
 
-- (void)setPreviewURL:(NSURL *)newPreviewURL
-{
+- (void)setPreviewURL:(NSURL *)newPreviewURL {
 	[newPreviewURL retain];
 	[previewURL release];
 	previewURL = newPreviewURL;

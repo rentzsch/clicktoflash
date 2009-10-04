@@ -189,8 +189,8 @@
 		A40485BD10629B1E00FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = Plugin/de.lproj/Credits.html; sourceTree = "<group>"; };
 		A40485C110629B3C00FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A40485C210629B3D00FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A40485C310629B5000FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A40485C410629B5100FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A40485C310629B5000FDC4E2 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = Plugin/fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A40485C410629B5100FDC4E2 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A40485DE10629C4100FDC4E2 /* CTFAboutBoxWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFAboutBoxWindowController.h; path = Plugin/CTFAboutBoxWindowController.h; sourceTree = "<group>"; };
 		A40485DF10629C4100FDC4E2 /* CTFAboutBoxWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFAboutBoxWindowController.m; path = Plugin/CTFAboutBoxWindowController.m; sourceTree = "<group>"; };
 		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ctf.icns; path = Plugin/ctf.icns; sourceTree = "<group>"; };
@@ -583,8 +583,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				A40485B710629B0E00FDC4E2 /* English */,
-				A40485C310629B5000FDC4E2 /* fr */,
 				A40485C410629B5100FDC4E2 /* de */,
+				A40485C310629B5000FDC4E2 /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

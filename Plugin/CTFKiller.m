@@ -79,9 +79,7 @@
 
 - (void) addAdditionalMenuItemsForContextualMenu { }
 
-- (BOOL) convertToContainer {
-	return NO;
-}
+- (BOOL) convertToContainer { return NO; }
 
 
 - (void) dealloc {
