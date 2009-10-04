@@ -4,15 +4,19 @@ This is the ClickToFlash developer site.
 
 ##Version History
 
-* **1.5.3**
+* **1.5.3** [download](http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.3.zip)
 
-	* [FIX] Whitelist now checks for duplicates, and removes them if they exist.  This fixes crashes and hangs caused by simX's bug from 1.5b4.
+	* [FIX] Crasher where parsed flash variables (such as `video_id`) were being released prematurely. [bug 261](http://rentzsch.lighthouseapp.com/projects/24342/tickets/261) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/ef9be0b8697a2c88f1eccc5be8502fec1511f07a))
 
-	* [FIX] Embedded YouTube videos were showing a question mark when loaded using the VIDEO element.
+	* [FIX] Duplicate whitelist entries (caused by a bug in 1.5b4) are now detected and removed, fixing slow-downs, hangs and crashes. [bug 264](http://rentzsch.lighthouseapp.com/projects/24342/tickets/264) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/12ecfb2a7c23e5434054f3f9085a3fcda6374842)).
 
-	* [CHANGE] Disables H.264 YouTube auto-play by default.
+	* [CHANGE] Disables H.264 YouTube auto-play by default. [bug 276](http://rentzsch.lighthouseapp.com/projects/24342/tickets/276) ([fppzdd](http://github.com/rentzsch/clicktoflash/commit/c9e2bfac1492618c4a92da298af4a4d051ef927f))
 
-	* [FIX] Rare crashers and memory leaks.
+	* [FIX] Embedded YouTube videos were showing a question mark when loaded using the VIDEO element. [bug 294](http://rentzsch.lighthouseapp.com/projects/24342/tickets/294) ([Simone Manganelli](http://github.com/rentzsch/clicktoflash/commit/1f9d11d007165bd70abd96d1ff2223c0db183345))
+
+	* [CHANGE] Rename `CTGradient` to `CTFGradient` to reduce namespace collisions. ([roddi](http://github.com/rentzsch/clicktoflash/commit/0f55f2c2c191e80888c906223c0d5362477de660))
+
+	* [FIX] Avoid leaking the original opacity settings dictionary. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/16dd94112c715a57d30d9b7f4ff10bb9e166c869))
 
 * **1.5.2** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.2.zip)
 
