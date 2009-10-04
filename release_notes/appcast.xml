@@ -6,6 +6,16 @@
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
 		<item>
+			<title>version 1.5.3</title>
+			<pubDate>Sat, 3 Oct 2009 23:34:16 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.3.html</sparkle:releaseNotesLink>
+			<enclosure
+			    sparkle:version="1.5.3"
+			    url="http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.3-golden.zip"
+			    type="application/zip"
+			    sparkle:dsaSignature="MCwCFDrQ4tuzeDYTl++Imdp5+WyHT2mxAhQPTK384KYfwDu05RWBtPPJT31KUQ=="/>
+		</item>
+		<item>
 			<title>version 1.5.2</title>
 			<pubDate>Sun, 13 Sep 2009 16:19:11 -0500</pubDate>
 			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.2.html</sparkle:releaseNotesLink>
