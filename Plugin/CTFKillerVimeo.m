@@ -202,7 +202,7 @@
 			nodes = [XML nodesForXPath:@"//thumbnail" error:&error];
 			if ([nodes count] > 0) {
 				node = [nodes objectAtIndex:0];
-				[self setPreviewURL: [NSURL URLWithString:[node stringValue]]];
+				[[self plugin] setPreviewURL: [NSURL URLWithString:[node stringValue]]];
 			}
 			nodes = [XML nodesForXPath:@"//isHD" error:&error];
 			if ([nodes count] > 0) {

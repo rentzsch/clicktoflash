@@ -46,7 +46,6 @@ enum CTFKVLookupStatus {
 	BOOL requiresConversion;
 	
 	NSSize videoSize;
-	NSURL * previewURL;
 }
 
 /*
@@ -125,8 +124,6 @@ enum CTFKVLookupStatus {
 - (void) setLookupStatus: (enum CTFKVLookupStatus) newLookupStatus;
 - (BOOL)requiresConversion;
 - (void)setRequiresConversion:(BOOL)newRequiresConversion;
-- (NSURL *) previewURL;
-- (void) setPreviewURL: (NSURL *) newPreviewURL;
 
 
 @end

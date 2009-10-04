@@ -113,6 +113,10 @@
 		}
 	}
 	
+	if ( myVideoID != nil ) {
+		[[self plugin] setPreviewURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://img.youtube.com/vi/%@/0.jpg", myVideoID]]];		
+	}
+	
 	if ([CTFKillerYouTube isYouTubeSiteURL: pageURL]) {
 		[self setAutoPlay: YES];
 	} else {

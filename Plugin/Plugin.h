@@ -52,6 +52,9 @@ THE SOFTWARE.
 	NSTimer *_delayingTimer;
 	
 	CTFKiller * killer;
+	
+	NSURL * previewURL;
+	NSImage * previewImage;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
@@ -96,4 +99,11 @@ THE SOFTWARE.
 - (void)setOriginalOpacityAttributes:(NSDictionary *)newValue;
 - (NSString *)src;
 - (void)setSrc:(NSString *)newValue;
+
+- (NSURL *) previewURL;
+- (void) setPreviewURL: (NSURL *) newPreviewURL;
+- (NSImage *) previewImage;
+- (void) setPreviewImage: (NSImage *) newPreviewImage;
+
+
 @end

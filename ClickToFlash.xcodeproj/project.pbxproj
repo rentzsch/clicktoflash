@@ -47,6 +47,7 @@
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A40485B110629B0E00FDC4E2 /* Credits.css */; };
 		6C436DAF107830A200A0D525 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C436DAE107830A200A0D525 /* QTKit.framework */; };
+		6C6420E010792D9B0064A026 /* CTFImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6420DF10792D9B0064A026 /* CTFImageLoader.m */; };
 		6C8EC6F410764F810053587F /* CTFKiller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC6F310764F810053587F /* CTFKiller.m */; };
 		6C8EC7051076544D0053587F /* CTFKillerYouTube.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC7041076544D0053587F /* CTFKillerYouTube.m */; };
 		6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC774107671F20053587F /* CTFKillerVideo.m */; };
@@ -154,6 +155,8 @@
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
 		6C436DAE107830A200A0D525 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		6C6420DE10792D9B0064A026 /* CTFImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFImageLoader.h; sourceTree = "<group>"; };
+		6C6420DF10792D9B0064A026 /* CTFImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFImageLoader.m; sourceTree = "<group>"; };
 		6C8EC6F210764F810053587F /* CTFKiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKiller.h; path = Plugin/CTFKiller.h; sourceTree = "<group>"; };
 		6C8EC6F310764F810053587F /* CTFKiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKiller.m; path = Plugin/CTFKiller.m; sourceTree = "<group>"; };
 		6C8EC7031076544D0053587F /* CTFKillerYouTube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerYouTube.h; path = Plugin/CTFKillerYouTube.h; sourceTree = "<group>"; };
@@ -243,6 +246,8 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
+				6C6420DF10792D9B0064A026 /* CTFImageLoader.m */,
+				6C6420DE10792D9B0064A026 /* CTFImageLoader.h */,
 				6C8EC6F310764F810053587F /* CTFKiller.m */,
 				6C8EC6F210764F810053587F /* CTFKiller.h */,
 				6C8EC774107671F20053587F /* CTFKillerVideo.m */,
@@ -509,6 +514,7 @@
 				6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */,
 				6C8EC7E9107686780053587F /* CTFKillerSIFR.m in Sources */,
 				6CC18AE61076D09B00D9E1A0 /* CTFKillerVimeo.m in Sources */,
+				6C6420E010792D9B0064A026 /* CTFImageLoader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -53,7 +53,6 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 		requiresConversion = NO;
 		
 		videoSize = NSZeroSize;
-		[self setPreviewURL:nil];
 	}
 	
 	return self;
@@ -61,7 +60,6 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 
 - (void) dealloc {
-	[self setPreviewURL: nil];
 	[super dealloc];
 }
 
@@ -275,7 +273,7 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 - (BOOL) convertToContainer {
 	BOOL result = NO;
 	
-	if ([self lookupStatus] == finished && [self hasVideo]) {
+	if ([self lookupStatus] == finished && [self hasVideo] && [CTFKillerVideo isActive]) {
 		[self convertToMP4ContainerUsingHD:nil];
 		result = YES;
 	}
@@ -716,16 +714,5 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 }
 
 
-- (NSURL *)previewURL {
-	return previewURL;
-}
-
-- (void)setPreviewURL:(NSURL *)newPreviewURL {
-	[newPreviewURL retain];
-	[previewURL release];
-	previewURL = newPreviewURL;
-}
-
-
-
 @end
+

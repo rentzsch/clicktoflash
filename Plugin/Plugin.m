@@ -36,6 +36,7 @@ THE SOFTWARE.
 #import "CTFGradient.h"
 #import "SparkleManager.h"
 #import "CTFKiller.h"
+#import "CTFImageLoader.h"
 
 #define LOGGING_ENABLED 0
 
@@ -338,6 +339,8 @@ BOOL usingMATrackingArea = NO;
 	[self setAttributes:nil];
 	[self setOriginalOpacityAttributes:nil];
 	[self setKiller:nil];
+	[self setPreviewURL:nil];
+	[self setPreviewImage:nil];
 	
 	[_flashVars release];
 	_flashVars = nil;
@@ -841,6 +844,34 @@ BOOL usingMATrackingArea = NO;
 		//CTGradient instances are returned autoreleased - no need for explicit release here
     }
 
+	// Overlay the preview image if there is one
+	NSImage * image = [self previewImage];
+	if ( image != nil ) {
+		NSRect destinationRect;
+		NSSize imageSize = [image size];
+		/*
+		// This code seems more 'right' because it attemps to display the image without losing any pixels. Yet the approach below which scales to the maximum width gives better results in practice as videos may be wide screen with the preview images having black bars on the top and bottom (which are just cut off). 
+		CGFloat aspectRatio = fillRect.size.width / fillRect.size.height;
+		CGFloat imageAspectRatio = imageSize.width / imageSize.height;
+		if ( aspectRatio > imageAspectRatio ) {
+			CGFloat width = imageSize.width * fillRect.size.height / imageSize.height;
+			destinationRect = NSMakeRect((fillRect.size.width - width) / 2.0 , fillRect.origin.y , width, fillRect.size.height);
+		}
+		else {
+			CGFloat height = imageSize.height * fillRect.size.width / fillRect.size.height;
+			destinationRect = NSMakeRect(fillRect.origin.x, (fillRect.size.height - height) / 2.0, fillRect.size.width, height );
+		}
+		*/
+		CGFloat scale = fillRect.size.width / imageSize.width;
+		CGFloat destinationWidth = imageSize.width * scale;
+		CGFloat destinationHeight = imageSize.height * scale;
+		CGFloat destinationBottom = fillRect.origin.y + ( fillRect.size.height - destinationHeight) / 2.0;
+		
+		destinationRect = NSMakeRect(fillRect.origin.x, destinationBottom, destinationWidth, destinationHeight);
+		
+		[[self previewImage] drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceIn fraction: 0.8];
+	}
+
     // Draw stroke
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
     [NSBezierPath setDefaultLineWidth:2.0];
@@ -1272,6 +1303,34 @@ BOOL usingMATrackingArea = NO;
 	[newKiller retain];
 	[killer release];
 	killer = newKiller;
+}
+
+
+- (NSURL *) previewURL {
+	return previewURL;
+}
+
+- (void) setPreviewURL:(NSURL *) newPreviewURL {
+	[newPreviewURL retain];
+	[previewURL release];
+	previewURL = newPreviewURL;
+	
+	if (previewURL != nil) {
+		[[[CTFImageLoader alloc] initWithURL: newPreviewURL forPlugin: self] autorelease];		
+	}
+}
+
+
+- (NSImage *) previewImage {
+    return previewImage;
+}
+
+- (void) setPreviewImage: (NSImage *) newPreviewImage {
+	[newPreviewImage retain];
+	[previewImage release];
+	previewImage = newPreviewImage;
+	
+	[self setNeedsDisplay: YES];
 }
 
 @end
