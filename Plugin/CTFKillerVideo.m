@@ -33,6 +33,9 @@
 
 static NSString * divCSS = @"margin:auto;padding:0px;border:0px none;text-align:center;display:block;float:none;";
 static NSString * sDisableVideoElement = @"disableVideoElement";
+static NSString * sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
+static NSString * sUseYouTubeHDH264DefaultsKey = @"useYouTubeHDH264";
+static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 
 @implementation CTFKillerVideo
@@ -125,6 +128,12 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 	return result;
 }
 					
+
+// Helper method used by subclasses to determine whether we want to handle video without Flash.
++ (BOOL) isActive {
+	BOOL result = [[CTFUserDefaultsController standardUserDefaults] boolForKey: sUseYouTubeH264DefaultsKey];
+	return result;
+}
 
 
 					
@@ -379,7 +388,7 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 	[ element setAttribute: @"src" value: URLString ];
 	[ element setAttribute: @"type" value: @"video/mp4" ];
     [ element setAttribute: @"scale" value: @"aspect" ];
-    if (autoPlay) {
+    if ([self autoPlay]) {
 		[ element setAttribute: @"autoplay" value: @"true" ];
 	} else {
 		[ element setAttribute: @"autoplay" value: @"false" ];
@@ -395,7 +404,7 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 {
     [ element setAttribute: @"src" value: URLString ];
 	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
-	if (autoPlay) {
+	if ([self autoPlay]) {
 		[ element setAttribute: @"autoplay" value:@"autoplay" ];
 	} else {
 		if ( [element hasAttribute:@"autoplay"] )

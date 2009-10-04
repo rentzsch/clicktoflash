@@ -35,29 +35,31 @@
 
 #pragma mark CTFKiller subclassing overrides
 
-+ (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
++ (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) theAttributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
 	BOOL result = NO;
-
-	if (theSrc != nil) {
-		NSURL * srcURL = [NSURL URLWithString: theSrc];
-		NSString * host = [srcURL host];
-		if (host != nil ) {
-			result = result 
-			|| ( [host rangeOfString: @"youtube.com" options: NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound )
-			|| ( [host rangeOfString: @"youtube-nocookie.com" options: NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound )
-			|| ( [host rangeOfString: @"ytimg.com" options: NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound );
-		}
-	}
 	
-	if (!result) {
-		NSString* fV = [attributes objectForKey: @"flashvars" ];
-		if (fV != nil) {
-			NSDictionary * flashVars = [CTFClickToFlashPlugin flashVarDictionary:fV];
-			NSString * URLString = [flashVars objectForKey:@"rv.0.url"];
-			if (URLString != nil) {
-				result = result || ([URLString rangeOfString: @"youtube.com"].location != NSNotFound )
-				|| ([URLString rangeOfString: @"youtube-nocookie.com"].location != NSNotFound );
-			}		
+	if ([CTFKillerVideo isActive]) {
+		if (theSrc != nil) {
+			NSURL * srcURL = [NSURL URLWithString: theSrc];
+			NSString * host = [srcURL host];
+			if (host != nil ) {
+				result = result 
+				|| ( [host rangeOfString: @"youtube.com" options: NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound )
+				|| ( [host rangeOfString: @"youtube-nocookie.com" options: NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound )
+				|| ( [host rangeOfString: @"ytimg.com" options: NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound );
+			}
+		}
+		
+		if (!result) {
+			NSString* fV = [theAttributes objectForKey: @"flashvars" ];
+			if (fV != nil) {
+				NSDictionary * flashVars = [CTFClickToFlashPlugin flashVarDictionary:fV];
+				NSString * URLString = [flashVars objectForKey:@"rv.0.url"];
+				if (URLString != nil) {
+					result = result || ([URLString rangeOfString: @"youtube.com"].location != NSNotFound )
+					|| ([URLString rangeOfString: @"youtube-nocookie.com"].location != NSNotFound );
+				}		
+			}
 		}
 	}
 	

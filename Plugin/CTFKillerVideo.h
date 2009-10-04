@@ -28,11 +28,6 @@
 #import <Cocoa/Cocoa.h>
 #import "CTFKiller.h"
 
-static NSString *sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
-static NSString *sUseYouTubeHDH264DefaultsKey = @"useYouTubeHDH264";
-static NSString *sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
-
-
 @class DOMElement;
 
 enum CTFKVLookupStatus {
@@ -89,6 +84,10 @@ enum CTFKVLookupStatus {
 - (BOOL) isOnVideoPage;
 
 
+
+
+// Helper
++ (BOOL) isActive;
 
 // Actions
 - (IBAction) loadVideo:(id)sender;

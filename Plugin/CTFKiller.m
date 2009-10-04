@@ -37,21 +37,22 @@
 
 
 // Class method returns an instantiated CTFKiller class for the URL/data/plugin passed to it. This is the call to use.
-+ (CTFKiller*) killerForURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
++ (CTFKiller*) killerForURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) theAttributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
 	CTFKiller * theKiller = nil;
 
 	NSArray * killerArray = [NSArray arrayWithObjects: NSClassFromString(@"CTFKillerYouTube"), NSClassFromString(@"CTFKillerVimeo"), NSClassFromString(@"CTFKillerSIFR"),nil];
 	NSEnumerator * myEnum = [killerArray objectEnumerator];
 	Class killerClass; 
 	while ((killerClass = [myEnum nextObject])) {
-		if ([killerClass canHandleFlashAtURL: theURL src: theSrc attributes: attributes forPlugin: thePlugin]) {
-			theKiller = [[(CTFKiller*)[killerClass alloc] initWithURL:theURL src: theSrc attributes: attributes forPlugin: thePlugin] autorelease];
+		if ([killerClass canHandleFlashAtURL: theURL src: theSrc attributes: theAttributes forPlugin: thePlugin]) {
+			theKiller = [[(CTFKiller*)[killerClass alloc] initWithURL:theURL src: theSrc attributes: theAttributes forPlugin: thePlugin] autorelease];
 			break;
 		}
 	}
 	
 	return theKiller;
 }
+
 
 
 // Initialiser method doing the basic setup. There should be no need to use this. The +killerForULR:src:attributes:forPlugin class method should handle everything.
@@ -90,7 +91,7 @@
 #pragma mark Subclass overrides
 
 // Return whether this class can handle the Flash for the given URL and other data.
-+ (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
++ (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) theAttributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
 	return NO;
 }
 
