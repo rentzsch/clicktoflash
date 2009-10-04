@@ -76,6 +76,7 @@
 		// methods already spawn separate threads for the data retrieval,
 		// so no need to spawn a separate thread
 
+		[self setLookupStatus: inProgress];
 		[self _checkForH264VideoVariants];
 	} 
 	else {
@@ -104,12 +105,13 @@
 			// additional data from the internets, so we want to spin this off
 			// to another thread to prevent blocking of the Safari user interface
 			
+			[self setLookupStatus: inProgress];
 			// this method is a stub for calling the real method on a different thread
 			[self _getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:videoID];
 		}
 	}
 	
-	if ([CTFKillerYouTube isYouTubeSiteURL: pageURL]){
+	if ([CTFKillerYouTube isYouTubeSiteURL: pageURL]) {
 		[self setAutoPlay: YES];
 	} else {
 		[self setAutoPlay: [[self flashVarWithName: @"autoplay"] isEqualToString:@"1"]];
@@ -201,7 +203,6 @@
 	
 	expectedResponses = 2;
 	receivedAllResponses = NO;
-	[self setLookupStatus: inProgress];
 }
 
 

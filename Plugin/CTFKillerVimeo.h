@@ -29,12 +29,21 @@
 #import <Cocoa/Cocoa.h>
 #import "CTFKillerVideo.h"
 
+enum CTFVimeoConnectionType {
+	noConnection,
+	XML,
+	HEAD
+};
+
+
 @interface CTFKillerVimeo : CTFKillerVideo {
 	NSString * clipID;
 	NSString * clipSignature;
 	NSString * clipExpires;
+	NSString * redirectedURLString;
 	
 	BOOL clipIsHD;
+	enum CTFVimeoConnectionType currentConnection;
 	
 	NSMutableData * downloadData;
 }
@@ -43,15 +52,17 @@
 - (void) getXML;
 - (void) finishXMLFetching: (NSURLConnection *) connection;
 - (void) finishHEADFetching: (NSURLConnection *) connection;
-- (BOOL) isFetchingXML;
-- (BOOL) isFetchingHEAD;
 
-- (NSString *)clipID;
-- (void)setClipID:(NSString *)newClipID;
-- (NSString *)clipSignature;
-- (void)setClipSignature:(NSString *)newClipSignature;
-- (NSString *)clipExpires;
-- (void)setClipExpires:(NSString *)newClipExpires;
+- (NSString *) clipID;
+- (void) setClipID: (NSString *) newClipID;
+- (NSString *) clipSignature;
+- (void) setClipSignature: (NSString *) newClipSignature;
+- (NSString *) clipExpires;
+- (void) setClipExpires: (NSString *) newClipExpires;
+- (NSString *) redirectedURLString;
+- (void) setRedirectedURLString: (NSString *) newRedirectedURLString;
+- (enum CTFVimeoConnectionType) currentConnection;
+- (void) setCurrentConnection: (enum CTFVimeoConnectionType) newConnectionType;
 
 
 @end

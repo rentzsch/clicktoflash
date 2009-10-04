@@ -168,7 +168,7 @@ BOOL usingMATrackingArea = NO;
             _flashVars = [ [ CTFClickToFlashPlugin flashVarDictionary: flashvars ] retain ];
 		
 		
-		// Check whether one of our killers can handle this
+		// Set up the CTFKiller subclass, if appropriate.
 		[self setKiller: [CTFKiller killerForURL:[NSURL URLWithString:[self baseURL]] src:[self src] attributes:[self attributes] forPlugin:self]];
 		
         _fromFlickr = [[self host] rangeOfString:@"flickr.com"].location != NSNotFound;
@@ -234,27 +234,8 @@ BOOL usingMATrackingArea = NO;
         
         if(loadFromWhiteList && ![self _isOptionPressed]) {
             _isLoadingFromWhitelist = YES;
+			[self convertTypesForContainer];
 
-// #warning REQUIRES ATTENTION
-			if (_fromYouTube) {
-				// we do this because checking for H.264 variants is handled
-				// on another thread, so the results of that check may not have
-				// been returned yet; if the user has this site on a whitelist
-				// and the results haven't been returned, then the *Flash* will
-				// load (ewwwwwww!) instead of the H.264, even if the user's
-				// preferences are for the H.264
-				
-				// the _checkForH264VideoVariants method will manually fire
-				// this timer if it finishes before the 3 seconds are up
-				_delayingTimer = [NSTimer scheduledTimerWithTimeInterval:3
-																  target:self
-																selector:@selector(convertTypesForContainer)
-																userInfo:nil
-																 repeats:NO];
-			} else {
-				[self convertTypesForContainer];
-			}
-			
 			return self;
         }
 		
@@ -337,6 +318,8 @@ BOOL usingMATrackingArea = NO;
 
     return self;
 }
+
+
 
 - (void)webPlugInDestroy
 {

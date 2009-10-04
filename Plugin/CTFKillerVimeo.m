@@ -30,6 +30,7 @@
 #import "Plugin.h"
 #import "CTFUtilities.h"
 #import "CTFUserDefaultsController.h"
+#import <QTKit/QTKit.h>
 
 @implementation CTFKillerVimeo
 
@@ -54,8 +55,11 @@
 	[self setClipID: nil];
 	[self setClipSignature: nil];
 	[self setClipExpires: nil];
+	[self setRedirectedURLString: nil];
 	downloadData = nil;
+	currentConnection = noConnection;
 	lookupStatus = nothing;
+	
 	
 	NSString * myID = [ self flashVarWithName:@"clip_id" ]; 
 
@@ -80,6 +84,7 @@
 	[self setClipID: nil];
 	[self setClipSignature: nil];
 	[self setClipExpires: nil];
+	[self setRedirectedURLString: nil];
 	[super dealloc];
 }
 
@@ -99,19 +104,14 @@
 
 // URL to the video file used for loading it in the player.
 - (NSString *) videoURLString {
-	NSString * URLString = nil;
-	
-	if ( clipID != nil && clipSignature != nil && clipExpires != nil) {
-		URLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/", clipID, clipSignature, clipExpires];
-	}
-	
+	NSString * URLString = [self redirectedURLString];
 	return URLString;
 }
 
 
 - (NSString *) videoHDURLString {
 	NSString * URLString = nil;
-	URLString = [[self videoURLString] stringByAppendingString:@"/?q=hd"];
+	URLString = [[self videoURLString] stringByAppendingString:@"?q=hd"];
 	return URLString;
 }
 
@@ -136,16 +136,18 @@
 
 /*
  1. download the XML file which provides the keys required to construct the URL to access the video file
- 2. get headers for the video file to check whether it actually is MP4 
+ 2. get headers for the video file to figure out its file format. MP4 URL seem to be usable right away, but FLV URL (which require Perian anyway) seem to include a redirect which the WebKit video element doesn't seem to resolve.
  [e.g  http://vimeo.com/1039366 doesn't seem to have a MP4 version]
+ 3. For FLV files resolve the redirect.
 */
 
 - (void) getXML {
 	NSString * XMLURLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/load/clip:%@", [self clipID]];
 	NSURLRequest * request = [NSURLRequest requestWithURL: [NSURL URLWithString:XMLURLString]];
 	if (request != nil) {
-		downloadData = [[NSMutableData alloc] initWithLength:20000];
+		downloadData = [[NSMutableData alloc] initWithLength: 20000];
 		[NSURLConnection connectionWithRequest: request delegate:self];
+		[self setCurrentConnection: XML];
 		[self setLookupStatus: inProgress];
 	}
 	else {
@@ -155,16 +157,19 @@
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	[downloadData appendData:data];
+	if ( [self currentConnection] == XML ) {
+		[downloadData appendData:data];		
+	}
 }
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	if  ([self isFetchingXML]) {
+	if  ( [self currentConnection] == XML ) {
 		// only run when fetching the XML file, not for the video file header
-		NSError * error;
+		NSError * error = nil;
 		NSXMLDocument * XML = [[[NSXMLDocument alloc] initWithData:downloadData options:NSXMLDocumentTidyXML error:&error] autorelease];
 		[self finishXMLFetching: connection];
+		[self setCurrentConnection: noConnection];
 		
 		NSXMLNode * node;
 		if (XML != nil) {
@@ -204,10 +209,13 @@
 		}
 
 		
-		// Now we collected the data but vimeo seem to have two video formats in the background flv/mp4. The only way I see so far to tell those apart is from the MIME Type of the video file's URL. Any better way to do this would be great.
-		NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString:[self videoURLString]]] autorelease];
+		// Now we collected the data but vimeo seem to have two video formats in the background flv/mp4. The only way I see so far to tell those apart is from the MIME Type of the video file's URL. Any better way to do this would be great.		
+		NSString * HEADURLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/", [self clipID], [self clipSignature], [self clipExpires]];
+
+		NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: HEADURLString]] autorelease];
 		if (request != nil) {
 			[request setHTTPMethod:@"HEAD"];
+			[self setCurrentConnection: HEAD];
 			[NSURLConnection connectionWithRequest: request delegate: self];
 		}
 		else {
@@ -219,29 +227,43 @@
 
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	if ( [self isFetchingXML]) {
-		[self finishXMLFetching: connection];
+	switch ([self currentConnection]) {
+		case XML:
+			[self finishXMLFetching: connection];
+			break;
+		case HEAD:
+			[self finishHEADFetching: connection];
+			break;
+		default:
+			break;
 	}
-	else {
-		[self finishHEADFetching: connection];
-	}
+	
+	[self setCurrentConnection: noConnection ];
 	[self setLookupStatus: failed];
 }
 
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response {
-	// Only run this for the head fetching connection
-	if ( [self isFetchingHEAD] ) {
-		NSInteger statusCode = [response statusCode];
-		NSString * contentType = [response MIMEType];
-	
-		if ( statusCode == 200 && [contentType isEqualToString: @"video/mp4"] ) {
-			[self setHasVideo: YES];
-			[self setLookupStatus: finished];
+	NSInteger statusCode = [response statusCode];
+	NSString * contentType = [response MIMEType];
+
+	if ( [self currentConnection] == HEAD ) {
+		if ( statusCode == 200 ) {
+			if ([contentType isEqualToString: @"video/mp4"] ) {
+				[self setHasVideo: YES];
+				[self setLookupStatus: finished];
+			}
+			else if ( [contentType isEqualToString: @"video/x-flv"] ) {
+				if ( [[QTMovie movieFileTypes: QTIncludeCommonTypes] containsObject: @"flv"] ) {
+					// QuickTime can play flv (Perian?)
+					[self setHasVideo: YES];
+				}
+			}
 		}
-		
-		[self finishHEADFetching: connection];		
+		[self finishHEADFetching: connection];
+		[self setCurrentConnection: noConnection];
+		[self setLookupStatus: finished];
 	}
 }
 
@@ -252,7 +274,6 @@
 	[downloadData release];
 	downloadData = nil;
 }
-
 
 - (void) finishHEADFetching: (NSURLConnection *) connection {
 	[connection cancel];
@@ -265,74 +286,74 @@
 			redirectResponse:(NSURLResponse *)redirectResponse
 {
 	NSURLRequest * result = request;
-	
+//	NSLog(@"type %i, redirect to: %@", [self currentConnection], [[request URL] absoluteString]);
+																  
 	// For the head fetching we need to fix the redirects to make sure the method they use is HEAD.
-	if ( [self isFetchingHEAD] ) {
+	if ( [self currentConnection] == HEAD ) {
 		if (![[request HTTPMethod] isEqualTo:@"HEAD"]) {
 			NSMutableURLRequest * newRequest = [[request mutableCopy] autorelease];
 			[newRequest setHTTPMethod:@"HEAD"];
 			result = newRequest;
 		}
-	}
-
-	return result;
-}
-
-
-// At most one connection runs at a time, if the downloadData variable is non-nil, it's the XML connection. Only for use inside the fetching methods.
-- (BOOL) isFetchingXML {
-	BOOL result = (downloadData != nil);
-	return result;
-}
-
-
-- (BOOL) isFetchingHEAD {
-	BOOL result = (downloadData == nil);
+		[self setRedirectedURLString: [[request URL] absoluteString]];
+	} 		
+	
 	return result;
 }
 
 
 
+#pragma mark -
+#pragma mark Accessors
 
-
-#pragma mark ACCESSORS
-
-- (NSString *)clipID
-{
+- (NSString *) clipID {
 	return clipID;
 }
 
-- (void)setClipID:(NSString *)newClipID
-{
+- (void) setClipID: (NSString *) newClipID {
 	[newClipID retain];
 	[clipID release];
 	clipID = newClipID;
 }
 
-- (NSString *)clipSignature
-{
+- (NSString *) clipSignature {
 	return clipSignature;
 }
 
-- (void)setClipSignature:(NSString *)newClipSignature
-{
+- (void) setClipSignature: (NSString *) newClipSignature {
 	[newClipSignature retain];
 	[clipSignature release];
 	clipSignature = newClipSignature;
 }
 
-- (NSString *)clipExpires
-{
+- (NSString *) clipExpires {
 	return clipExpires;
 }
 
-- (void)setClipExpires:(NSString *)newClipExpires
-{
+- (void) setClipExpires: (NSString *) newClipExpires {
 	[newClipExpires retain];
 	[clipExpires release];
 	clipExpires = newClipExpires;
 }
 
 
+- (NSString *) redirectedURLString {
+	return redirectedURLString;
+}
+
+- (void) setRedirectedURLString: (NSString *) newRedirectedURLString {
+	[newRedirectedURLString retain];
+	[redirectedURLString release];
+	redirectedURLString = newRedirectedURLString;
+}
+
+
+- (enum CTFVimeoConnectionType) currentConnection {
+	return currentConnection;
+}
+
+- (void) setCurrentConnection: (enum CTFVimeoConnectionType) newConnectionType {
+	currentConnection = newConnectionType;
+}
 
 @end

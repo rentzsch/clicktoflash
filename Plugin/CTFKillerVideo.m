@@ -46,6 +46,9 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 		hasVideo = NO;
 		hasVideoHD = NO;
 		
+		lookupStatus = nothing;
+		requiresConversion = NO;
+		
 		videoSize = NSZeroSize;
 		[self setPreviewURL:nil];
 	}
@@ -102,6 +105,8 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 	}
 	return result;
 }
+
+
 
 
 
@@ -261,8 +266,12 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 - (BOOL) convertToContainer {
 	BOOL result = NO;
 	
-	if ([self hasVideo]) {
+	if ([self lookupStatus] == finished && [self hasVideo]) {
 		[self convertToMP4ContainerUsingHD:nil];
+		result = YES;
+	}
+	else if ([self lookupStatus] == inProgress) {
+		[self setRequiresConversion: YES];
 		result = YES;
 	}
 	
@@ -543,7 +552,7 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 
 
 #pragma mark -
-#pragma mark HELPER
+#pragma mark Helpers
 
 // Determine whether we want to use the video. Returns YES if a video is available and the relevant preference is set.
 - (BOOL) useVideo {
@@ -630,8 +639,18 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 
 
 
+// Called when asynchronous lookups are finished. This will convert the element if it has been marked for conversion previously but the kind of conversion wasn't clear yet because of the pending lookups.
+- (void) finishedLookups {
+	if ([self requiresConversion]) {
+		[self convertToContainer];
+	}
+}
 
-#pragma mark ACCESSORS
+
+
+
+#pragma mark -
+#pragma mark Accessors
 
 - (BOOL)autoPlay {
 	BOOL result = autoPlay;
@@ -670,7 +689,21 @@ static NSString * sDisableVideoElement = @"disableVideoElement";
 
 - (void) setLookupStatus: (enum CTFKVLookupStatus) newLookupStatus {
 	lookupStatus = newLookupStatus;
+	if (lookupStatus == finished || lookupStatus == failed) {
+		[self finishedLookups];
+	}
 	[[self plugin] setNeedsDisplay: YES];
+}
+
+
+- (BOOL)requiresConversion
+{
+	return requiresConversion;
+}
+
+- (void)setRequiresConversion:(BOOL)newRequiresConversion
+{
+	requiresConversion = newRequiresConversion;
 }
 
 

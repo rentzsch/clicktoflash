@@ -46,6 +46,7 @@
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
 		6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A40485B110629B0E00FDC4E2 /* Credits.css */; };
+		6C436DAF107830A200A0D525 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C436DAE107830A200A0D525 /* QTKit.framework */; };
 		6C8EC6F410764F810053587F /* CTFKiller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC6F310764F810053587F /* CTFKiller.m */; };
 		6C8EC7051076544D0053587F /* CTFKillerYouTube.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC7041076544D0053587F /* CTFKillerYouTube.m */; };
 		6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC774107671F20053587F /* CTFKillerVideo.m */; };
@@ -152,6 +153,7 @@
 		6953E43B0F3EDEB50014ECF7 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
+		6C436DAE107830A200A0D525 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		6C8EC6F210764F810053587F /* CTFKiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKiller.h; path = Plugin/CTFKiller.h; sourceTree = "<group>"; };
 		6C8EC6F310764F810053587F /* CTFKiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKiller.m; path = Plugin/CTFKiller.m; sourceTree = "<group>"; };
 		6C8EC7031076544D0053587F /* CTFKillerYouTube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerYouTube.h; path = Plugin/CTFKillerYouTube.h; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				55EB70580E04A8B80016593D /* Cocoa.framework in Frameworks */,
 				55EB70590E04A8B80016593D /* WebKit.framework in Frameworks */,
 				0038DE320FC0CE7B007B54E9 /* Carbon.framework in Frameworks */,
+				6C436DAF107830A200A0D525 /* QTKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +294,7 @@
 				0038DE310FC0CE7B007B54E9 /* Carbon.framework */,
 				55EB70560E04A8B80016593D /* Cocoa.framework */,
 				55EB70570E04A8B80016593D /* WebKit.framework */,
+				6C436DAE107830A200A0D525 /* QTKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

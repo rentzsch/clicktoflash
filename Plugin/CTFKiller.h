@@ -38,27 +38,40 @@
 	CTFClickToFlashPlugin * plugin;
 }
 
+// Come and go
+
+// Class method returns an instantiated CTFKiller class for the URL/data/plugin passed to it. This is the call to use.
 + (CTFKiller*) killerForURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin;
+// Initialiser method doing the basic setup. There should be no need to use this. The +killerForULR:src:attributes:forPlugin class method should handle everything.
 - (id) initWithURL: (NSURL*) theURL src:(NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin;
 
-// to be implemented by subclasses
+// To be implemented by subclasses
+
+// Return whether this class can handle the Flash for the given URL and other data.
 + (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin;
+// Set up the subclass. If further data is needed, fetching it is started here.
 - (void) setup;
+// The label displayed in the plug-in. Subclasses can provide their own name here which is read whenever the plug-in view is redrawn.
 - (NSString*) badgeLabelText;
+// Called when building the Contextual menu to add a single item at the second position.
 - (void) addPrincipalMenuItemToContextualMenu;
+// Called when building the contextual menu to add further items afte the basic Load/Hide Flash items. 
 - (void) addAdditionalMenuItemsForContextualMenu;
+// Called when the user clicks the CtF view. Replace content here.
 - (BOOL) convertToContainer;
 
-// accessors
+
+// Accessors
 - (NSURL *)pageURL;
 - (void)setPageURL:(NSURL *)newPageURL;
 - (NSString *)srcURLString;
 - (void)setSrcURLString:(NSString *)newSrcURLString;
 - (NSDictionary *)attributes;
 - (void)setAttributes:(NSDictionary *)newAttributes;
-- (NSString*) flashVarWithName: (NSString*) argName;
 - (NSDictionary *)flashVars;
 - (void)setFlashVars:(NSDictionary *)newFlashVars;
+// get a specific flash variable
+- (NSString*) flashVarWithName: (NSString*) argName;
 - (CTFClickToFlashPlugin *)plugin;
 - (void)setPlugin:(CTFClickToFlashPlugin *)newPlugin;
 

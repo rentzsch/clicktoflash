@@ -32,8 +32,14 @@
 
 @implementation CTFKiller
 
+#pragma mark -
+#pragma mark Come and go
+
+
+// Class method returns an instantiated CTFKiller class for the URL/data/plugin passed to it. This is the call to use.
 + (CTFKiller*) killerForURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
 	CTFKiller * theKiller = nil;
+
 	NSArray * killerArray = [NSArray arrayWithObjects: NSClassFromString(@"CTFKillerYouTube"), NSClassFromString(@"CTFKillerVimeo"), NSClassFromString(@"CTFKillerSIFR"),nil];
 	NSEnumerator * myEnum = [killerArray objectEnumerator];
 	Class killerClass; 
@@ -48,11 +54,7 @@
 }
 
 
-+ (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
-	return NO;
-}
-
-
+// Initialiser method doing the basic setup. There should be no need to use this. The +killerForULR:src:attributes:forPlugin class method should handle everything.
 - (id) initWithURL: (NSURL*) theURL src:(NSString*) theSrc attributes: (NSDictionary*) theAttributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
 	self = [super init];
 	if (self != nil) {
@@ -69,17 +71,6 @@
 	return self;
 }
 
-- (void) setup { }
-
-- (NSString*) badgeLabelText {
-	return @"CTFKiller";
-}
-
-- (void) addPrincipalMenuItemToContextualMenu { }
-
-- (void) addAdditionalMenuItemsForContextualMenu { }
-
-- (BOOL) convertToContainer { return NO; }
 
 
 - (void) dealloc {
@@ -95,7 +86,36 @@
 
 
 
-#pragma mark ACCESSOR METHODS
+#pragma mark -
+#pragma mark Subclass overrides
+
+// Return whether this class can handle the Flash for the given URL and other data.
++ (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) attributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
+	return NO;
+}
+
+// Set up the subclass. If further data is needed, fetching it is started here.
+- (void) setup { }
+
+// The label displayed in the plug-in. Subclasses can provide their own name here which is read whenever the plug-in view is redrawn.
+- (NSString*) badgeLabelText { return nil; }
+
+// Called when building the Contextual menu to add a single item at the second position.
+- (void) addPrincipalMenuItemToContextualMenu { }
+
+// Called when building the contextual menu to add further items afte the basic Load/Hide Flash items. 
+- (void) addAdditionalMenuItemsForContextualMenu { }
+
+// Called when the user clicks the CtF view. Replace content here.
+- (BOOL) convertToContainer { return NO; }
+
+
+
+
+
+
+#pragma mark -
+#pragma mark Accessors
 
 - (NSURL *)pageURL
 {
