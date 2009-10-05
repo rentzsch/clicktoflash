@@ -29,6 +29,7 @@
 #import "CTFUserDefaultsController.h"
 #import "Plugin.h"
 #import "CTFUtilities.h"
+#import "CTFLoader.h"
 
 @implementation CTFKillerYouTube
 
@@ -127,10 +128,6 @@
 
 - (void) dealloc {
 	[self setVideoID: nil];
-	[connections[0] cancel];
-	[connections[0] release];
-	[connections[1] cancel];
-	[connections[1] release];
 			
 	[super dealloc];
 }
@@ -193,83 +190,46 @@
 
 - (void)_checkForH264VideoVariants
 {
-	for (int i = 0; i < 2; ++i) {
-		NSMutableURLRequest *request;
-		NSString * URLString;
-		if (i == 0) { URLString = [self videoURLString]; }
-		else { URLString = [self videoHDURLString]; }
-		
-		request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:URLString]];
-		
-		if (request != nil) {
-			[request setHTTPMethod:@"HEAD"];
-			connections[i] = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-		}
+	CTFLoader * loader;
+	
+	loader= [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:[self videoURLString]] delegate: self selector: @selector(HEADDownloadFinished:)] autorelease];
+	if (loader != nil) {
+		[loader setHEADOnly: YES];
+		[loader start];
+		[self increaseActiveLookups];
+	}
+	else {
+		[self setLookupStatus: failed];
 	}
 	
-	expectedResponses = 2;
-	receivedAllResponses = NO;
+	loader= [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:[self videoHDURLString]] delegate: self selector: @selector(HEADHDDownloadFinished:)] autorelease];
+	if (loader != nil) {
+		[loader setHEADOnly: YES];
+		[loader start];
+		[self increaseActiveLookups];
+	}
+	else {
+		[self setLookupStatus: failed];
+	}
 }
 
 
 
-- (void)finishedWithConnection:(NSURLConnection *)connection
-{
-	BOOL didReceiveAllResponses = YES;
+- (void) HEADDownloadFinished: (CTFLoader *) loader {
+	[self decreaseActiveLookups];
 	
-	for (int i = 0; i < 2; ++i) {
-		if (connection == connections[i]) {
-			[connection cancel];
-			[connection release];
-			connections[i] = nil;
-		} else if (connections[i])
-			didReceiveAllResponses = NO;
+	if ( [self canPlayResponseResult: [loader response]] ) {
+		[self setHasVideo: YES];
 	}
-	
-	if (didReceiveAllResponses) {
-		receivedAllResponses = YES;
-		[self setLookupStatus: finished];
-	}
-	
 }
 
 
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response
-{
-	int statusCode = [response statusCode];
+- (void) HEADHDDownloadFinished: (CTFLoader *) loader {
+	[self decreaseActiveLookups];
 	
-	if (statusCode == 200) {
-		if (connection == connections[0])
-			[self setHasVideo: YES];
-		else 
-			[self setHasVideoHD: YES];
+	if ( [self canPlayResponseResult: [loader response]] ) {
+		[self setHasVideoHD: YES];
 	}
-	
-	[self finishedWithConnection:connection];
-}
-
-
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	[self finishedWithConnection:connection];
-}
-
-
-
-- (NSURLRequest *)connection:(NSURLConnection *)connection 
-			 willSendRequest:(NSURLRequest *)request 
-			redirectResponse:(NSURLResponse *)redirectResponse
-{
-	// We need to fix the redirects to make sure the method they use is HEAD.
-	if ([[request HTTPMethod] isEqualTo:@"HEAD"])
-		return request;
-	
-	NSMutableURLRequest *newRequest = [request mutableCopy];
-	[newRequest setHTTPMethod:@"HEAD"];
-	
-	return [newRequest autorelease];
 }
 
 

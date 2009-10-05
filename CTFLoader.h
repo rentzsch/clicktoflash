@@ -1,5 +1,5 @@
 /*
- CTFKillerVimeo.h
+ CTFLoader.h
  ClickToFlash
  
  The MIT License
@@ -23,37 +23,44 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
- */ 
-
+*/ 
 
 #import <Cocoa/Cocoa.h>
-#import "CTFKillerVideo.h"
 
 
-@interface CTFKillerVimeo : CTFKillerVideo {
-	NSString * clipID;
-	NSString * clipSignature;
-	NSString * clipExpires;
-	NSString * redirectedURLString;
-	NSString * redirectedHDURLString;
+@interface CTFLoader : NSObject {
+	NSMutableData * data;
+	NSURL * URL;
+	NSURLResponse * response;
+	NSURLRequest * lastRequest;
 	
-	BOOL clipIsHD;
+	id identifier;
 	
-	NSMutableData * downloadData;
+	BOOL HEADOnly;
+	id  delegate;
+	SEL callbackSelector;
 }
 
+- (id) initWithURL: (NSURL *) theURL delegate: (id) theDelegate selector: (SEL) theSelector;
+- (void) start;
+- (void) finish;
+	
 
-- (void) getXML;
 
-- (NSString *) clipID;
-- (void) setClipID: (NSString *) newClipID;
-- (NSString *) clipSignature;
-- (void) setClipSignature: (NSString *) newClipSignature;
-- (NSString *) clipExpires;
-- (void) setClipExpires: (NSString *) newClipExpires;
-- (NSString *) redirectedURLString;
-- (void) setRedirectedURLString: (NSString *) newRedirectedURLString;
-- (NSString *) redirectedHDURLString;
-- (void) setRedirectedHDURLString: (NSString *) newRedirectedHDURLString;
+- (NSData*)data;
+- (NSURL *)URL;
+- (void)setURL:(NSURL *)newURL;
+- (NSURLResponse *)response;
+- (void)setResponse:(NSURLResponse *)newResponse;
+- (NSURLRequest *)lastRequest;
+- (void)setLastRequest:(NSURLRequest *)newLastRequest;
+- (id)identifier;
+- (void)setIdentifier:(id)newIdentifier;
+- (BOOL)HEADOnly;
+- (void)setHEADOnly:(BOOL)newHEADOnly;
+- (id)delegate;
+- (void)setDelegate:(id)newDelegate;
+- (SEL)callbackSelector;
+- (void)setCallbackSelector:(SEL)newCallbackSelector;
 
 @end

@@ -42,6 +42,7 @@ enum CTFKVLookupStatus {
 	BOOL hasVideo;
 	BOOL hasVideoHD;
 	
+	NSInteger activeLookups;
 	enum CTFKVLookupStatus lookupStatus;
 	BOOL requiresConversion;
 	
@@ -112,6 +113,7 @@ enum CTFKVLookupStatus {
 - (NSString *) cleanURLString: (NSString*) URLString;
 - (BOOL) isVideoElementAvailable;
 - (void) finishedLookups;
+- (BOOL) canPlayResponseResult: (NSURLResponse *) result;
 
 // Accessors
 - (BOOL) autoPlay;
@@ -122,6 +124,8 @@ enum CTFKVLookupStatus {
 - (void) setHasVideoHD:(BOOL)newHasVideoHD;
 - (enum CTFKVLookupStatus) lookupStatus;
 - (void) setLookupStatus: (enum CTFKVLookupStatus) newLookupStatus;
+- (void) increaseActiveLookups;
+- (void) decreaseActiveLookups;
 - (BOOL)requiresConversion;
 - (void)setRequiresConversion:(BOOL)newRequiresConversion;
 

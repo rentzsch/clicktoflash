@@ -30,7 +30,7 @@
 #import "Plugin.h"
 #import "CTFUtilities.h"
 #import "CTFUserDefaultsController.h"
-#import <QTKit/QTKit.h>
+#import "CTFLoader.h"
 
 @implementation CTFKillerVimeo
 
@@ -59,9 +59,8 @@
 	[self setClipExpires: nil];
 	[self setRedirectedURLString: nil];
 	downloadData = nil;
-	currentConnection = noConnection;
 	lookupStatus = nothing;
-	
+	activeLookups = 0;
 	
 	NSString * myID = [ self flashVarWithName:@"clip_id" ]; 
 
@@ -113,8 +112,7 @@
 
 
 - (NSString *) videoHDURLString {
-	NSString * URLString = nil;
-	URLString = [[self videoURLString] stringByAppendingString:@"?q=hd"];
+	NSString * URLString = [self redirectedHDURLString];
 	return URLString;
 }
 
@@ -146,12 +144,10 @@
 
 - (void) getXML {
 	NSString * XMLURLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/load/clip:%@", [self clipID]];
-	NSURLRequest * request = [NSURLRequest requestWithURL: [NSURL URLWithString:XMLURLString]];
-	if (request != nil) {
-		downloadData = [[NSMutableData alloc] initWithLength: 20000];
-		[NSURLConnection connectionWithRequest: request delegate:self];
-		[self setCurrentConnection: XML];
-		[self setLookupStatus: inProgress];
+	CTFLoader * loader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:XMLURLString] delegate: self selector: @selector(XMLDownloadFinished:)] autorelease];
+	if (loader != nil) {
+		[loader start];
+		[self increaseActiveLookups];
 	}
 	else {
 		[self setLookupStatus: failed];
@@ -159,155 +155,100 @@
 }
 
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-	if ( [self currentConnection] == XML ) {
-		[downloadData appendData:data];		
-	}
-}
 
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	if  ( [self currentConnection] == XML ) {
-		// only run when fetching the XML file, not for the video file header
-		NSError * error = nil;
-		NSXMLDocument * XML = [[[NSXMLDocument alloc] initWithData:downloadData options:NSXMLDocumentTidyXML error:&error] autorelease];
-		[self finishXMLFetching: connection];
-		[self setCurrentConnection: noConnection];
+- (void) XMLDownloadFinished: (CTFLoader *) loader {
+	NSError * error = nil;
+	NSXMLDocument * XML = [[[NSXMLDocument alloc] initWithData:[loader data] options:NSXMLDocumentTidyXML error:&error] autorelease];
 		
-		NSXMLNode * node;
-		if (XML != nil) {
-			NSArray * nodes = [XML nodesForXPath:@"//request_signature" error:&error];
-			if ([nodes count] > 0) {
-				node = [nodes objectAtIndex:0];
-				[self setClipSignature:[node stringValue]];
-			}
-			nodes = [XML nodesForXPath:@"//request_signature_expires" error:&error];
-			if ([nodes count] > 0) {
-				node = [nodes objectAtIndex:0];
-				[self setClipExpires: [node stringValue]];
-			}
-			CGFloat width = .0;
-			nodes = [XML nodesForXPath:@"//width" error:&error];
-			if ([nodes count] > 0) {
-				node = [nodes objectAtIndex:0];
-				width = [[node stringValue] floatValue];
-			}
-			CGFloat height = .0;
-			nodes = [XML nodesForXPath:@"//height" error:&error];
-			if ([nodes count] > 0) {
-				node = [nodes objectAtIndex:0];
-				height = [[node stringValue] floatValue];
-			}
-			videoSize = NSMakeSize(width, height);
-			nodes = [XML nodesForXPath:@"//thumbnail" error:&error];
-			if ([nodes count] > 0) {
-				node = [nodes objectAtIndex:0];
-				[[self plugin] setPreviewURL: [NSURL URLWithString:[node stringValue]]];
-			}
-			nodes = [XML nodesForXPath:@"//isHD" error:&error];
-			if ([nodes count] > 0) {
-				node = [nodes objectAtIndex:0];
-				[self setHasVideoHD: ([[node stringValue] integerValue] != 0)];
-			}
+	NSXMLNode * node;
+	if (XML != nil) {
+		NSArray * nodes = [XML nodesForXPath:@"//request_signature" error:&error];
+		if ([nodes count] > 0) {
+			node = [nodes objectAtIndex:0];
+			[self setClipSignature:[node stringValue]];
+		}
+		nodes = [XML nodesForXPath:@"//request_signature_expires" error:&error];
+		if ([nodes count] > 0) {
+			node = [nodes objectAtIndex:0];
+			[self setClipExpires: [node stringValue]];
+		}
+		CGFloat width = .0;
+		nodes = [XML nodesForXPath:@"//width" error:&error];
+		if ([nodes count] > 0) {
+			node = [nodes objectAtIndex:0];
+			width = [[node stringValue] floatValue];
+		}
+		CGFloat height = .0;
+		nodes = [XML nodesForXPath:@"//height" error:&error];
+		if ([nodes count] > 0) {
+			node = [nodes objectAtIndex:0];
+			height = [[node stringValue] floatValue];
+		}
+		videoSize = NSMakeSize(width, height);
+		nodes = [XML nodesForXPath:@"//thumbnail" error:&error];
+		if ([nodes count] > 0) {
+			node = [nodes objectAtIndex:0];
+			[[self plugin] setPreviewURL: [NSURL URLWithString:[node stringValue]]];
+		}
+		nodes = [XML nodesForXPath:@"//isHD" error:&error];
+		if ([nodes count] > 0) {
+			node = [nodes objectAtIndex:0];
+			clipIsHD = ([[node stringValue] integerValue] != 0);
 		}
 
-		
 		// Now we collected the data but vimeo seem to have two video formats in the background flv/mp4. The only way I see so far to tell those apart is from the MIME Type of the video file's URL. Any better way to do this would be great.		
 		NSString * HEADURLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/", [self clipID], [self clipSignature], [self clipExpires]];
-
-		NSMutableURLRequest * request = [[[NSMutableURLRequest alloc] initWithURL: [NSURL URLWithString: HEADURLString]] autorelease];
-		if (request != nil) {
-			[request setHTTPMethod:@"HEAD"];
-			[self setCurrentConnection: HEAD];
-			[NSURLConnection connectionWithRequest: request delegate: self];
+		CTFLoader * loader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:HEADURLString] delegate:self selector:@selector(HEADDownloadFinished:)] autorelease];
+		if (loader != nil) {
+			[loader setHEADOnly:YES];
+			[loader start];
+			[self increaseActiveLookups];
 		}
-		else {
-			[self setLookupStatus: failed];
+		
+		if ( clipIsHD ) {
+			NSString * HEADURLHDString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/?q=hd", [self clipID], [self clipSignature], [self clipExpires]];
+			loader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:HEADURLHDString] delegate:self selector:@selector(HEADHDDownloadFinished:)] autorelease];
+			if (loader != nil) {
+				[loader setHEADOnly:YES];
+				[loader start];
+				[self increaseActiveLookups];
+			}		
 		}
-	}	
-}
-
-
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-	switch ([self currentConnection]) {
-		case XML:
-			[self finishXMLFetching: connection];
-			break;
-		case HEAD:
-			[self finishHEADFetching: connection];
-			break;
-		default:
-			break;
 	}
+	[self decreaseActiveLookups];
 	
-	[self setCurrentConnection: noConnection ];
-	[self setLookupStatus: failed];
-}
-
-
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response {
-	NSInteger statusCode = [response statusCode];
-	NSString * contentType = [response MIMEType];
-
-	if ( [self currentConnection] == HEAD ) {
-		if ( statusCode == 200 ) {
-			if ([contentType isEqualToString: @"video/mp4"] ) {
-				[self setHasVideo: YES];
-				[self setLookupStatus: finished];
-			}
-			else if ( [contentType isEqualToString: @"video/x-flv"] ) {
-				if ( [[QTMovie movieFileTypes: QTIncludeCommonTypes] containsObject: @"flv"] ) {
-					// QuickTime can play flv (Perian?)
-					[self setHasVideo: YES];
-				}
-			}
-		}
-		[self finishHEADFetching: connection];
-		[self setCurrentConnection: noConnection];
-		[self setLookupStatus: finished];
+	if (activeLookups == 0) {
+		[self setLookupStatus: failed];
 	}
 }
 
 
 
-- (void) finishXMLFetching: (NSURLConnection *) connection {
-	[connection cancel];
-	[downloadData release];
-	downloadData = nil;
-}
-
-- (void) finishHEADFetching: (NSURLConnection *) connection {
-	[connection cancel];
-}
-
-
-
-- (NSURLRequest *)connection:(NSURLConnection *)connection 
-			 willSendRequest:(NSURLRequest *)request 
-			redirectResponse:(NSURLResponse *)redirectResponse
-{
-	NSURLRequest * result = request;
-//	NSLog(@"type %i, redirect to: %@", [self currentConnection], [[request URL] absoluteString]);
-																  
-	// For the head fetching we need to fix the redirects to make sure the method they use is HEAD.
-	if ( [self currentConnection] == HEAD ) {
-		if (![[request HTTPMethod] isEqualTo:@"HEAD"]) {
-			NSMutableURLRequest * newRequest = [[request mutableCopy] autorelease];
-			[newRequest setHTTPMethod:@"HEAD"];
-			result = newRequest;
-		}
-		[self setRedirectedURLString: [[request URL] absoluteString]];
-	} 		
+- (void) HEADDownloadFinished: (CTFLoader *) loader {
+	[self decreaseActiveLookups];
 	
-	return result;
+	if ( [self canPlayResponseResult: [loader response]] ) {
+		[self setRedirectedURLString: [[[loader lastRequest] URL] absoluteString] ];
+		[self setHasVideo: YES];
+	}
 }
+
+
+- (void) HEADHDDownloadFinished: (CTFLoader *) loader {
+	[self decreaseActiveLookups];
+	
+	if ( [self canPlayResponseResult: [loader response]] ) {
+		[self setRedirectedHDURLString: [[[loader lastRequest] URL] absoluteString] ];
+		[self setHasVideoHD: YES];
+	}
+}
+
 
 
 
 #pragma mark -
 #pragma mark Accessors
+
 
 - (NSString *) clipID {
 	return clipID;
@@ -350,13 +291,15 @@
 	redirectedURLString = newRedirectedURLString;
 }
 
-
-- (enum CTFVimeoConnectionType) currentConnection {
-	return currentConnection;
+- (NSString *) redirectedHDURLString {
+	return redirectedHDURLString;
 }
 
-- (void) setCurrentConnection: (enum CTFVimeoConnectionType) newConnectionType {
-	currentConnection = newConnectionType;
+- (void) setRedirectedHDURLString: (NSString *) newRedirectedHDURLString {
+	[newRedirectedHDURLString retain];
+	[redirectedHDURLString release];
+	redirectedHDURLString = newRedirectedHDURLString;
 }
+
 
 @end

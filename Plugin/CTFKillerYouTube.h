@@ -33,9 +33,7 @@
 @interface CTFKillerYouTube : CTFKillerVideo {
 	NSString * videoID;
 		
-	NSURLConnection *connections[2];
 	unsigned expectedResponses;
-	BOOL receivedAllResponses;
 }
 
 

@@ -27,6 +27,7 @@
 
 #import "CTFKillerVideo.h"
 #import <WebKit/WebKit.h>
+#import <QTKit/QTKit.h>
 #import "CTFUserDefaultsController.h"
 #import "CTFUtilities.h"
 #import "Plugin.h"
@@ -655,6 +656,26 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 
 
+- (BOOL) canPlayResponseResult: (NSHTTPURLResponse *) response {
+	BOOL result = NO;
+	
+	if ( [response statusCode] == 200 ) {
+		if ( [[response MIMEType] isEqualToString:@"video/mp4"] ) {
+			result = YES;
+		}
+		else if ( [[response MIMEType] isEqualToString:@"video/x-flv"] ) {
+			if ( [[QTMovie movieFileTypes: QTIncludeCommonTypes] containsObject: @"flv"] ) {
+				// QuickTime can play flv (Perian?)
+				result = YES;
+			}
+		}
+	}
+	
+	return result;
+}
+
+
+
 
 #pragma mark -
 #pragma mark Accessors
@@ -700,6 +721,19 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 		[self finishedLookups];
 	}
 	[[self plugin] setNeedsDisplay: YES];
+}
+
+
+- (void) increaseActiveLookups {
+	activeLookups++;
+	[self setLookupStatus: inProgress];
+}
+
+- (void) decreaseActiveLookups {
+	activeLookups--;
+	if ( [self lookupStatus] != failed ) {
+		[self setLookupStatus: finished];
+	}
 }
 
 
