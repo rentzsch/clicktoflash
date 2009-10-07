@@ -47,13 +47,31 @@ static NSDictionary* itemForSite( NSSet* set, NSString* site )
 {
 	NSDictionary *specificWhitelistItem = nil;
 	
-    int i = 0;
-    CTFForEachObject( NSDictionary, item, set ) {
-        if( [ [ item objectForKey: @"site" ] isEqualToString: site ] )
-            specificWhitelistItem = item;
-        ++i;
-    }
-    
+	NSURL * siteURL = [NSURL URLWithString:site];
+	NSString * host = [siteURL host];
+	
+	if (siteURL != nil) {
+		CTFForEachObject( NSDictionary, item, set ) {
+			NSString * whitelistItem = [ item objectForKey: @"site" ];
+			NSInteger slashPosition = [whitelistItem rangeOfString:@"/"].location;
+			if( slashPosition == NSNotFound ) {
+				// no slash => just check host name
+				if ( [host rangeOfString: whitelistItem].location != NSNotFound ) {
+					specificWhitelistItem = item;
+				}
+			}
+			else {
+				// there is a slash => match the host name and path
+				NSString * hostSubstring = [whitelistItem substringToIndex:slashPosition];
+				NSString * pathSubstring = [whitelistItem substringFromIndex:slashPosition];
+				if ( ([[siteURL host] rangeOfString: hostSubstring options: NSBackwardsSearch || NSAnchoredSearch].location != NSNotFound)
+					&& ([[siteURL path] rangeOfString: pathSubstring options: NSAnchoredSearch].location != NSNotFound) ){
+					specificWhitelistItem = item;
+					break;
+				}
+			}
+		}
+	}
 	return specificWhitelistItem;
 }
 
@@ -152,14 +170,14 @@ static NSDictionary* whitelistItemForSite( NSString* site )
 		return YES;
 	}
 	
-	return [self _isWhiteListedForHostString: [self host]];
+	return [self _isWhiteListedForHostString: [self baseURL]];
 }
 
 - (BOOL) _isWhiteListedForHostString:(NSString *)hostString
 {
 	NSArray *hostWhitelistArray = [[CTFUserDefaultsController standardUserDefaults] arrayForKey: sHostSiteInfoDefaultsKey];
 	NSSet *hostWhitelistSet = [NSSet setWithArray:hostWhitelistArray];
-    return hostWhitelistArray && itemForSite(hostWhitelistSet, hostString) != nil;
+	return hostWhitelistArray && itemForSite(hostWhitelistSet, hostString) != nil;
 }
 
 - (NSMutableSet *) _mutableSiteInfo
