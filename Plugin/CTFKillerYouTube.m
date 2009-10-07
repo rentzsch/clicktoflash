@@ -92,8 +92,19 @@
 		if (([host rangeOfString:@"youtube.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound) || ([host rangeOfString:@"youtube-nocookie.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound ) ) {
 			
 			NSString * path = [ytURL path];
-			NSArray * pathComponents = [path componentsSeparatedByString:@"/"];
-			myVideoID = [pathComponents lastObject];
+			NSRange lastSlashRange = [path rangeOfString:@"/" options:NSLiteralSearch | NSBackwardsSearch];
+			NSInteger lastSlash = lastSlashRange.location;
+			NSRange firstAmpersandRange = [path rangeOfString:@"&" options:NSLiteralSearch];
+			if ( lastSlash != NSNotFound ) {
+				NSInteger firstAmpersand = firstAmpersandRange.location;
+				if (firstAmpersand == NSNotFound) {
+					firstAmpersand = [path length];
+				}
+				if (lastSlash < firstAmpersand ) {
+					NSRange IDRange = NSMakeRange(lastSlash + 1, firstAmpersand - lastSlash - 1);
+					myVideoID = [path substringWithRange:IDRange];
+				}
+			}
 		}
 		
 		
