@@ -137,9 +137,7 @@
 
 /*
  1. download the XML file which provides the keys required to construct the URL to access the video file
- 2. get headers for the video file to figure out its file format. MP4 URL seem to be usable right away, but FLV URL (which require Perian anyway) seem to include a redirect which the WebKit video element doesn't seem to resolve.
- [e.g  http://vimeo.com/1039366 doesn't seem to have a MP4 version]
- 3. For FLV files resolve the redirect.
+ 2. get headers for the video file to figure out the redirected URL and the file format (some films on Vimeo come in FLV, others come in MP4). 
 */
 
 - (void) getXML {
