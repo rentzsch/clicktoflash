@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0" xmlns:dc="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>ClickToFlash DistantFuture Appcast -- just for testing, don't really use this</title>
+		<link>http://rentzsch.github.com/clicktoflash/release_notes/appcast_distantfuture.xml</link>
+		<language>en</language>
+		<description>Most recent changes with links to updates</description>
+		<item>
+			<title>version 768.1</title>
+			<pubDate>Sun, 13 Sep 2009 03:39:12 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/768.1.html</sparkle:releaseNotesLink>
+			<enclosure
+			    sparkle:version="768.1"
+			    url="http://s3.amazonaws.com/clicktoflash/ClickToFlash-768.1.zip"
+			    type="application/zip"
+			    sparkle:dsaSignature="MC0CFQCN1hWWasmmmIEq78zBr0zoXwLj1QIUdRdq0iV0z0xZ2e27T6STv1FjpiA="/>
+		</item>
+	</channel>
+</rss>

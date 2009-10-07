@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0" xmlns:dc="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>ClickToFlash Appcast</title>
+		<link>http://rentzsch.github.com/clicktoflash/release_notes/appcast.xml</link>
+		<language>en</language>
+		<description>Most recent changes with links to updates</description>
+		<item>
+			<title>version 1.5.3</title>
+			<pubDate>Sat, 3 Oct 2009 23:34:16 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.3.html</sparkle:releaseNotesLink>
+			<enclosure
+			    sparkle:version="1.5.3"
+			    url="http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.3-golden.zip"
+			    type="application/zip"
+			    sparkle:dsaSignature="MCwCFDrQ4tuzeDYTl++Imdp5+WyHT2mxAhQPTK384KYfwDu05RWBtPPJT31KUQ=="/>
+		</item>
+		<item>
+			<title>version 1.5.2</title>
+			<pubDate>Sun, 13 Sep 2009 16:19:11 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.5.2.html</sparkle:releaseNotesLink>
+			<enclosure
+			    sparkle:version="1.5.2"
+			    url="http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.2.zip"
+			    type="application/zip"
+			    sparkle:dsaSignature="MC0CFCJz/Nq7WzzSIFzjixbgOK2RnBIvAhUAyHQ/Y+wOhbHNF6htx7RQrXeKD9s="/>
+		</item>
+		<item>
+			<title>version 1.4.2</title>
+			<pubDate>Wed, 20 May 2009 22:02:03 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4.2.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4.2" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.2.zip"/>
+		</item>
+		<item>
+			<title>version 1.4.1</title>
+			<pubDate>Wed, 13 May 2009 20:22:43 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4.1.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4.1" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.1.zip"/>
+		</item>
+		<item>
+			<title>version 1.4</title>
+			<pubDate>Tue, 12 May 2009 21:47:39 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc6</title>
+			<pubDate>Mon, 4 May 2009 00:28:08 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4fc6.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4fc6" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc6.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc5</title>
+			<pubDate>Thu, 2 Apr 2009 00:07:40 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4fc5.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4fc5" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc5.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc4</title>
+			<pubDate>Tue, 10 Mar 2009 15:25:24 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4fc4.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4fc4" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc4.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc3</title>
+			<pubDate>Tue, 10 Mar 2009 15:25:24 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4fc3.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4fc3" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc3.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc2</title>
+			<pubDate>Tue, 10 Mar 2009 14:25:24 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4fc2.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4fc2" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc2.zip"/>
+		</item>
+		<item>
+			<title>version 1.4fc1</title>
+			<pubDate>Tue, 10 Mar 2009 02:03:42 -0500</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.4fc1.html</sparkle:releaseNotesLink>
+			<enclosure type="application/zip" sparkle:version="1.4fc1" url="https://s3.amazonaws.com/clicktoflash/ClickToFlash-1.4fc1.zip"/>
+		</item>
+	</channel>
+</rss>
