@@ -107,7 +107,7 @@
 			 willSendRequest:(NSURLRequest *)request 
 			redirectResponse:(NSURLResponse *)redirectResponse
 {
-	NSLog(@"CTFLoader redirect to: %@", [[request URL] absoluteString]);
+//	NSLog(@"CTFLoader redirect to: %@", [[request URL] absoluteString]);
 	NSURLRequest * result = request;
 	
 	// For the head fetching we need to fix the redirects to make sure the method they use is HEAD.
