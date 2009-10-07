@@ -87,20 +87,15 @@
 		// determine the video_id, then get the source of the YouTube
 		// page to get the Flash vars
 			
-		NSScanner *URLScanner = [[NSScanner alloc] initWithString: srcURLString ];
-		[URLScanner scanUpToString:@"youtube.com/v/" intoString:nil];
-		if ([URLScanner scanString:@"youtube.com/v/" intoString:nil]) {
-			// URL is in required format, next characters are the id
+		NSURL * ytURL = [NSURL URLWithString: srcURLString];
+		NSString * host = [ytURL host];
+		if (([host rangeOfString:@"youtube.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound) || ([host rangeOfString:@"youtube-nocookie.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound ) ) {
 			
-			[URLScanner scanUpToString:@"&" intoString:&myVideoID];
-		} else {
-			[URLScanner setScanLocation:0];
-			[URLScanner scanUpToString:@"youtube-nocookie.com/v/" intoString:nil];
-			if ([URLScanner scanString:@"youtube-nocookie.com/v/" intoString:nil]) {
-				[URLScanner scanUpToString:@"&" intoString:&myVideoID];
-			}
+			NSString * path = [ytURL path];
+			NSArray * pathComponents = [path componentsSeparatedByString:@"/"];
+			myVideoID = [pathComponents lastObject];
 		}
-		[URLScanner release];
+		
 		
 		if (myVideoID != nil) {
 			[self setVideoID: myVideoID];
@@ -188,8 +183,7 @@
 #pragma mark -
 #pragma mark Check for Videos
 
-- (void)_checkForH264VideoVariants
-{
+- (void)_checkForH264VideoVariants {
 	CTFLoader * loader;
 	
 	loader= [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:[self videoURLString]] delegate: self selector: @selector(HEADDownloadFinished:)] autorelease];
@@ -332,22 +326,20 @@
 #pragma mark -
 #pragma mark Accessors
 
-- (NSString *)videoID
-{
+- (NSString *)videoID {
 	return videoID;
 }
 
-- (void)setVideoID:(NSString *)newVideoID
-{
+- (void)setVideoID:(NSString *)newVideoID {
 	[newVideoID retain];
 	[videoID release];
 	videoID = newVideoID;
 }
 
 
-- (NSString*) videoHash
-{
-    return [ self flashVarWithName: @"t" ];
+- (NSString*) videoHash {
+    NSString * hash = [ self flashVarWithName: @"t" ];
+	return hash;
 }
 
 @end
