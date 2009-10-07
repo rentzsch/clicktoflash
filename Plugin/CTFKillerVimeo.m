@@ -39,11 +39,11 @@
 + (BOOL) canHandleFlashAtURL: (NSURL*) theURL src: (NSString*) theSrc attributes: (NSDictionary*) theAttributes forPlugin:(CTFClickToFlashPlugin*) thePlugin {
 	BOOL result = NO;
 	
-	if ([CTFKillerVideo isActive]) {
+	if (theSrc != nil && [CTFKillerVideo isActive]) {
 		result = ([theSrc rangeOfString:@"/moogaloop" options:NSAnchoredSearch].location != NSNotFound);
 		
 		NSURL * srcURL = [NSURL URLWithString: theSrc];
-		if (srcURL != nil && [srcURL host] != nil) {
+		if ( srcURL != nil && [srcURL host] != nil) {
 			result = result || ([[srcURL host] rangeOfString:@"vimeo.com" options:NSAnchoredSearch|NSBackwardsSearch].location != NSNotFound);
 		}		
 	}
