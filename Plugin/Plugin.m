@@ -218,13 +218,9 @@ BOOL usingMATrackingArea = NO;
 		
 		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
 		
-		if( !loadFromWhiteList )
-		{
+		if( !loadFromWhiteList ) {
             if (srcAttribute) {
-                NSURL* swfSrc = [NSURL URLWithString:srcAttribute];
-                
-                if( [self _isWhiteListedForHostString:[swfSrc host] ] )
-                {
+				if( [self _isWhiteListedForHostString:srcAttribute ] ) {
                     loadFromWhiteList = YES;
                 }
             }

@@ -43,35 +43,58 @@ typedef enum {
     CTFSiteKindWhitelist = 0
 } CTGSiteKind;
 
-static NSDictionary* itemForSite( NSSet* set, NSString* site )
-{
-	NSDictionary *specificWhitelistItem = nil;
-	
-	NSURL * siteURL = [NSURL URLWithString:site];
-	NSString * host = [siteURL host];
-	
-	if (siteURL != nil) {
-		CTFForEachObject( NSDictionary, item, set ) {
-			NSString * whitelistItem = [ item objectForKey: @"site" ];
-			NSInteger slashPosition = [whitelistItem rangeOfString:@"/"].location;
-			if( slashPosition == NSNotFound ) {
-				// no slash => just check host name
-				if ( [host rangeOfString: whitelistItem].location != NSNotFound ) {
-					specificWhitelistItem = item;
-				}
-			}
-			else {
-				// there is a slash => match the host name and path
-				NSString * hostSubstring = [whitelistItem substringToIndex:slashPosition];
-				NSString * pathSubstring = [whitelistItem substringFromIndex:slashPosition];
-				if ( ([[siteURL host] rangeOfString: hostSubstring options: NSBackwardsSearch || NSAnchoredSearch].location != NSNotFound)
-					&& ([[siteURL path] rangeOfString: pathSubstring options: NSAnchoredSearch].location != NSNotFound) ){
-					specificWhitelistItem = item;
-					break;
-				}
+
+static BOOL nameMatchesDomainName ( NSString* name, NSString* domainName ) {
+	BOOL result = NO;
+	NSRange domainRange = [name rangeOfString: domainName options: NSCaseInsensitiveSearch || NSAnchoredSearch || NSBackwardsSearch];
+	if ( domainRange.location != NSNotFound ) {
+		// if the match doesn't reach to the beginning of the string, make sure that the preceding character is a dot, to avoid matching other domain names
+		if ( domainRange.location == 0 ) {
+			result = YES;
+		}
+		else {
+			if ( [[name substringWithRange:NSMakeRange(domainRange.location - 1, 1)] isEqualToString:@"."] ) {
+				result = YES;
 			}
 		}
 	}
+	
+	return result;
+}
+
+static NSDictionary* itemForSite( NSSet* set, NSString* site )
+{
+	NSDictionary *specificWhitelistItem = nil;
+	if (site != nil) {
+		
+ 		NSURL * siteURL = [NSURL URLWithString:site];
+		NSString * host = [siteURL host];
+		
+		if (siteURL != nil) {
+			CTFForEachObject( NSDictionary, item, set ) {
+				NSString * whitelistItem = [ item objectForKey: @"site" ];
+				NSInteger slashPosition = [whitelistItem rangeOfString:@"/"].location;
+				if( slashPosition == NSNotFound ) {
+					// no slash => just check host name
+					if ( nameMatchesDomainName(host, whitelistItem) ) {
+						specificWhitelistItem = item;
+						break;
+					}
+				}
+				else {
+					// there is a slash => match the host name and path (make sure we really get to use both of the host and the path and don't just match strings in the path only
+					NSString * hostSubstring = [whitelistItem substringToIndex:slashPosition];
+					NSString * pathSubstring = [whitelistItem substringFromIndex:slashPosition];
+					if ( nameMatchesDomainName(host, hostSubstring)
+						&& ([[siteURL path] rangeOfString: pathSubstring options: NSAnchoredSearch].location != NSNotFound) ){
+						specificWhitelistItem = item;
+						break;
+					}
+				}
+			}
+		}
+	}	
+	
 	return specificWhitelistItem;
 }
 
