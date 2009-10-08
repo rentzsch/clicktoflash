@@ -803,6 +803,38 @@ BOOL usingMATrackingArea = NO;
     }
 }
 
+
+- (void) drawGlossyWithPressed: (BOOL) pressed {
+	NSRect bounds = [self bounds];
+
+	NSBezierPath * bP = [NSBezierPath bezierPath];
+	const CGFloat glowStartFraction = .3;
+	const CGFloat cP1YFraction = .5;
+	const CGFloat cP2XFraction = .0;
+	const CGFloat cP2YFraction = .48;
+
+	CGFloat startY = .0;
+	if (pressed) {
+		startY = NSMaxY(bounds);
+	}
+		
+	[bP moveToPoint: NSMakePoint( .0, startY ) ];
+	[bP lineToPoint: NSMakePoint( .0, NSMaxY(bounds) * glowStartFraction )];
+	[bP curveToPoint: NSMakePoint( NSMidX(bounds), NSMidY(bounds) )
+	   controlPoint1: NSMakePoint( .0 , cP1YFraction * NSMaxY(bounds))
+	   controlPoint2: NSMakePoint( cP2XFraction * NSMaxX(bounds), cP2YFraction * NSMaxY(bounds)) ];
+	[bP curveToPoint: NSMakePoint( NSMaxX(bounds), (1. - glowStartFraction) * NSMaxY(bounds) )
+	   controlPoint1: NSMakePoint( (1. - cP2XFraction) * NSMaxX(bounds) , (1. - cP2YFraction) * NSMaxY(bounds) ) 
+	   controlPoint2: NSMakePoint( NSMaxX(bounds), (1. - cP1YFraction) * NSMaxY(bounds) ) ];
+	[bP lineToPoint: NSMakePoint( NSMaxX(bounds), startY ) ];
+	[bP closePath];
+		
+	[[NSColor colorWithCalibratedWhite:1.0 alpha:0.07] set];
+	[bP fill];
+}
+
+
+
 - (void) _drawBackground
 {
     NSRect selfBounds = [self bounds];
@@ -861,8 +893,13 @@ BOOL usingMATrackingArea = NO;
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
     // Draw label
-    [ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
+    [self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
     
+	// Draw 'glossy' overlay which can give some visual feedback on clicks when an preview image is set.
+	if ([self previewImage] != nil) {
+		[self drawGlossyWithPressed: mouseIsDown && mouseInside];		
+	}
+	
     // Draw the gear icon
 	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sDrawGearImageOnlyOnMouseOverHiddenPref]) {
 		if( mouseInside && !mouseIsDown )
