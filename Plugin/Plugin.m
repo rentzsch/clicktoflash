@@ -30,32 +30,25 @@ THE SOFTWARE.
 
 #import "MATrackingArea.h"
 #import "CTFMenubarMenuController.h"
-#import "CTFsIFRSupport.h"
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
 #import "CTFGradient.h"
 #import "SparkleManager.h"
+#import "CTFKiller.h"
+#import "CTFLoader.h"
 
 #define LOGGING_ENABLED 0
-
-#ifndef NSAppKitVersionNumber10_5
-#define NSAppKitVersionNumber10_5 949
-#endif
 
     // MIME types
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
     // CTFUserDefaultsController keys
-static NSString *sUseYouTubeH264DefaultsKey = @"useYouTubeH264";
-static NSString *sUseYouTubeHDH264DefaultsKey = @"useYouTubeHDH264";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
 static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
-static NSString *sDisableVideoElement = @"disableVideoElement";
-static NSString *sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 	// Info.plist key for app developers
 static NSString *sCTFOptOutKey = @"ClickToFlashOptOut";
@@ -65,10 +58,6 @@ BOOL usingMATrackingArea = NO;
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
 - (void) _convertTypesForFlashContainerAfterDelay;
-- (void) _convertToMP4ContainerUsingHD: (NSNumber*) useHD;
-- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHD;
-- (void) _prepareForConversion;
-- (void) _revertToOriginalOpacityAttributes;
 
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
@@ -77,27 +66,13 @@ BOOL usingMATrackingArea = NO;
 - (void) _addTrackingAreaForCTF;
 - (void) _removeTrackingAreaForCTF;
 
-- (NSMenuItem*) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector;
 
 - (void) _loadContent: (NSNotification*) notification;
 - (void) _loadContentForWindow: (NSNotification*) notification;
 
-- (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString;
-- (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML;
-- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars;
-- (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId;
-- (NSString*) flashvarWithName: (NSString*) argName;
-- (void) _checkForH264VideoVariants;
-- (BOOL) _hasH264Version;
-- (BOOL) _useH264Version;
-- (BOOL) _hasHDH264Version;
-- (BOOL) _useHDH264Version;
 - (NSString *)launchedAppBundleIdentifier;
 @end
 
-
-#pragma mark -
-#pragma mark Whitelist Utility Functions
 
 
 @implementation CTFClickToFlashPlugin
@@ -120,12 +95,7 @@ BOOL usingMATrackingArea = NO;
 {
     self = [super init];
     if (self) {
-		_hasH264Version = NO;
-		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
-		_embeddedYouTubeView = NO;
-		_isSIFR = NO;
-		_youTubeAutoPlay = NO;
 		_delayingTimer = nil;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
@@ -149,7 +119,6 @@ BOOL usingMATrackingArea = NO;
 			// Default to enable the plugin
 			[[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sPluginEnabled];
 		}
-		[self setLaunchedAppBundleIdentifier:[self launchedAppBundleIdentifier]];
 		
 		[self setWebView:[[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView]];
 		
@@ -193,80 +162,16 @@ BOOL usingMATrackingArea = NO;
 		}
 		
         
-        // Read in flashvars (needed to determine YouTube videos)
+        // Read in flashvars
         
         NSString* flashvars = [[self attributes] objectForKey: @"flashvars" ];
         if( flashvars != nil )
-            _flashVars = [ [ self _flashVarDictionary: flashvars ] retain ];
+            _flashVars = [ [ CTFClickToFlashPlugin flashVarDictionary: flashvars ] retain ];
 		
-		// check whether it's from YouTube and get the video_id
 		
-        _fromYouTube = [[self host] isEqualToString:@"www.youtube.com"]
-		|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]
-		|| ( flashvars != nil && [flashvars rangeOfString: @"www.youtube.com"].location != NSNotFound )
-		|| ( flashvars != nil && [flashvars rangeOfString: @"www.youtube-nocookie.com"].location != NSNotFound )
-		|| ([self src] != nil && [[self src] rangeOfString: @"youtube.com"].location != NSNotFound )
-		|| ([self src] != nil && [[self src] rangeOfString: @"youtube-nocookie.com"].location != NSNotFound );
+		// Set up the CTFKiller subclass, if appropriate.
+		[self setKiller: [CTFKiller killerForURL:[NSURL URLWithString:[self baseURL]] src:[self src] attributes:[self attributes] forPlugin:self]];
 		
-        if (_fromYouTube) {
-			
-			// Check wether autoplay is wanted
-			if ([[CTFUserDefaultsController standardUserDefaults] objectForKey:sYouTubeAutoPlay]) {
-				if ([[self host] isEqualToString:@"www.youtube.com"]
-					|| [[self host] isEqualToString:@"www.youtube-nocookie.com"]) {
-					_youTubeAutoPlay = YES;
-				} else {
-					_youTubeAutoPlay = [[[self _flashVarDictionary:[self src]] objectForKey:@"autoplay"] isEqualToString:@"1"];
-				}
-			} else {
-				_youTubeAutoPlay = NO;
-			}
-
-			
-			NSString *videoId = [ self flashvarWithName: @"video_id" ];
-			if (videoId != nil) {
-				[self setVideoId:videoId];
-				
-				// this retrieves new data from the internets, but the NSURLConnection
-				// methods already spawn separate threads for the data retrieval,
-				// so no need to spawn a separate thread
-				[self _checkForH264VideoVariants];
-			} else {
-				// it's an embedded YouTube flash view; scrub the URL to
-				// determine the video_id, then get the source of the YouTube
-				// page to get the Flash vars
-				
-				_embeddedYouTubeView = YES;
-				
-				NSString *videoIdFromURL = nil;
-				NSScanner *URLScanner = [[NSScanner alloc] initWithString:[self src]];
-				[URLScanner scanUpToString:@"youtube.com/v/" intoString:nil];
-				if ([URLScanner scanString:@"youtube.com/v/" intoString:nil]) {
-					// URL is in required format, next characters are the id
-					
-					[URLScanner scanUpToString:@"&" intoString:&videoIdFromURL];
-					if (videoIdFromURL) [self setVideoId:videoIdFromURL];
-				} else {
-					[URLScanner setScanLocation:0];
-					[URLScanner scanUpToString:@"youtube-nocookie.com/v/" intoString:nil];
-					if ([URLScanner scanString:@"youtube-nocookie.com/v/" intoString:nil]) {
-						[URLScanner scanUpToString:@"&" intoString:&videoIdFromURL];
-						if (videoIdFromURL) [self setVideoId:videoIdFromURL];
-					}
-				}
-				[URLScanner release];
-				
-				if (videoIdFromURL) {
-					// this block of code introduces a situation where we have to download
-					// additional data from the internets, so we want to spin this off
-					// to another thread to prevent blocking of the Safari user interface
-					
-					// this method is a stub for calling the real method on a different thread
-					[self _getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:videoIdFromURL];
-				}
-			}
-		}
-        
         _fromFlickr = [[self host] rangeOfString:@"flickr.com"].location != NSNotFound;
 		
 #if LOGGING_ENABLED
@@ -286,43 +191,25 @@ BOOL usingMATrackingArea = NO;
 		if ([[[NSBundle mainBundle] infoDictionary] objectForKey:sCTFOptOutKey]) hostAppWhitelistedInInfoPlist = YES;
 		if ( (! pluginEnabled) || (hostAppIsInDefaultWhitelist || hostAppIsInUserWhitelist || hostAppWhitelistedInInfoPlist) ) {
             _isLoadingFromWhitelist = YES;
-			[self _convertTypesForContainer];
+			[self convertTypesForContainer];
 			return self;
 		}		
 		
 		// Plugin is enabled and the host is not white-listed. Kick off Sparkle.
 		
-		NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
+		NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[CTFClickToFlashPlugin launchedAppBundleIdentifier]];
 		[[SparkleManager sharedManager] setPathToRelaunch:pathToRelaunch];
 		[[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];
 		
         // Set up main menus
         
 		[ CTFMenubarMenuController sharedController ];	// trigger the menu items to be added
-		
-        
-        // Check for sIFR
-        
-        if ([self _isSIFRText: arguments]) {
-            _isSIFR = YES;
-            
-            if ([self _shouldAutoLoadSIFR]) {
-				_isLoadingFromWhitelist = YES;
-				[self _convertTypesForContainer];
-				return self;
-			}
-            else if ([self _shouldDeSIFR]) {
-				_isLoadingFromWhitelist = YES;
-                [self performSelector:@selector(_disableSIFR) withObject:nil afterDelay:0];
-				return self;
-			}
-        }
-		
+
 		if ( [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sAutoLoadInvisibleFlashViewsKey ]
 			&& [ self isConsideredInvisible ] ) {
 			// auto-loading is on and this view meets the size constraints
             _isLoadingFromWhitelist = YES;
-			[self _convertTypesForContainer];
+			[self convertTypesForContainer];
 			return self;
 		}
 		
@@ -348,26 +235,8 @@ BOOL usingMATrackingArea = NO;
         
         if(loadFromWhiteList && ![self _isOptionPressed]) {
             _isLoadingFromWhitelist = YES;
-			
-			if (_fromYouTube) {
-				// we do this because checking for H.264 variants is handled
-				// on another thread, so the results of that check may not have
-				// been returned yet; if the user has this site on a whitelist
-				// and the results haven't been returned, then the *Flash* will
-				// load (ewwwwwww!) instead of the H.264, even if the user's
-				// preferences are for the H.264
-				
-				// the _checkForH264VideoVariants method will manually fire
-				// this timer if it finishes before the 3 seconds are up
-				_delayingTimer = [NSTimer scheduledTimerWithTimeInterval:3
-																  target:self
-																selector:@selector(_convertTypesForContainer)
-																userInfo:nil
-																 repeats:NO];
-			} else {
-				[self _convertTypesForContainer];
-			}
-			
+			[self convertTypesForContainer];
+
 			return self;
         }
 		
@@ -451,6 +320,8 @@ BOOL usingMATrackingArea = NO;
     return self;
 }
 
+
+
 - (void)webPlugInDestroy
 {
 	[self _removeTrackingAreaForCTF];
@@ -467,16 +338,14 @@ BOOL usingMATrackingArea = NO;
 	[self setBaseURL:nil];
 	[self setAttributes:nil];
 	[self setOriginalOpacityAttributes:nil];
+	[self setKiller:nil];
+	[self setPreviewURL:nil];
+	[self setPreviewImage:nil];
 	
 	[_flashVars release];
 	_flashVars = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	for (int i = 0; i < 2; ++i) {
-		[connections[i] release];
-		connections[i] = nil;
-	}	
 }
 
 - (void) dealloc
@@ -491,77 +360,7 @@ BOOL usingMATrackingArea = NO;
     [super dealloc];
 }
 
-- (void) _migratePrefsToExternalFile
-{
-	NSArray *parasiticDefaultsNameArray = [NSArray arrayWithObjects:@"ClickToFlash_pluginEnabled",
-										   @"ClickToFlash_useYouTubeH264",
-										   @"ClickToFlash_autoLoadInvisibleViews",
-										   @"ClickToFlash_sifrMode",
-										   @"ClickToFlash_checkForUpdatesOnFirstLoad",
-										   @"ClickToFlash_siteInfo",
-										   nil];
-	
-	NSArray *externalDefaultsNameArray = [NSArray arrayWithObjects:@"pluginEnabled",
-										  @"useYouTubeH264",
-										  @"autoLoadInvisibleViews",
-										  @"sifrMode",
-										  @"checkForUpdatesOnFirstLoad",
-										  @"siteInfo",
-										  nil];
-	
-	NSMutableDictionary *externalFileDefaults = [[CTFUserDefaultsController standardUserDefaults] dictionaryRepresentation];
 
-	[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
-	unsigned int i;
-	for (i = 0; i < [parasiticDefaultsNameArray count]; i++) {
-		NSString *currentParasiticDefault = [parasiticDefaultsNameArray objectAtIndex:i];
-		id prefValue = [[NSUserDefaults standardUserDefaults] objectForKey:currentParasiticDefault];
-		if (prefValue) {
-			NSString *externalPrefDefaultName = [externalDefaultsNameArray objectAtIndex:i];
-			id existingExternalPref = [[CTFUserDefaultsController standardUserDefaults] objectForKey:externalPrefDefaultName];
-			if (! existingExternalPref) {
-				// don't overwrite existing external preferences
-				[externalFileDefaults setObject:prefValue forKey:externalPrefDefaultName];
-			} else {
-				if ([currentParasiticDefault isEqualToString:@"ClickToFlash_siteInfo"]) {
-					// merge the arrays of whitelisted sites, in case they're not identical
-					
-					NSMutableArray *combinedWhitelist = [NSMutableArray arrayWithArray:prefValue];
-					[combinedWhitelist addObjectsFromArray:existingExternalPref];
-					[externalFileDefaults setObject:combinedWhitelist forKey:externalPrefDefaultName];
-					
-					// because people named Kevin Ballard messed up their preferences file and somehow
-					// managed to retain ClickToFlash_siteInfo in their com.github plist file
-					[externalFileDefaults removeObjectForKey:currentParasiticDefault];
-				}
-			}
-			// eliminate the parasitic default, regardless of whether we transferred them or not
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:currentParasiticDefault];
-		}
-	}
-	[[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.github.rentzsch.clicktoflash"];
-}
-
-- (void) _uniquePrefsFileWhitelist
-{
-	NSArray *siteInfoArray = [[CTFUserDefaultsController standardUserDefaults] arrayForKey:@"siteInfo"];
-	NSSet *siteInfoSet = [NSSet setWithArray:siteInfoArray];
-	
-	[[CTFUserDefaultsController standardUserDefaults] setValue:[siteInfoSet allObjects] forKeyPath:@"values.siteInfo"];
-}
-
-
-- (void) _addApplicationWhitelistArrayToPrefsFile
-{
-	CTFUserDefaultsController *standardUserDefaults = [CTFUserDefaultsController standardUserDefaults];
-	NSArray *applicationWhitelist = [standardUserDefaults arrayForKey:sApplicationWhitelist];
-	if (! applicationWhitelist) {
-		// add an empty array to the plist file so people know exactly where to
-		// whitelist apps
-		
-		[standardUserDefaults setObject:[NSArray array] forKey:sApplicationWhitelist];
-	}
-}
 
 - (void) drawRect:(NSRect)rect
 {
@@ -651,7 +450,7 @@ BOOL usingMATrackingArea = NO;
 		} else if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
             [self _askToAddCurrentSiteToWhitelist];
 		} else {
-            [self _convertTypesForContainer];
+            [self convertTypesForContainer];
         }
     } else {
 		_contextMenuIsVisible = NO;
@@ -702,10 +501,14 @@ BOOL usingMATrackingArea = NO;
 #pragma mark -
 #pragma mark Contextual menu
 
+- (NSMenuItem *) addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector {
+	return [self addContextualMenuItemWithTitle: title action: selector target: self];
+}
 
-- (NSMenuItem *) _addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector {
+
+- (NSMenuItem *) addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector target:(id) target {
 	NSMenuItem * menuItem = [[[NSMenuItem alloc] initWithTitle: title action:selector keyEquivalent:@""] autorelease];
-	[menuItem setTarget: self];
+	[menuItem setTarget: target];
 	[[self menu] addItem: menuItem];
 	return menuItem;
 }
@@ -721,94 +524,42 @@ BOOL usingMATrackingArea = NO;
 	
 	[self setMenu: [[[NSMenu alloc] initWithTitle:CtFLocalizedString( @"ClickTo Flash Contextual menu", @"Title of Contextual Menu")] autorelease]];
 	
-	[self _addContextualMenuItemWithTitle:CtFLocalizedString( @"Load Flash", @"Contextual Menu Item: Load Flash" ) 
-								   action: @selector( loadFlash: )];
+	[self addContextualMenuItemWithTitle:CtFLocalizedString( @"Load Flash", @"Contextual Menu Item: Load Flash" ) 
+								  action: @selector( loadFlash: )];
 	
-	if (_fromYouTube && [self _hasH264Version]) {
-		[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264", @"Load H.264 contextual menu item" ) 
-									   action: @selector( loadH264: )];
-		if ([self _hasHDH264Version]) {
-			if ([self _useHDH264Version]) {
-				menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 SD Version", @"Load Smaller Version contextual menu item (alternate for the standard Load H.264 item when the default uses the 'HD' version)" )
-														  action: @selector( loadH264SD: ) ];
-			}
-			else {
-				menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load H.264 HD Version", @"Load Larger Version  contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
-														  action: @selector( loadH264HD: ) ];
-			}
-			[menuItem setAlternate:YES];
-			[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-		}
+	if ([self killer] != nil) {
+		[[self killer] addPrincipalMenuItemToContextualMenu];
 	}
 	
 	if ([[CTFMenubarMenuController sharedController] multipleFlashViewsExistForWindow:[self window]]) {
-		[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load All on this Page", @"Load All on this Page contextual menu item" )
-									   action: @selector( loadAllOnPage: )];
+		[self addContextualMenuItemWithTitle: CtFLocalizedString( @"Load All on this Page", @"Load All on this Page contextual menu item" )
+									  action: @selector( loadAllOnPage: )];
 	}
 	
-	[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Hide Flash", @"Hide Flash contextual menu item (sets display:none)")
-								   action: @selector( hideFlash:)];
-	menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Remove Flash", @"Remove Flash contextual menu item (sets visibility: hidden)")
-											  action: @selector( removeFlash: )];
+	[self addContextualMenuItemWithTitle: CtFLocalizedString( @"Hide Flash", @"Hide Flash contextual menu item (sets display:none)")
+								  action: @selector( hideFlash:)];
+	menuItem = [self addContextualMenuItemWithTitle: CtFLocalizedString( @"Remove Flash", @"Remove Flash contextual menu item (sets visibility: hidden)")
+											 action: @selector( removeFlash: )];
 	[menuItem setAlternate:YES];
 	[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
 	
 	[[self menu] addItem: [NSMenuItem separatorItem]];
 	
-	
-	if (_fromYouTube) {
-		if (_embeddedYouTubeView) {
-			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Load YouTube.com page for this video", @"Load YouTube page contextual menu item" )
-										   action: @selector( loadYouTubePage: )];
-		}
-
-		if ([self _hasH264Version]) {
-			
-			// menu item and alternate for full screen viewing in QuickTime Player
-			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Fullscreen in QuickTime Player", @"Open Fullscreen in QT Player contextual menu item" )
-										   action: @selector( openFullscreenInQTPlayer: )];
-			if ([self _hasHDH264Version]) {
-				if ([self _useHDH264Version]) {
-					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Smaller Version Fullscreen in QuickTime Player", @"Open Smaller Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the 'HD' version)" )
-															  action: @selector( openFullscreenInQTPlayerSD: ) ];
-				}
-				else {
-					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Play Larger Version Fullscreen in QuickTime Player", @"Open Larger Version Fullscreen in QT Player contextual menu item (alternate for the standard item when the default uses the non-'HD' version)" )
-															  action: @selector( openFullscreenInQTPlayerHD: ) ];
-				}
-				[menuItem setAlternate:YES];
-				[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-			}
-
-			// menu item and alternate for downloading movie file
-			[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download H.264", @"Download H.264 menu item" )
-										   action: @selector( downloadH264: )];
-			if ([self _hasHDH264Version]) {
-				if ([self _useHDH264Version]) {
-					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download SD H.264", @"Download small size H.264 menu item (alternate for the standard item when the default uses the 'HD' version)" )
-															  action: @selector( downloadH264SD: ) ];
-				}
-				else {
-					menuItem = [self _addContextualMenuItemWithTitle: CtFLocalizedString( @"Download HD H.264", @"Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version)" )
-															  action: @selector( downloadH264HD: ) ];
-				}
-				[menuItem setAlternate:YES];
-				[menuItem setKeyEquivalentModifierMask:NSAlternateKeyMask];
-			}
-		}	
-	
-		if (_embeddedYouTubeView || [self _hasH264Version]) {
+	if ([self killer]) {
+		NSInteger itemCount = [[self menu] numberOfItems];
+		[[self killer] addAdditionalMenuItemsForContextualMenu];
+		if ([[self menu] numberOfItems] != itemCount) {
 			[[self menu] addItem: [NSMenuItem separatorItem]];
 		}
 	}
-		
+	
 	if ([self host] && ![self _isHostWhitelisted]) {
-		[self _addContextualMenuItemWithTitle: [NSString stringWithFormat:CtFLocalizedString( @"Add %@ to Whitelist", @"Add <sitename> to Whitelist contextual menu item" ), [self host]]
+		[self addContextualMenuItemWithTitle: [NSString stringWithFormat:CtFLocalizedString( @"Add %@ to Whitelist", @"Add <sitename> to Whitelist contextual menu item" ), [self host]]
 									   action: @selector( addToWhitelist: )];
 		[[self menu] addItem: [NSMenuItem separatorItem]];
 	}
 	
-	[self _addContextualMenuItemWithTitle: CtFLocalizedString( @"ClickToFlash Preferences...", @"Preferences contextual menu item" )
+	[self addContextualMenuItemWithTitle: CtFLocalizedString( @"ClickToFlash Preferences...", @"Preferences contextual menu item" )
 									action: @selector( editWhitelist: )];
 	
 	
@@ -841,22 +592,6 @@ BOOL usingMATrackingArea = NO;
     [self _convertTypesForFlashContainer];
 }
 
-- (IBAction)loadH264:(id)sender;
-{
-    [self _convertToMP4ContainerUsingHD:nil];
-}
-
-- (IBAction) loadH264SD:(id)sender;
-{
-	[self _convertToMP4ContainerUsingHD:[NSNumber numberWithBool:NO]];
-}
-
-- (IBAction) loadH264HD:(id)sender;
-{
-	[self _convertToMP4ContainerUsingHD:[NSNumber numberWithBool:YES]];
-}
-
-
 - (IBAction)loadAllOnPage:(id)sender
 {
     [[CTFMenubarMenuController sharedController] loadFlashForWindow: [self window]];
@@ -864,19 +599,19 @@ BOOL usingMATrackingArea = NO;
 
 - (void) _loadContent: (NSNotification*) notification
 {
-    [self _convertTypesForContainer];
+    [self convertTypesForContainer];
 }
 
 - (void) _loadContentForWindow: (NSNotification*) notification
 {
 	if( [ notification object ] == [ self window ] )
-		[ self _convertTypesForContainer ];
+		[ self convertTypesForContainer ];
 }
 
 - (void) _loadInvisibleContentForWindow: (NSNotification*) notification
 {
 	if( [ notification object ] == [ self window ] && [ self isConsideredInvisible ] ) {
-		[ self _convertTypesForContainer ];
+		[ self convertTypesForContainer ];
 	}
 }
 
@@ -885,31 +620,19 @@ BOOL usingMATrackingArea = NO;
 
 - (NSString*) badgeLabelText
 {
-	if( [ self _useHDH264Version ] ) {
-		return CtFLocalizedString( @"HD H.264", @"HD H.264 badge text" );
-	} else if( [ self _useH264Version ] ) {
-		if (_receivedAllResponses) {
-			return CtFLocalizedString( @"H.264", @"H.264 badge text" );
-		} else {
-			return CtFLocalizedString( @"H.264…", @"H.264 badge waiting text" );
-		}
-    } else if( _fromYouTube && _videoId) {
-		// we check the video ID too because if it's a flash ad on YouTube.com,
-		// we don't want to identify it as an actual YouTube video -- but if
-		// the flash object actually has a video ID parameter, it means its
-		// a bona fide YouTube video
-		
-		if (_receivedAllResponses) {
-			return CtFLocalizedString( @"YouTube", @"YouTube badge text" );
-		} else {
-			return CtFLocalizedString( @"YouTube…", @"YouTube badge waiting text" );
-		}
-    } else if( _isSIFR ) {
-        return CtFLocalizedString( @"sIFR Flash", @"sIFR Flash badge text" );
-    } else {
-        return CtFLocalizedString( @"Flash", @"Flash badge text" );
+	NSString * labelText = nil;
+	
+	if ([self killer] != nil) {
+		labelText = [[self killer] badgeLabelText];
 	}
+	
+	if (labelText == nil) {
+		labelText = CtFLocalizedString( @"Flash", @"Flash badge text" );
+	}
+	
+	return labelText;
 }
+
 
 - (void) _drawBadgeWithPressed: (BOOL) pressed
 {
@@ -1121,6 +844,22 @@ BOOL usingMATrackingArea = NO;
 		//CTGradient instances are returned autoreleased - no need for explicit release here
     }
 
+	// Overlay the preview image if there is one
+	NSImage * image = [self previewImage];
+	if ( image != nil ) {
+		// Determine the destination rect. The approach is to scale the preview image until it fills the view horizontally. This risks losing pixels at the top and bottom but seems to match what the sites providing preview images do, thus giving better results than 'clean' scaling to fit the whole image inside the view.
+		NSRect destinationRect;
+		NSSize imageSize = [image size];
+		CGFloat scale = fillRect.size.width / imageSize.width;
+		CGFloat destinationWidth = imageSize.width * scale;
+		CGFloat destinationHeight = imageSize.height * scale;
+		CGFloat destinationBottom = fillRect.origin.y + ( fillRect.size.height - destinationHeight) / 2.0;
+		
+		destinationRect = NSMakeRect(fillRect.origin.x, destinationBottom, destinationWidth, destinationHeight);
+		
+		[[self previewImage] drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceIn fraction: 0.8];
+	}
+
     // Draw stroke
     [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
     [NSBezierPath setDefaultLineWidth:2.0];
@@ -1196,10 +935,10 @@ BOOL usingMATrackingArea = NO;
 
 
 #pragma mark -
-#pragma mark YouTube H.264 support
+#pragma mark Helper Methods
 
 
-- (NSDictionary*) _flashVarDictionary: (NSString*) flashvarString
++ (NSDictionary*) flashVarDictionary: (NSString*) flashvarString
 {
     NSMutableDictionary* flashVarsDictionary = [ NSMutableDictionary dictionary ];
     
@@ -1218,346 +957,14 @@ BOOL usingMATrackingArea = NO;
     return flashVarsDictionary;
 }
 
-- (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML
-{
-	NSMutableDictionary* flashVarsDictionary = [ NSMutableDictionary dictionary ];
-	NSScanner *HTMLScanner = [[NSScanner alloc] initWithString:youTubePageHTML];
-	
-	[HTMLScanner scanUpToString:@"var swfArgs = {" intoString:nil];
-	BOOL swfArgsFound = [HTMLScanner scanString:@"var swfArgs = {" intoString:nil];
-	
-	if (swfArgsFound) {
-		NSString *swfArgsString = nil;
-		[HTMLScanner scanUpToString:@"}" intoString:&swfArgsString];
-		NSArray *arrayOfSWFArgs = [swfArgsString componentsSeparatedByString:@", "];
-		CTFForEachObject( NSString, currentArgPairString, arrayOfSWFArgs ) {
-			NSRange sepRange = [ currentArgPairString rangeOfString:@": "];
-			if (sepRange.location != NSNotFound) {
-				NSString *potentialKey = [currentArgPairString substringToIndex:sepRange.location];
-				NSString *potentialVal = [currentArgPairString substringFromIndex:NSMaxRange(sepRange)];
-				
-				// we might need to strip the surrounding quotes from the keys and values
-				// (but not always)
-				NSString *key = nil;
-				if ([[potentialKey substringToIndex:1] isEqualToString:@"\""]) {
-					key = [potentialKey substringWithRange:NSMakeRange(1,[potentialKey length] - 2)];
-				} else {
-					key = potentialKey;
-				}
-				
-				NSString *val = nil;
-				if ([[potentialVal substringToIndex:1] isEqualToString:@"\""]) {
-					val = [potentialVal substringWithRange:NSMakeRange(1,[potentialVal length] - 2)];
-				} else {
-					val = potentialVal;
-				}
-				
-				[flashVarsDictionary setObject:val forKey:key];
-			}
-		}
-	}
-	
-	[HTMLScanner release];
-	return flashVarsDictionary;
-}
 
 - (NSString*) flashvarWithName: (NSString*) argName
 {
     return [[[ _flashVars objectForKey: argName ] retain] autorelease];
 }
 
-/*- (NSString*) _videoId
-{
-    return [ self flashvarWithName: @"video_id" ];
-}*/
 
-- (NSString*) _videoHash
-{
-    return [ self flashvarWithName: @"t" ];
-}
-
-- (void)_checkForH264VideoVariants
-{
-	for (int i = 0; i < 2; ++i) {
-		NSMutableURLRequest *request;
-		NSString * URLString;
-		if (i == 0) { URLString = [self H264URLString]; }
-		else { URLString = [self H264HDURLString]; }
-		
-		request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:URLString]];
-		
-		if (request != nil) {
-			[request setHTTPMethod:@"HEAD"];
-			connections[i] = [[NSURLConnection alloc] initWithRequest:request
-															 delegate:self];
-		}
-	}
-
-	expectedResponses = 2;
-	_receivedAllResponses = NO;
-}
-
-- (void)finishedWithConnection:(NSURLConnection *)connection
-{
-	BOOL didReceiveAllResponses = YES;
-	
-	for (int i = 0; i < 2; ++i) {
-		if (connection == connections[i]) {
-			[connection cancel];
-			[connection release];
-			connections[i] = nil;
-		} else if (connections[i])
-			didReceiveAllResponses = NO;
-	}
-	
-	if (didReceiveAllResponses) _receivedAllResponses = YES;
-	
-	[self setNeedsDisplay:YES];
-}
-
-- (void)connection:(NSURLConnection *)connection
-didReceiveResponse:(NSHTTPURLResponse *)response
-{
-	int statusCode = [response statusCode];
-	
-	if (statusCode == 200) {
-		if (connection == connections[0])
-			[self _setHasH264Version:YES];
-		else 
-			[self _setHasHDH264Version:YES];
-	}
-	
-	[self finishedWithConnection:connection];
-}
-
-- (void)connection:(NSURLConnection *)connection
-  didFailWithError:(NSError *)error
-{
-	[self finishedWithConnection:connection];
-}
-
-- (NSURLRequest *)connection:(NSURLConnection *)connection 
-			 willSendRequest:(NSURLRequest *)request 
-			redirectResponse:(NSURLResponse *)redirectResponse
-{
-	/* We need to fix the redirects to make sure the method they use
-	   is HEAD. */
-	if ([[request HTTPMethod] isEqualTo:@"HEAD"])
-		return request;
-
-	NSMutableURLRequest *newRequest = [request mutableCopy];
-	[newRequest setHTTPMethod:@"HEAD"];
-	
-	return [newRequest autorelease];
-}
-
-- (BOOL) _useH264Version
-{
-    return [ self _hasH264Version ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
-}
-
-- (BOOL) _useHDH264Version
-{
-	return [ self _hasHDH264Version ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeH264DefaultsKey ] 
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sUseYouTubeHDH264DefaultsKey ]
-	&& [ [ CTFUserDefaultsController standardUserDefaults ] boolForKey: sPluginEnabled ];
-}
-
-
-- (BOOL)_isVideoElementAvailable
-{
-	if ( [[CTFUserDefaultsController standardUserDefaults] boolForKey:sDisableVideoElement] )
-		return NO;
-	
-	/* <video> element compatibility was added to WebKit in or shortly before version 525. */
-	
-    NSBundle* webKitBundle;
-    webKitBundle = [ NSBundle bundleForClass: [ WebView class ] ];
-    if (webKitBundle) {
-		/* ref. http://lists.apple.com/archives/webkitsdk-dev/2008/Nov/msg00003.html:
-		 * CFBundleVersion is 5xxx.y on WebKits built to run on Leopard, 4xxx.y on Tiger.
-		 * Unspecific builds (such as the ones in OmniWeb) get xxx.y numbers without a prefix.
-		 */
-		int normalizedVersion;
-		float wkVersion = [ (NSString*) [ [ webKitBundle infoDictionary ] 
-										 valueForKey: @"CFBundleVersion" ] 
-						   floatValue ];
-		if (wkVersion > 4000)
-			normalizedVersion = (int)wkVersion % 1000;
-		else
-			normalizedVersion = wkVersion;
-		
-		// unfortunately, versions of WebKit above 531.5 also introduce a nasty
-		// scrolling bug with video elements that cause them to be unviewable;
-		// this bug was fixed shortly after being reported by @simX, so we can
-		// now re-enable it for correct WebKit versions
-		//
-		// this bug actually only affected certain machines that had graphics
-		// cards with a certain max texture size, and it was partially fixed, but
-		// still didn't work for MacBooks with embedded graphics, and we could
-		// detect that if we really wanted, but that would require importing
-		// the OpenGL framework, which we probably shouldn't do, so we'll just
-		// wholesale disable for certain WebKit versions
-		//
-		// https://bugs.webkit.org/show_bug.cgi?id=28705
-		
-		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-			// Snowy Leopard; this bug doesn't seem to be exhibited here
-			return (normalizedVersion >= 525);
-		} else {
-			// this bug was introduced in version 531.5, but has been fixed in
-			// 532 and above
-			
-			return ((normalizedVersion >= 532) ||
-					((normalizedVersion >= 525) && (normalizedVersion < 531.5))
-					);
-		}
-	}
-	return NO;
-}
-
-
-- (void) _convertElementForMP4: (DOMElement*) element atURL: (NSString*) URLString
-{
-	// some tags (OBJECT) want a data attribute, and some want a src attribute
-	// for some reason, though, some cloned elements are not reporting themselves
-	// as OBJECT tags, even though they are; more investigation on this is needed,
-	// but for now, setting both the data and the src attribute corrects the problem
-	// (see bug #294)
-	
-	[ element setAttribute: @"data" value: URLString ];
-	[ element setAttribute: @"src" value: URLString ];
-	[ element setAttribute: @"type" value: @"video/mp4" ];
-    [ element setAttribute: @"scale" value: @"aspect" ];
-    if (_youTubeAutoPlay) {
-		[ element setAttribute: @"autoplay" value: @"true" ];
-	} else {
-		[ element setAttribute: @"autoplay" value: @"false" ];
-	}
-    [ element setAttribute: @"cache" value: @"false" ];
-	[ element setAttribute: @"bgcolor" value: @"transparent" ];
-    [ element setAttribute: @"flashvars" value: nil ];
-}
-
-- (void) _convertElementForVideoElement: (DOMElement*) element atURL: (NSString*) URLString
-{
-    [ element setAttribute: @"src" value: URLString ];
-	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
-	if (_youTubeAutoPlay) {
-		[ element setAttribute: @"autoplay" value:@"autoplay" ];
-	} else {
-		if ( [element hasAttribute:@"autoplay"] )
-			[ element removeAttribute:@"autoplay" ];
-	}
-	[ element setAttribute: @"controls" value:@"controls"];
-	[ element setAttribute:@"width" value:@"100%"];
-}
-
-
-/*
- The useHD parameter indicates whether we want to override the default behaviour to use or not use HD.
- Passing nil invokes the default behaviour based on user preferences and HD availability.
-*/
-- (void) _convertToMP4ContainerUsingHD: (NSNumber*) useHD
-{
-	[self _revertToOriginalOpacityAttributes];
-	
-	// Delay this until the end of the event loop, because it may cause self to be deallocated
-	[self _prepareForConversion];
-	[self performSelector:@selector(_convertToMP4ContainerAfterDelayUsingHD:) withObject:useHD afterDelay:0.0];
-}
-
-- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber
-{
-	BOOL useHD = [ self _useHDH264Version ];
-	if (useHDNumber) {
-		useHD = [useHDNumber boolValue];
-	}
-	
-	NSString * URLString;
-	if ( useHD && [ self _hasHDH264Version ] ) {
-		URLString = [ self H264HDURLString ];
-	}
-	else {
-		URLString = [ self H264URLString ];
-	}
-	
-	DOMDocument* document = [[self container] ownerDocument];
-	DOMElement* videoElement;
-	if ([ self _isVideoElementAvailable ]) {
-		videoElement = [document createElement:@"video"];
-		[ self _convertElementForVideoElement: videoElement atURL: URLString ];
-    } else {
-		videoElement = (DOMElement*) [ [self container] cloneNode: NO ];
-		[ self _convertElementForMP4: videoElement atURL: URLString ];
-	}
-	
-	// Put links for going to the YouTube page and downloading the video file beneath the video as these vanish once CtF is invoked and it's hard to bookmark the YouTube link otherwise.
-	NSString * linkCSS = @"margin:0px 0.5em;padding:0px;border:0px none;";
-	DOMElement* YouTubeLinkElement = [document createElement: @"a"];
-	[YouTubeLinkElement setAttribute: @"href" value: [self YouTubePageURLString]];
-	[YouTubeLinkElement setAttribute: @"style" value: linkCSS];
-	[YouTubeLinkElement setAttribute: @"class" value: @"clicktoflash-link youtube"];
-	[YouTubeLinkElement setTextContent:CtFLocalizedString(@"Go to YouTube page", @"Text of link to YouTube page appearing beneath the video")];
-	
-	DOMElement* downloadLinkElement = [document createElement: @"a"];
-	[downloadLinkElement setAttribute: @"href" value: URLString];
-	[downloadLinkElement setAttribute: @"style" value: linkCSS];
-	[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link h264download"];
-	[downloadLinkElement setTextContent:CtFLocalizedString(@"Download video file", @"Text of link to H.264 Download appearing beneath the video")];
-	
-	NSString * divCSS = @"margin:auto;padding:0px;border:0px none;text-align:center;display:block;float:none;";
-	DOMElement* linkContainerElement = [document createElement: @"div"];
-	[linkContainerElement setAttribute: @"style" value: divCSS];
-	[linkContainerElement setAttribute: @"class" value: @"clicktoflash-linkcontainer"];
-	if ( ![[self baseURL] hasPrefix: [self YouTubePageURLString]]) {
-		[linkContainerElement appendChild:YouTubeLinkElement];
-	}
-	[linkContainerElement appendChild:downloadLinkElement];
-
-	if ( [self _hasHDH264Version] && !useHD) {
-		// offer additional link for HD download if available
-		NSString * extraLinkCSS = @"margin:0px;padding:0px;border:0px none;";
-		DOMElement * extraDownloadLinkElement = [document createElement: @"a"];
-		[extraDownloadLinkElement setAttribute: @"href" value: [self H264HDURLString]];
-		[extraDownloadLinkElement setAttribute: @"style" value: extraLinkCSS];
-		[extraDownloadLinkElement setAttribute: @"class" value: @"clicktoflash-link h264download"];
-		[extraDownloadLinkElement setTextContent: CtFLocalizedString(@"(Larger Size)", @"Text of link to additional Large Size H.264 Download appearing beneath the video after the standard link")];
-		[linkContainerElement appendChild: extraDownloadLinkElement];
-	}
-	
-	DOMNode * widthNode = [[[self container] attributes ] getNamedItem:@"width"];
-	NSString * width = @"100%"; // default to 100% width
-	if (widthNode != nil) {
-		// width is already set explicitly, preserve that
-		width = [widthNode nodeValue];
-		if ( [[NSCharacterSet decimalDigitCharacterSet] characterIsMember:[width characterAtIndex:[width length] - 1]] ) {
-			// add 'px' if existing width is just a number (ends with a digit)
-			width = [width stringByAppendingString:@"px"];
-		}
-	}
-	NSString * widthCSS = [NSString stringWithFormat:@"%@width:%@;", divCSS, width];
-
-	DOMElement* CtFContainerElement = [document createElement: @"div"]; 
-	[CtFContainerElement setAttribute: @"style" value: widthCSS];
-	[CtFContainerElement setAttribute: @"class" value: @"clicktoflash-container"];
-	[CtFContainerElement appendChild: videoElement];
-	[CtFContainerElement appendChild: linkContainerElement];
-	
-	
-    // Just to be safe, since we are about to replace our containing element
-    [[self retain] autorelease];
-    
-    // Replace self with element.
-	[[[self container] parentNode] replaceChild:CtFContainerElement oldChild:[self container]];
-
-    [self setContainer:nil];
-}
-
-- (NSString *)launchedAppBundleIdentifier
++ (NSString *)launchedAppBundleIdentifier
 {
 	NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
 	
@@ -1593,139 +1000,20 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	return appBundleIdentifier;
 }
 
-- (NSString *)YouTubePageURLString
-{
-	return [ NSString stringWithFormat: @"http://www.youtube.com/watch?v=%@", [self videoId] ];
+
+- (void) browseToURLString: (NSString*) URLString {
+	[_webView setMainFrameURL:URLString];
 }
 
-- (NSString *)H264URLString
-{
-    return [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@",
-			[self videoId], [ self _videoHash ] ];
-}
-
-- (NSString *)H264HDURLString
-{
-    return [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@",
-			[self videoId], [ self _videoHash ] ];
-}
-
-
-
-- (void) downloadH264UsingHD: (BOOL) useHD {
-	NSString * src;
-	if ( useHD && [self _hasHDH264Version]) {
-		src = [ self H264HDURLString ];
-	} else {
-		src = [ self H264URLString ];
-	}
-	
-	[[NSWorkspace sharedWorkspace] openURLs: [NSArray arrayWithObject:[NSURL URLWithString:src]]
-					withAppBundleIdentifier: [self launchedAppBundleIdentifier]
+- (void) downloadURLString: (NSString*) URLString {
+	[[NSWorkspace sharedWorkspace] openURLs: [NSArray arrayWithObject:[NSURL URLWithString: URLString]]
+					withAppBundleIdentifier: [CTFClickToFlashPlugin launchedAppBundleIdentifier]
 									options: NSWorkspaceLaunchDefault
 			 additionalEventParamDescriptor: [NSAppleEventDescriptor nullDescriptor]
-						  launchIdentifiers: nil];	
+						  launchIdentifiers: nil];		
 }
 
 
-- (IBAction)downloadH264:(id)sender
-{
-	BOOL wantHD = [[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey];
-	[self downloadH264UsingHD: wantHD];
-}
-
-- (IBAction)downloadH264SD:(id)sender {
-	[self downloadH264UsingHD: NO];
-}
-
-- (IBAction)downloadH264HD:(id)sender {
-	[self downloadH264UsingHD: YES];
-}
-
-
-- (IBAction)loadYouTubePage:(id)sender
-{	
-    [_webView setMainFrameURL:[self YouTubePageURLString]];
-}
-
-
-- (void)openFullscreenInQTPlayerUsingHD:(BOOL) useHD {
-	NSString * src;
-	if (useHD && [self _hasHDH264Version]) {
-		src = [ self H264HDURLString ];
-	} else {
-		src = [ self H264URLString ];
-	}
-	
-	NSString *scriptSource = nil;
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-		// Snowy Leopard
-		scriptSource = [NSString stringWithFormat:
-						@"tell application \"QuickTime Player\"\nactivate\nopen URL \"%@\"\nrepeat while (front document is not presenting)\ndelay 1\npresent front document\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
-	} else {
-		scriptSource = [NSString stringWithFormat:
-						@"tell application \"QuickTime Player\"\nactivate\ngetURL \"%@\"\nrepeat while (display state of front document is not presentation)\ndelay 1\npresent front document scale screen\nend repeat\nrepeat while (playing of front document is false)\ndelay 1\nplay front document\nend repeat\nend tell",src];
-	}
-	NSAppleScript *openInQTPlayerScript = [[NSAppleScript alloc] initWithSource:scriptSource];
-	[openInQTPlayerScript executeAndReturnError:nil];
-	[openInQTPlayerScript release];	
-}
-
-- (IBAction)openFullscreenInQTPlayer:(id)sender;
-{
-	BOOL useHD = [[CTFUserDefaultsController standardUserDefaults] boolForKey:sUseYouTubeHDH264DefaultsKey];
-	
-	[self openFullscreenInQTPlayerUsingHD: useHD];
-}
-
-- (IBAction)openFullscreenInQTPlayerSD:(id)sender{
-	[self openFullscreenInQTPlayerUsingHD: NO];	
-}
-
-- (IBAction)openFullscreenInQTPlayerHD:(id)sender{
-	[self openFullscreenInQTPlayerUsingHD: YES];	
-}
-
-
-- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars
-{
-	if (flashVars)
-	{
-		_flashVars = [flashVars retain];
-		NSString *videoId = [self flashvarWithName:@"video_id"];
-		[self setVideoId:videoId];
-	}
-	
-	[self _checkForH264VideoVariants];
-}
-
-- (void)_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSURL *YouTubePageURL = [NSURL URLWithString: [self YouTubePageURLString]];
-	NSError *pageSourceError = nil;
-	NSString *pageSourceString = [NSString stringWithContentsOfURL:YouTubePageURL
-													  usedEncoding:nil
-															 error:&pageSourceError];
-	NSDictionary *flashVars = nil;
-	if (pageSourceString && !pageSourceError) {
-		flashVars = [self _flashVarDictionaryFromYouTubePageHTML:pageSourceString];
-	}
-	
-	[self performSelectorOnMainThread:@selector(_didRetrieveEmbeddedPlayerFlashVars:)
-						   withObject:flashVars
-						waitUntilDone:NO];
-	
-	[pool drain];
-}
-
-- (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
-{
-	[NSThread detachNewThreadSelector:@selector(_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:)
-							 toTarget:self
-						   withObject:videoId];
-}
 
 
 #pragma mark -
@@ -1741,20 +1029,25 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     }
 }
 
-- (void) _convertTypesForContainer
-{
-    if ([self _useH264Version])
-        [self _convertToMP4ContainerUsingHD: nil];
-    else
+
+- (void) convertTypesForContainer {
+	BOOL success = NO;
+	if ([self killer]) {
+		success = [[self killer] convertToContainer];
+	}
+
+	if (!success) {
         [self _convertTypesForFlashContainer];
+	}
 }
+
 
 - (void) _convertTypesForFlashContainer
 {
-	[self _revertToOriginalOpacityAttributes];
+	[self revertToOriginalOpacityAttributes];
 	
 	// Delay this until the end of the event loop, because it may cause self to be deallocated
-	[self _prepareForConversion];
+	[self prepareForConversion];
 	[self performSelector:@selector(_convertTypesForFlashContainerAfterDelay) withObject:nil afterDelay:0.0];
 }
 
@@ -1786,7 +1079,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [self setContainer:nil];
 }
 
-- (void) _prepareForConversion
+- (void) prepareForConversion
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -1796,7 +1089,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	[ self _abortAlert ];
 }
 
-- (void) _revertToOriginalOpacityAttributes
+- (void) revertToOriginalOpacityAttributes
 {
 	NSString *selfWmode = [[self originalOpacityAttributes] objectForKey:@"self-wmode"];
 	if (selfWmode != nil ) {
@@ -1824,6 +1117,92 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 		}
 	}
 }
+
+
+
+
+#pragma mark -
+#pragma mark Preferences
+
+- (void) _migratePrefsToExternalFile
+{
+	NSArray *parasiticDefaultsNameArray = [NSArray arrayWithObjects:@"ClickToFlash_pluginEnabled",
+										   @"ClickToFlash_useYouTubeH264",
+										   @"ClickToFlash_autoLoadInvisibleViews",
+										   @"ClickToFlash_sifrMode",
+										   @"ClickToFlash_checkForUpdatesOnFirstLoad",
+										   @"ClickToFlash_siteInfo",
+										   nil];
+	
+	NSArray *externalDefaultsNameArray = [NSArray arrayWithObjects:@"pluginEnabled",
+										  @"useYouTubeH264",
+										  @"autoLoadInvisibleViews",
+										  @"sifrMode",
+										  @"checkForUpdatesOnFirstLoad",
+										  @"siteInfo",
+										  nil];
+	
+	NSMutableDictionary *externalFileDefaults = [[CTFUserDefaultsController standardUserDefaults] dictionaryRepresentation];
+	
+	[[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.github.rentzsch.clicktoflash"];
+	unsigned int i;
+	for (i = 0; i < [parasiticDefaultsNameArray count]; i++) {
+		NSString *currentParasiticDefault = [parasiticDefaultsNameArray objectAtIndex:i];
+		id prefValue = [[NSUserDefaults standardUserDefaults] objectForKey:currentParasiticDefault];
+		if (prefValue) {
+			NSString *externalPrefDefaultName = [externalDefaultsNameArray objectAtIndex:i];
+			id existingExternalPref = [[CTFUserDefaultsController standardUserDefaults] objectForKey:externalPrefDefaultName];
+			if (! existingExternalPref) {
+				// don't overwrite existing external preferences
+				[externalFileDefaults setObject:prefValue forKey:externalPrefDefaultName];
+			} else {
+				if ([currentParasiticDefault isEqualToString:@"ClickToFlash_siteInfo"]) {
+					// merge the arrays of whitelisted sites, in case they're not identical
+					
+					NSMutableArray *combinedWhitelist = [NSMutableArray arrayWithArray:prefValue];
+					[combinedWhitelist addObjectsFromArray:existingExternalPref];
+					[externalFileDefaults setObject:combinedWhitelist forKey:externalPrefDefaultName];
+					
+					// because people named Kevin Ballard messed up their preferences file and somehow
+					// managed to retain ClickToFlash_siteInfo in their com.github plist file
+					[externalFileDefaults removeObjectForKey:currentParasiticDefault];
+				}
+			}
+			// eliminate the parasitic default, regardless of whether we transferred them or not
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:currentParasiticDefault];
+		}
+	}
+	[[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.github.rentzsch.clicktoflash"];
+}
+
+
+- (void) _uniquePrefsFileWhitelist
+{
+	NSArray *siteInfoArray = [[CTFUserDefaultsController standardUserDefaults] arrayForKey:@"siteInfo"];
+	NSSet *siteInfoSet = [NSSet setWithArray:siteInfoArray];
+	
+	[[CTFUserDefaultsController standardUserDefaults] setValue:[siteInfoSet allObjects] forKeyPath:@"values.siteInfo"];
+}
+
+
+- (void) _addApplicationWhitelistArrayToPrefsFile
+{
+	CTFUserDefaultsController *standardUserDefaults = [CTFUserDefaultsController standardUserDefaults];
+	NSArray *applicationWhitelist = [standardUserDefaults arrayForKey:sApplicationWhitelist];
+	if (! applicationWhitelist) {
+		// add an empty array to the plist file so people know exactly where to
+		// whitelist apps
+		
+		[standardUserDefaults setObject:[NSArray array] forKey:sApplicationWhitelist];
+	}
+}
+
+
+
+
+
+#pragma mark -
+#pragma mark Accessors
 
 - (WebView *)webView
 {
@@ -1901,43 +1280,56 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     _src = newValue;
 }
 
-- (NSString *)videoId
+
+- (CTFKiller *)killer
 {
-    return [[_videoId retain] autorelease];
-}
-- (void)setVideoId:(NSString *)newValue
-{
-    [newValue retain];
-    [_videoId release];
-    _videoId = newValue;
+	return killer;
 }
 
-- (BOOL)_hasH264Version
+- (void)setKiller:(CTFKiller *)newKiller
 {
-	return (_fromYouTube && _hasH264Version);
+	[newKiller retain];
+	[killer release];
+	killer = newKiller;
 }
 
-- (void)_setHasH264Version:(BOOL)newValue
-{
-	_hasH264Version = newValue;
-	[self setNeedsDisplay:YES];
+
+- (NSURL *) previewURL {
+	return previewURL;
 }
 
-- (BOOL)_hasHDH264Version
-{
-	return (_fromYouTube && _hasHDH264Version);
+- (void) setPreviewURL:(NSURL *) newPreviewURL {
+	[newPreviewURL retain];
+	[previewURL release];
+	previewURL = newPreviewURL;
+	
+	if (previewURL != nil) {
+		CTFLoader * loader = [[[CTFLoader alloc] initWithURL: newPreviewURL delegate: self selector:@selector(receivedPreviewImage:)] autorelease];
+		[loader start];
+	}
 }
 
-- (void)_setHasHDH264Version:(BOOL)newValue
-{
-	_hasHDH264Version = newValue;
-	[self setNeedsDisplay:YES];
+
+- (NSImage *) previewImage {
+    return previewImage;
 }
 
-- (void)setLaunchedAppBundleIdentifier:(NSString *)newValue
-{
-    [newValue retain];
-    [_launchedAppBundleIdentifier release];
-    _launchedAppBundleIdentifier = newValue;
+- (void) setPreviewImage: (NSImage *) newPreviewImage {
+	[newPreviewImage retain];
+	[previewImage release];
+	previewImage = newPreviewImage;
+	
+	[self setNeedsDisplay: YES];
 }
+
+- (void) receivedPreviewImage: (CTFLoader*) loader {
+	NSImage * image = [[[NSImage alloc] initWithData: [loader data]] autorelease];
+	if (image != nil) {
+		[self setPreviewImage: image];
+	}
+}
+
+
+
+
 @end
