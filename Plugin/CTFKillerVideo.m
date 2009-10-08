@@ -402,12 +402,14 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 - (void) _convertElementForVideoElement: (DOMElement*) element atURL: (NSString*) URLString
 {
     [ element setAttribute: @"src" value: URLString ];
-	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
 	if ([self autoPlay]) {
 		[ element setAttribute: @"autoplay" value:@"autoplay" ];
 	} else {
 		if ( [element hasAttribute:@"autoplay"] )
 			[ element removeAttribute:@"autoplay" ];
+	}
+	if ([[self plugin] previewURL] != nil) {
+		[element setAttribute: @"poster"  value: [[[self plugin] previewURL] absoluteString]];
 	}
 	[ element setAttribute: @"controls" value:@"controls"];
 	[ element setAttribute:@"width" value:@"100%"];
