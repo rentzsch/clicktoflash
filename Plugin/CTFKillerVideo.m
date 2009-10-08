@@ -50,6 +50,7 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 		hasVideo = NO;
 		hasVideoHD = NO;
 		
+		activeLookups = 0;
 		lookupStatus = nothing;
 		requiresConversion = NO;
 		

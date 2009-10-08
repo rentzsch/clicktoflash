@@ -58,9 +58,6 @@
 	[self setClipSignature: nil];
 	[self setClipExpires: nil];
 	[self setRedirectedURLString: nil];
-	downloadData = nil;
-	lookupStatus = nothing;
-	activeLookups = 0;
 	
 	NSString * myID = [ self flashVarWithName:@"clip_id" ]; 
 
