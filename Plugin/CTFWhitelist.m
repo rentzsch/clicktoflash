@@ -46,19 +46,20 @@ typedef enum {
 
 static BOOL nameMatchesDomainName ( NSString* name, NSString* domainName ) {
 	BOOL result = NO;
-	NSRange domainRange = [name rangeOfString: domainName options: NSCaseInsensitiveSearch || NSAnchoredSearch || NSBackwardsSearch];
-	if ( domainRange.location != NSNotFound ) {
-		// if the match doesn't reach to the beginning of the string, make sure that the preceding character is a dot, to avoid matching other domain names
-		if ( domainRange.location == 0 ) {
-			result = YES;
-		}
-		else {
-			if ( [[name substringWithRange:NSMakeRange(domainRange.location - 1, 1)] isEqualToString:@"."] ) {
+	if ( name != nil ) {
+		NSRange domainRange = [name rangeOfString: domainName options: NSCaseInsensitiveSearch || NSAnchoredSearch || NSBackwardsSearch];
+		if ( domainRange.location != NSNotFound ) {
+			// if the match doesn't reach to the beginning of the string, make sure that the preceding character is a dot, to avoid matching other domain names
+			if ( domainRange.location == 0 ) {
 				result = YES;
 			}
+			else {
+				if ( [[name substringWithRange:NSMakeRange(domainRange.location - 1, 1)] isEqualToString:@"."] ) {
+					result = YES;
+				}
+			}
 		}
-	}
-	
+	}	
 	return result;
 }
 
