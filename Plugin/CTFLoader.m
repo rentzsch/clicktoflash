@@ -59,7 +59,6 @@
 
 
 - (void) finish {
-	[[self retain] autorelease];
 	[delegate performSelector:callbackSelector withObject:self];
 }
 
@@ -86,6 +85,12 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)theResponse {
 	[self setResponse: theResponse];
+	
+	// We need to cancel HEAD fetching connections here as 10.5 may proceed to download the whole file otherwise (http://openradar.appspot.com/7019347)
+	if ( [self HEADOnly] && [theResponse statusCode] == 200 ) {
+		[self finish];
+		[connection cancel];
+	}
 }
 
 
