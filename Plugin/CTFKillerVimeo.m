@@ -193,19 +193,19 @@
 
 		// Now we collected the data but vimeo seem to have two video formats in the background flv/mp4. The only way I see so far to tell those apart is from the MIME Type of the video file's URL. Any better way to do this would be great.		
 		NSString * HEADURLString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/", [self clipID], [self clipSignature], [self clipExpires]];
-		CTFLoader * loader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:HEADURLString] delegate:self selector:@selector(HEADDownloadFinished:)] autorelease];
-		if (loader != nil) {
-			[loader setHEADOnly:YES];
-			[loader start];
+		CTFLoader * newLoader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:HEADURLString] delegate:self selector:@selector(HEADDownloadFinished:)] autorelease];
+		if (newLoader != nil) {
+			[newLoader setHEADOnly:YES];
+			[newLoader start];
 			[self increaseActiveLookups];
 		}
 		
 		if ( clipIsHD ) {
 			NSString * HEADURLHDString = [NSString stringWithFormat:@"http://vimeo.com/moogaloop/play/clip:%@/%@/%@/?q=hd", [self clipID], [self clipSignature], [self clipExpires]];
-			loader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:HEADURLHDString] delegate:self selector:@selector(HEADHDDownloadFinished:)] autorelease];
-			if (loader != nil) {
-				[loader setHEADOnly:YES];
-				[loader start];
+			newLoader = [[[CTFLoader alloc] initWithURL: [NSURL URLWithString:HEADURLHDString] delegate:self selector:@selector(HEADHDDownloadFinished:)] autorelease];
+			if (newLoader != nil) {
+				[newLoader setHEADOnly:YES];
+				[newLoader start];
 				[self increaseActiveLookups];
 			}		
 		}
