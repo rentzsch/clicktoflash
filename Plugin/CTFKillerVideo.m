@@ -77,10 +77,6 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 - (NSString*) videoURLString { return nil;} 
 - (NSString*) videoHDURLString { return nil; }
 
-// URL for downloading the video file. Return nil to use the same URL the video element uses.
-- (NSString *) videoDownloadURLString {	return nil; }
-- (NSString *) videoHDDownloadURLString { return nil; }
-
 // Text used for video file download link. Return nil to use standard text.
 - (NSString *) videoDownloadLinkText { return nil; }
 

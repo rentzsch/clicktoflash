@@ -64,10 +64,6 @@ enum CTFKVLookupStatus {
 - (NSString*) videoURLString;
 - (NSString*) videoHDURLString;
 
-// URL for downloading the video file. Return nil to use the same URL the video element uses.
-- (NSString *) videoDownloadURLString;
-- (NSString *) videoHDDownloadURLString;
-
 // Text used for video file download link. Return nil to use standard text.
 - (NSString *) videoDownloadLinkText;
 
