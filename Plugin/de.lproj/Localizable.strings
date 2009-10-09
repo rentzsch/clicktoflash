@@ -88,11 +88,17 @@
 	Additional Links for inserted QuickTime film
 */
 
-/* Text of link to H.264 Download appearing beneath the video */
+/* Text of link to Video Download appearing beneath the video */
 "Download video file" = "Filmdatei laden";
 
-/* Text of link to additional Larger Size H.264 Download appearing beneath the video after the standard link */
-"(Larger Size)" = "(Größere Version)";
+/* Label for download links appearing beneath the video */
+"Download: " = "Filmdatei laden: ";
+
+/* Text of link for downloading a version of the video in the current size; appearing beneath the video */
+"Current Size" = "Aktuelle Größe";
+
+/* Text of link to additional Larger Size Video Download appearing beneath the video after the standard link */
+"Larger Size" = "Größere Version";
 
 /* Text of link to the video page on SITENAME appearing beneath the video  */ 
 "Go to %@ Page" = "%@ Seite öffnen";

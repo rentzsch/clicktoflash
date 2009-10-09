@@ -103,8 +103,8 @@ enum CTFKVLookupStatus {
 - (void) _convertElementForVideoElement: (DOMElement*) element atURL: (NSString*) URLString;
 - (void) convertToMP4ContainerUsingHD: (NSNumber*) useHD;
 - (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber;
-- (void) convertToMP4ContainerAtURL: (NSString*) URLString;
-- (DOMElement*) linkContainerElementForURL: (NSString*) URLString;
+- (void) _convertToMP4ContainerUsingHD: (BOOL) useHD;
+- (DOMElement*) linkContainerElementUsingHD: (BOOL) useHD;
 
 // Helpers
 - (BOOL) useVideo;
