@@ -32,8 +32,9 @@
 
 - (id) initWithURL: (NSURL *) theURL delegate: (id) theDelegate selector: (SEL) theSelector {
 	self = [super init];
+	id result = nil;
 	
-	if (self != nil) {
+	if (self != nil && theURL != nil && theDelegate != nil && theSelector != NULL) {
 		[self setURL: theURL];
 		[self setDelegate: theDelegate];
 		[self setCallbackSelector: theSelector];
@@ -41,9 +42,11 @@
 		data = [[NSMutableData alloc] init];
 		identifier = nil;
 		response = nil;
+		
+		result = self;
 	}
 	
-	return self;
+	return result;
 }
 
 

@@ -154,15 +154,25 @@
 
 // URL to the video file used for loading it in the player.
 - (NSString*) videoURLString { 
-	NSString * result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@", [self videoID], [self videoHash] ];
+	NSString * result = nil;
+	NSString * ID = [self videoID];
+	NSString * hash = [self videoHash];
+	if (ID != nil && hash != nil) {
+		result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@", ID, hash ];		
+	}
 
 	return result;
 } 
 
 
 - (NSString*) videoHDURLString { 
-	NSString * result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@", [self videoID], [self videoHash] ];
-
+	NSString * result = nil;
+	NSString * ID = [self videoID];
+	NSString * hash = [self videoHash];
+	if (ID != nil && hash != nil) {	
+		result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@", ID, hash ];
+	}
+	
 	return result; 
 }
 
