@@ -69,59 +69,57 @@
 
 
 
+
 - (void) setup {
 	lookupStatus = nothing;
-	NSString * myVideoID = [ self flashVarWithName:@"video_id" ]; 
-	
-	if (myVideoID != nil) {
-		[self setVideoID: myVideoID];
-		// this retrieves new data from the internets, but the NSURLConnection
-		// methods already spawn separate threads for the data retrieval,
-		// so no need to spawn a separate thread
+	[self setInfoFromFlashVars];
 
-		[self setLookupStatus: inProgress];
+	NSString * myVideoID = [self videoID];
+	NSString * myVideoHash = [self videoHash];
+	
+	if (myVideoID != nil && myVideoHash != nil) {
 		[self _checkForH264VideoVariants];
 	} 
 	else {
 		// it's an embedded YouTube flash view; scrub the URL to
 		// determine the video_id, then get the source of the YouTube
 		// page to get the Flash vars
-			
-		NSURL * ytURL = [NSURL URLWithString: srcURLString];
-		NSString * host = [ytURL host];
-		if (([host rangeOfString:@"youtube.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound) || ([host rangeOfString:@"youtube-nocookie.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound ) ) {
-			
-			NSString * path = [ytURL path];
-			NSRange lastSlashRange = [path rangeOfString:@"/" options:NSLiteralSearch | NSBackwardsSearch];
-			NSInteger lastSlash = lastSlashRange.location;
-			NSRange firstAmpersandRange = [path rangeOfString:@"&" options:NSLiteralSearch];
-			if ( lastSlash != NSNotFound ) {
-				NSInteger firstAmpersand = firstAmpersandRange.location;
-				if (firstAmpersand == NSNotFound) {
-					firstAmpersand = [path length];
+		
+		if ( myVideoID == nil ) {
+			NSURL * ytURL = [NSURL URLWithString: srcURLString];
+			NSString * host = [ytURL host];
+			if (([host rangeOfString:@"youtube.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound) || ([host rangeOfString:@"youtube-nocookie.com" options: NSAnchoredSearch | NSBackwardsSearch].location != NSNotFound ) ) {
+				
+				NSString * path = [ytURL path];
+				NSRange lastSlashRange = [path rangeOfString:@"/" options:NSLiteralSearch | NSBackwardsSearch];
+				NSInteger lastSlash = lastSlashRange.location;
+				NSRange firstAmpersandRange = [path rangeOfString:@"&" options:NSLiteralSearch];
+				if ( lastSlash != NSNotFound ) {
+					NSInteger firstAmpersand = firstAmpersandRange.location;
+					if (firstAmpersand == NSNotFound) {
+						firstAmpersand = [path length];
+					}
+					if (lastSlash < firstAmpersand ) {
+						NSRange IDRange = NSMakeRange(lastSlash + 1, firstAmpersand - lastSlash - 1);
+						myVideoID = [path substringWithRange:IDRange];
+					}
 				}
-				if (lastSlash < firstAmpersand ) {
-					NSRange IDRange = NSMakeRange(lastSlash + 1, firstAmpersand - lastSlash - 1);
-					myVideoID = [path substringWithRange:IDRange];
-				}
-			}
+			}			
 		}
 		
 		
 		if (myVideoID != nil) {
 			[self setVideoID: myVideoID];
+
 			// this block of code introduces a situation where we have to download
 			// additional data from the internets, so we want to spin this off
 			// to another thread to prevent blocking of the Safari user interface
-			
-			[self setLookupStatus: inProgress];
-			// this method is a stub for calling the real method on a different thread
 			[self _getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:videoID];
 		}
 	}
 	
 	if ( myVideoID != nil ) {
-		[[self plugin] setPreviewURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://img.youtube.com/vi/%@/0.jpg", myVideoID]]];		
+		[[self plugin] setPreviewURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://img.youtube.com/vi/%@/0.jpg", myVideoID]]];
 	}
 	
 	if ([CTFKillerYouTube isYouTubeSiteURL: pageURL]) {
@@ -132,9 +130,11 @@
 }
 
 
+
 - (void) dealloc {
 	[self setVideoID: nil];
-			
+	[self setVideoHash: nil];
+	
 	[super dealloc];
 }
 
@@ -154,15 +154,25 @@
 
 // URL to the video file used for loading it in the player.
 - (NSString*) videoURLString { 
-	NSString * result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@", [self videoID], [self videoHash] ];
+	NSString * result = nil;
+	NSString * ID = [self videoID];
+	NSString * hash = [self videoHash];
+	if (ID != nil && hash != nil) {
+		result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=18&video_id=%@&t=%@", ID, hash ];		
+	}
 
 	return result;
 } 
 
 
 - (NSString*) videoHDURLString { 
-	NSString * result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@", [self videoID], [self videoHash] ];
-
+	NSString * result = nil;
+	NSString * ID = [self videoID];
+	NSString * hash = [self videoHash];
+	if (ID != nil && hash != nil) {	
+		result = [ NSString stringWithFormat: @"http://www.youtube.com/get_video?fmt=22&video_id=%@&t=%@", ID, hash ];
+	}
+	
 	return result; 
 }
 
@@ -245,16 +255,36 @@
 #pragma mark -
 #pragma mark Other
 
-- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *) playerFlashVars
-{
-	if (playerFlashVars != nil)
-	{
-		[self setFlashVars: playerFlashVars];
-		NSString *myVideoID = [self flashVarWithName: @"video_id"];
-		[self setVideoID: myVideoID];
+
+- (void) setInfoFromFlashVars {
+	NSString * myVideoID = [self flashVarWithName: @"video_id"];
+	if ( myVideoID != nil ) {
+		if ( ![myVideoID isEqualToString: [self videoID]] ) {
+			if ([self videoID] != nil) {
+				NSLog(@"ClickToFlash: YouTube video with ambiguous IDs at %@ (%@, %@)", [self pageURL], [self videoID], myVideoID);
+			}
+			[self setVideoID: myVideoID];
+		}
+		
+		NSString * myHash = [self flashVarWithName: @"t"];
+		if ( myHash != nil ) {
+			[self setVideoHash: myHash];
+			[self _checkForH264VideoVariants];
+		}
+		else {
+		//	NSLog(@"ClickToFlash: No 't' parameter found for video %@", [self videoID]);
+		}
 	}
-	
-	[self _checkForH264VideoVariants];
+}
+
+
+
+- (void)_didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *) playerFlashVars {
+	if (playerFlashVars != nil) {
+		[self setFlashVars: playerFlashVars];
+		[self setInfoFromFlashVars];
+		[self decreaseActiveLookups];
+	}
 }
 
 
@@ -326,6 +356,7 @@
 
 - (void)_getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId
 {
+	[self increaseActiveLookups];
 	[NSThread detachNewThreadSelector:@selector(_retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:)
 							 toTarget:self
 						   withObject:videoId];
@@ -349,8 +380,14 @@
 
 
 - (NSString*) videoHash {
-    NSString * hash = [ self flashVarWithName: @"t" ];
-	return hash;
+	return videoHash;
 }
+
+- (void)setVideoHash:(NSString *)newVideoHash {
+	[newVideoHash retain];
+	[videoHash release];
+	videoHash = newVideoHash;
+}
+
 
 @end

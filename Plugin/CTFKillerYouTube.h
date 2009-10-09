@@ -32,6 +32,7 @@
 
 @interface CTFKillerYouTube : CTFKillerVideo {
 	NSString * videoID;
+	NSString * videoHash;
 		
 	unsigned expectedResponses;
 }
@@ -40,13 +41,17 @@
 + (BOOL) isYouTubeSiteURL: (NSURL*) theURL;
 
 - (void) _checkForH264VideoVariants;
+
+- (void) setInfoFromFlashVars;
 - (void) _didRetrieveEmbeddedPlayerFlashVars:(NSDictionary *)flashVars;
 - (void) _retrieveEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId;
 - (NSDictionary*) _flashVarDictionaryFromYouTubePageHTML: (NSString*) youTubePageHTML;
 - (void) _getEmbeddedPlayerFlashVarsAndCheckForVariantsWithVideoId:(NSString *)videoId;
 
+
 - (NSString *) videoID;
 - (void) setVideoID:(NSString *)newVideoID;
 - (NSString *) videoHash;
+- (void) setVideoHash:(NSString *)newVideoHash;
 
 @end

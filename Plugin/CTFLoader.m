@@ -32,8 +32,9 @@
 
 - (id) initWithURL: (NSURL *) theURL delegate: (id) theDelegate selector: (SEL) theSelector {
 	self = [super init];
+	id result = nil;
 	
-	if (self != nil) {
+	if (self != nil && theURL != nil && theDelegate != nil && theSelector != NULL) {
 		[self setURL: theURL];
 		[self setDelegate: theDelegate];
 		[self setCallbackSelector: theSelector];
@@ -41,9 +42,11 @@
 		data = [[NSMutableData alloc] init];
 		identifier = nil;
 		response = nil;
+		
+		result = self;
 	}
 	
-	return self;
+	return result;
 }
 
 
@@ -59,7 +62,6 @@
 
 
 - (void) finish {
-	[[self retain] autorelease];
 	[delegate performSelector:callbackSelector withObject:self];
 }
 
@@ -86,6 +88,12 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)theResponse {
 	[self setResponse: theResponse];
+	
+	// We need to cancel HEAD fetching connections here as 10.5 may proceed to download the whole file otherwise (http://openradar.appspot.com/7019347)
+	if ( [self HEADOnly] && [theResponse statusCode] == 200 ) {
+		[self finish];
+		[connection cancel];
+	}
 }
 
 

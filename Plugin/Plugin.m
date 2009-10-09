@@ -218,13 +218,9 @@ BOOL usingMATrackingArea = NO;
 		
 		// Check the SWF src URL itself against the whitelist (allows embbeded videos from whitelisted sites to play, e.g. YouTube)
 		
-		if( !loadFromWhiteList )
-		{
+		if( !loadFromWhiteList ) {
             if (srcAttribute) {
-                NSURL* swfSrc = [NSURL URLWithString:srcAttribute];
-                
-                if( [self _isWhiteListedForHostString:[swfSrc host] ] )
-                {
+				if( [self _isWhiteListedForHostString:srcAttribute ] ) {
                     loadFromWhiteList = YES;
                 }
             }
@@ -722,8 +718,14 @@ BOOL usingMATrackingArea = NO;
 	
     CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
     
-    CGContextSetAlpha( context, pressed ? 0.45 : 0.30 );
-    CGContextBeginTransparencyLayer( context, nil );
+	CGFloat opacity = 0.45;
+	// Make Badge more opaque when we have a background image
+	if ( [self previewImage] != nil ) {
+		opacity = 0.8;
+	}
+
+	CGContextSetAlpha( context, pressed ? opacity : opacity - 0.15 );		
+	CGContextBeginTransparencyLayer( context, nil );
 	
 	// Draw everything at full size, centered on the origin.
 	
@@ -731,7 +733,7 @@ BOOL usingMATrackingArea = NO;
 	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
 	
     NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
-    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
+    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: opacity ] set ];
     [ fillPath fill ];
     
     NSBezierPath* darkBorderPath = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
@@ -740,7 +742,7 @@ BOOL usingMATrackingArea = NO;
     [ darkBorderPath stroke ];
     
     NSBezierPath* lightBorderPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect(borderRect, -2, -2), 6 );
-    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: 0.45 ] set ];
+    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: opacity ] set ];
     [ lightBorderPath setLineWidth: 2 ];
     [ lightBorderPath stroke ];
     
@@ -773,30 +775,22 @@ BOOL usingMATrackingArea = NO;
         if( gearImage ) {
             CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
             
-            CGContextSetAlpha( context, 0.25 );
+            CGContextSetAlpha( context, 0.65 );
             CGContextBeginTransparencyLayer( context, nil );
             
-            NSPoint gearImageCenter = NSMakePoint(NSMinX( bounds ) + ( margin + [gearImage size].width/2 ),
-                                                  NSMaxY( bounds ) - ( margin + [gearImage size].height/2 ));
-            
-            id gradient = [NSClassFromString(@"NSGradient") alloc];
-            if (gradient != nil)
-            {
-                NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:1.0];
-                NSColor *endingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.0];
-                
-                gradient = [gradient initWithStartingColor:startingColor endingColor:endingColor];
-                
-                // draw gradient behind gear so that it's visible even on dark backgrounds
-                [gradient drawFromCenter:gearImageCenter
-                                  radius:0.0
-                                toCenter:gearImageCenter
-                                  radius:[gearImage size].height/2*1.5
-                                 options:0];
-                
-                [gradient release];
-            }
-            
+			CGFloat padding = 3.0;
+            NSPoint gearImageCenter = NSMakePoint(NSMinX( bounds ) + ( padding + margin + [gearImage size].width/2 ),
+                                                  NSMaxY( bounds ) - ( padding + margin + [gearImage size].height/2 ));
+	
+            NSRect backgroundFrame = NSMakeRect(NSMinX(bounds) + margin, 
+												NSMaxY(bounds) - margin - [gearImage size].height - 2.0 * padding, 
+												[gearImage size].width + 2.0 * padding, 
+												[gearImage size].height + 2.0 * padding );
+
+			NSBezierPath * circle = [NSBezierPath bezierPathWithOvalInRect:backgroundFrame];
+			[[NSColor whiteColor] set];
+			[circle fill];
+			
             // draw the gear image
             [gearImage drawAtPoint:NSMakePoint(gearImageCenter.x - [gearImage size].width/2, 
                                                gearImageCenter.y - [gearImage size].height/2)
@@ -808,6 +802,38 @@ BOOL usingMATrackingArea = NO;
        }
     }
 }
+
+
+- (void) drawGlossyWithPressed: (BOOL) pressed {
+	NSRect bounds = [self bounds];
+
+	NSBezierPath * bP = [NSBezierPath bezierPath];
+	const CGFloat glowStartFraction = .3;
+	const CGFloat cP1YFraction = .5;
+	const CGFloat cP2XFraction = .0;
+	const CGFloat cP2YFraction = .48;
+
+	CGFloat startY = .0;
+	if (pressed) {
+		startY = NSMaxY(bounds);
+	}
+		
+	[bP moveToPoint: NSMakePoint( .0, startY ) ];
+	[bP lineToPoint: NSMakePoint( .0, NSMaxY(bounds) * glowStartFraction )];
+	[bP curveToPoint: NSMakePoint( NSMidX(bounds), NSMidY(bounds) )
+	   controlPoint1: NSMakePoint( .0 , cP1YFraction * NSMaxY(bounds))
+	   controlPoint2: NSMakePoint( cP2XFraction * NSMaxX(bounds), cP2YFraction * NSMaxY(bounds)) ];
+	[bP curveToPoint: NSMakePoint( NSMaxX(bounds), (1. - glowStartFraction) * NSMaxY(bounds) )
+	   controlPoint1: NSMakePoint( (1. - cP2XFraction) * NSMaxX(bounds) , (1. - cP2YFraction) * NSMaxY(bounds) ) 
+	   controlPoint2: NSMakePoint( NSMaxX(bounds), (1. - cP1YFraction) * NSMaxY(bounds) ) ];
+	[bP lineToPoint: NSMakePoint( NSMaxX(bounds), startY ) ];
+	[bP closePath];
+		
+	[[NSColor colorWithCalibratedWhite:1.0 alpha:0.07] set];
+	[bP fill];
+}
+
+
 
 - (void) _drawBackground
 {
@@ -867,8 +893,13 @@ BOOL usingMATrackingArea = NO;
     [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
 
     // Draw label
-    [ self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
+    [self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
     
+	// Draw 'glossy' overlay which can give some visual feedback on clicks when an preview image is set.
+	if ([self previewImage] != nil) {
+		[self drawGlossyWithPressed: mouseIsDown && mouseInside];		
+	}
+	
     // Draw the gear icon
 	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sDrawGearImageOnlyOnMouseOverHiddenPref]) {
 		if( mouseInside && !mouseIsDown )

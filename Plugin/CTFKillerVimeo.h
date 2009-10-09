@@ -38,8 +38,6 @@
 	NSString * redirectedHDURLString;
 	
 	BOOL clipIsHD;
-	
-	NSMutableData * downloadData;
 }
 
 

@@ -38,5 +38,5 @@ THE SOFTWARE.
     while( ( varName = [ feoEnum_##__LINE__ nextObject ] ) )
 
 
-    // Load our localised strings from the correct bundle [use genstrings -s CtfLocalizedString]
+    // Load our localised strings from the correct bundle [use genstrings -s CtFLocalizedString]
 #define CtFLocalizedString(key, explanation) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:@"" table:(nil)]

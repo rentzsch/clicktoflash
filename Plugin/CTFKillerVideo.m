@@ -50,6 +50,7 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 		hasVideo = NO;
 		hasVideoHD = NO;
 		
+		activeLookups = 0;
 		lookupStatus = nothing;
 		requiresConversion = NO;
 		
@@ -75,10 +76,6 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 // URL to the video file used for loading it in the player.
 - (NSString*) videoURLString { return nil;} 
 - (NSString*) videoHDURLString { return nil; }
-
-// URL for downloading the video file. Return nil to use the same URL the video element uses.
-- (NSString *) videoDownloadURLString {	return nil; }
-- (NSString *) videoHDDownloadURLString { return nil; }
 
 // Text used for video file download link. Return nil to use standard text.
 - (NSString *) videoDownloadLinkText { return nil; }
@@ -402,12 +399,14 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 - (void) _convertElementForVideoElement: (DOMElement*) element atURL: (NSString*) URLString
 {
     [ element setAttribute: @"src" value: URLString ];
-	[ element setAttribute: @"autobuffer" value:@"autobuffer"];
 	if ([self autoPlay]) {
 		[ element setAttribute: @"autoplay" value:@"autoplay" ];
 	} else {
 		if ( [element hasAttribute:@"autoplay"] )
 			[ element removeAttribute:@"autoplay" ];
+	}
+	if ([[self plugin] previewURL] != nil) {
+		[element setAttribute: @"poster"  value: [[[self plugin] previewURL] absoluteString]];
 	}
 	[ element setAttribute: @"controls" value:@"controls"];
 	[ element setAttribute:@"width" value:@"100%"];
@@ -431,23 +430,21 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 
 
-- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber
-{
+- (void) _convertToMP4ContainerAfterDelayUsingHD: (NSNumber*) useHDNumber {
 	BOOL useHD = [ self useVideoHD ];
 	if (useHDNumber != nil) {
 		useHD = [useHDNumber boolValue];
 	}
-	
-	NSString * URLString = [self videoURLStringForHD: useHD];
-	
-	[self convertToMP4ContainerAtURL: URLString];
+		
+	[self _convertToMP4ContainerUsingHD: useHD];
 }
 
 
 
-- (void) convertToMP4ContainerAtURL: (NSString*) URLString {
+- (void) _convertToMP4ContainerUsingHD: (BOOL) useHD {
 	DOMElement * container = [[self plugin] container];
 	DOMDocument* document = [container ownerDocument];
+	NSString * URLString = [self videoURLStringForHD: useHD];
 
 	DOMElement* videoElement;
 	if ([ self isVideoElementAvailable ]) {
@@ -476,7 +473,7 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 	[CtFContainerElement setAttribute: @"class" value: @"clicktoflash-container"];
 	[CtFContainerElement appendChild: videoElement];
 	
-	DOMElement* linkContainerElement = [self linkContainerElementForURL:URLString];
+	DOMElement* linkContainerElement = [self linkContainerElementUsingHD: useHD];
 	if ( linkContainerElement != nil ) {
 		[CtFContainerElement appendChild: linkContainerElement];		
 	}
@@ -492,13 +489,13 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 
 
-- (DOMElement*) linkContainerElementForURL: (NSString*) URLString {
+- (DOMElement*) linkContainerElementUsingHD: (BOOL) useHD {
 	// Link container
 	DOMDocument* document = [[[self plugin] container] ownerDocument];
 	DOMElement* linkContainerElement = [document createElement: @"div"];
+	NSString * linkCSS = @"margin:0px 0.5em;padding:0px;border:0px none;";
 	[linkContainerElement setAttribute: @"style" value: divCSS];
 	[linkContainerElement setAttribute: @"class" value: @"clicktoflash-linkcontainer"];
-	NSString * linkCSS = @"margin:0px 0.5em;padding:0px;border:0px none;";
 	
 	// Link to the video's web page if we're not there already
 	NSString * videoPageURLString = [self videoPageURLString];
@@ -517,36 +514,45 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 		[linkContainerElement appendChild: videoPageLinkElement];
 	}
 	
-	// Link to Movie file download if possible
-	NSString * videoDownloadURLString = [self videoDownloadURLString];
-	if ( videoDownloadURLString == nil ) {
-		videoDownloadURLString = URLString;
-	}
-	if ( videoDownloadURLString != nil ) {
-		DOMElement* downloadLinkElement = [document createElement: @"a"];
-		[downloadLinkElement setAttribute: @"href" value: [self videoURLString]];
+	// Link to Movie file download(s)
+	DOMElement* downloadLinkElement;
+	
+	if ( !([self hasVideoHD] && !useHD) ) {
+		// standard case with a single link
+		downloadLinkElement = [document createElement: @"a"];
+		[downloadLinkElement setAttribute: @"href" value: [self videoURLStringForHD: useHD]];
 		[downloadLinkElement setAttribute: @"style" value: linkCSS];
 		[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link videodownload"];
 		NSString * videoDownloadLinkText = [self videoDownloadLinkText];
 		if (videoDownloadLinkText == nil) {
-			videoDownloadLinkText = CtFLocalizedString(@"Download video file", @"Text of link to H.264 Download appearing beneath the video");
+			videoDownloadLinkText = CtFLocalizedString(@"Download video file", @"Text of link to Video Download appearing beneath the video");
 		}
 		[downloadLinkElement setTextContent: videoDownloadLinkText];
 		
 		[linkContainerElement appendChild:downloadLinkElement];
 	}
-	
-	// offer additional link for HD download if available
-	if ( [self hasVideoHD] && ![self useVideoHD]) {
-		NSString * extraLinkCSS = @"margin:0px;padding:0px;border:0px none;";
+	else {
+		// special case with a HD video available but HD turned off: offer links for downloading the standard and the larger size
+		linkCSS = @"margin:0px 0.3em;padding:0px;border:0px none;";
+
+		DOMElement * initialTextElement = [document createElement: @"span"];
+		[initialTextElement setTextContent: CtFLocalizedString(@"Download: ", @"Label for download links appearing beneath the video")];
+		[linkContainerElement appendChild: initialTextElement];
+
+		downloadLinkElement = [document createElement: @"a"];
+		[downloadLinkElement setAttribute: @"href" value: [self videoURLString]];
+		[downloadLinkElement setAttribute: @"style" value: linkCSS];
+		[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link videodownload"];
+		[downloadLinkElement setTextContent: CtFLocalizedString(@"Current Size", @"Text of link for downloading a version of the video in the current size; appearing beneath the video")];
+		[linkContainerElement appendChild: downloadLinkElement];
+
 		DOMElement * extraDownloadLinkElement = [document createElement: @"a"];
 		[extraDownloadLinkElement setAttribute: @"href" value: [self videoHDURLString]];
-		[extraDownloadLinkElement setAttribute: @"style" value: extraLinkCSS];
+		[extraDownloadLinkElement setAttribute: @"style" value: linkCSS];
 		[extraDownloadLinkElement setAttribute: @"class" value: @"clicktoflash-link videodownload"];
-		[extraDownloadLinkElement setTextContent: CtFLocalizedString(@"(Larger Size)", @"Text of link to additional Large Size H.264 Download appearing beneath the video after the standard link")];
+		[extraDownloadLinkElement setTextContent: CtFLocalizedString(@"Larger Size", @"Text of link to additional Large Size Video Download appearing beneath the video after the standard link")];
 		[linkContainerElement appendChild: extraDownloadLinkElement];
 	}
-	
 	
 	// Let subclasses add their own link (or delete ours)
 	linkContainerElement = [self enhanceVideoDescriptionElement: linkContainerElement];
@@ -731,7 +737,7 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 - (void) decreaseActiveLookups {
 	activeLookups--;
-	if ( [self lookupStatus] != failed ) {
+	if ( activeLookups == 0 && [self lookupStatus] != failed ) {
 		[self setLookupStatus: finished];
 	}
 }
