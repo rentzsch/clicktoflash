@@ -494,7 +494,6 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 
 
 - (DOMElement*) linkContainerElementUsingHD: (BOOL) useHD {
-	NSString * URLString = [self videoURLStringForHD: useHD];
 	// Link container
 	DOMDocument* document = [[[self plugin] container] ownerDocument];
 	DOMElement* linkContainerElement = [document createElement: @"div"];
@@ -521,11 +520,11 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 	
 	// Link to Movie file download(s)
 	DOMElement* downloadLinkElement;
-
+	
 	if ( !([self hasVideoHD] && !useHD) ) {
 		// standard case with a single link
 		downloadLinkElement = [document createElement: @"a"];
-		[downloadLinkElement setAttribute: @"href" value: [self videoURLString]];
+		[downloadLinkElement setAttribute: @"href" value: [self videoURLStringForHD: useHD]];
 		[downloadLinkElement setAttribute: @"style" value: linkCSS];
 		[downloadLinkElement setAttribute: @"class" value: @"clicktoflash-link videodownload"];
 		NSString * videoDownloadLinkText = [self videoDownloadLinkText];
