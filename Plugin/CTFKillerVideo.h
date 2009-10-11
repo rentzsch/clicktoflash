@@ -109,7 +109,7 @@ enum CTFKVLookupStatus {
 - (NSString *) cleanURLString: (NSString*) URLString;
 - (BOOL) isVideoElementAvailable;
 - (void) finishedLookups;
-- (BOOL) canPlayResponseResult: (NSHTTPURLResponse *) result;
+- (BOOL) canPlayResponseResult: (NSURLResponse *) result;
 
 // Accessors
 - (BOOL) autoPlay;

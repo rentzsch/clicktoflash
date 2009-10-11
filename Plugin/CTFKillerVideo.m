@@ -661,11 +661,11 @@ static NSString * sYouTubeAutoPlay = @"enableYouTubeAutoPlay";
 }
 
 
-
-- (BOOL) canPlayResponseResult: (NSHTTPURLResponse *) response {
+// We don't handle anything but HTTP requests.
+- (BOOL) canPlayResponseResult: (NSURLResponse *) response {
 	BOOL result = NO;
 	
-	if ( [response statusCode] == 200 ) {
+	if (  [((NSHTTPURLResponse*)response) statusCode] == 200 ) {
 		if ( [[response MIMEType] isEqualToString:@"video/mp4"] ) {
 			result = YES;
 		}
