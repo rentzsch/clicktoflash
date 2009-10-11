@@ -27,33 +27,40 @@ THE SOFTWARE.
 #import "Plugin.h"
 #import "CTFUserDefaultsController.h"
 #import "CTFPreferencesDictionary.h"
-
-#import "MATrackingArea.h"
 #import "CTFMenubarMenuController.h"
 #import "CTFUtilities.h"
 #import "CTFWhitelist.h"
-#import "NSBezierPath-RoundedRectangle.h"
 #import "CTFGradient.h"
 #import "SparkleManager.h"
 #import "CTFKiller.h"
 #import "CTFLoader.h"
+#import "CTFActionButton.h"
+#import "CTFMainButton.h"
+
 
 #define LOGGING_ENABLED 0
 
-    // MIME types
+// MIME types
 static NSString *sFlashOldMIMEType = @"application/x-shockwave-flash";
 static NSString *sFlashNewMIMEType = @"application/futuresplash";
 
-    // CTFUserDefaultsController keys
+// CTFUserDefaultsController keys
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
 static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
 
-	// Info.plist key for app developers
+// Info.plist key for app developers
 static NSString *sCTFOptOutKey = @"ClickToFlashOptOut";
 
-BOOL usingMATrackingArea = NO;
+// Subview Tags
+enum subviewTags {
+	CTFGradientViewTag,
+	CTFImageViewTag,
+	CTFMainButtonTag,
+	CTFActionButtonTag
+};
+
 
 @interface CTFClickToFlashPlugin (Internal)
 - (void) _convertTypesForFlashContainer;
@@ -62,10 +69,6 @@ BOOL usingMATrackingArea = NO;
 - (void) _drawBackground;
 - (BOOL) _isOptionPressed;
 - (BOOL) _isCommandPressed;
-- (void) _checkMouseLocation;
-- (void) _addTrackingAreaForCTF;
-- (void) _removeTrackingAreaForCTF;
-
 
 - (void) _loadContent: (NSNotification*) notification;
 - (void) _loadContentForWindow: (NSNotification*) notification;
@@ -308,10 +311,33 @@ BOOL usingMATrackingArea = NO;
 		}
 		
 		[self setOriginalOpacityAttributes:originalOpacityDict];
-
-		[self _checkMouseLocation];
-        [self _addTrackingAreaForCTF];
-    }
+		
+		// Add main control button
+		CTFMainButton * mainButton = [[[CTFMainButton alloc] initWithFrame: [self bounds]] autorelease];
+		[mainButton setTag: CTFMainButtonTag];
+		[mainButton setAutoresizingMask: (NSViewHeightSizable | NSViewWidthSizable) ];
+		[mainButton setButtonType: NSMomentaryPushInButton];
+		[mainButton setTarget: self];
+		[mainButton setAction: @selector(clicked:)];
+		[self addSubview: mainButton];		
+		
+		/* // Doesn't work for us as NSImageView can only scale proportionally to _fit_ but not to _fit width_
+		// Add Image View
+		NSImageView * imageView = [[[NSImageView alloc] initWithFrame: [self bounds]] autorelease];
+		[imageView setTag: CTFImageViewTag];
+		[imageView setAutoresizingMask: NSViewHeightSizable | NSViewWidthSizable];
+		[imageView setImage: NSImageFrameNone];
+		[imageView setImageAlignment: NSImageAlignCenter];
+		[imageView setImageScaling: NSImageScaleProportionally];
+		[self addSubview: imageView];
+		*/
+		
+		// Add action button control
+		CTFActionButton * actionButton = [CTFActionButton actionButton];
+		[actionButton setTag: CTFActionButtonTag];
+		[actionButton setAutoresizingMask: NSViewMaxXMargin | NSViewMinYMargin];
+		[self addSubview: actionButton];
+	}
 
     return self;
 }
@@ -320,7 +346,6 @@ BOOL usingMATrackingArea = NO;
 
 - (void)webPlugInDestroy
 {
-	[self _removeTrackingAreaForCTF];
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	
 	[self _abortAlert];        // to be on the safe side
@@ -357,114 +382,7 @@ BOOL usingMATrackingArea = NO;
 }
 
 
-
-- (void) drawRect:(NSRect)rect
-{
-	if(!_isLoadingFromWhitelist)
-		[self _drawBackground];
-}
-
-- (BOOL) _gearVisible
-{
-	NSRect bounds = [ self bounds ];
-	return NSWidth( bounds ) > 32 && NSHeight( bounds ) > 32;
-}
-
-- (BOOL) mouseEventIsWithinGearIconBorders:(NSEvent *)event
-{
-	float margin = 5.0;
-	float gearImageHeight = 16.0;
-	float gearImageWidth = 16.0;
-	
-	BOOL xCoordWithinGearImage = NO;
-	BOOL yCoordWithinGearImage = NO;
-	
-	// if the view is 32 pixels or smaller in either direction,
-	// the gear image is not drawn, so we shouldn't pop-up the contextual
-	// menu on a single-click either
-	if ( [ self _gearVisible ] ) {
-        float viewHeight = NSHeight( [ self bounds ] );
-		NSPoint mouseLocation = [event locationInWindow];
-		NSPoint localMouseLocation = [self convertPoint:mouseLocation fromView:nil];
-		
-		xCoordWithinGearImage = ( (localMouseLocation.x >= (0 + margin)) &&
-								 (localMouseLocation.x <= (0 + margin + gearImageWidth)) );
-		
-		yCoordWithinGearImage = ( (localMouseLocation.y >= (viewHeight - margin - gearImageHeight)) &&
-								 (localMouseLocation.y <= (viewHeight - margin)) );
-	}
-	
-	return (xCoordWithinGearImage && yCoordWithinGearImage);
-}
-
-- (void) mouseDown:(NSEvent *)event
-{
-	if ([self mouseEventIsWithinGearIconBorders:event]) {
-		_contextMenuIsVisible = YES;
-		[NSMenu popUpContextMenu:[self menuForEvent:event] withEvent:event forView:self];
-	} else {
-		mouseIsDown = YES;
-		mouseInside = YES;
-		[self setNeedsDisplay:YES];
-
-		// Track the mouse so that we can undo our pressed-in look if the user drags the mouse outside the view, and reinstate it if the user drags it back in.
-        //[self _addTrackingAreaForCTF];
-            // Now that we track the mouse for mouse-over when the mouse is up 
-            // for drawing the gear only on mouse-over, we don't need to add it here.
-	}
-}
-
-- (void) mouseEntered:(NSEvent *)event
-{
-    mouseInside = YES;
-    [self setNeedsDisplay:YES];
-}
-- (void) mouseExited:(NSEvent *)event
-{
-    mouseInside = NO;
-    [self setNeedsDisplay:YES];
-}
-
-- (void) mouseUp:(NSEvent *)event
-{
-    mouseIsDown = NO;
-    // Display immediately because we don't want to end up drawing after we've swapped in the Flash movie.
-    [self display];
-    
-    // We're done tracking.
-    //[self _removeTrackingAreaForCTF];
-        // Now that we track the mouse for mouse-over when the mouse is up 
-        // for drawing the gear only on mouse-over, we don't remove it here.
-    
-    if (mouseInside && (! _contextMenuIsVisible) ) {
-        if ([self _isCommandPressed]) {
-			if ([self _isOptionPressed]) {
-				[self removeFlash:self];
-			} else {
-				[self hideFlash:self];
-			}
-		} else if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
-            [self _askToAddCurrentSiteToWhitelist];
-		} else {
-            [self convertTypesForContainer];
-        }
-    } else {
-		_contextMenuIsVisible = NO;
-	}
-}
-
-- (BOOL) _isOptionPressed
-{
-    BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
-    return isOptionPressed;
-}
-
-- (BOOL) _isCommandPressed
-{
-	BOOL isCommandPressed = (([[NSApp currentEvent] modifierFlags] & NSCommandKeyMask) != 0);
-	return isCommandPressed;
-}
-
+ 
 - (BOOL) isConsideredInvisible
 {
 	int height = (int)([[self webView] frame].size.height);
@@ -493,6 +411,12 @@ BOOL usingMATrackingArea = NO;
 	
 	return NO;
 }
+
+
+
+
+
+
 
 #pragma mark -
 #pragma mark Contextual menu
@@ -568,8 +492,27 @@ BOOL usingMATrackingArea = NO;
 	return YES;
 }
 
+
+
+
+
 #pragma mark -
 #pragma mark Loading
+
+- (IBAction) clicked: (id) sender {
+	if ([self _isCommandPressed]) {
+		if ([self _isOptionPressed]) {
+			[self removeFlash:self];
+		} else {
+			[self hideFlash:self];
+		}
+	} else if ([self _isOptionPressed] && ![self _isHostWhitelisted]) {
+		[self _askToAddCurrentSiteToWhitelist];
+	} else {
+		[self convertTypesForContainer];
+	}
+}
+
 
 - (IBAction)removeFlash: (id) sender;
 {
@@ -593,6 +536,7 @@ BOOL usingMATrackingArea = NO;
     [[CTFMenubarMenuController sharedController] loadFlashForWindow: [self window]];
 }
 
+
 - (void) _loadContent: (NSNotification*) notification
 {
     [self convertTypesForContainer];
@@ -611,358 +555,7 @@ BOOL usingMATrackingArea = NO;
 	}
 }
 
-#pragma mark -
-#pragma mark Drawing
 
-- (NSString*) badgeLabelText
-{
-	NSString * labelText = nil;
-	
-	if ([self killer] != nil) {
-		labelText = [[self killer] badgeLabelText];
-	}
-	
-	if (labelText == nil) {
-		labelText = CtFLocalizedString( @"Flash", @"Flash badge text" );
-	}
-	
-	return labelText;
-}
-
-
-- (void) _drawBadgeWithPressed: (BOOL) pressed
-{
-	// What and how are we going to draw?
-	
-	const float kFrameXInset = 10;
-	const float kFrameYInset =  4;
-	const float kMinMargin   = 11;
-	const float kMinHeight   =  6;
-	
-	NSString* str = [ self badgeLabelText ];
-	
-	NSShadow *superAwesomeShadow = [[NSShadow alloc] init];
-	[superAwesomeShadow setShadowOffset:NSMakeSize(2.0, -2.0)];
-	[superAwesomeShadow setShadowColor:[NSColor whiteColor]];
-	[superAwesomeShadow autorelease];
-	NSDictionary* attrs = [ NSDictionary dictionaryWithObjectsAndKeys: 
-						   [ NSFont boldSystemFontOfSize: 20 ], NSFontAttributeName,
-						   [ NSNumber numberWithInt: -1 ], NSKernAttributeName,
-						   [ NSColor blackColor ], NSForegroundColorAttributeName,
-						   superAwesomeShadow, NSShadowAttributeName,
-						   nil ];
-	
-	// Set up for drawing.
-	
-	NSRect bounds = [ self bounds ];
-	
-	// How large would this text be?
-	
-	NSSize strSize = [ str sizeWithAttributes: attrs ];
-	
-	float w = strSize.width  + kFrameXInset * 2;
-	float h = strSize.height + kFrameYInset * 2;
-	
-	// Compute a scale factor based on the view's size.
-	
-	float maxW = NSWidth( bounds ) - kMinMargin;
-	// the 9/10 factor here is to account for the 60% vertical top-biasing
-	float maxH = _fromFlickr ? NSHeight( bounds )*9/10 - kMinMargin : NSHeight( bounds ) - kMinMargin;
-	float minW = kMinHeight * w / h;
-	
-	BOOL rotate = NO;
-	if( maxW <= minW )	// too narrow in width, so rotate it
-		rotate = YES;
-	
-	if( rotate ) {		// swap the dimensions to scale into
-		float temp = maxW;
-		maxW = maxH;
-		maxH = temp;
-	}
-	
-	if( maxH <= kMinHeight ) {
-		// Too short in height for full margin.
-		
-		// Draw at the smallest size, with less margin,
-		// unless even that would get clipped off.
-		
-		if( maxH + kMinMargin < kMinHeight )
-			return;
-        
-		maxH = kMinHeight;
-	}
-	
-	float scaleFactor = 1.0;
-	
-	if( maxW < w )
-		scaleFactor = maxW / w;
-    
-	if( maxH < h && maxH / h < scaleFactor )
-		scaleFactor = maxH / h;
-	
-	// Apply the scale, and a transform so the result is centered in the view.
-	
-	[ NSGraphicsContext saveGraphicsState ];
-    
-	NSAffineTransform* xform = [ NSAffineTransform transform ];
-	// vertical top-bias by 60% here
-    if (_fromFlickr) {
-        [ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 10 * 6 ];
-    } else {
-        [ xform translateXBy: NSWidth( bounds ) / 2 yBy: NSHeight( bounds ) / 2 ];
-    }
-	[ xform scaleBy: scaleFactor ];
-	if( rotate )
-		[ xform rotateByDegrees: 90 ];
-	[ xform concat ];
-	
-    CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
-    
-	CGFloat opacity = 0.45;
-	// Make Badge more opaque when we have a background image
-	if ( [self previewImage] != nil ) {
-		opacity = 0.8;
-	}
-
-	CGContextSetAlpha( context, pressed ? opacity : opacity - 0.15 );		
-	CGContextBeginTransparencyLayer( context, nil );
-	
-	// Draw everything at full size, centered on the origin.
-	
-	NSPoint loc = { -strSize.width / 2, -strSize.height / 2 };
-	NSRect borderRect = NSMakeRect( loc.x - kFrameXInset, loc.y - kFrameYInset, w, h );
-	
-    NSBezierPath* fillPath = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
-    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: opacity ] set ];
-    [ fillPath fill ];
-    
-    NSBezierPath* darkBorderPath = bezierPathWithRoundedRectCornerRadius( borderRect, 4 );
-    [[NSColor blackColor] set];
-    [ darkBorderPath setLineWidth: 3 ];
-    [ darkBorderPath stroke ];
-    
-    NSBezierPath* lightBorderPath = bezierPathWithRoundedRectCornerRadius( NSInsetRect(borderRect, -2, -2), 6 );
-    [ [ NSColor colorWithCalibratedWhite: 1.0 alpha: opacity ] set ];
-    [ lightBorderPath setLineWidth: 2 ];
-    [ lightBorderPath stroke ];
-    
-    [ str drawAtPoint: loc withAttributes: attrs ];
-	
-	// Now restore the graphics state:
-	
-    CGContextEndTransparencyLayer( context );
-    
-    [ NSGraphicsContext restoreGraphicsState ];
-}
-
-- (void) _drawGearIcon
-{
-    // add the gear for the contextual menu, but only if the view is
-    // greater than a certain size
-        
-    if ([self _gearVisible]) {
-        NSRect bounds = [ self bounds ];
-
-        float margin = 5.0;
-        NSImage *gearImage = [NSImage imageNamed:@"NSActionTemplate"];
-        // On systems older than 10.5 we need to supply our own image.
-        if (gearImage == nil)
-        {
-            NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:@"NSActionTemplate" ofType:@"png"];
-            gearImage = [[[NSImage alloc] initWithContentsOfFile:path] autorelease];
-        }
-
-        if( gearImage ) {
-            CGContextRef context = [ [ NSGraphicsContext currentContext ] graphicsPort ];
-            
-            CGContextSetAlpha( context, 0.65 );
-            CGContextBeginTransparencyLayer( context, nil );
-            
-			CGFloat padding = 3.0;
-            NSPoint gearImageCenter = NSMakePoint(NSMinX( bounds ) + ( padding + margin + [gearImage size].width/2 ),
-                                                  NSMaxY( bounds ) - ( padding + margin + [gearImage size].height/2 ));
-	
-            NSRect backgroundFrame = NSMakeRect(NSMinX(bounds) + margin, 
-												NSMaxY(bounds) - margin - [gearImage size].height - 2.0 * padding, 
-												[gearImage size].width + 2.0 * padding, 
-												[gearImage size].height + 2.0 * padding );
-
-			NSBezierPath * circle = [NSBezierPath bezierPathWithOvalInRect:backgroundFrame];
-			[[NSColor whiteColor] set];
-			[circle fill];
-			
-            // draw the gear image
-            [gearImage drawAtPoint:NSMakePoint(gearImageCenter.x - [gearImage size].width/2, 
-                                               gearImageCenter.y - [gearImage size].height/2)
-                          fromRect:NSZeroRect
-                         operation:NSCompositeSourceOver
-                          fraction:1.0];
-
-            CGContextEndTransparencyLayer( context );
-       }
-    }
-}
-
-
-- (void) drawGlossyWithPressed: (BOOL) pressed {
-	NSRect bounds = [self bounds];
-
-	NSBezierPath * bP = [NSBezierPath bezierPath];
-	const CGFloat glowStartFraction = .3;
-	const CGFloat cP1YFraction = .5;
-	const CGFloat cP2XFraction = .0;
-	const CGFloat cP2YFraction = .48;
-
-	CGFloat startY = .0;
-	if (pressed) {
-		startY = NSMaxY(bounds);
-	}
-		
-	[bP moveToPoint: NSMakePoint( .0, startY ) ];
-	[bP lineToPoint: NSMakePoint( .0, NSMaxY(bounds) * glowStartFraction )];
-	[bP curveToPoint: NSMakePoint( NSMidX(bounds), NSMidY(bounds) )
-	   controlPoint1: NSMakePoint( .0 , cP1YFraction * NSMaxY(bounds))
-	   controlPoint2: NSMakePoint( cP2XFraction * NSMaxX(bounds), cP2YFraction * NSMaxY(bounds)) ];
-	[bP curveToPoint: NSMakePoint( NSMaxX(bounds), (1. - glowStartFraction) * NSMaxY(bounds) )
-	   controlPoint1: NSMakePoint( (1. - cP2XFraction) * NSMaxX(bounds) , (1. - cP2YFraction) * NSMaxY(bounds) ) 
-	   controlPoint2: NSMakePoint( NSMaxX(bounds), (1. - cP1YFraction) * NSMaxY(bounds) ) ];
-	[bP lineToPoint: NSMakePoint( NSMaxX(bounds), startY ) ];
-	[bP closePath];
-		
-	[[NSColor colorWithCalibratedWhite:1.0 alpha:0.07] set];
-	[bP fill];
-}
-
-
-
-- (void) _drawBackground
-{
-    NSRect selfBounds = [self bounds];
-
-    NSRect fillRect   = NSInsetRect(selfBounds, 1.0, 1.0);
-    NSRect strokeRect = selfBounds;
-
-    NSColor *startingColor = [NSColor colorWithDeviceWhite:1.0 alpha:0.15];
-    NSColor *endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.15];
-
-    // When the mouse is up or outside the view, we want a convex look, so we draw the gradient downward (90+180=270 degrees).
-    // When the mouse is down and inside the view, we want a concave look, so we draw the gradient upward (90 degrees).
-    id gradient = [NSClassFromString(@"NSGradient") alloc];
-    if (gradient != nil)
-    {
-        gradient = [gradient initWithStartingColor:startingColor endingColor:endingColor];
-
-        [gradient drawInBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:90.0 + ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
-
-        [gradient release];
-    }
-    else
-    {
-		//tweak the opacity of the endingColor for compatibility with CTGradient
-		endingColor = [NSColor colorWithDeviceWhite:0.0 alpha:0.00];
-		
-		gradient = [CTFGradient gradientWithBeginningColor:startingColor
-											  endingColor:endingColor];
-		
-		//angle is reversed compared to NSGradient
-		[gradient fillBezierPath:[NSBezierPath bezierPathWithRect:fillRect] angle:-90.0 - ((mouseIsDown && mouseInside) ? 0.0 : 180.0)];
-		
-		//CTGradient instances are returned autoreleased - no need for explicit release here
-    }
-
-	// Overlay the preview image if there is one
-	NSImage * image = [self previewImage];
-	if ( image != nil ) {
-		// Determine the destination rect. The approach is to scale the preview image until it fills the view horizontally. This risks losing pixels at the top and bottom but seems to match what the sites providing preview images do, thus giving better results than 'clean' scaling to fit the whole image inside the view.
-		NSRect destinationRect;
-		NSSize imageSize = [image size];
-		CGFloat scale = fillRect.size.width / imageSize.width;
-		CGFloat destinationWidth = imageSize.width * scale;
-		CGFloat destinationHeight = imageSize.height * scale;
-		CGFloat destinationBottom = fillRect.origin.y + ( fillRect.size.height - destinationHeight) / 2.0;
-		
-		destinationRect = NSMakeRect(fillRect.origin.x, destinationBottom, destinationWidth, destinationHeight);
-		
-		[[self previewImage] drawInRect:destinationRect fromRect:NSZeroRect operation:NSCompositeSourceIn fraction: 0.8];
-	}
-
-    // Draw stroke
-    [[NSColor colorWithCalibratedWhite:0.0 alpha:0.50] set];
-    [NSBezierPath setDefaultLineWidth:2.0];
-    [NSBezierPath setDefaultLineCapStyle:NSSquareLineCapStyle];
-    [[NSBezierPath bezierPathWithRect:strokeRect] stroke];
-
-    // Draw label
-    [self _drawBadgeWithPressed: mouseIsDown && mouseInside ];
-    
-	// Draw 'glossy' overlay which can give some visual feedback on clicks when an preview image is set.
-	if ([self previewImage] != nil) {
-		[self drawGlossyWithPressed: mouseIsDown && mouseInside];		
-	}
-	
-    // Draw the gear icon
-	if ([[CTFUserDefaultsController standardUserDefaults] boolForKey:sDrawGearImageOnlyOnMouseOverHiddenPref]) {
-		if( mouseInside && !mouseIsDown )
-			[ self _drawGearIcon ];
-	} else {
-		[ self _drawGearIcon ];
-	}
-}
-
-- (void) _checkMouseLocation
-{
-	NSPoint mouseLoc = [NSEvent mouseLocation];
-	
-	BOOL nowInside = NSPointInRect(mouseLoc, [_webView bounds]);
-	if (nowInside) {
-		mouseInside = YES;
-	} else {
-		mouseInside = NO;
-	}
-}
-
-- (void) _addTrackingAreaForCTF
-{
-    if (trackingArea)
-        return;
-    
-    trackingArea = [NSClassFromString(@"NSTrackingArea") alloc];
-    if (trackingArea != nil)
-    {
-        [(MATrackingArea *)trackingArea initWithRect:[self bounds]
-                                             options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
-                                               owner:self
-                                            userInfo:nil];
-        [self addTrackingArea:trackingArea];
-    }
-    else
-    {
-        trackingArea = [NSClassFromString(@"MATrackingArea") alloc];
-        [(MATrackingArea *)trackingArea initWithRect:[self bounds]
-                                             options:MATrackingMouseEnteredAndExited | MATrackingActiveInKeyWindow | MATrackingEnabledDuringMouseDrag | MATrackingInVisibleRect
-                                               owner:self
-                                            userInfo:nil];
-        [MATrackingArea addTrackingArea:trackingArea toView:self];
-        usingMATrackingArea = YES;
-    }
-}
-
-- (void) _removeTrackingAreaForCTF
-{
-    if (trackingArea)
-    {
-        if (usingMATrackingArea)
-        {
-            [MATrackingArea removeTrackingArea:trackingArea fromView:self];
-        }
-        else
-        {
-            [self removeTrackingArea:trackingArea];
-        }
-        [trackingArea release];
-        trackingArea = nil;
-    }
-}
 
 
 #pragma mark -
@@ -1029,6 +622,17 @@ BOOL usingMATrackingArea = NO;
 	}
 	
 	return appBundleIdentifier;
+}
+
+
+- (BOOL) _isOptionPressed {
+    BOOL isOptionPressed = (([[NSApp currentEvent] modifierFlags] & NSAlternateKeyMask) != 0);
+    return isOptionPressed;
+}
+
+- (BOOL) _isCommandPressed {
+	BOOL isCommandPressed = (([[NSApp currentEvent] modifierFlags] & NSCommandKeyMask) != 0);
+	return isCommandPressed;
 }
 
 
@@ -1147,6 +751,62 @@ BOOL usingMATrackingArea = NO;
 			[(DOMElement *)[[self container] parentNode] setAttribute:@"style" value:originalParentStyle];
 		}
 	}
+}
+
+
+#pragma mark -
+#pragma mark Accessibility
+
+
+- (BOOL)accessibilityIsIgnored {
+	return NO;
+}
+
+
+
+- (NSArray *) accessibilityAttributeNames {
+	NSMutableArray * attributes = [[[super accessibilityAttributeNames] mutableCopy] autorelease];
+	//	[attributes addObject: NSAccessibilityTitleAttribute];
+	[attributes addObject: NSAccessibilityDescriptionAttribute];
+//	[attributes addObject: NSAccessibilityHelpAttribute];
+//	[attributes addObject: NSAccessibilityParentAttribute];
+//	[attributes addObject: NSAccessibilityChildrenAttribute];
+//	[attributes addObject: NSAccessibilityRoleAttribute];
+//	[attributes addObject: NSAccessibilityRoleDescriptionAttribute];
+	return attributes;
+}
+
+
+
+- (id) accessibilityAttributeValue: (NSString *) attribute {
+	id value = nil;
+	
+	if ( [attribute isEqualToString: NSAccessibilityTitleAttribute] ) {
+		//	value = [self badgeLabelText];
+	}
+	else if ( [attribute isEqualToString: NSAccessibilityDescriptionAttribute] ) {
+//		value = CtFLocalizedString( @"Blocked Flash content", @"Accessibility: NSAccessibilityDescriptionAttribute for Plugin.m");
+	}
+	else if ( [attribute isEqualToString: NSAccessibilityHelpAttribute] ) {
+//		value = CtFLocalizedString( @"A film or other interactive content is implemented in Flash should appear here. ClickToFlash prevented it from loading automatically.", @"Accessibility: NSAccessibilityHelpAttribute for Plugin.m");
+	}
+	else if ( [attribute isEqualToString: NSAccessibilityParentAttribute] ){
+		value = NSAccessibilityUnignoredAncestor([[[self webView] mainFrame] frameView]); 
+	}
+	else if ( [attribute isEqualToString: NSAccessibilityChildrenAttribute] ){
+		value = [NSArray arrayWithObjects: [self viewWithTag: CTFMainButtonTag], [self viewWithTag:CTFActionButtonTag], nil];
+	} 
+	else if ( [attribute isEqualToString: NSAccessibilityRoleAttribute] ) {
+		value = NSAccessibilityGroupRole;
+	}
+	else if ( [attribute isEqualToString: NSAccessibilityRoleDescriptionAttribute] ) {
+		value = NSAccessibilityRoleDescription(NSAccessibilityGroupRole, nil);
+	} 
+	else {
+		value =  [super accessibilityAttributeValue:attribute];
+	}
+	
+	return value;
 }
 
 
