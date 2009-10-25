@@ -315,9 +315,16 @@
 	NSMutableDictionary* flashVarsDictionary = [ NSMutableDictionary dictionary ];
 	NSScanner *HTMLScanner = [[NSScanner alloc] initWithString:youTubePageHTML];
 	
-	[HTMLScanner scanUpToString:@"var swfArgs = {" intoString:nil];
+	[HTMLScanner scanUpToString:@"var swfArgs = {" intoString: nil];
 	BOOL swfArgsFound = [HTMLScanner scanString:@"var swfArgs = {" intoString:nil];
-	
+	if (!swfArgsFound) {
+		// the magic words seems to be SWF_ARGS in places (or now?)
+		[HTMLScanner setScanLocation:0];
+		[HTMLScanner scanUpToString:@"'SWF_ARGS': {" intoString: nil];
+		swfArgsFound = [HTMLScanner scanString:@"'SWF_ARGS': {" intoString:nil];
+	}
+		
+
 	if (swfArgsFound) {
 		NSString *swfArgsString = nil;
 		[HTMLScanner scanUpToString:@"}" intoString:&swfArgsString];
