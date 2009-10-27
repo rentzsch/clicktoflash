@@ -12,7 +12,7 @@
 
 
 @interface SparkleManager : NSObject {
-
+	NSTimer *updaterTimer;
 }
 
 + (id)sharedManager;

@@ -27,6 +27,12 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
     return result;
 }
 
+- (void)dealloc;
+{
+	if (updaterTimer) [updaterTimer invalidate];
+	[super dealloc];
+}
+
 - (void)activateUpdater;
 {
 	NSString *updaterAppPath = [[[NSBundle bundleForClass:[self class]] resourcePath]
@@ -73,6 +79,16 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 	}
 }
 
+- (void)resetUpdaterTimer;
+{
+	if (updaterTimer) [updaterTimer invalidate];
+	updaterTimer = [NSTimer scheduledTimerWithTimeInterval:SU_DEFAULT_CHECK_INTERVAL
+													target:self
+												  selector:@selector(automaticallyCheckForUpdates)
+												  userInfo:nil
+												   repeats:YES];
+}
+
 - (void)automaticallyCheckForUpdates;
 {
 	if ([[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
@@ -88,6 +104,8 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 			[self activateUpdater];
 		}
 	}
+	
+	[self resetUpdaterTimer];
 }
 
 @end
