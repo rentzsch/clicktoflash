@@ -14,7 +14,6 @@
 
 - (void)awakeFromNib;
 {	
-	[NSApp activateIgnoringOtherApps:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateDriverDidFinish:)
 												 name:@"SUUpdateDriverFinished"
@@ -81,6 +80,12 @@ shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
 		// it later
 	}
 	return shouldPostpone;
+}
+
+- (void)updater:(SUUpdater *)updater
+didFindValidUpdate:(SUAppcastItem *)update;
+{
+	[NSApp activateIgnoringOtherApps:YES];
 }
 
 @end
