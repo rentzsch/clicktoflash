@@ -35,7 +35,6 @@ THE SOFTWARE.
 #import "CTFWhitelist.h"
 #import "NSBezierPath-RoundedRectangle.h"
 #import "CTFGradient.h"
-#import "SparkleManager.h"
 
 #define LOGGING_ENABLED 0
 
