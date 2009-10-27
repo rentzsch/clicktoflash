@@ -292,9 +292,9 @@ BOOL usingMATrackingArea = NO;
 		
 		// Plugin is enabled and the host is not white-listed. Kick off Sparkle.
 		
-		NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[self launchedAppBundleIdentifier]];
+		/*NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:[CTFClickToFlashPlugin launchedAppBundleIdentifier]];
 		[[SparkleManager sharedManager] setPathToRelaunch:pathToRelaunch];
-		[[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];
+		[[SparkleManager sharedManager] startAutomaticallyCheckingForUpdates];*/
 		
         // Set up main menus
         
