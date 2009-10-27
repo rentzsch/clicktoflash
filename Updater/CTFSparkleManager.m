@@ -27,9 +27,13 @@
 	
 	NSArray *launchArgs = [[NSProcessInfo processInfo] arguments];
 	NSString *checkInBackground = nil;
-	if ([launchArgs count] > 1) checkInBackground = [launchArgs objectAtIndex:1];
+	if ([launchArgs count] > 2) {
+		
+		checkInBackground = [launchArgs objectAtIndex:2];
+	}
 	
 	if (checkInBackground && [checkInBackground isEqualToString:@"--background"]) {
+		NSLog(@"innnn background!!");
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	} else {
 		[[SUUpdater sharedUpdater] checkForUpdates:nil];
@@ -48,7 +52,7 @@
 
 - (NSString*)pathToRelaunchForUpdater:(SUUpdater*)updater;
 {
-	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:0];
+	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:1];
 	NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace]
 								absolutePathForAppBundleWithIdentifier:hostAppBundleIdentifier];
 	return pathToRelaunch;
@@ -58,7 +62,7 @@
 shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
   untilInvoking:(NSInvocation *)invocation;
 {
-	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:0];
+	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:1];
 	NSString *appNameString = [[[NSBundle bundleWithIdentifier:hostAppBundleIdentifier] infoDictionary] objectForKey:@"CFBundleName"];
 	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
 										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],

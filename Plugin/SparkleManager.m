@@ -111,7 +111,6 @@ static NSString *sLastUpdateCheck = @"CTFLastUpdateCheck";
 		NSDate *lastUpdateCheck = [[CTFUserDefaultsController standardUserDefaults] objectForKey:sLastUpdateCheck];
 		if (lastUpdateCheck) {
 			int intervalSinceLastCheck = (int)[[NSDate date] timeIntervalSinceDate:lastUpdateCheck];
-			NSLog(@"%d compared to %d",intervalSinceLastCheck, SU_DEFAULT_CHECK_INTERVAL);
 			if (intervalSinceLastCheck >= SU_DEFAULT_CHECK_INTERVAL) {
 				// one day has passed since the last check
 				[self activateUpdater:self inBackground:YES];
