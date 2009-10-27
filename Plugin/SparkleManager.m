@@ -16,6 +16,7 @@
 
 // NSUserDefaults keys
 static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
+static NSString *sLastUpdateCheck = @"CTFLastUpdateCheck";
 
 @implementation SparkleManager
 
@@ -33,7 +34,7 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 	[super dealloc];
 }
 
-- (void)activateUpdater;
+- (void)activateUpdater:(id)sender inBackground:(BOOL)background;
 {
 	NSString *updaterAppPath = [[[NSBundle bundleForClass:[self class]] resourcePath]
 								stringByAppendingPathComponent:@"ClickToFlash Updater.app"];
@@ -70,8 +71,23 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 	// are likely going to be many ClickToFlash objects available
 	
 	if (! foundUpdater) {
+		NSArray *argsArray;
+		if (background) {
+			argsArray = [NSArray arrayWithObjects:[CTFClickToFlashPlugin launchedAppBundleIdentifier],@"--background",nil];
+		} else {
+			argsArray = [NSArray arrayWithObject:[CTFClickToFlashPlugin launchedAppBundleIdentifier]];
+		}
+		
+		// we save our own last update check date instead of relying on Sparkle because
+		// Sparkle's date is saved *after* the check is done, and that can cause multiple
+		// updaters to launch because the old date could be checked by other instances
+		// of the ClickToFlash plug-in (since many instances can be created on load
+		// of a single page)
+
+		[[CTFUserDefaultsController standardUserDefaults] setObject:[NSDate date]
+															 forKey:sLastUpdateCheck];
 		[NSTask launchedTaskWithLaunchPath:updaterExecutablePath
-								 arguments:[NSArray arrayWithObject:[CTFClickToFlashPlugin launchedAppBundleIdentifier]]];
+								 arguments:argsArray];
 	} else {
 		// send a notification to the existing updater to activate itself
 		[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"CTFSparkleUpdaterShouldActivate"
@@ -92,20 +108,33 @@ static NSString *sAutomaticallyCheckForUpdates = @"checkForUpdatesOnFirstLoad";
 - (void)automaticallyCheckForUpdates;
 {
 	if ([[CTFUserDefaultsController standardUserDefaults] objectForKey:sAutomaticallyCheckForUpdates]) {
-		NSDate *lastUpdateCheck = [[CTFUserDefaultsController standardUserDefaults] objectForKey:@"SULastCheckTime"];
+		NSDate *lastUpdateCheck = [[CTFUserDefaultsController standardUserDefaults] objectForKey:sLastUpdateCheck];
 		if (lastUpdateCheck) {
-			int intervalSinceLastCheck = [[NSDate date] timeIntervalSinceDate:lastUpdateCheck];
-			if (intervalSinceLastCheck > SU_DEFAULT_CHECK_INTERVAL) {
+			int intervalSinceLastCheck = (int)[[NSDate date] timeIntervalSinceDate:lastUpdateCheck];
+			NSLog(@"%d compared to %d",intervalSinceLastCheck, SU_DEFAULT_CHECK_INTERVAL);
+			if (intervalSinceLastCheck >= SU_DEFAULT_CHECK_INTERVAL) {
 				// one day has passed since the last check
-				[self activateUpdater];
+				[self activateUpdater:self inBackground:YES];
 			}
 		} else {
 			// updater has never run, run it now, now, now!
-			[self activateUpdater];
+			[self activateUpdater:self inBackground:YES];
 		}
 	}
 	
 	[self resetUpdaterTimer];
+}
+
+- (void)checkForUpdatesNow;
+{
+	[self activateUpdater:self inBackground:NO];
+	[self resetUpdaterTimer];
+}
+
+- (void)setAutomaticallyChecksForUpdates:(BOOL)autoChecks;
+{
+	[[CTFUserDefaultsController standardUserDefaults] setBool:autoChecks
+													   forKey:sAutomaticallyCheckForUpdates];
 }
 
 @end

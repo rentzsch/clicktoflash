@@ -16,6 +16,9 @@
 }
 
 + (id)sharedManager;
+
 - (void)automaticallyCheckForUpdates;
+- (void)checkForUpdatesNow;
+- (void)setAutomaticallyChecksForUpdates:(BOOL)autoChecks;
 
 @end

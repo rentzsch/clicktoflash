@@ -14,7 +14,6 @@
 
 - (void)awakeFromNib;
 {	
-	//NSLog(@"updater arguments: %@",[[NSProcessInfo processInfo] arguments]);
 	[NSApp activateIgnoringOtherApps:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateDriverDidFinish:)
@@ -25,7 +24,16 @@
 												 name:@"CTFSparkleUpdaterShouldActivate"
 											   object:nil];
 	[[SUUpdater sharedUpdater] setDelegate:self];
-	[[SUUpdater sharedUpdater] checkForUpdates:nil];
+	
+	NSArray *launchArgs = [[NSProcessInfo processInfo] arguments];
+	NSString *checkInBackground = nil;
+	if ([launchArgs count] > 1) checkInBackground = [launchArgs objectAtIndex:1];
+	
+	if (checkInBackground && [checkInBackground isEqualToString:@"--background"]) {
+		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	} else {
+		[[SUUpdater sharedUpdater] checkForUpdates:nil];
+	}
 }
 
 - (void)updateDriverDidFinish:(NSNotification *)notification;

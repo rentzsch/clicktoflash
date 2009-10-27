@@ -120,6 +120,7 @@ BOOL usingMATrackingArea = NO;
 {
     self = [super init];
     if (self) {
+		_sparkleUpdateInProgress = NO;
 		_hasH264Version = NO;
 		_hasHDH264Version = NO;
 		_contextMenuIsVisible = NO;
@@ -292,7 +293,15 @@ BOOL usingMATrackingArea = NO;
 		
 		// Plugin is enabled and the host is not white-listed. Kick off Sparkle.
 		
-		[[SparkleManager sharedManager] automaticallyCheckForUpdates];
+		if (! _sparkleUpdateInProgress) {
+			// sometimes many instances of the ClickToFlash plug-in are loaded
+			// at once, so we don't want to launch multiple copies of the
+			// Sparkle Updater
+			
+			_sparkleUpdateInProgress = YES;
+			[[SparkleManager sharedManager] automaticallyCheckForUpdates];
+			_sparkleUpdateInProgress = NO;
+		}
 		
 		
         // Set up main menus

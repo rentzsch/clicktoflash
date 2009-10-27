@@ -26,12 +26,12 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 
 - (IBAction)checkForUpdates:(id)sender;
 {
-	[[SparkleManager sharedManager] automaticallyCheckForUpdates];
+	[[SparkleManager sharedManager] checkForUpdatesNow];
 }
 
 - (IBAction)automaticallyCheckForUpdatesDidChange:(id)sender;
 {
-	//[[SparkleManager sharedManager] setAutomaticallyChecksForUpdates:[sender state]];
+	[[SparkleManager sharedManager] setAutomaticallyChecksForUpdates:[sender state]];
 }
 
 - (NSString *)versionString

@@ -62,6 +62,8 @@ THE SOFTWARE.
 	NSURLConnection *connections[2];
 	unsigned expectedResponses;
 	NSTimer *_delayingTimer;
+	
+	BOOL _sparkleUpdateInProgress;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;
