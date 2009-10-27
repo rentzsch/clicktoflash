@@ -26,55 +26,7 @@ NSString *kCTFCheckForUpdates = @"CTFCheckForUpdates";
 
 - (IBAction)checkForUpdates:(id)sender;
 {
-	NSString *updaterAppPath = [[[NSBundle bundleForClass:[self class]] resourcePath]
-							 stringByAppendingPathComponent:@"ClickToFlash Updater.app"];
-	NSString *updaterExecutablePath = [updaterAppPath stringByAppendingPathComponent:@"Contents/MacOS/ClickToFlash Updater"];
-	
-	//NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
-	
-	/* the following should work, but for some reason it doesn't
-	NSString *updaterPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"ClickToFlash Updater"
-															ofType:@"app"];*/
-	
-	
-	
-	
-	// the reason the following line is used is because the Sparkle updater needs
-	// to know about the host app so it can relaunch the host app after updating
-	// ClickToFlash
-	
-	// an NSNotification here doesn't work so well because (unless I'm missing
-	// something) we can't that the updater is launched and ready by the time 
-	// we send the notification, without simply delaying an arbitrary number of
-	// seconds
-	
-	// inter-app communication via NSProxyObjects is inadvisable since there
-	// are likely going to be many ClickToFlash objects available
-	
-	NSArray *launchedApps = [[NSWorkspace sharedWorkspace] launchedApplications];
-	//NSLog(@"launchedApps: %@",launchedApps);
-	BOOL foundUpdater = NO;
-	unsigned int i;
-	for (i = 0; i < [launchedApps count]; i++) {
-		NSString *currentBundleId = [[launchedApps objectAtIndex:i] objectForKey:@"NSApplicationBundleIdentifier"];
-		if ( [currentBundleId isEqualToString:@"com.github.rentzsch.clicktoflash-updater"] ) {
-			//NSLog(@"%@",currentBundleId);
-			foundUpdater = YES;
-			break;
-		}
-	}
-	
-	
-	if (! foundUpdater) {
-		[NSTask launchedTaskWithLaunchPath:updaterExecutablePath
-								 arguments:[NSArray arrayWithObject:[CTFClickToFlashPlugin launchedAppBundleIdentifier]]];
-	} else {
-		//NSLog(@"there's an existing updater!");
-			  
-		// send a notification to the existing updater to activate itself
-		[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"CTFSparkleUpdaterShouldActivate"
-															object:nil];
-	}
+	[[SparkleManager sharedManager] automaticallyCheckForUpdates];
 }
 
 - (IBAction)automaticallyCheckForUpdatesDidChange:(id)sender;

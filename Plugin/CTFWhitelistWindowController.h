@@ -1,4 +1,5 @@
 #import <Cocoa/Cocoa.h>
+#import "SparkleManager.h"
 
 extern NSString* kCTFCheckForUpdates;
 
