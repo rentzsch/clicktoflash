@@ -92,7 +92,7 @@ THE SOFTWARE.
 - (BOOL)_hasHDH264Version;
 - (BOOL)_isVideoElementAvailable;
 - (void)_setHasHDH264Version:(BOOL)newValue;
-- (NSString *)launchedAppBundleIdentifier;
++ (NSString *)launchedAppBundleIdentifier;
 - (void)setLaunchedAppBundleIdentifier:(NSString *)newValue;
 - (NSString *)YouTubePageURLString;
 - (NSString *)H264URLString;

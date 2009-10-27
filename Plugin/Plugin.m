@@ -148,7 +148,7 @@ BOOL usingMATrackingArea = NO;
 			// Default to enable the plugin
 			[[CTFUserDefaultsController standardUserDefaults] setBool:YES forKey:sPluginEnabled];
 		}
-		[self setLaunchedAppBundleIdentifier:[self launchedAppBundleIdentifier]];
+		[self setLaunchedAppBundleIdentifier:[CTFClickToFlashPlugin launchedAppBundleIdentifier]];
 		
 		[self setWebView:[[[arguments objectForKey:WebPlugInContainerKey] webFrame] webView]];
 		
@@ -1556,7 +1556,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
     [self setContainer:nil];
 }
 
-- (NSString *)launchedAppBundleIdentifier
++ (NSString *)launchedAppBundleIdentifier
 {
 	NSString *appBundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
 	
@@ -1620,7 +1620,7 @@ didReceiveResponse:(NSHTTPURLResponse *)response
 	}
 	
 	[[NSWorkspace sharedWorkspace] openURLs: [NSArray arrayWithObject:[NSURL URLWithString:src]]
-					withAppBundleIdentifier: [self launchedAppBundleIdentifier]
+					withAppBundleIdentifier: [CTFClickToFlashPlugin launchedAppBundleIdentifier]
 									options: NSWorkspaceLaunchDefault
 			 additionalEventParamDescriptor: [NSAppleEventDescriptor nullDescriptor]
 						  launchIdentifiers: nil];	
