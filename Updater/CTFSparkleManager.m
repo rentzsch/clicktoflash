@@ -32,7 +32,6 @@
 	}
 	
 	if (checkInBackground && [checkInBackground isEqualToString:@"--background"]) {
-		NSLog(@"innnn background!!");
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	} else {
 		[[SUUpdater sharedUpdater] checkForUpdates:nil];
