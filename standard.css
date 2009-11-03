@@ -16,6 +16,12 @@ body {
 	background-color: #E1E1E1;
 }
 
+.thinner_body {
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 code {
 	border: 1px solid gray;
 }
@@ -85,12 +91,67 @@ h1 {
 	padding-top: 5px;
 	margin-top: 10px;
 	background-color: white;
-	height: 4em;
-	width: 17em;
 	font-size: 14px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
+	color: black;
+}
+
+.download_box_stable {
+	height: 4em;
+	width: 17em;
+}
+
+.box_link:link {
+	font-weight: normal;
+}
+
+.download_box_beta {
+	height: 3em;
+	width: 16em;
+	font-size: 12px;
+}
+
+.download_button_box {
+	float: left;
+	position: relative;
+	height: 50px;
+	width: 95px;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+.download_text_box {
+	display: inline;
+	position: relative;
+}
+
+.download_text_box_stable {
+	font-size: 12px;
+	top: -0.375em;
+}
+
+.download_text_box_beta {
+	font-size: 11px; 
+	top: -0.3em;
+}
+
+.button_box_stable {
+	font-size: 32px;
+	line-height: 0.55em;
+}
+
+.button_box_beta {
+	font-size: 18px;
+	line-height: 0.75em;
+	height: 25px;
+}
+
+.box_hover:hover {
+	#background-color: #ADAEDD;
+	background-color: #000066;
+	color: white;
 }
 
 .small_text_box {
@@ -105,28 +166,12 @@ h1 {
 	
 
 .link_box {
-	width: 18em;
+	width: 20em;
 	text-align: center;
 	margin-top: 7px;
 	margin-left: auto;
 	margin-right: auto;
 	font-size: 12px;
-}
-
-.download_button_box {
-	float: left;
-	position: relative;
-	height: 100%;
-	font-size: 32px;
-	height: 50px;
-	width: 95px;
-	line-height: 1.5em;
-	vertical-align: middle;
-}
-
-.beta {
-	font-size: 24px;
-	line-height: 2em;
 }
 
 .sys_reqs_box {
@@ -203,8 +248,12 @@ h2, h3 {
 	border: 1px solid red;
 	font-size: 12px;
 	clear: both;
-	width: 80%;
+	width: 50%;
 	text-align: center;
+}
+
+.green_box {
+	border-color: green;
 }
 
 .features_column_1 {
@@ -236,4 +285,22 @@ h2, h3 {
 
 .feature_header {
 	font-weight: bold;
+}
+
+.centered_text {
+	text-align:center
+}
+
+.donating-on {
+	# if donating is turned OFF, this should
+	# be display:none;
+	
+	display: inline;
+}
+
+.donating-off {
+	# if donating is turned OFF, this should
+	# be display:inline;
+	
+	display: none;
 }

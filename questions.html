@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="standard.css" />
+		<title>ClickToFlash Video Site Support</title>
+	</head>
+	<body class="thinner_body">
+		<div class="main_box_high">
+			<div class="product_header_box">
+				<div class="product_header_right_side">
+					<a href="index.html">
+						<div class="title_box box_hover">
+							<h1>ClickToFlash</h1>
+							<span class="short-desc" style="font-weight: normal;">Flash-blocking plug-in for Safari on Mac OS X</span>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="content_box"><h3>Common Problems/Questions with ClickToFlash</h3></div>
+		<div class="content_box" id="updating-issue">
+			<h2 id="updating_troubles">Updating Troubles:</h2>
+			<p>ClickToFlash has some troubles updating because of how it loads into
+			other applications.  If you are having trouble updating ClickToFlash
+			via the automatic updater, please download and install the latest
+			ClickToFlash update manually from this website via the <a href="#">download
+				links</a> at the top of the page.</p>
+			
+			<p>In particular, if you were automatically updated to ClickToFlash 1.5 or 1.5.1,
+			you'll need to manually download and upgrade to 1.5.2 or later yourself.</p>
+			
+			<p>We are in the process of fixing all these problems for ClickToFlash 1.6,
+			but for now you'll have to bear with us.</p>
+		</div>
+		
+		<div class="content_box" id="installer-issue">
+			<h2 id="installation_troubles">Installation Troubles:</h2>
+			<p>When installing ClickToFlash, you may receive this error if you've installed ClickToFlash before:</p>
+			
+			<pre><code>Installer could not install files in /tmp</code></pre>
+			
+			<p>This is a known problem with pre-release versions of 1.4 and 1.5.  To fix it, open the Terminal
+			(located in the Applications folder), and type in the following command, followed by
+			a return:</p>
+			
+			<pre><code>sudo pkgutil --forget com.github.rentzsch.clicktoflash.pkg</code></pre>
+			
+			<p>A password may be required.  If it asks for your password, type it in (you will not
+			see any letters, numbers, or bullets), and then press return again.</p>
+			
+			<p>You may also see this error after issuing the aforementioned Terminal command: </p>
+			
+			<pre><code>No receipt for 'com.github.rentzsch.clicktoflash.pkg' found at '/'</code></pre>
+			
+			<p>Don't worry, that's OK.  ClickToFlash should now install normally.</p>
+			
+			<h3 id="further_problems">Further problems:</h3>
+			<p>If the installer is <strong>still</strong> giving you troubles, and you're running under a non-admin user,
+			type the following terminal command, followed by a return:</p>
+			
+			<pre><code>su admin_user -c 'touch /Library/Receipts/ClickToFlash.pkg'</code></pre>
+			
+			<p>replacing "admin_user" with the short user name of an admin user.  You will need to enter a password as well,
+			and then type return again.  Now attempt ClickToFlash installation again.</p>
+		</div>
+		
+		<div class="content_box" id="pandorajam-issue">
+			<h2 id="pandorajam_troubles">PandoraJam Troubles:</h2>
+			<p>If you're having troubles with PandoraJam, make sure you are running ClickToFlash 1.5 or later, and
+			<a href="http://www.bitcartel.com/pandorajam/">upgrade to
+				PandoraJam</a> 1.4 (build 288) or later.
+		</div>
+		
+		<div class="content_box" id="application-whitelist">
+			<h2 id="application_whitelist">Application Whitelist:</h2>
+			<p>ClickToFlash 1.5 and higher now include an application whitelist.  For apps that absolutely require
+			Flash, ClickToFlash may cause the app to not function at all, or it may cause severe inconveniences.  If an
+			app is on the application whitelist, ClickToFlash will automatically load all Flash.</p>
+			
+			<p>Currently, the application whitelist does not have a GUI.  Use the following Terminal command (or your favorite
+			plist editor) to add apps to the whitelist, replacing "bundleID" with the bundle ID of the app you're whitelisting:</p>
+			
+			<pre><code class="small_code">defaults write com.github.rentzsch.clicktoflash applicationWhitelist -array-add bundleID</code></pre>
+			
+			<p><b>App developers:</b> you do not need to wait for a new release of ClickToFlash in order to use the
+			application whitelist.  Simply include a key named "ClickToFlashOptOut" in your app's Info.plist file, set
+			its value to "YES", and your app will automatically be whitelisted by ClickToFlash.</p>
+		</div>
+	</body>
+</html>
