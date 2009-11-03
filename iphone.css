@@ -1,3 +1,48 @@
 .main_box_high {
-	width: 300px;
+	width: 480px;
+}
+
+.features_column_1 {
+	float: none;
+	left: 0px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.features_column_2 {
+	float: none;
+	left: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	top: -10px;
+}
+
+.product_icon_short {
+	padding: 0 0 0 0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.product_header_left_side {
+	float: none;
+	width: 256px;
+	height: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.product_header_right_side {
+	display: inline;
+	float: none;
+}
+
+.product_header_box {
+	width: 80%;
+}
+
+.title_box {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 }
