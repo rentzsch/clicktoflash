@@ -50,6 +50,7 @@ pre {
 .product_header_left_side
 {
 	float: left;
+	width: 300px;
 }
 
 .product_header_right_side
