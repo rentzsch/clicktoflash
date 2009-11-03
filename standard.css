@@ -63,7 +63,7 @@ pre {
 	float: left;
 	display: inline;
 	text-align: center;
-	padding: 5em 1em 0 3em;
+	padding: 5em 0 0 3em;
 }
 
 .product_header_box {
@@ -80,7 +80,7 @@ h1 {
 }
 
 .title_box {
-	width: 100%;
+	width: 310px;
 	text-align: center;
 	margin-bottom: 15px;
 }
