@@ -148,6 +148,10 @@ h1 {
 	height: 25px;
 }
 
+.box_hover:link {
+	color: black;
+}
+
 .box_hover:hover {
 	#background-color: #ADAEDD;
 	background-color: #000066;
