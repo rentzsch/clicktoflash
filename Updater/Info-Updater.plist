@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSUIElement</key>
+	<true/>
+	<key>CFBundleIconFile</key>
+	<string>ctf</string>
+	<key>SUUpdaterBundleIdentifier</key>
+	<string>com.github.rentzsch.clicktoflash</string>
+	<key>SUUpdaterDisplayName</key>
+	<string>ClickToFlash</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>

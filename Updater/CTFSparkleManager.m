@@ -14,8 +14,6 @@
 
 - (void)awakeFromNib;
 {	
-	//NSLog(@"updater arguments: %@",[[NSProcessInfo processInfo] arguments]);
-	[NSApp activateIgnoringOtherApps:YES];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(updateDriverDidFinish:)
 												 name:@"SUUpdateDriverFinished"
@@ -25,7 +23,19 @@
 												 name:@"CTFSparkleUpdaterShouldActivate"
 											   object:nil];
 	[[SUUpdater sharedUpdater] setDelegate:self];
-	[[SUUpdater sharedUpdater] checkForUpdates:nil];
+	
+	NSArray *launchArgs = [[NSProcessInfo processInfo] arguments];
+	NSString *checkInBackground = nil;
+	if ([launchArgs count] > 2) {
+		
+		checkInBackground = [launchArgs objectAtIndex:2];
+	}
+	
+	if (checkInBackground && [checkInBackground isEqualToString:@"--background"]) {
+		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+	} else {
+		[[SUUpdater sharedUpdater] checkForUpdates:nil];
+	}
 }
 
 - (void)updateDriverDidFinish:(NSNotification *)notification;
@@ -40,7 +50,7 @@
 
 - (NSString*)pathToRelaunchForUpdater:(SUUpdater*)updater;
 {
-	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:0];
+	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:1];
 	NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace]
 								absolutePathForAppBundleWithIdentifier:hostAppBundleIdentifier];
 	return pathToRelaunch;
@@ -50,7 +60,7 @@
 shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
   untilInvoking:(NSInvocation *)invocation;
 {
-	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:0];
+	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:1];
 	NSString *appNameString = [[[NSBundle bundleWithIdentifier:hostAppBundleIdentifier] infoDictionary] objectForKey:@"CFBundleName"];
 	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
 										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],
@@ -69,6 +79,12 @@ shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
 		// it later
 	}
 	return shouldPostpone;
+}
+
+- (void)updater:(SUUpdater *)updater
+didFindValidUpdate:(SUAppcastItem *)update;
+{
+	[NSApp activateIgnoringOtherApps:YES];
 }
 
 @end
