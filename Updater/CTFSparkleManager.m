@@ -23,6 +23,26 @@
 												 name:@"CTFSparkleUpdaterShouldActivate"
 											   object:nil];
 	[[SUUpdater sharedUpdater] setDelegate:self];
+    
+    {
+        //  Truth table:
+        //
+        //  isBeta	useBetaAppcast
+        //  ------  --------------
+        //  true	true            Beta in a beta land. Easy: check beta appcast.
+        //  false	true            Golden, but opted into betas by previously running a beta. Check beta appcast.
+        //  true	false           Beta with a beta-virgin user. Set useBetaAppcast user default to true and check beta appcast.
+        //  false	false           Golden boy -- never tried a beta. Check golden appcast.
+        
+        NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+        BOOL isBeta = [[infoPlist objectForKey:@"CFBundleVersion"] rangeOfString:@"b"].location != NSNotFound;
+        BOOL useBetaAppcast = [[NSUserDefaults standardUserDefaults] boolForKey:@"useBetaAppcast"];
+        NSString *feedURLKey = (!isBeta && !useBetaAppcast) ? @"SUFeedURL" : @"SUBetaFeedURL";
+        if (isBeta && !useBetaAppcast) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"useBetaAppcast"];
+        }
+        [[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:[infoPlist objectForKey:feedURLKey]]];
+    }
 	
 	NSArray *launchArgs = [[NSProcessInfo processInfo] arguments];
 	NSString *checkInBackground = nil;

@@ -4,7 +4,17 @@ This is the ClickToFlash developer site.
 
 ##Version History
 
-* **1.5.3**
+* **1.6b4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.6b4.zip)
+
+	* *This update is exactly the same as 1.6b3 and only exists to test/demonstrate Sparkle updating.*
+
+* **1.6b3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.6b3.zip)
+
+	* [NEW] Sparkle updating now takes place in a helper app, hopefully reducing framework class conflicts. (Simone Manganelli)
+
+	* [NEW] Support for the beta appcast. (rentzsch)
+
+* **1.5.3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.5.3-golden.zip)
 
 	* [FIX] Whitelist now checks for duplicates, and removes them if they exist.  This fixes crashes and hangs caused by simX's bug from 1.5b4.
 
