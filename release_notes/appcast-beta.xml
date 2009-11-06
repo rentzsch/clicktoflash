@@ -13,7 +13,7 @@
 			    sparkle:version="1.6b4"
 			    url="http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.6b4.zip"
 			    type="application/zip"
-			    sparkle:dsaSignature="MCwCFE/gizx5zj9ElG5iOUyp44BEXF4qAhQej+kk3lxdPoSjhYbxDtYw4Jgmvw=="/>
+			    sparkle:dsaSignature="MC0CFQCr2GJVquTG+ybNebOgU7WUgBc0HwIUfdKu00IdlsMWWn6IW0/IM4p8fJc="/>
 		</item>
 		<item>
 			<title>version 1.6b3</title>
@@ -23,7 +23,7 @@
 			    sparkle:version="1.6b3"
 			    url="http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.6b3.zip"
 			    type="application/zip"
-			    sparkle:dsaSignature="MC4CFQCHFCz4PznTpOVA06g6ing0h9Fd/QIVAIcPZw0AKYXFmYTq9zIniA3Hv3ZB"/>
+			    sparkle:dsaSignature="MCwCFBEMiWAC0PA/UcD8cqgVM+xelRYaAhQSr+aFMtp7hXt3n4IKoF/eRrZ6TQ=="/>
 		</item>
 		<item>
 			<title>version 1.5.3</title>
