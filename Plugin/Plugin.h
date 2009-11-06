@@ -38,7 +38,6 @@ THE SOFTWARE.
     id trackingArea;
     NSAlert* _activeAlert;
     BOOL mouseIsDown;
-    BOOL mouseInside;
     BOOL _isLoadingFromWhitelist;
     BOOL _fromYouTube;
     BOOL _fromFlickr;
@@ -64,6 +63,8 @@ THE SOFTWARE.
 
 - (NSMenuItem*) addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector;
 - (NSMenuItem *) addContextualMenuItemWithTitle: (NSString*) title action: (SEL) selector target:(id) target;
+
+- (IBAction) clicked: (id) sender;
 
 - (IBAction)loadFlash:(id)sender;
 - (IBAction)loadAllOnPage:(id)sender;
