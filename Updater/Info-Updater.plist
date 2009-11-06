@@ -34,5 +34,7 @@
 	<string>dsa_pub.pem</string>
 	<key>SUFeedURL</key>
 	<string>http://rentzsch.github.com/clicktoflash/release_notes/appcast.xml</string>
+	<key>SUBetaFeedURL</key>
+	<string>http://rentzsch.github.com/clicktoflash/release_notes/appcast-beta.xml</string>
 </dict>
 </plist>
