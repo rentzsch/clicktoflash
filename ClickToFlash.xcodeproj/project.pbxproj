@@ -74,6 +74,7 @@
 		A46A5E2B109700B400E1ABAA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
 		A4D8070C10A40BCB0024454E /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D8070B10A40BCB0024454E /* SparkleManager.m */; };
+		A4D8074710A4129C0024454E /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
 		A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */; };
 		A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
@@ -537,6 +538,7 @@
 			files = (
 				A46A5A141096C5E600E1ABAA /* dsa_pub.pem in Resources */,
 				A46A5A5D1096C9CD00E1ABAA /* MainMenu.xib in Resources */,
+				A4D8074710A4129C0024454E /* ctf.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
