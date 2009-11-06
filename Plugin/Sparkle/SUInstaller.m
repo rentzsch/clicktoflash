@@ -48,8 +48,7 @@
 			newAppDownloadPath = currentPath;
 			break;
 		}
-		else if (([[currentFile pathExtension] isEqualToString:@"pkg"] || [[currentFile pathExtension] isEqualToString:@"mpkg"]) &&
-				 [[[currentFile lastPathComponent] stringByDeletingPathExtension] isEqualToString:[bundleFileName stringByDeletingPathExtension]])
+		else if ([[currentFile pathExtension] isEqualToString:@"pkg"] || [[currentFile pathExtension] isEqualToString:@"mpkg"])
 		{
 			isPackage = YES;
 			newAppDownloadPath = currentPath;
