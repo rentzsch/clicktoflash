@@ -10,8 +10,6 @@
 #import "CTFUtilities.h"
 
 static CGFloat padding = 3.;
-static CGFloat leftMargin = 5.;
-static CGFloat backgroundOpacity = .8;
 
 
 @implementation CTFActionButton

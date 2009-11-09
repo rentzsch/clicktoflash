@@ -47,7 +47,7 @@ static NSString *sFlashNewMIMEType = @"application/futuresplash";
 static NSString *sAutoLoadInvisibleFlashViewsKey = @"autoLoadInvisibleViews";
 static NSString *sPluginEnabled = @"pluginEnabled";
 static NSString *sApplicationWhitelist = @"applicationWhitelist";
-static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
+//static NSString *sDrawGearImageOnlyOnMouseOverHiddenPref = @"drawGearImageOnlyOnMouseOver";
 
 // Info.plist key for app developers
 static NSString *sCTFOptOutKey = @"ClickToFlashOptOut";
