@@ -48,7 +48,9 @@
 			newAppDownloadPath = currentPath;
 			break;
 		}
-		else if ([[currentFile pathExtension] isEqualToString:@"pkg"] || [[currentFile pathExtension] isEqualToString:@"mpkg"])
+		else if (([[currentFile pathExtension] isEqualToString:@"pkg"] || [[currentFile pathExtension] isEqualToString:@"mpkg"]) &&
+				 ([[[currentFile lastPathComponent] stringByDeletingPathExtension] isEqualToString:[bundleFileName stringByDeletingPathExtension]]) ||
+				 [[[currentFile lastPathComponent] stringByDeletingPathExtension] isEqualToString:[bundle objectForInfoDictionaryKey:@"SUUpdaterDisplayName"]])
 		{
 			isPackage = YES;
 			newAppDownloadPath = currentPath;
