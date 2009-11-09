@@ -40,17 +40,21 @@
 	NSDirectoryEnumerator *dirEnum = [[NSFileManager defaultManager] enumeratorAtPath:updateFolder];
 	while ((currentFile = [dirEnum nextObject]))
 	{
-		NSString *currentPath = [updateFolder stringByAppendingPathComponent:currentFile];		
-		if ([[currentFile lastPathComponent] isEqualToString:bundleFileName] ||
-			[[currentFile lastPathComponent] isEqualToString:alternateBundleFileName]) // We found one!
+		NSString *currentPath = [updateFolder stringByAppendingPathComponent:currentFile];
+		NSString *currentPathExtension = [currentFile pathExtension];
+		NSString *currentFileName = [currentFile lastPathComponent];
+		NSString *currentFileDisplayName = [currentFileName stringByDeletingPathExtension];
+		
+		if ([currentFileName isEqualToString:bundleFileName] ||
+			[currentFileName isEqualToString:alternateBundleFileName]) // We found one!
 		{
 			isPackage = NO;
 			newAppDownloadPath = currentPath;
 			break;
 		}
-		else if (([[currentFile pathExtension] isEqualToString:@"pkg"] || [[currentFile pathExtension] isEqualToString:@"mpkg"]) &&
-				 ([[[currentFile lastPathComponent] stringByDeletingPathExtension] isEqualToString:[bundleFileName stringByDeletingPathExtension]]) ||
-				 [[[currentFile lastPathComponent] stringByDeletingPathExtension] isEqualToString:[bundle objectForInfoDictionaryKey:@"SUUpdaterDisplayName"]])
+		else if (([currentPathExtension isEqualToString:@"pkg"] || [currentPathExtension isEqualToString:@"mpkg"]) &&
+				 (([currentFileDisplayName isEqualToString:[bundleFileName stringByDeletingPathExtension]]) ||
+				  [currentFileDisplayName isEqualToString:[[NSBundle bundleWithPath:[host bundlePath]] objectForInfoDictionaryKey:@"SUUpdaterDisplayName"]]))
 		{
 			isPackage = YES;
 			newAppDownloadPath = currentPath;
