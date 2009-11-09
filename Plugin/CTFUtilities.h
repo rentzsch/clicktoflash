@@ -25,6 +25,11 @@ THE SOFTWARE.
 */
 
 
+#ifndef NSAppKitVersionNumber10_5
+#define NSAppKitVersionNumber10_5 949
+#endif
+
+
     // Simple ForEach macro to make life easier on those porting to Tiger
     // than using Leopard's fast enumeration and "in" keyword:
 #define CTFForEachObject( Type, varName, container ) \
@@ -32,3 +37,6 @@ THE SOFTWARE.
     Type* varName; \
     while( ( varName = [ feoEnum_##__LINE__ nextObject ] ) )
 
+
+    // Load our localised strings from the correct bundle [use genstrings -s CtFLocalizedString]
+#define CtFLocalizedString(key, explanation) [[NSBundle bundleForClass:[self class]] localizedStringForKey:(key) value:@"" table:(nil)]

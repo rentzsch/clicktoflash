@@ -45,7 +45,16 @@
 		6953E4360F3EDE9D0014ECF7 /* CTFMenubarMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */; };
 		6953E43C0F3EDEB50014ECF7 /* MenubarMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6953E43A0F3EDEB50014ECF7 /* MenubarMenu.xib */; };
 		69A26D0C0F302C10006648BC /* NSBezierPath-RoundedRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */; };
+		6C09630C107FCA610006923A /* CTFActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C09630B107FCA610006923A /* CTFActionButton.m */; };
+		6C09648010808D4B0006923A /* CTFMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C09647F10808D4B0006923A /* CTFMainButton.m */; };
+		6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A40485B110629B0E00FDC4E2 /* Credits.css */; };
 		6C436DAF107830A200A0D525 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C436DAE107830A200A0D525 /* QTKit.framework */; };
+		6C8E03FF10795EB900E21A50 /* CTFLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8E03FE10795EB900E21A50 /* CTFLoader.m */; };
+		6C8EC6F410764F810053587F /* CTFKiller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC6F310764F810053587F /* CTFKiller.m */; };
+		6C8EC7051076544D0053587F /* CTFKillerYouTube.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC7041076544D0053587F /* CTFKillerYouTube.m */; };
+		6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC774107671F20053587F /* CTFKillerVideo.m */; };
+		6C8EC7E9107686780053587F /* CTFKillerSIFR.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C8EC7E8107686780053587F /* CTFKillerSIFR.m */; };
+		6CC18AE61076D09B00D9E1A0 /* CTFKillerVimeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CC18AE51076D09B00D9E1A0 /* CTFKillerVimeo.m */; };
 		79166CBD0FF69E1800B1F69B /* CTFGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 79166CBB0FF69E1800B1F69B /* CTFGradient.m */; };
 		79A21C4D0F30B735009424B8 /* CTFWhitelistWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */; };
 		79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */; };
@@ -56,10 +65,6 @@
 		A40485BA10629B0E00FDC4E2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A40485B410629B0E00FDC4E2 /* InfoPlist.strings */; };
 		A40485BB10629B0E00FDC4E2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A40485B610629B0E00FDC4E2 /* Localizable.strings */; };
 		A40485E010629C4100FDC4E2 /* CTFAboutBoxWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A40485DF10629C4100FDC4E2 /* CTFAboutBoxWindowController.m */; };
-		A44AA50E10971387006F5FC1 /* Credits.css in Resources */ = {isa = PBXBuildFile; fileRef = A44AA50D10971387006F5FC1 /* Credits.css */; };
-		A44AA61710971883006F5FC1 /* CTFsIFRSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = A44AA61610971883006F5FC1 /* CTFsIFRSupport.m */; };
-		A44AA66F1097874C006F5FC1 /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
-		A44AA68710978945006F5FC1 /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A44AA68610978945006F5FC1 /* SparkleManager.m */; };
 		A46A5A141096C5E600E1ABAA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */; };
 		A46A5A5C1096C9C800E1ABAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A46A5A5B1096C9C800E1ABAA /* main.m */; };
 		A46A5A5D1096C9CD00E1ABAA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A46A5A471096C98400E1ABAA /* MainMenu.xib */; };
@@ -68,6 +73,8 @@
 		A46A5DBD1096FE6700E1ABAA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		A46A5E2B109700B400E1ABAA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
+		A4D8070C10A40BCB0024454E /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D8070B10A40BCB0024454E /* SparkleManager.m */; };
+		A4D8074710A4129C0024454E /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
 		A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */; };
 		A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
@@ -172,7 +179,23 @@
 		6953E43B0F3EDEB50014ECF7 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Plugin/English.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		69A26D0A0F302C10006648BC /* NSBezierPath-RoundedRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBezierPath-RoundedRectangle.h"; path = "Plugin/NSBezierPath-RoundedRectangle.h"; sourceTree = "<group>"; };
 		69A26D0B0F302C10006648BC /* NSBezierPath-RoundedRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBezierPath-RoundedRectangle.m"; path = "Plugin/NSBezierPath-RoundedRectangle.m"; sourceTree = "<group>"; };
+		6C09630A107FCA610006923A /* CTFActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFActionButton.h; path = Plugin/CTFActionButton.h; sourceTree = "<group>"; };
+		6C09630B107FCA610006923A /* CTFActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFActionButton.m; path = Plugin/CTFActionButton.m; sourceTree = "<group>"; };
+		6C09647E10808D4B0006923A /* CTFMainButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFMainButton.h; path = Plugin/CTFMainButton.h; sourceTree = "<group>"; };
+		6C09647F10808D4B0006923A /* CTFMainButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFMainButton.m; path = Plugin/CTFMainButton.m; sourceTree = "<group>"; };
 		6C436DAE107830A200A0D525 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		6C8E03FD10795EB900E21A50 /* CTFLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFLoader.h; path = Plugin/CTFLoader.h; sourceTree = "<group>"; };
+		6C8E03FE10795EB900E21A50 /* CTFLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFLoader.m; path = Plugin/CTFLoader.m; sourceTree = "<group>"; };
+		6C8EC6F210764F810053587F /* CTFKiller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKiller.h; path = Plugin/CTFKiller.h; sourceTree = "<group>"; };
+		6C8EC6F310764F810053587F /* CTFKiller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKiller.m; path = Plugin/CTFKiller.m; sourceTree = "<group>"; };
+		6C8EC7031076544D0053587F /* CTFKillerYouTube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerYouTube.h; path = Plugin/CTFKillerYouTube.h; sourceTree = "<group>"; };
+		6C8EC7041076544D0053587F /* CTFKillerYouTube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerYouTube.m; path = Plugin/CTFKillerYouTube.m; sourceTree = "<group>"; };
+		6C8EC773107671F20053587F /* CTFKillerVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerVideo.h; path = Plugin/CTFKillerVideo.h; sourceTree = "<group>"; };
+		6C8EC774107671F20053587F /* CTFKillerVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerVideo.m; path = Plugin/CTFKillerVideo.m; sourceTree = "<group>"; };
+		6C8EC7E7107686780053587F /* CTFKillerSIFR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerSIFR.h; path = Plugin/CTFKillerSIFR.h; sourceTree = "<group>"; };
+		6C8EC7E8107686780053587F /* CTFKillerSIFR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerSIFR.m; path = Plugin/CTFKillerSIFR.m; sourceTree = "<group>"; };
+		6CC18AE41076D09B00D9E1A0 /* CTFKillerVimeo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFKillerVimeo.h; path = Plugin/CTFKillerVimeo.h; sourceTree = "<group>"; };
+		6CC18AE51076D09B00D9E1A0 /* CTFKillerVimeo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFKillerVimeo.m; path = Plugin/CTFKillerVimeo.m; sourceTree = "<group>"; };
 		79166CBB0FF69E1800B1F69B /* CTFGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFGradient.m; path = Plugin/CTFGradient.m; sourceTree = "<group>"; };
 		79166CBC0FF69E1800B1F69B /* CTFGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFGradient.h; path = Plugin/CTFGradient.h; sourceTree = "<group>"; };
 		79475E0C0F658D9A00FD82E3 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Plugin/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
@@ -190,7 +213,7 @@
 		A40485AD10629AB900FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/MenubarMenu.xib; sourceTree = "<group>"; };
 		A40485AE10629ABD00FDC4E2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = Plugin/fr.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
 		A40485AF10629ABF00FDC4E2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = Plugin/de.lproj/WhitelistPanel.xib; sourceTree = "<group>"; };
-		A40485B110629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = English; path = Plugin/English.lproj/Credits.css; sourceTree = "<group>"; };
+		A40485B110629B0E00FDC4E2 /* Credits.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = Credits.css; path = Plugin/Credits.css; sourceTree = "<group>"; };
 		A40485B310629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = English; path = Plugin/English.lproj/Credits.html; sourceTree = "<group>"; };
 		A40485B510629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Plugin/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A40485B710629B0E00FDC4E2 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = Plugin/English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -202,10 +225,8 @@
 		A40485C410629B5100FDC4E2 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = Plugin/de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A40485DE10629C4100FDC4E2 /* CTFAboutBoxWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFAboutBoxWindowController.h; path = Plugin/CTFAboutBoxWindowController.h; sourceTree = "<group>"; };
 		A40485DF10629C4100FDC4E2 /* CTFAboutBoxWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFAboutBoxWindowController.m; path = Plugin/CTFAboutBoxWindowController.m; sourceTree = "<group>"; };
-		A44AA61510971883006F5FC1 /* CTFsIFRSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFsIFRSupport.h; path = Plugin/CTFsIFRSupport.h; sourceTree = "<group>"; };
-		A44AA61610971883006F5FC1 /* CTFsIFRSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFsIFRSupport.m; path = Plugin/CTFsIFRSupport.m; sourceTree = "<group>"; };
-		A44AA68510978945006F5FC1 /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkleManager.h; path = Plugin/SparkleManager.h; sourceTree = "<group>"; };
-		A44AA68610978945006F5FC1 /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparkleManager.m; path = Plugin/SparkleManager.m; sourceTree = "<group>"; };
+		A4627824107ED6CD005B88C4 /* CTFKillerPlistFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFKillerPlistFiles.h; sourceTree = "<group>"; };
+		A4627825107ED6CD005B88C4 /* CTFKillerPlistFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFKillerPlistFiles.m; sourceTree = "<group>"; };
 		A46A59FE1096C2A700E1ABAA /* ClickToFlash Updater.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ClickToFlash Updater.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A46A5A001096C2A700E1ABAA /* Info-Updater.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-Updater.plist"; path = "Updater/Info-Updater.plist"; sourceTree = "<group>"; };
 		A46A5A421096C95500E1ABAA /* CTFSparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFSparkleManager.h; path = Updater/CTFSparkleManager.h; sourceTree = "<group>"; };
@@ -213,6 +234,8 @@
 		A46A5A471096C98400E1ABAA /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = Updater/MainMenu.xib; sourceTree = "<group>"; };
 		A46A5A5B1096C9C800E1ABAA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Updater/main.m; sourceTree = "<group>"; };
 		A494CC2B0F9F2446007D5EEB /* ctf.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = ctf.icns; path = Plugin/ctf.icns; sourceTree = "<group>"; };
+		A4D8070A10A40BCB0024454E /* SparkleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SparkleManager.h; path = Plugin/SparkleManager.h; sourceTree = "<group>"; };
+		A4D8070B10A40BCB0024454E /* SparkleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SparkleManager.m; path = Plugin/SparkleManager.m; sourceTree = "<group>"; };
 		A4DEFC760FF33F7400CCB6A8 /* CTFPreferencesDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFPreferencesDictionary.h; path = Plugin/CTFPreferencesDictionary.h; sourceTree = "<group>"; };
 		A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTFPreferencesDictionary.m; path = Plugin/CTFPreferencesDictionary.m; sourceTree = "<group>"; };
 		A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTFUserDefaultsController.h; path = Plugin/CTFUserDefaultsController.h; sourceTree = "<group>"; };
@@ -270,6 +293,24 @@
 			children = (
 				55EB703D0E04A84F0016593D /* Plugin.m */,
 				55EB703C0E04A84F0016593D /* Plugin.h */,
+				6C09647F10808D4B0006923A /* CTFMainButton.m */,
+				6C09647E10808D4B0006923A /* CTFMainButton.h */,
+				6C09630B107FCA610006923A /* CTFActionButton.m */,
+				6C09630A107FCA610006923A /* CTFActionButton.h */,
+				6C8E03FE10795EB900E21A50 /* CTFLoader.m */,
+				6C8E03FD10795EB900E21A50 /* CTFLoader.h */,
+				6C8EC6F310764F810053587F /* CTFKiller.m */,
+				6C8EC6F210764F810053587F /* CTFKiller.h */,
+				6C8EC774107671F20053587F /* CTFKillerVideo.m */,
+				6C8EC773107671F20053587F /* CTFKillerVideo.h */,
+				A4627825107ED6CD005B88C4 /* CTFKillerPlistFiles.m */,
+				A4627824107ED6CD005B88C4 /* CTFKillerPlistFiles.h */,
+				6C8EC7041076544D0053587F /* CTFKillerYouTube.m */,
+				6C8EC7031076544D0053587F /* CTFKillerYouTube.h */,
+				6CC18AE51076D09B00D9E1A0 /* CTFKillerVimeo.m */,
+				6CC18AE41076D09B00D9E1A0 /* CTFKillerVimeo.h */,
+				6C8EC7E8107686780053587F /* CTFKillerSIFR.m */,
+				6C8EC7E7107686780053587F /* CTFKillerSIFR.h */,
 				A40485DF10629C4100FDC4E2 /* CTFAboutBoxWindowController.m */,
 				A40485DE10629C4100FDC4E2 /* CTFAboutBoxWindowController.h */,
 				A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */,
@@ -278,16 +319,14 @@
 				A4DEFC780FF33F7400CCB6A8 /* CTFUserDefaultsController.h */,
 				845704590F47BC170017F3F4 /* CTFUtilities.m */,
 				845704580F47BC170017F3F4 /* CTFUtilities.h */,
-				A44AA61510971883006F5FC1 /* CTFsIFRSupport.h */,
-				A44AA61610971883006F5FC1 /* CTFsIFRSupport.m */,
 				6953E4340F3EDE9D0014ECF7 /* CTFMenubarMenuController.m */,
 				6953E4350F3EDE9D0014ECF7 /* CTFMenubarMenuController.h */,
 				845704540F4792320017F3F4 /* CTFWhitelist.m */,
 				845704530F4792320017F3F4 /* CTFWhitelist.h */,
 				79A21C490F30B735009424B8 /* CTFWhitelistWindowController.m */,
 				79A21C4A0F30B735009424B8 /* CTFWhitelistWindowController.h */,
-				A44AA68610978945006F5FC1 /* SparkleManager.m */,
-				A44AA68510978945006F5FC1 /* SparkleManager.h */,
+				A4D8070A10A40BCB0024454E /* SparkleManager.h */,
+				A4D8070B10A40BCB0024454E /* SparkleManager.m */,
 				D9FFA7650F3941C1008A8708 /* ClickToFlash_Prefix.pch */,
 				79166CBF0FF69E2900B1F69B /* 10.4 Support */,
 				55EB70610E04A8D00016593D /* Info-Plugin.plist */,
@@ -297,7 +336,7 @@
 				A494CC2B0F9F2446007D5EEB /* ctf.icns */,
 				79B1F5BF105D9CEE0081D0B0 /* dsa_pub.pem */,
 				D9566C2B0F37EA0800358646 /* deSIFR Resources */,
-				A44AA50D10971387006F5FC1 /* Credits.css */,
+				A40485B110629B0E00FDC4E2 /* Credits.css */,
 				A40485B210629B0E00FDC4E2 /* Credits.html */,
 				A40485B410629B0E00FDC4E2 /* InfoPlist.strings */,
 				A40485B610629B0E00FDC4E2 /* Localizable.strings */,
@@ -485,7 +524,7 @@
 				00FBE92F0FCD68CE00BC0995 /* NSActionTemplate.png in Resources */,
 				79B1F5C0105D9CEE0081D0B0 /* dsa_pub.pem in Resources */,
 				A40485A710629A3D00FDC4E2 /* AboutBox.xib in Resources */,
-				A44AA50E10971387006F5FC1 /* Credits.css in Resources */,
+				6C2C5A6A1068CE8700A90A54 /* Credits.css in Resources */,
 				A40485B910629B0E00FDC4E2 /* Credits.html in Resources */,
 				A40485BA10629B0E00FDC4E2 /* InfoPlist.strings in Resources */,
 				A40485BB10629B0E00FDC4E2 /* Localizable.strings in Resources */,
@@ -499,7 +538,7 @@
 			files = (
 				A46A5A141096C5E600E1ABAA /* dsa_pub.pem in Resources */,
 				A46A5A5D1096C9CD00E1ABAA /* MainMenu.xib in Resources */,
-				A44AA66F1097874C006F5FC1 /* ctf.icns in Resources */,
+				A4D8074710A4129C0024454E /* ctf.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,8 +604,15 @@
 				A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */,
 				79166CBD0FF69E1800B1F69B /* CTFGradient.m in Sources */,
 				A40485E010629C4100FDC4E2 /* CTFAboutBoxWindowController.m in Sources */,
-				A44AA61710971883006F5FC1 /* CTFsIFRSupport.m in Sources */,
-				A44AA68710978945006F5FC1 /* SparkleManager.m in Sources */,
+				6C8EC6F410764F810053587F /* CTFKiller.m in Sources */,
+				6C8EC7051076544D0053587F /* CTFKillerYouTube.m in Sources */,
+				6C8EC775107671F20053587F /* CTFKillerVideo.m in Sources */,
+				6C8EC7E9107686780053587F /* CTFKillerSIFR.m in Sources */,
+				6CC18AE61076D09B00D9E1A0 /* CTFKillerVimeo.m in Sources */,
+				6C8E03FF10795EB900E21A50 /* CTFLoader.m in Sources */,
+				6C09630C107FCA610006923A /* CTFActionButton.m in Sources */,
+				6C09648010808D4B0006923A /* CTFMainButton.m in Sources */,
+				A4D8070C10A40BCB0024454E /* SparkleManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,14 +711,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		A44AA50D10971387006F5FC1 /* Credits.css */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A40485B110629B0E00FDC4E2 /* English */,
-			);
-			name = Credits.css;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -741,7 +779,6 @@
 				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.4;
 				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
 				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH_ACTUAL)";
-				OTHER_CFLAGS = "-DDEBUG";
 				PREBINDING = NO;
 				PRODUCT_NAME = ClickToFlash;
 				RUN_CLANG_STATIC_ANALYZER = NO;

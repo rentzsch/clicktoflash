@@ -2,33 +2,8 @@
 	PLUGIN
 */
 
-
-/*
-	CtF Plug-In Badges
-*/
-
 /* Flash badge text */
 "Flash" = "Flash";
-
-/* YouTube badge waiting text */
-"YouTube…" = "YouTube…";
-
-/* YouTube badge text */
-"YouTube" = "YouTube";
-
-/* H.264 badge waiting text */
-"H.264…" = "QuickTime…";
-
-/* H.264 badge text */
-"H.264" = "QuickTime";
-
-/* HD H.264 badge text */
-"HD H.264" = "QuickTime HD";
-
-/* sIFR Flash badge text */
-"sIFR Flash" = "sIFR Flash";
-
-
 
 
 
@@ -45,6 +20,38 @@
 /* Load All on this page contextual menu item */
 "Load All on this Page" = "Tout charger sur cette page";
 
+/* Hide Flash contextual menu item (sets display:none) */
+"Hide Flash" = "Masquer Flash"; 
+
+/* Remove Flash contextual menu item (sets visibility: hidden) */
+"Remove Flash" = "Supprimer Flash";
+
+/* Add <sitename> to Whitelist menu item */
+"Add %@ to Whitelist" = "Charger Flash automatiquement sur « %@ »";
+
+/* Preferences Contextual Menu Item */
+"ClickToFlash Preferences..." = "Préférences ClickToFlash…";
+
+
+
+/* 
+	Video Strings (CTFKillerVideo)
+*/
+
+/* Format for badge text for video service. This should probably just be %@ */
+"%@ (VideoServiceName)" = "%@";
+
+/* Format to create a 'Video Service...'-style string */
+"%@..." = "%@…";
+
+/* H.264 badge text */
+"H.264" = "QuickTime";
+
+/* HD H.264 badge text */
+"HD H.264" = "QuickTime HD";
+
+
+
 /* Load H.264 context menu item */
 "Load H.264" = "Charger avec QuickTime";
 
@@ -54,14 +61,8 @@
 /* Load Larger Version contextual menu item (alternate for the standard Load H.264 item when the default uses the non-'HD' version) */
 "Load H.264 HD Version" = "Charger version plus grande avec QuickTime";
 
-/* Hide Flash contextual menu item (sets display:none) */
-"Hide Flash" = "Masquer Flash"; 
-
-/* Remove Flash contextual menu item (sets visibility: hidden) */
-"Remove Flash" = "Supprimer Flash";
-
-/* Load YouTube page menu item */
-"Load YouTube.com page for this video" = "Aller à la page YouTube pour ce film";
+/* Load SITENAME page for this video menu item */
+"Load %@ page for this video" = "Aller à la page %@ pour ce film";
 
 /* Open Fullscreen in QT Player menu item */
 "Play Fullscreen in QuickTime Player" = "Lire en plein écran dans QuickTime Player";
@@ -81,11 +82,25 @@
 /* Download large size H.264 menu item (alternate for the standard item when the default uses the non-'HD' version) */
 "Download HD H.264" = "Télécharger version plus grande en fichier film";
 
-/* Add <sitename> to Whitelist menu item */
-"Add %@ to Whitelist" = "Charger Flash automatiquement sur « %@ »";
 
-/* Preferences Contextual Menu Item */
-"ClickToFlash Preferences..." = "Préférences ClickToFlash…";
+/*
+	Additional Links for inserted QuickTime film
+*/
+
+/* Text of link to Video Download appearing beneath the video */
+"Download video file" = "Télécharger le fichier film";
+
+/* Label for download links appearing beneath the video */
+"Download: " = "Download: ";
+
+/* Text of link for downloading a version of the video in the current size; appearing beneath the video */
+"Current Size" = "Current Size";
+
+/* Text of link to additional Larger Size Video Download appearing beneath the video after the standard link */
+"Larger Size" = "Taille plus grande";
+
+/* Text of link to the video page on SITENAME appearing beneath the video  */ 
+"Go to %@ Page" = "Aller à la page %@";
 
 
 
@@ -93,17 +108,14 @@
 
 
 /*
-	Additional Links for inserted QuickTime film
+	CTFKillerSIFR
 */
 
-/* Text of link to H.264 Download appearing beneath the video */
-"Download video file" = "Télécharger le fichier film";
+/* sIFR Flash badge text */
+"sIFR Flash" = "sIFR Flash";
 
-/* Text of link to additional Larger Size H.264 Download appearing beneath the video after the standard link */
-"(Larger Size)" = "(Taille plus grande)";
-
-/* Text of link to YouTube page appearing beneath the video */
-"Go to YouTube page" = "Aller à la page YouTube";
+/* Remove All Text Replacements */
+"Don't use Text Replacement" = "Remove All Text Replacements";
 
 
 
