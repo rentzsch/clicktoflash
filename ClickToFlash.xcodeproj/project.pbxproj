@@ -69,12 +69,12 @@
 		A46A5A5C1096C9C800E1ABAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A46A5A5B1096C9C800E1ABAA /* main.m */; };
 		A46A5A5D1096C9CD00E1ABAA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A46A5A471096C98400E1ABAA /* MainMenu.xib */; };
 		A46A5A5E1096C9CE00E1ABAA /* CTFSparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A46A5A431096C95500E1ABAA /* CTFSparkleManager.m */; };
-		A46A5BE21096E60E00E1ABAA /* ClickToFlash Updater.app in Resources */ = {isa = PBXBuildFile; fileRef = A46A59FE1096C2A700E1ABAA /* ClickToFlash Updater.app */; };
 		A46A5DBD1096FE6700E1ABAA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55EB70560E04A8B80016593D /* Cocoa.framework */; };
 		A46A5E2B109700B400E1ABAA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 79A060EB0FF1CBF50035F03A /* Sparkle.framework */; };
 		A494CC2C0F9F2446007D5EEB /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
 		A4D8070C10A40BCB0024454E /* SparkleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A4D8070B10A40BCB0024454E /* SparkleManager.m */; };
 		A4D8074710A4129C0024454E /* ctf.icns in Resources */ = {isa = PBXBuildFile; fileRef = A494CC2B0F9F2446007D5EEB /* ctf.icns */; };
+		A4D808EE10A7D7870024454E /* ClickToFlash Updater.app in Resources */ = {isa = PBXBuildFile; fileRef = A46A59FE1096C2A700E1ABAA /* ClickToFlash Updater.app */; };
 		A4DEFC7A0FF33F7400CCB6A8 /* CTFPreferencesDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC770FF33F7400CCB6A8 /* CTFPreferencesDictionary.m */; };
 		A4DEFC7B0FF33F7400CCB6A8 /* CTFUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A4DEFC790FF33F7400CCB6A8 /* CTFUserDefaultsController.m */; };
 		D9566D8C0F380C9F00358646 /* sifr2-addons.js in Resources */ = {isa = PBXBuildFile; fileRef = D9566C2C0F37EA0800358646 /* sifr2-addons.js */; };
@@ -528,7 +528,7 @@
 				A40485B910629B0E00FDC4E2 /* Credits.html in Resources */,
 				A40485BA10629B0E00FDC4E2 /* InfoPlist.strings in Resources */,
 				A40485BB10629B0E00FDC4E2 /* Localizable.strings in Resources */,
-				A46A5BE21096E60E00E1ABAA /* ClickToFlash Updater.app in Resources */,
+				A4D808EE10A7D7870024454E /* ClickToFlash Updater.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,7 +738,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.6b4;
+				PRODUCT_VERSION = 1.6b6;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -753,7 +753,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
-				PRODUCT_VERSION = 1.6b4;
+				PRODUCT_VERSION = 1.6b6;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;

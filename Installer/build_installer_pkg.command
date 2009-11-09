@@ -41,6 +41,7 @@ cp -R "$BUILT_PLUGIN" "$MY_INSTALLER_ROOT"
 
 "$SYSTEM_DEVELOPER_UTILITIES_DIR/PackageMaker.app/Contents/MacOS/PackageMaker" \
 	--root "$BUILT_PRODUCTS_DIR/ClickToFlash.dst" \
+	--no-relocate \
 	--info Info.plist \
 	--resources resources \
 	--scripts scripts \
