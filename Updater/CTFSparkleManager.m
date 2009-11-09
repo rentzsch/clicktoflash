@@ -80,8 +80,16 @@
 shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
   untilInvoking:(NSInvocation *)invocation;
 {
+	[NSApp activateIgnoringOtherApps:YES];
 	NSString *hostAppBundleIdentifier = [[[NSProcessInfo processInfo] arguments] objectAtIndex:1];
-	NSString *appNameString = [[[NSBundle bundleWithIdentifier:hostAppBundleIdentifier] infoDictionary] objectForKey:@"CFBundleName"];
+	
+	// bundleWithIdentifier: doesn't work if the bundle hasn't been previously loaded, it seems
+	NSString *pathToRelaunch = [[NSWorkspace sharedWorkspace]
+								absolutePathForAppBundleWithIdentifier:hostAppBundleIdentifier];
+	NSString *appNameString = [[[NSBundle bundleWithPath:pathToRelaunch] infoDictionary] objectForKey:@"CFBundleName"];
+	
+	
+	//NSLog(@"WTF: %@",[[NSBundle bundleWithIdentifier:hostAppBundleIdentifier] infoDictionary]);
 	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
 										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],
 										 @"Relaunch",
