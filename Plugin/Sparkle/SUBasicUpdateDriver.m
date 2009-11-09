@@ -267,7 +267,13 @@
 	NSString *pathToRelaunch = [host bundlePath];
 	if ([[updater delegate] respondsToSelector:@selector(pathToRelaunchForUpdater:)])
 		pathToRelaunch = [[updater delegate] pathToRelaunchForUpdater:updater];
-	[NSTask launchedTaskWithLaunchPath:relaunchPath arguments:[NSArray arrayWithObjects:pathToRelaunch, [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]], nil]];
+	
+	NSInteger PIDToListenFor = [[NSProcessInfo processInfo] processIdentifier];
+	if ([[updater delegate] respondsToSelector:@selector(PIDToListenForRelaunch:)])
+		PIDToListenFor = [[updater delegate] PIDToListenForRelaunch:updater];
+	
+	NSLog(@"launchedTaskWithLaunchPath: %@, arguments: %@",relaunchPath,[NSArray arrayWithObjects:pathToRelaunch, [NSString stringWithFormat:@"%d", [[NSProcessInfo processInfo] processIdentifier]], nil]);
+	[NSTask launchedTaskWithLaunchPath:relaunchPath arguments:[NSArray arrayWithObjects:pathToRelaunch, [NSString stringWithFormat:@"%d", PIDToListenFor], nil]];
 
 	[NSApp terminate:self];
 }

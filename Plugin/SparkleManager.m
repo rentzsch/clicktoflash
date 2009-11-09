@@ -70,12 +70,20 @@ static NSString *sLastUpdateCheck = @"CTFLastUpdateCheck";
 	// inter-app communication via NSProxyObjects is inadvisable since there
 	// are likely going to be many ClickToFlash objects available
 	
+	
 	if (! foundUpdater) {
 		NSArray *argsArray;
+		NSString *processID = [[NSNumber numberWithInt:[[NSProcessInfo processInfo] processIdentifier]] stringValue];
 		if (background) {
-			argsArray = [NSArray arrayWithObjects:[CTFClickToFlashPlugin launchedAppBundleIdentifier],@"--background",nil];
+			argsArray = [NSArray arrayWithObjects:[CTFClickToFlashPlugin launchedAppBundleIdentifier],
+												  @"--background",
+												  processID,
+												  nil];
 		} else {
-			argsArray = [NSArray arrayWithObject:[CTFClickToFlashPlugin launchedAppBundleIdentifier]];
+			argsArray = [NSArray arrayWithObjects:[CTFClickToFlashPlugin launchedAppBundleIdentifier],
+												  @"--no-background",
+												  processID,
+												  nil];
 		}
 		
 		// we save our own last update check date instead of relying on Sparkle because

@@ -76,6 +76,11 @@
 	return pathToRelaunch;
 }
 
+- (NSInteger)PIDToListenForRelaunch:(SUUpdater *)updater;
+{
+	return (NSInteger)[[[NSProcessInfo processInfo] arguments] objectAtIndex:3];
+}
+
 - (BOOL)updater:(SUUpdater *)updater
 shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
   untilInvoking:(NSInvocation *)invocation;
@@ -89,7 +94,6 @@ shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
 	NSString *appNameString = [[[NSBundle bundleWithPath:pathToRelaunch] infoDictionary] objectForKey:@"CFBundleName"];
 	
 	
-	//NSLog(@"WTF: %@",[[NSBundle bundleWithIdentifier:hostAppBundleIdentifier] infoDictionary]);
 	int relaunchResult = NSRunAlertPanel([NSString stringWithFormat:@"Relaunch %@ now?",appNameString],
 										 [NSString stringWithFormat:@"To use the new features of ClickToFlash, %@ needs to be relaunched.",appNameString],
 										 @"Relaunch",
@@ -98,7 +102,20 @@ shouldPostponeRelaunchForUpdate:(SUAppcastItem *)update
 	
 	BOOL shouldPostpone = YES;
 	if (relaunchResult == NSAlertDefaultReturn) {
-		// we want to relaunch now, so don't postpone the relaunch
+		// we want to relaunch now, so quit the host app and don't postpone the relaunch
+		
+		NSAppleEventDescriptor *target = [NSAppleEventDescriptor descriptorWithDescriptorType:typeApplicationBundleID
+																						 data:[hostAppBundleIdentifier dataUsingEncoding:NSUTF8StringEncoding]];
+		NSAppleEventDescriptor *quitEvent = [NSAppleEventDescriptor appleEventWithEventClass:kCoreEventClass
+																					 eventID:kAEQuitApplication
+																			targetDescriptor:target
+																					returnID:kAutoGenerateReturnID
+																			   transactionID:kAnyTransactionID];
+		OSStatus err = AESendMessage([quitEvent aeDesc],    //  theAppleEvent
+									 NULL,                  //  reply
+									 kAENoReply,            //  sendMode
+									 0);                    //  sendPriority
+		NSAssert1( err == noErr, @"AESendMessage failed: %d", err );
 		
 		shouldPostpone = NO;
 	} else {

@@ -100,6 +100,9 @@
 // Returns the path which is used to relaunch the client after the update is installed. By default, the path of the host bundle.
 - (NSString *)pathToRelaunchForUpdater:(SUUpdater *)updater;
 
+// if the updater app is a separate helper application, we want to listen for the original application to quit
+- (NSInteger)PIDToListenForRelaunch:(SUUpdater *)updater;
+
 @end
 
 // Define some minimum intervals to avoid DOS-like checking attacks. These are in seconds.
