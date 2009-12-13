@@ -356,6 +356,7 @@ enum subviewTags {
 	[self setHost:nil];
 	[self setWebView:nil];
 	[self setBaseURL:nil];
+	[self setBaseURL:nil];
 	[self setAttributes:nil];
 	[self setOriginalOpacityAttributes:nil];
 	[self setKiller:nil];
