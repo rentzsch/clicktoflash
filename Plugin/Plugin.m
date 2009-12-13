@@ -461,6 +461,7 @@ BOOL usingMATrackingArea = NO;
 	[self setHost:nil];
 	[self setWebView:nil];
 	[self setBaseURL:nil];
+	[self setSrc:nil];
 	[self setAttributes:nil];
 	[self setOriginalOpacityAttributes:nil];
 	
