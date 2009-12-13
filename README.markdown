@@ -4,11 +4,37 @@ This is the ClickToFlash developer site.
 
 ##Version History
 
-* **1.6b4** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.6b4.zip)
+* **1.6b6**
+
+	* *This update is exactly the same as 1.6b5 and only exists to test/demonstrate Sparkle updating.*
+
+* **1.6b5** [download](http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.6b5-upload1.zip)
+
+	* [NEW] Explicit Vimeo support: watch and download H.264 versions of Vimeo videos without loading their Flash player. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/f61aabde5c48d0b53e7aa41b9a345c1ee4da6273))
+
+	* [NEW] Poster frame of YouTube and Vimeo videos are loaded in lieu of the default gray-gradient background when H.264 support is enabled. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/7d8318a87aa4f6b60e6187dfc6fad940d6952f64))
+
+	* [NEW] Whitelist now applies to entire URL rather than host. This allows things like whitelisting `google.com/analytics` without whitelisting all of `google.com`. [ticket 361](http://rentzsch.lighthouseapp.com/projects/24342/tickets/361) ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/22d64c26dd1fc880458ecdfd2aa0cfb5b4661f4a))
+
+	* [NEW] Glossy effect on video poster frame. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/984d3b3b358d7442391f4c5dee2203d0dbce1653))
+
+	* [CHANGE] Solid, more opaque background for contextual-menu gear so it's visible against a variety of video poster frames. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/0dca4b4308981c3da5092af3ac83c4208b63929e))
+
+	* [CHANGE] Drawing and mouse-handling code migrated to NSButtons to pave the way towards accessibility. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/4fa5e84cc9503feee1926bcdd5905b12e695dd16))
+
+	* [CHANGE] Improve handling of embedded YouTube's use of `swfArgs`/`SWF_ARGS`s. ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/a36b987c7e5506145f2e8cb3f8228d4162f2dc35))
+
+	* [FIX] Improve "Larger Size" download link text. [ticket 346](http://rentzsch.lighthouseapp.com/projects/24342/tickets/346) ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/9e791d3c44786f297f7d4a4922d78d456757602c))
+
+	* [FIX] Explicitly cancel HTTP HEAD requests to work-around a 10.5 bug that downloads the entire file. <http://openradar.me/7019347> ([Sven-S. Porst](http://github.com/rentzsch/clicktoflash/commit/71a30dd730a590ff1b983bee21041466dffe1cd2))
+
+* *The downloads for 1.6b3 and 1.6b4 were deleted since MacUpdate linked to them as the current version even though they were never intended as a mainstream release. Step off, MacUpdate.*
+
+* **1.6b4**
 
 	* *This update is exactly the same as 1.6b3 and only exists to test/demonstrate Sparkle updating.*
 
-* **1.6b3** [download](http://s3.amazonaws.com/clicktoflash/ClickToFlash-1.6b3.zip)
+* **1.6b3**
 
 	* [NEW] Sparkle updating now takes place in a helper app, hopefully reducing framework class conflicts. (Simone Manganelli)
 
