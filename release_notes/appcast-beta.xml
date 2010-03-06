@@ -6,6 +6,16 @@
 		<language>en</language>
 		<description>Most recent changes with links to updates</description>
 		<item>
+			<title>version 1.6b7</title>
+			<pubDate>Sat, 6 Mar 2010 00:38:33 -0600</pubDate>
+			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.6b7.html</sparkle:releaseNotesLink>
+			<enclosure
+			    sparkle:version="1.6b7"
+			    url="http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.6b7-upload1.zip"
+			    type="application/zip"
+			    sparkle:dsaSignature="MC4CFQDxVfHn7AjzJusTALfPWsBAToKmcwIVANTdLQXHXPUAcYo5fRvKiWU2EfiI"/>
+		</item>
+		<item>
 			<title>version 1.6b6</title>
 			<pubDate>Sat, 12 Dec 2009 12:04:49 -0600</pubDate>
 			<sparkle:releaseNotesLink>http://rentzsch.github.com/clicktoflash/release_notes/1.6b6.html</sparkle:releaseNotesLink>
