@@ -757,58 +757,71 @@ enum subviewTags {
 #pragma mark -
 #pragma mark WebScripting Protocol
 
-- (id)objectForWebScript
-{
+- (id)objectForWebScript {
+    //NSLog(@"objectForWebScript => %@", self);
 	return self;
 }
 
-+ (NSString *)webScriptNameForSelector:(SEL)aSelector
-{
++ (NSString *)webScriptNameForSelector:(SEL)aSelector {
 	// javascript may call GetVariable("$version") on us
+    
+    NSString *result = nil;
+    
 	if (aSelector == @selector(flashGetVariable:))
-		return @"GetVariable";
-    return nil;
+		result = @"GetVariable";
+    
+    //NSLog(@"webScriptNameForSelector:%@ => %@", NSStringFromSelector(aSelector), result);
+    return result;
 }
 
-+ (BOOL)isSelectorExcludedFromWebScript:(SEL)aSelector
-{
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)aSelector {
+    BOOL result = YES;
+    
     if (aSelector == @selector(flashGetVariable:))
-		return NO;
-    return YES;
+		result = NO;
+    
+    //NSLog(@"isSelectorExcludedFromWebScript:%@ => %d", NSStringFromSelector(aSelector), result);
+    return result;
 }
 
-- (id)flashGetVariable:(id)flashVar
-{
+- (id)flashGetVariable:(id)flashVar {
 	static NSString *sFlashVersion = nil;
+    static NSString *sClickToFlashVersion = nil;
+    
+    //NSLog(@"flashVar: %p %@", flashVar, flashVar);
 	
-	if (flashVar && [flashVar isKindOfClass:[NSString class]])
-	{
-		if ([(NSString *)flashVar isEqualToString:@"$version"])
-		{
-			if (sFlashVersion == nil)
-			{
+	if (flashVar && [flashVar isKindOfClass:[NSString class]]) {
+		if ([flashVar isEqualToString:@"$version"]) {
+			if (sFlashVersion == nil) {
 				NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-				if (bundle)
-				{
+				if (bundle) {
 					id version = [bundle objectForInfoDictionaryKey:@"CTFFlashVariableVersion"];
-					if (version && [version isKindOfClass:[NSString class]])
-					{
+					if (version && [version isKindOfClass:[NSString class]]) {
 						sFlashVersion = [(NSString *)version copy];
 					}
 				}
 			}
 			
 			return sFlashVersion;
-		}
-		else
-		{
-			return [self flashvarWithName:(NSString *)flashVar];
+		} else if ([flashVar isEqualToString:@"$ClickToFlashVersion"]) {
+            if (sClickToFlashVersion == nil) {
+				NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+				if (bundle) {
+					id version = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+					if (version && [version isKindOfClass:[NSString class]]) {
+						sClickToFlashVersion = [(NSString *)version copy];
+					}
+				}
+			}
+			
+			return sClickToFlashVersion;
+        } else {
+			return [self flashvarWithName:flashVar];
 		}
 	}
 	
 	return nil;
 }
-
 
 #pragma mark -
 #pragma mark Accessibility
