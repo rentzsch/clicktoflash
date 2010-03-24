@@ -4,6 +4,10 @@ This is the ClickToFlash developer site.
 
 ##Version History
 
+* **1.5.4** [download](http://github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.4-upload1.zip)
+
+	* [FIX] YouTube's "Old Flash? Go upgrade!" message. [bug 517](http://rentzsch.lighthouseapp.com/projects/24342/tickets/517) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/aa05310397e7ffa7b10032254b6347abe226371f))
+
 * **1.5.3** [download](http://cloud.github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.3-golden.zip)
 
 	* [FIX] Crasher where parsed flash variables (such as `video_id`) were being released prematurely. [bug 261](http://rentzsch.lighthouseapp.com/projects/24342/tickets/261) ([Jeff Johnson](http://github.com/rentzsch/clicktoflash/commit/ef9be0b8697a2c88f1eccc5be8502fec1511f07a))
