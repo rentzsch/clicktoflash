@@ -60,6 +60,7 @@ THE SOFTWARE.
 	NSURLConnection *connections[2];
 	unsigned expectedResponses;
 	NSTimer *_delayingTimer;
+	NSRect _drawnRect;
 }
 
 + (NSView *)plugInViewWithArguments:(NSDictionary *)arguments;

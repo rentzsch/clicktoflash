@@ -123,6 +123,7 @@ BOOL usingMATrackingArea = NO;
 		_embeddedYouTubeView = NO;
 		_youTubeAutoPlay = NO;
 		_delayingTimer = nil;
+		_drawnRect = NSZeroRect;
 		defaultWhitelist = [NSArray arrayWithObjects:	@"com.apple.frontrow",
 														@"com.apple.dashboard.client",
 														@"com.apple.ScreenSaver.Engine",
@@ -565,7 +566,10 @@ BOOL usingMATrackingArea = NO;
 - (void) drawRect:(NSRect)rect
 {
 	if(!_isLoadingFromWhitelist)
+	{
+		_drawnRect = NSUnionRect( _drawnRect, rect );
 		[self _drawBackground];
+	}
 }
 
 - (BOOL) _gearVisible
@@ -659,10 +663,13 @@ BOOL usingMATrackingArea = NO;
 
 - (BOOL) isConsideredInvisible
 {
-	int height = (int)([[self webView] frame].size.height);
-	int width = (int)([[self webView] frame].size.width);
-	
-	if ( (height <= maxInvisibleDimension) && (width <= maxInvisibleDimension) )
+	int height = NSHeight( _drawnRect );
+	int width = NSWidth( _drawnRect );
+	if ( height > 0 && height <= maxInvisibleDimension )
+	{
+		return YES;
+	}
+	if ( width > 0 && width <= maxInvisibleDimension )
 	{
 		return YES;
 	}
