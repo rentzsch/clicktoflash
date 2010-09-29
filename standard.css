@@ -300,12 +300,12 @@ h2, h3 {
 	# if donating is turned OFF, this should
 	# be display:none;
 	
-	display: inline;
+	display: none;
 }
 
 .donating-off {
 	# if donating is turned OFF, this should
 	# be display:inline;
 	
-	display: none;
+	display: inline;
 }
