@@ -2,7 +2,7 @@
 
 This is the ClickToFlash developer site.
 
-##Version History
+## Version History
 
 * **1.5.4** [download](http://github.com/downloads/rentzsch/clicktoflash/ClickToFlash-1.5.4-upload1.zip)
 
@@ -311,7 +311,7 @@ flash boxes when whitelisting one ([bug 10](http://rentzsch.lighthouseapp.com/pr
 
 * **1.0** original Google Code release
 
-##Hidden Defaults
+## Hidden Defaults
 
 ClickToFlash has a few hidden preferences that can be used to control its functionality.  These preferences have been added for development or experimental reasons and are **not** guaranteed to persist in future versions of ClickToFlash.
 
